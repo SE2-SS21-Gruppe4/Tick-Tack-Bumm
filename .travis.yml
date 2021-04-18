@@ -45,7 +45,7 @@ script:
   - ./gradlew lint
 
   - export JAVA_HOME=$HOME/openjdk11        # use java 11 which is needed for sonar
-  - sonar-scanner
+  - ./gradlew sonarqube
 
 addons:
   sonarcloud:

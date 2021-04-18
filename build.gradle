@@ -15,6 +15,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "3.1.1"
+}
+
 allprojects {
     apply plugin: "eclipse"
 
@@ -83,5 +87,13 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "SE2-SS21-Gruppe4_Tick-Tack-Bumm"
+        property "sonar.organization", "se2-ss21-gruppe4"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
