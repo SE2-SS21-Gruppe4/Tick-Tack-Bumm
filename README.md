@@ -7,4 +7,3 @@
 - **Tester**: Jusuf, **Stellvertreter**: Timo
 - **Developer**: Daniel, Lukas, **Stellvertreter**: Jusuf
 - **Dokumentation**: Timo, **Stellvertreter**: Judith
-
