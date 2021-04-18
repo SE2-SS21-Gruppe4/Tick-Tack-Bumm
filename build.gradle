@@ -53,6 +53,7 @@ project(":desktop") {
 
 project(":android") {
     apply plugin: "com.android.application"
+    apply plugin: "jacoco"
 
     configurations { natives }
 
