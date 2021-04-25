@@ -1,6 +1,5 @@
 package at.aau.se2;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,15 +13,15 @@ public class LaunchScreen extends ScreenAdapter {
     Texture img;
     Sprite sprite;
 
-    public LaunchScreen(){
+    public LaunchScreen() {
         batch = new SpriteBatch();
         img = new Texture("bombeStart.png");
         sprite = new Sprite(img);
     }
 
     @Override
-    public void render (float delta) {
-        Gdx.gl.glClearColor(.18f, .21f, .32f,1);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(.18f, .21f, .32f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         sprite.draw(batch);
@@ -33,7 +32,7 @@ public class LaunchScreen extends ScreenAdapter {
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         batch.dispose();
         img.dispose();
     }
