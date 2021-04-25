@@ -2,12 +2,16 @@ package at.aau.se2;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+
+import at.aau.se2.screens.LoadingScreen;
 
 public class TickTackBummGame extends Game {
     private static TickTackBummGame tickTackBummGame;
+    public static AssetManager manager;
 
-    private TickTackBummGame() {
-        super();
+    public TickTackBummGame() {
+        tickTackBummGame = this;
     }
 
     public static TickTackBummGame getTickTackBummGame() {
@@ -23,6 +27,7 @@ public class TickTackBummGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new LaunchScreen());
+        manager = new AssetManager();
+        setScreen(new LoadingScreen());
     }
 }

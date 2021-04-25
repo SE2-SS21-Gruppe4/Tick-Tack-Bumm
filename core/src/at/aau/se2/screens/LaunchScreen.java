@@ -1,6 +1,5 @@
-package at.aau.se2;
+package at.aau.se2.screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,13 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import at.aau.se2.assets.Explosion;
+
 
 public class LaunchScreen extends ScreenAdapter {
-    SpriteBatch batch;
-    Texture img;
-    Sprite sprite;
+    private SpriteBatch batch;
+    private Texture img;
+    private Sprite sprite;
+    private at.aau.se2.assets.Explosion explosion;
 
     public LaunchScreen(){
+        explosion = new Explosion();
         batch = new SpriteBatch();
         img = new Texture("bombeStart.png");
         sprite = new Sprite(img);
@@ -29,6 +32,7 @@ public class LaunchScreen extends ScreenAdapter {
         sprite.setCenterX(1000);
         sprite.setCenterY(550);
         sprite.rotate(1);
+        explosion.render(delta, batch);
         batch.end();
     }
 
