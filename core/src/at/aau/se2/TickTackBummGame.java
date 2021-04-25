@@ -23,6 +23,6 @@ public class TickTackBummGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new MainGameScreen());
+        setScreen(new LaunchScreen());
     }
 }
