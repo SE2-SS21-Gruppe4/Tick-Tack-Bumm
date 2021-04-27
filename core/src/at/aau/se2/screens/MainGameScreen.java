@@ -1,4 +1,4 @@
-package at.aau.se2;
+package at.aau.se2.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
