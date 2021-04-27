@@ -2,6 +2,7 @@ package at.aau.se2;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,19 +10,25 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainGameScreen extends ScreenAdapter {
+    private final TickTackBumm game;
+    private final OrthographicCamera camera;
     SpriteBatch batch;
     Texture img;
     ShapeRenderer shapeRenderer;
     Sprite sprite;
 
     public MainGameScreen() {
+        this.game = TickTackBumm.getTickTackBumm();
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 2000, 1000);
+
         this.batch = new SpriteBatch();
         this.img = new Texture("badlogic.jpg");
         this.shapeRenderer = new ShapeRenderer();
         this.sprite = new Sprite(img);
         sprite.setX(200);
         sprite.setY(200);
-        sprite.rotate90(true);
     }
 
     @Override
@@ -49,5 +56,6 @@ public class MainGameScreen extends ScreenAdapter {
     public void dispose() {
         batch.dispose();
         img.dispose();
+        shapeRenderer.dispose();
     }
 }
