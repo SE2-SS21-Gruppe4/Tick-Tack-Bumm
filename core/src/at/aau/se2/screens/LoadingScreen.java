@@ -8,22 +8,23 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import at.aau.se2.TickTackBummGame;
 
 public class LoadingScreen extends ScreenAdapter {
-    public LoadingScreen(){
+    public LoadingScreen() {
         TickTackBummGame.manager.load("explosion.atlas", TextureAtlas.class);
     }
+
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         Gdx.gl.glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(TickTackBummGame.manager.update()){
+        if (TickTackBummGame.manager.update()) {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             TickTackBummGame.getTickTackBummGame().setScreen(new LaunchScreen());
-        };
+        }
+        ;
     }
-
 }

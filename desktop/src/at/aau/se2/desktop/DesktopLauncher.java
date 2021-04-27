@@ -4,7 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
-import at.aau.se2.TickTackBumm;
+import at.aau.se2.TickTackBummGame;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -24,6 +24,6 @@ public class DesktopLauncher {
         config.width = 2000;
         config.height = 1000;
 
-        new LwjglApplication(TickTackBumm.getTickTackBumm(), config);
+        new LwjglApplication(TickTackBummGame.getTickTackBummGame(), config);
     }
 }

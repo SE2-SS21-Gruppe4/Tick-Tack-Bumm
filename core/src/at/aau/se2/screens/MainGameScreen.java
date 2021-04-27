@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import at.aau.se2.TickTackBummGame;
+
 public class MainGameScreen extends ScreenAdapter {
-    private final TickTackBumm game;
+    private final TickTackBummGame game;
     private final OrthographicCamera camera;
     SpriteBatch batch;
     Texture img;
@@ -18,7 +20,7 @@ public class MainGameScreen extends ScreenAdapter {
     Sprite sprite;
 
     public MainGameScreen() {
-        this.game = TickTackBumm.getTickTackBumm();
+        this.game = TickTackBummGame.getTickTackBummGame();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 2000, 1000);

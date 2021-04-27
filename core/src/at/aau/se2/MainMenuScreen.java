@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen extends ScreenAdapter {
-    final TickTackBumm game;
+    final TickTackBummGame game;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture img;
@@ -18,7 +18,7 @@ public class MainMenuScreen extends ScreenAdapter {
     BitmapFont font;
 
     public MainMenuScreen() {
-        this.game = TickTackBumm.getTickTackBumm();
+        this.game = TickTackBummGame.getTickTackBummGame();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 2000, 1000);
