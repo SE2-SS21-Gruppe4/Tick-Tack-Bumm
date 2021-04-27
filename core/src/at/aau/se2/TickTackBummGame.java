@@ -19,4 +19,8 @@ public class TickTackBummGame extends Game {
         manager = new AssetManager();
         setScreen(new MainMenuScreen());
     }
+
+    public AssetManager getManager() {
+        return manager;
+    }
 }
