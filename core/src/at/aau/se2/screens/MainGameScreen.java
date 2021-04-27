@@ -36,6 +36,7 @@ public class MainGameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+
         batch.begin();
 //        batch.draw(img, 50, 50);
         sprite.draw(batch);
