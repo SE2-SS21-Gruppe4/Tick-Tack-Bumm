@@ -2,7 +2,8 @@ package se2.ticktackbumm.core.network;
 
 import com.esotericsoftware.kryo.Kryo;
 
-import se2.ticktackbumm.core.network.messages.Messages;
+import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.SomeResponse;
 
 /**
  * Kryonet Helper Class.
@@ -14,7 +15,7 @@ public class KryoRegisterer {
      * @param kryo the Kryo instance to register Messages on
      */
     public static void registerMessages(Kryo kryo) {
-        kryo.register(Messages.SomeRequest.class);
-        kryo.register(Messages.SomeResponse.class);
+        kryo.register(SomeRequest.class);
+        kryo.register(SomeResponse.class);
     }
 }

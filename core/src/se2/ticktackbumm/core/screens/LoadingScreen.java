@@ -30,7 +30,7 @@ public class LoadingScreen extends ScreenAdapter {
         this.font = new BitmapFont();
 
         this.networkClient.tryConnectClient();
-        this.networkClient.getMessageSender().sendSomeRequest("Here is a request!");
+        this.networkClient.getClientMessageSender().sendSomeRequest("Here is a request!");
     }
 
     @Override

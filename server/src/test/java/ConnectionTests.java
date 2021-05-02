@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import se2.ticktackbumm.core.network.NetworkConstants;
-import se2.ticktackbumm.core.network.messages.Messages;
+import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.SomeResponse;
 import se2.ticktackbumm.server.NetworkServer;
 
 public class ConnectionTests {
@@ -21,20 +22,20 @@ public class ConnectionTests {
         Client client = new Client();
 
         Kryo kryo = client.getKryo();
-        kryo.register(Messages.SomeRequest.class);
-        kryo.register(Messages.SomeResponse.class);
+        kryo.register(SomeRequest.class);
+        kryo.register(SomeResponse.class);
 
         client.start();
         client.connect(NetworkConstants.TIMEOUT, "localhost", NetworkConstants.TCP_PORT);
 
-        Messages.SomeRequest request = new Messages.SomeRequest();
+        SomeRequest request = new SomeRequest();
         request.text = "Here is a request";
         client.sendTCP(request);
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (object instanceof Messages.SomeResponse) {
-                    Messages.SomeResponse response = (Messages.SomeResponse) object;
+                if (object instanceof SomeResponse) {
+                    SomeResponse response = (SomeResponse) object;
                     System.out.println(response.text);
                     Assertions.assertEquals("Thanks", response.text);
                 }

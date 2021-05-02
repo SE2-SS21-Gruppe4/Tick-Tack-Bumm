@@ -19,12 +19,12 @@ public class NetworkClient {
     /**
      * MessageHandler to handle all received messages.
      */
-    private final MessageHandler messageHandler;
+    private final ClientMessageHandler clientMessageHandler;
 
     /**
      * MessageSender to handle all message sending.
      */
-    private final MessageSender messageSender;
+    private final ClientMessageSender clientMessageSender;
 
     /**
      * Class constructor.
@@ -34,11 +34,11 @@ public class NetworkClient {
         client = new Client();
         KryoRegisterer.registerMessages(this.client.getKryo());
 
-        messageHandler = new MessageHandler(this.client);
-        messageSender = new MessageSender(this.client);
+        clientMessageHandler = new ClientMessageHandler(this.client);
+        clientMessageSender = new ClientMessageSender(this.client);
 
         this.client.start();
-        this.client.addListener(new NetworkClientListener(messageHandler));
+        this.client.addListener(new NetworkClientListener(clientMessageHandler));
     }
 
     /**
@@ -59,8 +59,8 @@ public class NetworkClient {
      *
      * @return reference to the NetworkClients instance of MessageHandler
      */
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
+    public ClientMessageHandler getClientMessageHandler() {
+        return clientMessageHandler;
     }
 
     /**
@@ -69,7 +69,7 @@ public class NetworkClient {
      *
      * @return reference to the NetworkClients instance of MessageSender
      */
-    public MessageSender getMessageSender() {
-        return messageSender;
+    public ClientMessageSender getClientMessageSender() {
+        return clientMessageSender;
     }
 }
