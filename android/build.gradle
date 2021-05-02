@@ -91,7 +91,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'at.aau.se2/at.aau.se2.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'at.aau.se2/AndroidLauncher'
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {

@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import at.aau.se2.network.NetworkConstants;
-import at.aau.se2.network.messages.Messages;
-import at.aau.se2.server.NetworkServer;
+import se2.ticktackbumm.core.network.NetworkConstants;
+import se2.ticktackbumm.core.network.messages.Messages;
+import se2.ticktackbumm.server.NetworkServer;
 
 public class ConnectionTests {
     @Test
