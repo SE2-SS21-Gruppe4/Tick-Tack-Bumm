@@ -3,6 +3,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class ConnectionTests {
         client.connect(NetworkConstants.TIMEOUT, "localhost", NetworkConstants.TCP_PORT);
 
         Messages.SomeRequest request = new Messages.SomeRequest();
-        request.text = "Here is a the request";
+        request.text = "Here is a request";
         client.sendTCP(request);
 
         client.addListener(new Listener() {
@@ -35,6 +36,7 @@ public class ConnectionTests {
                 if (object instanceof Messages.SomeResponse) {
                     Messages.SomeResponse response = (Messages.SomeResponse) object;
                     System.out.println(response.text);
+                    Assertions.assertEquals("Thanks", response.text);
                 }
             }
         });
