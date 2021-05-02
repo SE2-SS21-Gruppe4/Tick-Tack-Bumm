@@ -1,4 +1,4 @@
-package at.aau.se2.Network.messages;
+package at.aau.se2.network.messages;
 
 public class Messages {
     public static class SomeRequest {

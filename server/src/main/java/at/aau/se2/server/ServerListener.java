@@ -3,7 +3,7 @@ package at.aau.se2.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import at.aau.se2.Network.messages.Messages;
+import at.aau.se2.network.messages.Messages;
 
 public class ServerListener extends Listener {
     @Override

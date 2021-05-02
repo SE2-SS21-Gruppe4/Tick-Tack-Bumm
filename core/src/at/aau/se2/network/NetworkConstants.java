@@ -1,4 +1,4 @@
-package at.aau.se2.Network;
+package at.aau.se2.network;
 
 public class NetworkConstants {
     public static final int TCP_PORT = 2021;

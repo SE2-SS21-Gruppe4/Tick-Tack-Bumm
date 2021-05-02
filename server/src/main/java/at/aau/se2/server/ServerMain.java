@@ -6,8 +6,8 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
-import at.aau.se2.Network.NetworkConstants;
-import at.aau.se2.Network.messages.Messages;
+import at.aau.se2.network.NetworkConstants;
+import at.aau.se2.network.messages.Messages;
 
 public class ServerMain {
     private final Server server;

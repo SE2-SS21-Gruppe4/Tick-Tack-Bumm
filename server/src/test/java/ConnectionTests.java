@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import at.aau.se2.Network.NetworkConstants;
-import at.aau.se2.Network.messages.Messages;
+import at.aau.se2.network.NetworkConstants;
+import at.aau.se2.network.messages.Messages;
 import at.aau.se2.server.ServerMain;
 
 public class ConnectionTests {
