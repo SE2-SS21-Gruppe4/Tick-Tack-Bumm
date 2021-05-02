@@ -3,10 +3,11 @@ package se2.ticktackbumm.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import se2.ticktackbumm.core.network.messages.Messages;
+import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.SomeResponse;
 
 /**
- * The listener for the TickTackBumm game server. Reacts to events on the server port.
+ * Listener for the TickTackBumm game server. Reacts to events on the server port.
  */
 public class NetworkServerListener extends Listener {
     @Override
@@ -20,18 +21,18 @@ public class NetworkServerListener extends Listener {
     }
 
     /**
-     * Handle all incoming messages from the game clients.
+     * Handle all incoming messages from the game clients to the game server.
      *
      * @param connection the incoming client connection
      * @param object     the incoming message
      */
     @Override
     public void received(Connection connection, Object object) {
-        if (object instanceof Messages.SomeRequest) {
-            Messages.SomeRequest request = (Messages.SomeRequest) object;
+        if (object instanceof SomeRequest) {
+            SomeRequest request = (SomeRequest) object;
             System.out.println(request.text);
 
-            Messages.SomeResponse response = new Messages.SomeResponse();
+            SomeResponse response = new SomeResponse();
             response.text = "Thanks";
             connection.sendTCP(response);
         }
