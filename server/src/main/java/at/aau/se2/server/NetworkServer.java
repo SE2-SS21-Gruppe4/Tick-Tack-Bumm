@@ -1,29 +1,23 @@
 package at.aau.se2.server;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
+import at.aau.se2.network.KryoRegisterer;
 import at.aau.se2.network.NetworkConstants;
-import at.aau.se2.network.messages.Messages;
 
 public class NetworkServer {
     private final Server server;
-    private final ServerData serverData;
 
     public NetworkServer() {
         Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
 
         this.server = new Server();
-        this.serverData = new ServerData();
+        KryoRegisterer.registerMessages(this.server.getKryo());
 
-        Kryo kryo = server.getKryo();
-        kryo.register(Messages.SomeRequest.class);
-        kryo.register(Messages.SomeResponse.class);
-
-        server.addListener(new ServerListener());
+        server.addListener(new NetworkServerListener());
 
         Log.info("Server started on port " + NetworkConstants.TCP_PORT);
     }

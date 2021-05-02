@@ -5,7 +5,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import at.aau.se2.network.messages.Messages;
 
-public class ServerListener extends Listener {
+public class NetworkServerListener extends Listener {
     @Override
     public void connected(Connection connection) {
         super.connected(connection);
