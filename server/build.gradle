@@ -1,0 +1,45 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation project(":core")
+    implementation("com.esotericsoftware:kryonet:2.22.0-RC1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+jar {
+    dependsOn('copyJSON')
+    manifest {
+        attributes "Main-Class": "at.aau.se2.server"
+    }
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task copyJSON(type: Copy) {
+    from project(':android').file('assets/data.json')
+    into file('src/main/resources/resources/')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
