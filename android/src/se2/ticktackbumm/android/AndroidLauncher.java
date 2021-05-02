@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.se2;
+package se2.ticktackbumm.android;
 
 import android.os.Bundle;
 
