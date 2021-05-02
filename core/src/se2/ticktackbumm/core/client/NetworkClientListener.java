@@ -24,7 +24,7 @@ public class NetworkClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        if (object instanceof se2.ticktackbumm.core.network.messages.Messages.SomeResponse) {
+        if (object instanceof Messages.SomeResponse) {
             messageHandler.handleSomeResponse((Messages.SomeResponse) object);
         }
     }

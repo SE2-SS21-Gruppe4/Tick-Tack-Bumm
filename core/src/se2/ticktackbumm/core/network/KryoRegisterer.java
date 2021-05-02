@@ -14,7 +14,7 @@ public class KryoRegisterer {
      * @param kryo the Kryo instance to register Messages on
      */
     public static void registerMessages(Kryo kryo) {
-        kryo.register(se2.ticktackbumm.core.network.messages.Messages.SomeRequest.class);
+        kryo.register(Messages.SomeRequest.class);
         kryo.register(Messages.SomeResponse.class);
     }
 }

@@ -19,12 +19,12 @@ public class NetworkClient {
     /**
      * MessageHandler to handle all received messages.
      */
-    private final se2.ticktackbumm.core.client.MessageHandler messageHandler;
+    private final MessageHandler messageHandler;
 
     /**
      * MessageSender to handle all message sending.
      */
-    private final se2.ticktackbumm.core.client.MessageSender messageSender;
+    private final MessageSender messageSender;
 
     /**
      * Class constructor.
@@ -34,19 +34,20 @@ public class NetworkClient {
         client = new Client();
         KryoRegisterer.registerMessages(this.client.getKryo());
 
-        messageHandler = new se2.ticktackbumm.core.client.MessageHandler(this.client);
-        messageSender = new se2.ticktackbumm.core.client.MessageSender(this.client);
+        messageHandler = new MessageHandler(this.client);
+        messageSender = new MessageSender(this.client);
 
         this.client.start();
         this.client.addListener(new NetworkClientListener(messageHandler));
     }
 
     /**
-     * Try to connect client to server with the parameters specified in {@link se2.ticktackbumm.core.network.NetworkConstants}.
+     * Try to connect client to server with the parameters specified in
+     * {@link NetworkConstants}.
      */
     public void tryConnectClient() {
         try {
-            client.connect(se2.ticktackbumm.core.network.NetworkConstants.TIMEOUT, se2.ticktackbumm.core.network.NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            client.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
         } catch (IOException e) {
             Log.error("Failed to connect client: ", e);
         }
