@@ -94,8 +94,6 @@ task run(type: Exec) {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'at.aau.se2/at.aau.se2.AndroidLauncher'
 }
 
-eclipse.project.name = appName + "-android"
-
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
     reports {
