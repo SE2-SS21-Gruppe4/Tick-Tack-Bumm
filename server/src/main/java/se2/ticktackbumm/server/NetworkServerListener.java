@@ -5,6 +5,9 @@ import com.esotericsoftware.kryonet.Listener;
 
 import se2.ticktackbumm.core.network.messages.Messages;
 
+/**
+ * The listener for the TickTackBumm game server. Reacts to events on the server port.
+ */
 public class NetworkServerListener extends Listener {
     @Override
     public void connected(Connection connection) {
@@ -16,6 +19,12 @@ public class NetworkServerListener extends Listener {
         super.disconnected(connection);
     }
 
+    /**
+     * Handle all incoming messages from the game clients.
+     *
+     * @param connection the incoming client connection
+     * @param object     the incoming message
+     */
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Messages.SomeRequest) {
