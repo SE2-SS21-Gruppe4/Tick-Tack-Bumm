@@ -4,12 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.esotericsoftware.kryonet.Client;
 
+import at.aau.se2.client.NetworkClient;
 import at.aau.se2.screens.LoadingScreen;
 
 public class TickTackBummGame extends Game {
     private static TickTackBummGame tickTackBummGame;
     private AssetManager manager;
-    private Client client;
+    private NetworkClient networkClient;
 
     public static TickTackBummGame getTickTackBummGame() {
         if (tickTackBummGame == null) {
@@ -21,7 +22,7 @@ public class TickTackBummGame extends Game {
     @Override
     public void create() {
         manager = new AssetManager();
-        client = new Client();
+        networkClient = new NetworkClient();
 
         setScreen(new LoadingScreen());
     }
@@ -30,7 +31,7 @@ public class TickTackBummGame extends Game {
         return manager;
     }
 
-    public Client getClient() {
-        return client;
+    public NetworkClient getNetworkClient() {
+        return networkClient;
     }
 }
