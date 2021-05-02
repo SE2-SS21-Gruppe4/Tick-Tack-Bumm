@@ -10,12 +10,12 @@ import java.io.IOException;
 
 import at.aau.se2.network.NetworkConstants;
 import at.aau.se2.network.messages.Messages;
-import at.aau.se2.server.ServerMain;
+import at.aau.se2.server.NetworkServer;
 
 public class ConnectionTests {
     @Test
     public void testClientServerConnection() throws IOException {
-        ServerMain server = new ServerMain();
+        NetworkServer server = new NetworkServer();
         server.startServer();
 
         Client client = new Client();

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        ServerMain server = new ServerMain();
+        NetworkServer server = new NetworkServer();
         try {
             server.startServer();
         } catch (IOException e) {

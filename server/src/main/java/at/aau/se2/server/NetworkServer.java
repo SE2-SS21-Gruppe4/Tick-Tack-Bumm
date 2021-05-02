@@ -9,11 +9,11 @@ import java.io.IOException;
 import at.aau.se2.network.NetworkConstants;
 import at.aau.se2.network.messages.Messages;
 
-public class ServerMain {
+public class NetworkServer {
     private final Server server;
     private final ServerData serverData;
 
-    public ServerMain() {
+    public NetworkServer() {
         Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
 
         this.server = new Server();
