@@ -1,5 +1,6 @@
 package se2.ticktackbumm.core.screens;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -42,7 +43,7 @@ public class TextfieldInputListener extends ClickListener {
         if (isValidWord(userInput)) {
             textField.setText("KORREKT");
 
-            textField.setVisible(false);
+//            textField.setVisible(false); // hide text field after correct guess?
         } else {
             textField.setText("FALSCH");
         }
@@ -56,7 +57,13 @@ public class TextfieldInputListener extends ClickListener {
             return false;
         }
 
-        FileHandle dictionaryFileHandle = Gdx.files.internal("dictionaries/de_AT.txt");
+        FileHandle dictionaryFileHandle;
+        if (Gdx.app != null && Gdx.app.getType() == ApplicationType.Android) { // on Android,
+            dictionaryFileHandle = Gdx.files.internal("dictionaries/de_AT.txt");
+        } else { // for testing
+            dictionaryFileHandle = new FileHandle("/home/timo/Development/university/semester_2/software-" +
+                    "engineering-2/tick-tack-bumm/core/src/se2/ticktackbumm/core/assets/dictionaries/de_AT.txt");
+        }
 
         try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileHandle.reader("Cp1258"))
         ) {
