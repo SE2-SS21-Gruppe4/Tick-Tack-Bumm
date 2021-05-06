@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
+
+import java.io.File;
 
 public class LoadingScreen extends ScreenAdapter {
     private final TickTackBummGame game;
