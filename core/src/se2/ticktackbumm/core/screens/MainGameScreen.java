@@ -7,15 +7,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 
@@ -54,14 +52,11 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("Prüfen", skin);
 
-        checkButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Log.info("Checking input: " + textField.getText());
-            }
-        });
+        textField.setAlignment(Align.center);
+        checkButton.addListener(new TextfieldInputListener(textField));
 
         setTextFieldGroupPositions();
+
 
         textFieldGroup.addActor(textField);
         textFieldGroup.addActor(checkButton);
