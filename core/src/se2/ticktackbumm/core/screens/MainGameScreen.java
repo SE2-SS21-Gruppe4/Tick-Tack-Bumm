@@ -1,16 +1,21 @@
 package se2.ticktackbumm.core.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 
@@ -21,9 +26,13 @@ public class MainGameScreen extends ScreenAdapter {
     private final NetworkClient networkClient;
     private final BitmapFont font;
     private final SpriteBatch batch;
-    private final Texture img;
-    private final ShapeRenderer shapeRenderer;
-    private final Sprite sprite;
+
+    // scene2d UI
+    private final Stage stage;
+    private final Skin skin;
+    private final Group textFieldGroup;
+    private final TextField textField;
+    private final TextButton checkButton;
 
 
     public MainGameScreen() {
@@ -34,11 +43,31 @@ public class MainGameScreen extends ScreenAdapter {
         assetManager = game.getManager();
         networkClient = game.getNetworkClient();
 
-        img = new Texture("badlogic.jpg");
-        shapeRenderer = new ShapeRenderer();
-        sprite = new Sprite(img);
-        sprite.setX(200);
-        sprite.setY(200);
+        // scene2d UI
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        Gdx.input.setInputProcessor(stage);
+
+        textFieldGroup = new Group();
+//        textFieldGroup.setBounds(0, 0, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
+
+        textField = new TextField("", skin);
+        checkButton = new TextButton("Prüfen", skin);
+
+        checkButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Log.info("Checking input: " + textField.getText());
+            }
+        });
+
+        setTextFieldGroupPositions();
+
+        textFieldGroup.addActor(textField);
+        textFieldGroup.addActor(checkButton);
+
+        stage.addActor(textFieldGroup);
+//        stage.getCamera().position.set(TickTackBummGame.WIDTH / 2.0f, TickTackBummGame.HEIGHT / 2.0f, 0);
     }
 
     @Override
@@ -47,27 +76,32 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-//        batch.draw(img, 50, 50);
-        sprite.draw(batch);
-        sprite.rotate(delta * 90);
+        stage.draw();
         batch.end();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.CYAN);
-        shapeRenderer.rect(500.0f, 500.0f, 200.0f, 200.0f);
-        shapeRenderer.setColor(Color.TEAL);
-        shapeRenderer.rect(300.0f, 700.0f, 200.0f, 200.0f);
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(800.0f, 200.0f, 200.0f, 200.0f);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(200.0f, 500.0f, 200.0f, 200.0f);
-        shapeRenderer.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
-        shapeRenderer.dispose();
+    }
+
+    private void setTextFieldGroupPositions() {
+        int TEMP_CARD_HEIGHT = 250;
+
+        checkButton.setWidth(200);
+        checkButton.setHeight(40);
+
+        textField.setWidth(300);
+        textField.setHeight(50);
+
+        textField.setPosition(
+                (TickTackBummGame.WIDTH / 2.0f - textField.getWidth() / 2.0f),
+                (TickTackBummGame.HEIGHT / 2.0f - textField.getHeight() / 2.0f) - (TEMP_CARD_HEIGHT + 10)
+        );
+
+        checkButton.setPosition(
+                TickTackBummGame.WIDTH / 2.0f - checkButton.getWidth() / 2.0f,
+                textField.getY() - (textField.getHeight() + 10)
+        );
     }
 }
