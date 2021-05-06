@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 
@@ -41,8 +42,8 @@ public class LoadingScreen extends ScreenAdapter {
         font.draw(
                 batch,
                 "LOADING ASSETS...",
-                (float) (TickTackBummGame.WIDTH / 2) - 150,
-                (float) TickTackBummGame.HEIGHT / 2
+                (TickTackBummGame.WIDTH / 2.0f) - 150,
+                TickTackBummGame.HEIGHT / 2.0f
         );
         batch.end();
 
@@ -50,7 +51,7 @@ public class LoadingScreen extends ScreenAdapter {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.error("Thread got interrupted while sleeping: " + e.getMessage());
             }
             TickTackBummGame.getTickTackBummGame().setScreen(new LaunchScreen());
         }

@@ -2,6 +2,7 @@ package se2.ticktackbumm.server;
 
 import java.io.IOException;
 
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.NetworkConstants;
 
 /**
@@ -14,7 +15,7 @@ public class Main {
         try {
             server.startServer();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error("Error starting game server instance: " + e.getMessage());
         }
     }
 }
