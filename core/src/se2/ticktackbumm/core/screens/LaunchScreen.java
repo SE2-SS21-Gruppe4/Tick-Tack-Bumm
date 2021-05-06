@@ -2,37 +2,40 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-
-import se2.ticktackbumm.core.assets.Explosion;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.assets.Explosion;
+import se2.ticktackbumm.core.client.NetworkClient;
 
 public class LaunchScreen extends ScreenAdapter {
-    final TickTackBummGame game;
-    OrthographicCamera camera;
+    private final TickTackBummGame game;
+    private final OrthographicCamera camera;
+    private final AssetManager assetManager;
+    private final NetworkClient networkClient;
+    private final BitmapFont font;
+    private final SpriteBatch batch;
+    private final Texture img;
+    private final Sprite sprite;
+    private final Explosion explosion;
 
-    private SpriteBatch batch;
-    private Texture img;
-    private Sprite sprite;
-    private Explosion explosion;
-    BitmapFont font;
 
     public LaunchScreen() {
-        this.game = TickTackBummGame.getTickTackBummGame();
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 2000, 1000);
+        game = TickTackBummGame.getTickTackBummGame();
+        camera = TickTackBummGame.getGameCamera();
+        batch = game.getBatch();
+        font = game.getFont();
+        assetManager = game.getManager();
+        networkClient = game.getNetworkClient();
 
         explosion = new Explosion();
-        batch = new SpriteBatch();
         img = new Texture("bombeStart.png");
         sprite = new Sprite(img);
-        font = new BitmapFont();
     }
 
     @Override
