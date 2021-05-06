@@ -5,12 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.minlog.Log;
 
-import java.util.logging.Logger;
-
 public class TextfieldInputListener extends ClickListener {
 
     private final TextField textField;
     private String userInput;
+
+    public TextfieldInputListener() {
+        textField = null;
+    }
 
     public TextfieldInputListener(TextField textField) {
         this.textField = textField;
@@ -18,6 +20,11 @@ public class TextfieldInputListener extends ClickListener {
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
+        if (textField == null) {
+            Log.error("userInput", "User input was null");
+            return;
+        }
+
         userInput = textField.getText();
 
 //        textField.setText(""); // clear/consume user input
@@ -30,7 +37,7 @@ public class TextfieldInputListener extends ClickListener {
         }
     }
 
-    private boolean isValidInput(String userInput) {
+    boolean isValidInput(String userInput) {
         return ((userInput != null) && // input not null
                 (!userInput.equals("")) && // input not empty
                 (userInput.matches("^[a-zA-ZäöüÄÖÜ]*$"))); // input is a single alphabetical word
