@@ -61,8 +61,7 @@ public class TextfieldInputListener extends ClickListener {
         if (Gdx.app != null && Gdx.app.getType() == ApplicationType.Android) { // on Android,
             dictionaryFileHandle = Gdx.files.internal("dictionaries/de_AT.txt");
         } else { // for testing
-            dictionaryFileHandle = new FileHandle("/home/timo/Development/university/semester_2/software-" +
-                    "engineering-2/tick-tack-bumm/core/src/se2/ticktackbumm/core/assets/dictionaries/de_AT.txt");
+            dictionaryFileHandle = new FileHandle("resources/assets/dictionaries/de_AT.txt");
         }
 
         try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileHandle.reader("Cp1258"))

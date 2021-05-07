@@ -76,12 +76,15 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java-library"
-
+    apply plugin: "jacoco"
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation("com.esotericsoftware:kryonet:2.22.0-RC1")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+        testImplementation("org.mockito:mockito-core:$mockitoVersion")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     }
 }
 

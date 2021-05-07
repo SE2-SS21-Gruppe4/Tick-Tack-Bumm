@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-// TODO: Refactor into correct test module
 class TextfieldInputListenerTest {
 
     TextfieldInputListener textfieldInputListener;
