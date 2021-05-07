@@ -1,17 +1,13 @@
 package se2.ticktackbumm.core.screens;
 
-import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.minlog.Log;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 public class TextfieldInputListener extends ClickListener {
 
@@ -57,29 +53,38 @@ public class TextfieldInputListener extends ClickListener {
             return false;
         }
 
-        FileHandle dictionaryFileHandle;
-        if (Gdx.app != null && Gdx.app.getType() == ApplicationType.Android) { // on Android,
-            dictionaryFileHandle = Gdx.files.internal("dictionaries/de_AT.txt");
+        Reader dictionaryFileReader = null;
+        if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
+            dictionaryFileReader = Gdx.files.internal("dictionaries/de_AT.txt").reader("Cp1252");
         } else { // for testing
-            dictionaryFileHandle = new FileHandle("resources/assets/dictionaries/de_AT.txt");
+            try {
+                InputStream dictionaryStream;
+                if ((dictionaryStream = TextfieldInputListener.class.getResourceAsStream("/dictionaries/de_AT.txt")) != null) {
+                    dictionaryFileReader = new InputStreamReader(dictionaryStream, "Cp1252");
+                }
+            } catch (UnsupportedEncodingException e) {
+                Log.error(LOG_TAG, "Charset is not supported - " + e.getLocalizedMessage());
+            }
         }
 
-        try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileHandle.reader("Cp1258"))
-        ) {
-            String line;
-            while ((line = bufferedDictionaryReader.readLine()) != null) {
-                if (line.equals(userInput)) {
-                    Log.info(LOG_TAG, "User input matched line: " + line);
-                    return true;
+        if (dictionaryFileReader != null) {
+            try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileReader)
+            ) {
+                String line;
+                while ((line = bufferedDictionaryReader.readLine()) != null) {
+                    if (line.equals(userInput)) {
+                        Log.info(LOG_TAG, "User input matched line: " + line);
+                        return true;
+                    }
                 }
+            } catch (FileNotFoundException e) {
+                Log.error(LOG_TAG, "File could not be found - " + e.getLocalizedMessage());
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                Log.error(LOG_TAG, "File encoding is not supported - " + e.getLocalizedMessage());
+            } catch (IOException e) {
+                Log.error(LOG_TAG, "Failed to read a line - " + e.getLocalizedMessage());
             }
-        } catch (FileNotFoundException e) {
-            Log.error(LOG_TAG, "File could not be found - " + e.getLocalizedMessage());
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            Log.error(LOG_TAG, "File encoding is not supported - " + e.getLocalizedMessage());
-        } catch (IOException e) {
-            Log.error(LOG_TAG, "Failed to read a line - " + e.getLocalizedMessage());
         }
 
         Log.info(LOG_TAG, "User input did not matched any line in the dictionary");
