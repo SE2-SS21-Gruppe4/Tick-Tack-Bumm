@@ -10,3 +10,10 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+
+task copyDictionary(type: Copy) {
+    from project(':android').file('assets/dictionaries/de_AT.txt')
+    into file('src/main/resources/dictionaries/')
+}
+
+tasks.compileJava.dependsOn('copyDictionary')
