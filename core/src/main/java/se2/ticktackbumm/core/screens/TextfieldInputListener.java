@@ -79,7 +79,6 @@ public class TextfieldInputListener extends ClickListener {
                 }
             } catch (FileNotFoundException e) {
                 Log.error(LOG_TAG, "File could not be found - " + e.getLocalizedMessage());
-                e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
                 Log.error(LOG_TAG, "File encoding is not supported - " + e.getLocalizedMessage());
             } catch (IOException e) {
