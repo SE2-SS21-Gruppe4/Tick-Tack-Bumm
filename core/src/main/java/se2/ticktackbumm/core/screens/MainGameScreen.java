@@ -78,5 +78,8 @@ public class MainGameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+        stage.dispose();
+        skin.dispose();
+        font.dispose();
     }
 }
