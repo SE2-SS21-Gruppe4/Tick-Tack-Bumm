@@ -5,16 +5,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.*;
 
 public class TextfieldInputListener extends ClickListener {
 
+    private final String LOG_TAG = "USER_INPUT";
+    private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
+
     private final TextField textField;
     private String userInput;
-    private final String LOG_TAG = "USER_INPUT";
 
+    /**
+     * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
+     */
     public TextfieldInputListener() {
         textField = null;
     }
@@ -54,39 +60,47 @@ public class TextfieldInputListener extends ClickListener {
         }
 
         Reader dictionaryFileReader = null;
-        if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
-            dictionaryFileReader = Gdx.files.internal("dictionaries/de_AT.txt").reader("Cp1252");
-        } else { // for testing
-            try {
+        try {
+            if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
+                dictionaryFileReader = Gdx.files.internal(dictionaryInternalPath).reader("Cp1252");
+            } else { // for testing
                 InputStream dictionaryStream;
-                if ((dictionaryStream = TextfieldInputListener.class.getResourceAsStream("/dictionaries/de_AT.txt")) != null) {
+                if ((dictionaryStream = TextfieldInputListener.class.getResourceAsStream("/" + dictionaryInternalPath)) != null) {
                     dictionaryFileReader = new InputStreamReader(dictionaryStream, "Cp1252");
+                } else {
+                    throw new FileNotFoundException("Dictionary file could not be found at: " + dictionaryInternalPath);
                 }
-            } catch (UnsupportedEncodingException e) {
-                Log.error(LOG_TAG, "Charset is not supported - " + e.getLocalizedMessage());
             }
+        } catch (UnsupportedEncodingException e) {
+            Log.error(LOG_TAG, "Charset is not supported - " + e.getMessage());
+            Gdx.app.exit();
+        } catch (GdxRuntimeException | FileNotFoundException e) {
+            Log.error(LOG_TAG, e.getMessage());
+            Gdx.app.exit();
         }
 
         if (dictionaryFileReader != null) {
             try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileReader)
             ) {
-                String line;
-                while ((line = bufferedDictionaryReader.readLine()) != null) {
-                    if (line.equals(userInput)) {
-                        Log.info(LOG_TAG, "User input matched line: " + line);
-                        return true;
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                Log.error(LOG_TAG, "File could not be found - " + e.getLocalizedMessage());
-            } catch (UnsupportedEncodingException e) {
-                Log.error(LOG_TAG, "File encoding is not supported - " + e.getLocalizedMessage());
+                // TODO: switch over game data; select correct word checks
+                if (wordInDictionary(userInput, bufferedDictionaryReader)) return true;
             } catch (IOException e) {
-                Log.error(LOG_TAG, "Failed to read a line - " + e.getLocalizedMessage());
+                Log.error(LOG_TAG, "Failed to read a line - " + e.getMessage());
             }
         }
 
         Log.info(LOG_TAG, "User input did not matched any line in the dictionary");
+        return false;
+    }
+
+    private boolean wordInDictionary(String userInput, BufferedReader bufferedDictionaryReader) throws IOException {
+        String line;
+        while ((line = bufferedDictionaryReader.readLine()) != null) {
+            if (line.equals(userInput)) {
+                Log.info(LOG_TAG, "User input matched line: " + line);
+                return true;
+            }
+        }
         return false;
     }
 
