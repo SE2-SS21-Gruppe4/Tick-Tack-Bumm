@@ -83,7 +83,8 @@ public class TextfieldInputListener extends ClickListener {
             try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileReader)
             ) {
                 // TODO: switch over game data; select correct word checks
-                if (wordInDictionary(userInput, bufferedDictionaryReader)) return true;
+                if (wordInDictionary(userInput, bufferedDictionaryReader) && validPostfix(userInput, "ung"))
+                    return true;
             } catch (IOException e) {
                 Log.error(LOG_TAG, "Failed to read a line - " + e.getMessage());
             }
@@ -93,6 +94,7 @@ public class TextfieldInputListener extends ClickListener {
         return false;
     }
 
+    // TODO: this is called by the validation functions
     private boolean wordInDictionary(String userInput, BufferedReader bufferedDictionaryReader) throws IOException {
         String line;
         while ((line = bufferedDictionaryReader.readLine()) != null) {
@@ -102,6 +104,11 @@ public class TextfieldInputListener extends ClickListener {
             }
         }
         return false;
+    }
+
+    // TODO: make this independently available
+    boolean validPostfix(String userInput, String postfix) {
+        return userInput.matches("^[a-zA-ZäöüÄÖÜ]*" + postfix.toLowerCase() + "$");
     }
 
     boolean isValidInput(String userInput) {
