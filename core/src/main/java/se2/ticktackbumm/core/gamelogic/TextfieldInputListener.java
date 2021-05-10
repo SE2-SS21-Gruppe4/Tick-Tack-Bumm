@@ -10,7 +10,9 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.*;
 
+
 public class TextfieldInputListener extends ClickListener {
+    private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
 
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
@@ -77,14 +79,14 @@ public class TextfieldInputListener extends ClickListener {
     boolean isValidInput(String userInput) {
         return ((userInput != null) && // input not null
                 (!userInput.equals("")) && // input not empty
-                (userInput.matches("^[a-zA-ZäöüÄÖÜ]*$"))); // input is a single alphabetical word
+                (userInput.matches("^" + GERMAN_CHARACTER_REGEX + "*$"))); // input is a single alphabetical word
     }
 
     boolean hasValidPostfix(String userInput, String postfix) {
-        return userInput.matches("^[a-zA-ZäöüÄÖÜ]*" + postfix.toLowerCase() + "$");
+        return userInput.matches("^" + GERMAN_CHARACTER_REGEX + "+" + postfix.toLowerCase() + "$");
     }
 
-    private boolean isInDictionary(String userInput) {
+    boolean isInDictionary(String userInput) {
         Reader dictionaryFileReader = null;
         try {
             if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
