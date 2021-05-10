@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -30,12 +32,15 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
+
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
     private final Table textFieldTable;
     private final TextField textField;
     private final TextButton checkButton;
+    private final Texture table;
+    private final Image image;
 
     private final BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
@@ -67,8 +72,14 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
+        table = new Texture(Gdx.files.internal("table.jpg"));
+        image = new Image(table);
+
+        image.setPosition(stage.getWidth()/2-313, stage.getHeight()/2-100);
+
         textFieldTable = setupTextfieldTable();
 
+        stage.addActor(image);
         stage.addActor(textFieldTable);
     }
 
@@ -87,6 +98,8 @@ public class MainGameScreen extends ScreenAdapter {
 
         return textFieldTable;
     }
+
+
 
     private void createTTF() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JetBrainsMono-Medium.ttf"));
