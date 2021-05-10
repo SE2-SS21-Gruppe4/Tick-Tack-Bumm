@@ -2,13 +2,13 @@ package se2.ticktackbumm.core.client;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.network.messages.SomeResponse;
 
 /**
  * Handles all incoming server messages for a client.
  */
 public class ClientMessageHandler {
+    private final String LOG_TAG = "MessageHandler";
     /**
      * Client instance to handle messages for.
      */
@@ -26,7 +26,7 @@ public class ClientMessageHandler {
 
     // Test method
     public void handleSomeResponse(SomeResponse someResponse) {
-        Log.info("MessageHandler", "Server response to " + someResponse.getClass()
+        Log.info(LOG_TAG, "Server response to " + someResponse.getClass()
                 + ": " + someResponse.text);
     }
 }

@@ -2,16 +2,16 @@ package se2.ticktackbumm.core.client;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
-
-import java.io.IOException;
-
 import se2.ticktackbumm.core.network.KryoRegisterer;
 import se2.ticktackbumm.core.network.NetworkConstants;
+
+import java.io.IOException;
 
 /**
  * The network client of each player.
  */
 public class NetworkClient {
+    private final String LOG_TAG = "NetworkClient";
     /**
      * Kryonet-Client to connect to server, send and receive messages.
      */
@@ -49,7 +49,7 @@ public class NetworkClient {
         try {
             client.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
         } catch (IOException e) {
-            Log.error("Failed to connect client: ", e);
+            Log.error(LOG_TAG, "Failed to connect client: " + e, e);
         }
     }
 
