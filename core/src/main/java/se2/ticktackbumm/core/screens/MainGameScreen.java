@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,6 +24,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final AssetManager assetManager;
     private final NetworkClient networkClient;
     private final BitmapFont font;
+    private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
     // scene2d UI
@@ -46,14 +48,23 @@ public class MainGameScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        textFieldTable = new Table();
-        textFieldTable.setWidth(stage.getWidth());
-        textFieldTable.align(Align.center | Align.bottom);
-
         skin.getFont("default-font").getData().setScale(3);
+//        skin.getFont("button").getData().setScale(2);
+//        skin.getFont("font").getData().setScale(4);
 
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
+
+        textFieldTable = setupTextfieldTable();
+
+        stage.addActor(textFieldTable);
+    }
+
+    private Table setupTextfieldTable() {
+        final Table textFieldTable;
+        textFieldTable = new Table();
+        textFieldTable.setWidth(stage.getWidth());
+        textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
         checkButton.addListener(new TextfieldInputListener(textField));
@@ -62,7 +73,16 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.row();
         textFieldTable.add(checkButton).padBottom(20f).width(350f).height(100f);
 
-        stage.addActor(textFieldTable);
+        return textFieldTable;
+    }
+
+    private void createTTF() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JetBrainsMono-Medium.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 200;
+
+        ttfBitmapFont = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     @Override
