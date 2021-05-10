@@ -25,11 +25,6 @@ class TextfieldInputListenerTest {
     }
 
     @Test
-    void validPostfixes() {
-        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Umleitung", "ung"));
-    }
-
-    @Test
     void invalidInputs() {
         Assertions.assertFalse(textfieldInputListener.isValidInput("Hallo3"));
         Assertions.assertFalse(textfieldInputListener.isValidInput("Hallo Welt"));
@@ -44,44 +39,69 @@ class TextfieldInputListenerTest {
     }
 
     @Test
-    void validUmlautWords() {
-        Assertions.assertTrue(textfieldInputListener.isValidWord("hätte"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Österreich"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("könnten"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Würde"));
+    void validPostfixes() {
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Umleitung", "ung"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Schulung", "ung"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Wunsch", "sch"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("kehren", "en"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("gehen", "en"));
     }
 
     @Test
-    void validSensitiveWords() {
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Welt"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Baum"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("egoistisch"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("klein"));
+    void invalidPostfixes() {
+        Assertions.assertFalse(textfieldInputListener.hasValidPostfix("Schulung", "en"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPostfix("Umleitung", "sch"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPostfix("Wunsch", "den"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPostfix("kehren", "sch"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPostfix("gehen", "be"));
     }
 
     @Test
-    void validInsensitiveWords() {
-        Assertions.assertTrue(textfieldInputListener.isValidWord("morgen"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Morgen"));
+    void umlautWordsInDictionary() {
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("hätte"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Österreich"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("könnten"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Würde"));
     }
 
     @Test
-    void validColloquialWords() {
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Zirbe"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Topfen"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Obmann"));
+    void sensitiveWordsInDictionary() {
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Welt"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Baum"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("egoistisch"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("klein"));
     }
 
     @Test
-    void invalidWords() {
-        Assertions.assertFalse(textfieldInputListener.isValidWord("afjl"));
-        Assertions.assertFalse(textfieldInputListener.isValidWord("98351"));
-        Assertions.assertFalse(textfieldInputListener.isValidWord("#ASDFIWsfa"));
+    void insensitiveWordsInDictionary() {
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("morgen"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Morgen"));
     }
 
     @Test
-    void invalidEdgeCaseWords() {
-        Assertions.assertFalse(textfieldInputListener.isValidWord(null));
-        Assertions.assertFalse(textfieldInputListener.isValidWord(""));
+    void colloquialWordsInDictionary() {
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Zirbe"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Topfen"));
+        Assertions.assertTrue(textfieldInputListener.isInDictionary("Obmann"));
+    }
+
+    @Test
+    void wordsNotInDictionary() {
+        Assertions.assertFalse(textfieldInputListener.isInDictionary("afjl"));
+        Assertions.assertFalse(textfieldInputListener.isInDictionary("98351"));
+        Assertions.assertFalse(textfieldInputListener.isInDictionary("#ASDFIWsfa"));
+    }
+
+    @Test
+    void edgeCaseWordsNotInDictionary() {
+        Assertions.assertFalse(textfieldInputListener.isInDictionary(null));
+        Assertions.assertFalse(textfieldInputListener.isInDictionary(""));
+    }
+
+    @Test
+    void isValidWord() {
+        // TODO: add more cases once more checks are supported by the listener
+        Assertions.assertTrue(textfieldInputListener.isValidWord("Umleitung"));
+        Assertions.assertTrue(textfieldInputListener.isValidWord("Schulung"));
     }
 }
