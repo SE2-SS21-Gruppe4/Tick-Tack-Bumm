@@ -3,7 +3,10 @@ package se2.ticktackbumm.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -35,6 +38,9 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextField textField;
     private final TextButton checkButton;
 
+    BitmapFont textMaxScore;
+    private final int maxScore= 10;
+
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -43,6 +49,12 @@ public class MainGameScreen extends ScreenAdapter {
         font = game.getFont();
         assetManager = game.getManager();
         networkClient = game.getNetworkClient();
+
+        // maxScore
+        textMaxScore = new BitmapFont();
+        textMaxScore.setColor(Color.RED);
+        textMaxScore.getData().setScale(5);
+        textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -92,6 +104,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        textMaxScore.draw(batch,"Max Score:" + maxScore,100,Gdx.graphics.getHeight()-50);
         stage.draw();
         batch.end();
     }
@@ -102,5 +115,6 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
         font.dispose();
+        textMaxScore.dispose();
     }
 }
