@@ -6,9 +6,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
@@ -28,7 +28,7 @@ public class MainGameScreen extends ScreenAdapter {
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
-    private final Group textFieldGroup;
+    private final Table textFieldTable;
     private final TextField textField;
     private final TextButton checkButton;
 
@@ -46,23 +46,23 @@ public class MainGameScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        textFieldGroup = new Group();
-//        textFieldGroup.setBounds(0, 0, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
+        textFieldTable = new Table();
+        textFieldTable.setWidth(stage.getWidth());
+        textFieldTable.align(Align.center | Align.bottom);
+
+        skin.getFont("default-font").getData().setScale(3);
 
         textField = new TextField("", skin);
-        checkButton = new TextButton("Prüfen", skin);
+        checkButton = new TextButton("CHECK", skin);
 
         textField.setAlignment(Align.center);
         checkButton.addListener(new TextfieldInputListener(textField));
 
-        setTextFieldGroupPositions();
+        textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
+        textFieldTable.row();
+        textFieldTable.add(checkButton).padBottom(20f).width(350f).height(100f);
 
-
-        textFieldGroup.addActor(textField);
-        textFieldGroup.addActor(checkButton);
-
-        stage.addActor(textFieldGroup);
-//        stage.getCamera().position.set(TickTackBummGame.WIDTH / 2.0f, TickTackBummGame.HEIGHT / 2.0f, 0);
+        stage.addActor(textFieldTable);
     }
 
     @Override
@@ -78,25 +78,5 @@ public class MainGameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-    }
-
-    private void setTextFieldGroupPositions() {
-        int TEMP_CARD_HEIGHT = 250;
-
-        checkButton.setWidth(200);
-        checkButton.setHeight(40);
-
-        textField.setWidth(300);
-        textField.setHeight(50);
-
-        textField.setPosition(
-                (TickTackBummGame.WIDTH / 2.0f - textField.getWidth() / 2.0f),
-                (TickTackBummGame.HEIGHT / 2.0f - textField.getHeight() / 2.0f) - (TEMP_CARD_HEIGHT + 10)
-        );
-
-        checkButton.setPosition(
-                TickTackBummGame.WIDTH / 2.0f - checkButton.getWidth() / 2.0f,
-                textField.getY() - (textField.getHeight() + 10)
-        );
     }
 }
