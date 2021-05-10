@@ -23,7 +23,6 @@ jacocoTestReport {
 }
 
 jar {
-    dependsOn('copyJSON')
     manifest {
         attributes "Main-Class": "at.aau.se2.server.Main"
     }
