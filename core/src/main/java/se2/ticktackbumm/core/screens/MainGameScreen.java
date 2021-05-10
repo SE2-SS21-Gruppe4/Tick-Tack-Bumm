@@ -38,7 +38,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
 
     BitmapFont textMaxScore;
-    private static final int MAXSCORE= 10;
+    private static final int MAX_SCORE= 10;
 
 
     public MainGameScreen() {
@@ -103,7 +103,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        textMaxScore.draw(batch,"Max Score:" + MAXSCORE,100,Gdx.graphics.getHeight()-50L);
+        textMaxScore.draw(batch,"Max Score:" + MAX_SCORE,100,Gdx.graphics.getHeight()-50L);
         stage.draw();
         batch.end();
     }
