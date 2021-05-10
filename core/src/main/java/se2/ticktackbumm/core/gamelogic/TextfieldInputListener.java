@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.screens;
+package se2.ticktackbumm.core.gamelogic;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
