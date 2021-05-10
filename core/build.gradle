@@ -1,4 +1,25 @@
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = ["src/"]
+sourceSets.main.java.srcDirs = ["src/main/java"]
+sourceSets.test.java.srcDirs = ["src/test/java"]
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task copyDictionary(type: Copy) {
+    from project(':android').file('assets/dictionaries/de_AT.txt')
+    into file('src/main/resources/dictionaries/')
+}
+
+tasks.compileJava.dependsOn('copyDictionary')

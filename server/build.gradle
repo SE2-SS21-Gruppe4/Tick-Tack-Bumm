@@ -25,16 +25,11 @@ jacocoTestReport {
 jar {
     dependsOn('copyJSON')
     manifest {
-        attributes "Main-Class": "at.aau.se2.server"
+        attributes "Main-Class": "at.aau.se2.server.Main"
     }
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-}
-
-task copyJSON(type: Copy) {
-    from project(':android').file('assets/data.json')
-    into file('src/main/resources/resources/')
 }
 
 test {
