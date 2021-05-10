@@ -26,9 +26,8 @@ class TextfieldInputListenerTest {
 
     @Test
     void validPostfixes() {
-        Assertions.assertTrue(textfieldInputListener.validPostfix("Umleitung", "ung"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Umleitung", "ung"));
     }
-
 
     @Test
     void invalidInputs() {

@@ -39,18 +39,18 @@ public class TextfieldInputListener extends ClickListener {
         userInput = textField.getText().trim();
         Log.info(LOG_TAG, "Got user input: " + userInput);
 
-//        textField.setText(""); // clear/consume user input
+//        textField.setText(""); // clear/consume user input?
         textField.setDisabled(true); // disable field until next guess/next turn
 
         if (isValidWord(userInput)) {
             textField.setText("KORREKT");
-
 //            textField.setVisible(false); // hide text field after correct guess?
         } else {
             textField.setText("FALSCH");
+            textField.setDisabled(false); // wrong guess; guess again
         }
 
-        textField.setDisabled(false);
+        textField.setDisabled(false); // enable here again for testing only
     }
 
     boolean isValidWord(String userInput) {
@@ -59,6 +59,32 @@ public class TextfieldInputListener extends ClickListener {
             return false;
         }
 
+        // TODO: switch over different game types
+        if (!hasValidPostfix(userInput, "ung")) {
+            // TODO: replace with postfix from game data
+            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
+            return false;
+        }
+
+        if (!isInDictionary(userInput)) {
+            Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
+            return false;
+        }
+
+        return true;
+    }
+
+    boolean isValidInput(String userInput) {
+        return ((userInput != null) && // input not null
+                (!userInput.equals("")) && // input not empty
+                (userInput.matches("^[a-zA-ZäöüÄÖÜ]*$"))); // input is a single alphabetical word
+    }
+
+    boolean hasValidPostfix(String userInput, String postfix) {
+        return userInput.matches("^[a-zA-ZäöüÄÖÜ]*" + postfix.toLowerCase() + "$");
+    }
+
+    private boolean isInDictionary(String userInput) {
         Reader dictionaryFileReader = null;
         try {
             if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
@@ -82,39 +108,18 @@ public class TextfieldInputListener extends ClickListener {
         if (dictionaryFileReader != null) {
             try (BufferedReader bufferedDictionaryReader = new BufferedReader(dictionaryFileReader)
             ) {
-                // TODO: switch over game data; select correct word checks
-                if (wordInDictionary(userInput, bufferedDictionaryReader) && validPostfix(userInput, "ung"))
-                    return true;
+                String line;
+                while ((line = bufferedDictionaryReader.readLine()) != null) {
+                    if (line.equals(userInput)) {
+                        Log.info(LOG_TAG, "User input matched line: " + line);
+                        return true;
+                    }
+                }
             } catch (IOException e) {
                 Log.error(LOG_TAG, "Failed to read a line - " + e.getMessage());
             }
         }
 
-        Log.info(LOG_TAG, "User input did not matched any line in the dictionary");
         return false;
     }
-
-    // TODO: this is called by the validation functions
-    private boolean wordInDictionary(String userInput, BufferedReader bufferedDictionaryReader) throws IOException {
-        String line;
-        while ((line = bufferedDictionaryReader.readLine()) != null) {
-            if (line.equals(userInput)) {
-                Log.info(LOG_TAG, "User input matched line: " + line);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // TODO: make this independently available
-    boolean validPostfix(String userInput, String postfix) {
-        return userInput.matches("^[a-zA-ZäöüÄÖÜ]*" + postfix.toLowerCase() + "$");
-    }
-
-    boolean isValidInput(String userInput) {
-        return ((userInput != null) && // input not null
-                (!userInput.equals("")) && // input not empty
-                (userInput.matches("^[a-zA-ZäöüÄÖÜ]*$"))); // input is a single alphabetical word
-    }
-
 }
