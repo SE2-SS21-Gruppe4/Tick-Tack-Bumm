@@ -14,5 +14,6 @@ URL: https://lucid.app/lucidchart/invitations/accept/inv_90fc4a9e-724e-4b2e-bdd4
 ## Gameidea
 The explosive word game
 Quick thinkers and word savvy players are well placed for success in this fast- paced action, laden word challenge game.
-Get rid of the ticking bomb quickly and react with the right word at the perfect moment.
+Get rid of the ticking bomb as quickly as possible and react with the right word or solution at the perfect moment.
+And don´t forget to cheat, there are some extra features for even more fun during the Game!
 
