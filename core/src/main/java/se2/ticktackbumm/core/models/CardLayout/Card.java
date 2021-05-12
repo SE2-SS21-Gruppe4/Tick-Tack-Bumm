@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Card {
     private String[] cardDeck;
+    private ArrayList<String> carddeck;
 
     public Stage stage;
 
