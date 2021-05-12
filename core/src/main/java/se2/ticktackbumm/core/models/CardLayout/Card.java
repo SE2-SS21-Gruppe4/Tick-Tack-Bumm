@@ -12,10 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.TimerTask;
 
 public class Card {
     private ArrayList<String> carddeck;
@@ -24,14 +26,14 @@ public class Card {
 
     private Texture backside_texture;
     private Image backside_image;
-
+float timer;
     private String ranodmWord;
 
 
     private boolean isRevealed;
 
     public Card(SpriteBatch batch){
-
+timer = 0;
         carddeck = getCardFromEnum();
 
         isRevealed = false;
@@ -51,11 +53,17 @@ public class Card {
     }
 
     public void render(){
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+        timer += Gdx.graphics.getDeltaTime();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                 openCard();
             }
+        if (timer >= 2) {
+            //timer-=2;   // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
             drawBackSide();
+        }
 
+           drawBackSide();
 
     }
 
@@ -83,19 +91,16 @@ public class Card {
 
 
     public void openCard(){
-      /*  if (!isRevealed){
-            isRevealed = true;
-            this.ranodmWord = getRandomWord();
-        }*/
         this.ranodmWord = getRandomWord();
         drawFontSide();
+
+
     }
 
     public void coverCard(){
-        if (isRevealed){
-            isRevealed = false;
-        }
+        drawBackSide();
     }
+
 
     public ArrayList<String> getCardFromEnum(){
         ArrayList<String> words = new ArrayList<>();
