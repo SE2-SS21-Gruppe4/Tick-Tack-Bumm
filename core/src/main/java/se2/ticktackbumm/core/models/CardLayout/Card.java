@@ -50,7 +50,8 @@ public class Card {
 
     public void render(){
         if (!isRevealed){
-            drawBackSide();
+         //   drawBackSide();
+            drawFontSide();
         }
         else {
             drawFontSide();
