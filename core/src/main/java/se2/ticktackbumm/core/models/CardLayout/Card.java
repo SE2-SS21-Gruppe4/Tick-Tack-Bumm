@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Card {
-    private String[] cardDeck;
     private ArrayList<String> carddeck;
 
     public Stage stage;
@@ -33,8 +34,7 @@ public class Card {
 
     public Card(SpriteBatch batch){
 
-
-        cardDeck = getCardDeck();
+        carddeck = getCardFromEnum();
 
         //backside
         backside_texture = new Texture("backside.jpg");
@@ -43,7 +43,7 @@ public class Card {
         //font side
         random = new Random();
         random_cardindex = random.nextInt(19-0+1)+1;
-        ranodmWord = cardDeck[random_cardindex];
+        ranodmWord = getRandomWord();
 
         aa = "AA";
 
@@ -99,23 +99,18 @@ public class Card {
         }
     }
 
-    public String[] getCardDeck(){
-        String[] deck_from_enum = new String[19];
-        int index = 0;
+    public ArrayList<String> getCardFromEnum(){
+        ArrayList<String> words = new ArrayList<>();
 
-        for (CardWords word : CardWords.values()){
-            deck_from_enum[index] = word.getWord();
-            index++;
+        for (CardWords cardWord : CardWords.values()){
+            words.add(cardWord.getWord());
         }
-
-        return deck_from_enum;
+        return words;
     }
 
-    public String getCardFromDeck(int randomIndex){
-        if (randomIndex >= 0 && randomIndex < this.cardDeck.length){
-            return cardDeck[randomIndex];
-        }
-        return null;
+    public String getRandomWord(){
+        Collections.shuffle(carddeck);
+        return carddeck.get(0);
     }
 
     public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height){
