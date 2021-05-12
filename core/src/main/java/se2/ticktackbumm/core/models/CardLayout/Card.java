@@ -51,12 +51,11 @@ public class Card {
     }
 
     public void render(){
-        if (!isRevealed){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                openCard();
+            }
             drawBackSide();
-        }
-        else {
-            drawFontSide();
-        }
+
 
     }
 
@@ -84,10 +83,12 @@ public class Card {
 
 
     public void openCard(){
-        if (!isRevealed){
+      /*  if (!isRevealed){
             isRevealed = true;
             this.ranodmWord = getRandomWord();
-        }
+        }*/
+        this.ranodmWord = getRandomWord();
+        drawFontSide();
     }
 
     public void coverCard(){
