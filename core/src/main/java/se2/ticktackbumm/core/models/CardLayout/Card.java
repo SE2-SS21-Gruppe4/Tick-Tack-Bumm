@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,15 +27,15 @@ public class Card {
     private int random_cardindex;
     private Random random;
     private String ranodmWord;
-    String aa;
 
-    private Label label;
 
-    private boolean isRevealed = false;
+    private boolean isRevealed;
 
     public Card(SpriteBatch batch){
 
         carddeck = getCardFromEnum();
+
+        isRevealed = false;
 
         //backside
         backside_texture = new Texture("backside.jpg");
@@ -45,7 +46,6 @@ public class Card {
         random_cardindex = random.nextInt(19-0+1)+1;
         ranodmWord = getRandomWord();
 
-        aa = "AA";
 
         stage = new Stage();
 
@@ -72,7 +72,7 @@ public class Card {
     }
     public void drawFontSide(){
         Label cardword_label = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Image background_image = new Image(new Texture("backgoundcolor_font.png"));
+        Image background_image = new Image(new Texture("frontside.png"));
 
 
         setActorSettings(background_image,0,0,170,240);
