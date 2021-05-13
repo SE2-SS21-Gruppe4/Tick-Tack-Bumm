@@ -19,23 +19,19 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Card {
+public class Card implements InputProcessor{
     private ArrayList<String> carddeck;
 
     public Stage stage;
 
     private Texture backside_texture;
     private Image backside_image;
-    float timer;
     private String ranodmWord;
-
-    private boolean toClose;
 
 
     private boolean isRevealed;
 
     public Card(SpriteBatch batch){
-timer = 0;
         carddeck = getCardFromEnum();
 
         isRevealed = false;
@@ -47,8 +43,6 @@ timer = 0;
         //font side
         ranodmWord = getRandomWord();
 
-        toClose = false;
-
         stage = new Stage();
 
         Gdx.input.setInputProcessor(stage);
@@ -56,9 +50,13 @@ timer = 0;
     }
 
     public void render(){
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+      /*  if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             openCard();
 
+        }*/
+
+        if (isRevealed){
+            openCard();
         }
             drawBackSide();
 
@@ -96,8 +94,6 @@ timer = 0;
         };
 
         timer.schedule(task,3000);
-
-
     }
 
 
@@ -107,11 +103,6 @@ timer = 0;
 
 
     }
-
-    public void coverCard(){
-        drawBackSide();
-    }
-
 
     public ArrayList<String> getCardFromEnum(){
         ArrayList<String> words = new ArrayList<>();
@@ -139,10 +130,44 @@ timer = 0;
         isRevealed = revealed;
     }
 
-    public void handleInput(){
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            openCard();
-            this.toClose = true;
-        }
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        isRevealed = true;
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 }
