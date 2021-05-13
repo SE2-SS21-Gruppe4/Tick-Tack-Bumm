@@ -12,11 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class Card {
@@ -56,26 +56,11 @@ timer = 0;
     }
 
     public void render(){
-      /*  timer += Gdx.graphics.getDeltaTime();
-
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             openCard();
-            toClose = true;
+
         }
-
-
-        if (toClose == true){
-            if (timer >= 2) {
-                //timer-=2;   // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-                //
-                drawBackSide();
-            }
-        }
-        drawBackSide();*/
-
-        if (!isRevealed){
             drawBackSide();
-        }
 
     }
 
@@ -101,13 +86,26 @@ timer = 0;
         stage.act();
         stage.draw();
 
+        java.util.Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                background_image.remove();
+                cardword_label.remove();
+            }
+        };
+
+        timer.schedule(task,3000);
+
+
     }
 
 
     public void openCard(){
         this.ranodmWord = getRandomWord();
         drawFontSide();
-        this.isRevealed = true;
+
+
     }
 
     public void coverCard(){
