@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.gamedata;
+package se2.ticktackbumm.core.data;
 
 import se2.ticktackbumm.core.player.Player;
 
