@@ -9,8 +9,8 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 
 public class TickTackBummGame extends Game {
-    public static final int HEIGHT = 1080;
-    public static final int WIDTH = 2220;
+    public static final int HEIGHT = 2220;
+    public static final int WIDTH = 1080;
 
     private static TickTackBummGame tickTackBummGame;
 
