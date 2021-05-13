@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
@@ -106,6 +108,11 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
         stage.draw();
         batch.end();
+
+        //uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
+//        if (Gdx.input.isTouched()) {
+//            game.setScreen(new SpinWheelScreen());
+//        }
     }
 
     @Override
