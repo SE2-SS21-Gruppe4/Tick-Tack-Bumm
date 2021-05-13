@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.NetworkConstants;
+import se2.ticktackbumm.server.network.NetworkServer;
 
 /**
  * Simple wrapper around {@link NetworkServer} to launch a {@link NetworkServer} instance on the

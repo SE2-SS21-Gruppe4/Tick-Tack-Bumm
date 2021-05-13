@@ -1,4 +1,4 @@
-package se2.ticktackbumm.server;
+package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;

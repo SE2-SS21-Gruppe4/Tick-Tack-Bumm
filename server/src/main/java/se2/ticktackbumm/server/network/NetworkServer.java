@@ -1,12 +1,12 @@
-package se2.ticktackbumm.server;
+package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-
-import java.io.IOException;
-
 import se2.ticktackbumm.core.network.KryoRegisterer;
 import se2.ticktackbumm.core.network.NetworkConstants;
+import se2.ticktackbumm.server.data.ServerData;
+
+import java.io.IOException;
 
 /**
  * The central network server for the TickTackBumm game.
@@ -18,20 +18,19 @@ public class NetworkServer {
      */
     private final Server server;
 
+    private final ServerData serverData;
+
     /**
      * Class constructor.
      * Create the Kryonet-{@link Server}, register all Kryo message classes and adds a
-     * {@link se2.ticktackbumm.server.NetworkServerListener} to handle messages.
+     * {@link NetworkServerListener} to handle messages.
      */
     public NetworkServer() {
-        Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
-
         this.server = new Server();
         KryoRegisterer.registerMessages(this.server.getKryo());
-
         server.addListener(new NetworkServerListener());
 
-        Log.info("Server started on port " + NetworkConstants.TCP_PORT);
+        this.serverData = new ServerData(server);
     }
 
     /**
@@ -41,7 +40,11 @@ public class NetworkServer {
      * @throws IOException if the server could not be opened.
      */
     public void startServer() throws IOException {
+        Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
+
         server.start();
         server.bind(NetworkConstants.TCP_PORT);
+
+        Log.info("Server started on port " + NetworkConstants.TCP_PORT);
     }
 }
