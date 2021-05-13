@@ -26,8 +26,10 @@ public class Card {
 
     private Texture backside_texture;
     private Image backside_image;
-float timer;
+    float timer;
     private String ranodmWord;
+
+    private boolean toClose;
 
 
     private boolean isRevealed;
@@ -45,6 +47,7 @@ timer = 0;
         //font side
         ranodmWord = getRandomWord();
 
+        toClose = false;
 
         stage = new Stage();
 
@@ -53,17 +56,26 @@ timer = 0;
     }
 
     public void render(){
-        timer += Gdx.graphics.getDeltaTime();
+      /*  timer += Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                openCard();
-            }
-        if (timer >= 2) {
-            //timer-=2;   // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            drawBackSide();
+            openCard();
+            toClose = true;
         }
 
-           drawBackSide();
+
+        if (toClose == true){
+            if (timer >= 2) {
+                //timer-=2;   // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+                //
+                drawBackSide();
+            }
+        }
+        drawBackSide();*/
+
+        if (!isRevealed){
+            drawBackSide();
+        }
 
     }
 
@@ -72,6 +84,7 @@ timer = 0;
         setActorSettings(backside_image,0,0,170,240);
         stage.addActor(backside_image);
 
+        stage.act();
         stage.draw();
     }
     public void drawFontSide(){
@@ -85,6 +98,7 @@ timer = 0;
         stage.addActor(background_image);
         stage.addActor(cardword_label);
 
+        stage.act();
         stage.draw();
 
     }
@@ -93,8 +107,7 @@ timer = 0;
     public void openCard(){
         this.ranodmWord = getRandomWord();
         drawFontSide();
-
-
+        this.isRevealed = true;
     }
 
     public void coverCard(){
@@ -126,5 +139,12 @@ timer = 0;
 
     public void setRevealed(boolean revealed) {
         isRevealed = revealed;
+    }
+
+    public void handleInput(){
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            openCard();
+            this.toClose = true;
+        }
     }
 }
