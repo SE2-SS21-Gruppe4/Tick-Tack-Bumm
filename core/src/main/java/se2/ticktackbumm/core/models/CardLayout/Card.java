@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -50,16 +52,24 @@ public class Card implements InputProcessor{
     }
 
     public void render(){
-      /*  if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            openCard();
-
-        }*/
-
-        if (isRevealed){
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             openCard();
         }
             drawBackSide();
 
+    }
+
+    public void handleEvent(){
+        stage.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.SPACE){
+                    openCard();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -132,7 +142,10 @@ public class Card implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode == Input.Keys.SPACE){
+            isRevealed = true;
+        }
+        return true;
     }
 
     @Override
