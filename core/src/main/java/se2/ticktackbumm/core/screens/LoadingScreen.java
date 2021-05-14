@@ -54,7 +54,7 @@ public class LoadingScreen extends ScreenAdapter {
                 Log.error("Thread got interrupted while sleeping: " + e.getMessage());
                 Thread.currentThread().interrupt();
             }
-            TickTackBummGame.getTickTackBummGame().setScreen(new LaunchScreen());
+            TickTackBummGame.getTickTackBummGame().setScreen(new MenuScreen());
         }
     }
 }
