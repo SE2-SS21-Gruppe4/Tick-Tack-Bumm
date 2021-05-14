@@ -72,10 +72,10 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
-        table = new Texture(Gdx.files.internal("table.jpg"));
+        table = new Texture(Gdx.files.internal("table.png"));
         image = new Image(table);
 
-        image.setPosition(stage.getWidth()/2-313, stage.getHeight()/2-100);
+        image.setPosition(stage.getWidth()/2-313, stage.getHeight()/2-200);
 
         textFieldTable = setupTextfieldTable();
 
@@ -112,7 +112,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(.18f, .21f, .32f, 1);
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
