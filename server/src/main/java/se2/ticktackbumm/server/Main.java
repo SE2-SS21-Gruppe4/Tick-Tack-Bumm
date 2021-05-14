@@ -1,8 +1,5 @@
 package se2.ticktackbumm.server;
 
-import java.io.IOException;
-
-import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.NetworkConstants;
 import se2.ticktackbumm.server.network.NetworkServer;
 
@@ -12,11 +9,6 @@ import se2.ticktackbumm.server.network.NetworkServer;
  */
 public class Main {
     public static void main(String[] args) {
-        NetworkServer server = new NetworkServer();
-        try {
-            server.startServer();
-        } catch (IOException e) {
-            Log.error("Error starting game server instance: " + e.getMessage());
-        }
+        new NetworkServer();
     }
 }

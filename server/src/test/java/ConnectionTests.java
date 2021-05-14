@@ -17,7 +17,6 @@ public class ConnectionTests {
     @Test
     public void testClientServerConnection() throws IOException {
         NetworkServer server = new NetworkServer();
-        server.startServer();
 
         Client client = new Client();
 

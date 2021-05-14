@@ -28,7 +28,13 @@ public class NetworkServer {
     public NetworkServer() {
         this.server = new Server();
         KryoRegisterer.registerMessages(this.server.getKryo());
-        server.addListener(new NetworkServerListener());
+        server.addListener(new NetworkServerListener(this));
+
+        try {
+            this.startServer();
+        } catch (IOException e) {
+            Log.error("Error starting game server instance: " + e.getMessage());
+        }
 
         this.serverData = new ServerData(server);
     }
@@ -46,5 +52,13 @@ public class NetworkServer {
         server.bind(NetworkConstants.TCP_PORT);
 
         Log.info("Server started on port " + NetworkConstants.TCP_PORT);
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public ServerData getServerData() {
+        return serverData;
     }
 }
