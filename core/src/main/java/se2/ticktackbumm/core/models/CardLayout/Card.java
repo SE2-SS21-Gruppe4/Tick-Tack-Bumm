@@ -52,26 +52,17 @@ public class Card implements InputProcessor{
     }
 
     public void render(){
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            openCard();
-        }
-            drawBackSide();
-
-    }
-
-    public void handleEvent(){
-        stage.addListener(new InputListener(){
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                if (keycode == Input.Keys.SPACE){
+            stage.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     openCard();
                     return true;
                 }
-                return false;
-            }
-        });
-    }
 
+            });
+            drawBackSide();
+
+    }
 
     public void drawBackSide(){
         setActorSettings(backside_image,0,0,170,240);
@@ -132,14 +123,6 @@ public class Card implements InputProcessor{
         actor.setBounds(positionX,positionY,width,height);
     }
 
-    public boolean isRevealed() {
-        return isRevealed;
-    }
-
-    public void setRevealed(boolean revealed) {
-        isRevealed = revealed;
-    }
-
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE){
@@ -182,5 +165,13 @@ public class Card implements InputProcessor{
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
+    }
+
+    public boolean isRevealed(){
+        return isRevealed;
+    }
+
+    public void setRevealed(boolean isRevealed){
+        this.isRevealed= isRevealed;
     }
 }
