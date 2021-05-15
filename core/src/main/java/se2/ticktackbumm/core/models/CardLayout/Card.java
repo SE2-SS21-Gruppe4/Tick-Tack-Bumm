@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,8 @@ public class Card implements InputProcessor{
     private ArrayList<String> carddeck;
 
     public Stage stage;
+
+    private Skin skin;
 
     private Texture backside_texture;
     private Image backside_image;
@@ -39,7 +42,7 @@ public class Card implements InputProcessor{
         isRevealed = false;
 
         //backside
-        backside_texture = new Texture("backside.jpg");
+        backside_texture = new Texture("card/backside.jpg");
         backside_image = new Image(backside_texture);
 
         //font side
@@ -73,7 +76,7 @@ public class Card implements InputProcessor{
     }
     public void drawFontSide(){
         Label cardword_label = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Image background_image = new Image(new Texture("frontside.png"));
+        Image background_image = new Image(new Texture("card/frontside.png"));
 
 
         setActorSettings(background_image,0,0,170,240);
