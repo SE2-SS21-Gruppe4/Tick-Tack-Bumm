@@ -22,7 +22,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Card implements InputProcessor{
+public class Card{
     private ArrayList<String> carddeck;
 
     public Stage stage;
@@ -44,18 +44,14 @@ public class Card implements InputProcessor{
 
         isRevealed = false;
 
-        //backside
         backside_texture = new Texture("card/backside.jpg");
         backside_image = new Image(backside_texture);
 
-        //font side
         ranodmWord = getRandomWord();
         frontside_texture = new Texture("card/frontside.png");
         frontside_image = new Image(frontside_texture);
 
         stage = new Stage();
-
-        Gdx.input.setInputProcessor(stage);
 
     }
 
@@ -81,8 +77,6 @@ public class Card implements InputProcessor{
     }
     public void drawFontSide(){
         Label cardword_label = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-       // Image background_image = new Image(new Texture("card/frontside.png"));
-
 
         setActorSettings(frontside_image,0,0,170,240);
         setActorSettings(cardword_label,((frontside_image.getX()+frontside_image.getWidth())/2)-(cardword_label.getWidth()/2),((frontside_image.getImageY()+frontside_image.getHeight())/2)-(cardword_label.getHeight()/2),50,27);
@@ -129,50 +123,6 @@ public class Card implements InputProcessor{
 
     public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height){
         actor.setBounds(positionX,positionY,width,height);
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.SPACE){
-            isRevealed = true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        isRevealed = true;
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
     }
 
     public ArrayList<String> getCardDeck(){

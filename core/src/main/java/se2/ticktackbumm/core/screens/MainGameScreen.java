@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.models.CardLayout.Card;
 
 public class MainGameScreen extends ScreenAdapter {
     private final TickTackBummGame game;
@@ -36,6 +37,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final Table textFieldTable;
     private final TextField textField;
     private final TextButton checkButton;
+
+    private Card card;
 
     private final BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
@@ -54,6 +57,9 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.setColor(Color.RED);
         textMaxScore.getData().setScale(5);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        //card
+        card = new Card(game.getBatch());
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -106,6 +112,8 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
         stage.draw();
         batch.end();
+
+        card.render();
     }
 
     @Override
