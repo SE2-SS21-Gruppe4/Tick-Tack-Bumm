@@ -31,7 +31,10 @@ public class Card implements InputProcessor{
 
     private Texture backside_texture;
     private Image backside_image;
+
     private String ranodmWord;
+    private Texture frontside_texture;
+    private Image frontside_image;
 
 
     private boolean isRevealed;
@@ -47,6 +50,8 @@ public class Card implements InputProcessor{
 
         //font side
         ranodmWord = getRandomWord();
+        frontside_texture = new Texture("card/frontside.png");
+        frontside_image = new Image(frontside_texture);
 
         stage = new Stage();
 
@@ -76,13 +81,13 @@ public class Card implements InputProcessor{
     }
     public void drawFontSide(){
         Label cardword_label = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Image background_image = new Image(new Texture("card/frontside.png"));
+       // Image background_image = new Image(new Texture("card/frontside.png"));
 
 
-        setActorSettings(background_image,0,0,170,240);
-        setActorSettings(cardword_label,((background_image.getX()+background_image.getWidth())/2)-(cardword_label.getWidth()/2),((background_image.getImageY()+background_image.getHeight())/2)-(cardword_label.getHeight()/2),50,27);
+        setActorSettings(frontside_image,0,0,170,240);
+        setActorSettings(cardword_label,((frontside_image.getX()+frontside_image.getWidth())/2)-(cardword_label.getWidth()/2),((frontside_image.getImageY()+frontside_image.getHeight())/2)-(cardword_label.getHeight()/2),50,27);
 
-        stage.addActor(background_image);
+        stage.addActor(frontside_image);
         stage.addActor(cardword_label);
 
         stage.act();
@@ -92,7 +97,7 @@ public class Card implements InputProcessor{
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                background_image.remove();
+                frontside_image.remove();
                 cardword_label.remove();
             }
         };
@@ -168,6 +173,13 @@ public class Card implements InputProcessor{
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
+    }
+
+    public ArrayList<String> getCardDeck(){
+        return this.carddeck;
+    }
+    public void setCarddeck(ArrayList<String> carddeck){
+        this.carddeck = carddeck;
     }
 
     public boolean isRevealed(){
