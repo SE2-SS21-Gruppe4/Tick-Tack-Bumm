@@ -147,7 +147,7 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth()/2-250, stage.getHeight()/2-330);
 
         stage.draw();
-        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight()/ 1.0f);
+        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight());
         batch.end();
 
         card.render();

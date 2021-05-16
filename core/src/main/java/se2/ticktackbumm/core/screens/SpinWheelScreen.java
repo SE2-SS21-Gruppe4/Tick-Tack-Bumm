@@ -136,7 +136,7 @@ public class SpinWheelScreen extends ScreenAdapter{
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
+        ScreenUtils.clear(.18f, .21f, .32f, 1);
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
