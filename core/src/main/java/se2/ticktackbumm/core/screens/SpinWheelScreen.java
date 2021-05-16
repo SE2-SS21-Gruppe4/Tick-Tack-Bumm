@@ -15,11 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import java.security.SecureRandom;
-import java.util.Random;
-
-import javax.crypto.SecretKeyFactorySpi;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.models.WordPosition;
@@ -30,7 +26,9 @@ public class SpinWheelScreen extends ScreenAdapter{
 
     private SpriteBatch batch;
     private TextButton textButton;
+    private TextButton backButton;
     private TextField textField;
+    private TextField buttonBackTextField;
     private Skin skin;
     private Stage stage;
     private static WordPosition wordPosition;
@@ -58,6 +56,7 @@ public class SpinWheelScreen extends ScreenAdapter{
         spinOutput();
         challengeDisplayText();
         descriptionDisplayText();
+        backClick();
     }
 
     public void spinOutput(){
@@ -87,7 +86,7 @@ public class SpinWheelScreen extends ScreenAdapter{
         textField.setAlignment(Align.center);
 
         textButton = new TextButton("SPIN", skin);
-        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f) - 175,Gdx.graphics.getHeight()/ 5.0f,300,100);
+        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f) - 300,Gdx.graphics.getHeight()/ 5.0f,300,100);
 
         stage.addActor(textButton);
         Gdx.input.setInputProcessor(stage);
@@ -114,6 +113,25 @@ public class SpinWheelScreen extends ScreenAdapter{
                  textButton.clearListeners();
             }
         });
+    }
+
+    public void backClick(){
+        buttonBackTextField = new TextField("",skin);
+        buttonBackTextField.setAlignment(Align.center);
+
+        backButton = new TextButton("BACK",skin);
+        backButton.setBounds((Gdx.graphics.getWidth() / 2.0f),Gdx.graphics.getHeight()/ 5.0f,300,100);
+
+        stage.addActor(backButton);
+        Gdx.input.setInputProcessor(stage);
+
+        backButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MainGameScreen());
+            }
+        });
+
     }
 
     @Override

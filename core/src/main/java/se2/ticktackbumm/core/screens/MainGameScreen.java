@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -47,6 +49,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture table;
     private final Image image;
+    private TextButton textButton;
 
     private Card card;
     private BitmapFont textMaxScore;
@@ -149,10 +152,19 @@ public class MainGameScreen extends ScreenAdapter {
 
         card.render();
 
-     /*   //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new SpinWheelScreen());
-        }*/
+        textButton = new TextButton("SPIN",skin);
+        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f+200),Gdx.graphics.getHeight()/ 2.0f-1025,300,100);
+
+        stage.addActor(textButton);
+        Gdx.input.setInputProcessor(stage);
+
+        textButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new SpinWheelScreen());
+            }
+        });
+
     }
 
     @Override
