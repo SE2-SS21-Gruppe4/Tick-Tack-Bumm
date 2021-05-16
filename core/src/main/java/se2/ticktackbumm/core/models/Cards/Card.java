@@ -10,16 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Card{
-    private List<String> carddeck;
+
+    private String[] arraywords;
 
     public static Stage stage;
 
@@ -30,11 +27,16 @@ public class Card{
     private Texture frontsideTexture;
     private Image frontsideImage;
 
+    private Random random;
 
     private boolean isRevealed;
 
     public Card(){
-        carddeck = getCardFromEnum();
+        arraywords = new String[]{"CRO", "AB", "WO", "CHA",
+                "ABL", "OR", "SE", "FRE", "UNC", "FL", "NG", "WER",
+                "BIR", "GER", "ONS", "ACK", "EXP", "IGN", "IL"};
+
+        random = new Random();
 
         isRevealed = false;
 
@@ -52,12 +54,6 @@ public class Card{
     }
 
     public void render(){
-        /*stage.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                openCard();
-            }
-        });*/
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             openCard();
@@ -104,29 +100,15 @@ public class Card{
         drawFontSide();
     }
 
-    public List<String> getCardFromEnum(){
-        ArrayList<String> words = new ArrayList<>();
-
-        for (CardWords cardWord : CardWords.values()){
-            words.add(cardWord.getWord());
-        }
-        return words;
-    }
 
     public String getRandomWord(){
-        Collections.shuffle(carddeck);
-        return carddeck.get(0);
+       int randomIndex = random.nextInt(18)+1;
+
+       return arraywords[randomIndex];
     }
 
     public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height){
         actor.setBounds(positionX,positionY,width,height);
-    }
-
-    public List<String> getCardDeck(){
-        return this.carddeck;
-    }
-    public void setCarddeck(List<String> carddeck){
-        this.carddeck = carddeck;
     }
 
     public boolean isRevealed(){
