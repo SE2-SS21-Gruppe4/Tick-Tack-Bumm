@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
@@ -39,8 +38,9 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextField textField;
     private final TextButton checkButton;
 
-    private final BitmapFont textMaxScore;
+    private BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
+    private static final String maxScoreText = "Max Score: " + MAX_SCORE;
 
 
     public MainGameScreen() {
@@ -105,14 +105,14 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
         stage.draw();
+        textMaxScore.draw(batch,maxScoreText,((Gdx.graphics.getWidth() / 2.0f)-200),Gdx.graphics.getHeight()/ 1.15f);
         batch.end();
 
-        //uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
-//        if (Gdx.input.isTouched()) {
-//            game.setScreen(new SpinWheelScreen());
-//        }
+        //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
+        if (Gdx.input.isTouched()) {
+            game.setScreen(new SpinWheelScreen());
+        }
     }
 
     @Override
@@ -121,6 +121,5 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
         font.dispose();
-        textMaxScore.dispose();
     }
 }
