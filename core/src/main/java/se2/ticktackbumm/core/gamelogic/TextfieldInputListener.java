@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 public class TextfieldInputListener extends ClickListener {
@@ -49,7 +50,7 @@ public class TextfieldInputListener extends ClickListener {
 //            textField.setVisible(false); // hide text field after correct guess?
         } else {
             textField.setText("FALSCH");
-            textField.setDisabled(false); // wrong guess; guess again
+//            textField.setDisabled(false); // wrong guess; guess again
         }
 
         textField.setDisabled(false); // enable here again for testing only
@@ -61,12 +62,12 @@ public class TextfieldInputListener extends ClickListener {
             return false;
         }
 
-        // TODO: switch over different game types
-        if (!hasValidPostfix(userInput, "ung")) {
-            // TODO: replace with postfix from game data
-            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
-            return false;
-        }
+        // TODO: switch over different game types; disabled for testing only
+//        if (!hasValidPostfix(userInput, "ung")) {
+//            // TODO: replace with postfix from game data
+//            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
+//            return false;
+//        }
 
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
@@ -82,8 +83,41 @@ public class TextfieldInputListener extends ClickListener {
                 (userInput.matches("^" + GERMAN_CHARACTER_REGEX + "*$"))); // input is a single alphabetical word
     }
 
+    boolean hasValidPrefix(String userInput, String prefix) {
+        return userInput.toLowerCase().matches("^" + prefix.toLowerCase() + GERMAN_CHARACTER_REGEX + "+$");
+    }
+
+    boolean hasValidInfix(String userInput, String infix) {
+        return userInput.toLowerCase().matches("^" + GERMAN_CHARACTER_REGEX + "+" + infix.toLowerCase() + GERMAN_CHARACTER_REGEX + "+$");
+    }
+
     boolean hasValidPostfix(String userInput, String postfix) {
-        return userInput.matches("^" + GERMAN_CHARACTER_REGEX + "+" + postfix.toLowerCase() + "$");
+        return userInput.toLowerCase().matches("^" + GERMAN_CHARACTER_REGEX + "+" + postfix.toLowerCase() + "$");
+    }
+
+    boolean isInScrambledWord(String userInput, String scrambledWord) {
+        if (userInput.length() < 4) { // word found has to be at least 4 characters long; game rule
+            Log.error(LOG_TAG, "User input was too short (at least 4 character): " + userInput);
+            return false;
+        }
+
+        char[] userInputChar = userInput.toLowerCase().toCharArray();
+        ArrayList<Character> scrambledWordChars = new ArrayList<>();
+
+        for (char letter : scrambledWord.toLowerCase().toCharArray()) {
+            scrambledWordChars.add(letter);
+        }
+
+        for (char letter : userInputChar) {
+            for (int i = 0; i < scrambledWordChars.size(); i++) {
+                if (letter == scrambledWordChars.get(i)) {
+                    scrambledWordChars.remove(i);
+                    break;
+                }
+            }
+        }
+
+        return scrambledWordChars.size() == (scrambledWord.length() - userInput.length());
     }
 
     boolean isInDictionary(String userInput) {
