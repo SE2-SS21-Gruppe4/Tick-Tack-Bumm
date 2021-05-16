@@ -59,7 +59,7 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         //card
-        card = new Card(game.getBatch());
+        card = new Card();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
