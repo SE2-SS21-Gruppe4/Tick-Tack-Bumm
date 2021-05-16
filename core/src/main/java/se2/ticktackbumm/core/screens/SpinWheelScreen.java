@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.crypto.SecretKeyFactorySpi;
 
@@ -58,6 +60,8 @@ public class SpinWheelScreen extends ScreenAdapter{
         spinOutput();
         challengeDisplayText();
         descriptionDisplayText();
+
+
     }
 
     public void spinOutput(){
@@ -112,6 +116,16 @@ public class SpinWheelScreen extends ScreenAdapter{
                 }
 
                  textButton.clearListeners();
+
+                Timer toMainScreenTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new MainGameScreen());
+                    }
+                };
+
+                toMainScreenTimer.schedule(task,5000);
             }
         });
     }
