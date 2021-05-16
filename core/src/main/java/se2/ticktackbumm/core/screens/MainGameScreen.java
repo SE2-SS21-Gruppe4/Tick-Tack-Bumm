@@ -55,6 +55,7 @@ public class MainGameScreen extends ScreenAdapter {
     private TextButton textButton;
 
     private Card card;
+
     private BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;

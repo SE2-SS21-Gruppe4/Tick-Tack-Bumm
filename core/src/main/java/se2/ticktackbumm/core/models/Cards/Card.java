@@ -105,8 +105,6 @@ public class Card{
     public void openCard(){
         this.ranodmWord = getRandomWord();
         drawFontSide();
-
-
     }
 
     public List<String> getCardFromEnum(){
@@ -140,5 +138,9 @@ public class Card{
 
     public void setRevealed(boolean isRevealed){
         this.isRevealed= isRevealed;
+    }
+
+    public String getRanodmWord(){
+        return this.ranodmWord;
     }
 }
