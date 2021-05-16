@@ -1,55 +1,49 @@
-package se2.ticktackbumm.core.models.CardLayout;
+package se2.ticktackbumm.core.models.Cards;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Card{
-    private ArrayList<String> carddeck;
+    private List<String> carddeck;
 
-    public Stage stage;
+    public static Stage stage;
 
-    private Skin skin;
-
-    private Texture backside_texture;
-    private Image backside_image;
+    private Texture backsideTexture;
+    private Image backsideImage;
 
     private String ranodmWord;
-    private Texture frontside_texture;
-    private Image frontside_image;
+    private Texture frontsideTexture;
+    private Image frontsideImage;
 
 
     private boolean isRevealed;
 
-    public Card(SpriteBatch batch){
+    public Card(){
         carddeck = getCardFromEnum();
 
         isRevealed = false;
 
-        backside_texture = new Texture("card/backside.jpg");
-        backside_image = new Image(backside_texture);
+        backsideTexture = new Texture("card/backside.jpg");
+        backsideImage = new Image(backsideTexture);
 
         ranodmWord = getRandomWord();
-        frontside_texture = new Texture("card/frontside.png");
-        frontside_image = new Image(frontside_texture);
+        frontsideTexture = new Texture("card/frontside.png");
+        frontsideImage = new Image(frontsideTexture);
 
         stage = new Stage();
 
@@ -69,20 +63,20 @@ public class Card{
     }
 
     public void drawBackSide(){
-        setActorSettings(backside_image,0,0,170,240);
-        stage.addActor(backside_image);
+        setActorSettings(backsideImage,0,0,170,240);
+        stage.addActor(backsideImage);
 
         stage.act();
         stage.draw();
     }
     public void drawFontSide(){
-        Label cardword_label = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label cardwordLabel = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
-        setActorSettings(frontside_image,0,0,170,240);
-        setActorSettings(cardword_label,((frontside_image.getX()+frontside_image.getWidth())/2)-(cardword_label.getWidth()/2),((frontside_image.getImageY()+frontside_image.getHeight())/2)-(cardword_label.getHeight()/2),50,27);
+        setActorSettings(frontsideImage,0,0,170,240);
+        setActorSettings(cardwordLabel,((frontsideImage.getX()+ frontsideImage.getWidth())/2)-(cardwordLabel.getWidth()/2),((frontsideImage.getImageY()+ frontsideImage.getHeight())/2)-(cardwordLabel.getHeight()/2),50,27);
 
-        stage.addActor(frontside_image);
-        stage.addActor(cardword_label);
+        stage.addActor(frontsideImage);
+        stage.addActor(cardwordLabel);
 
         stage.act();
         stage.draw();
@@ -91,8 +85,8 @@ public class Card{
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                frontside_image.remove();
-                cardword_label.remove();
+                frontsideImage.remove();
+                cardwordLabel.remove();
             }
         };
 
@@ -107,7 +101,7 @@ public class Card{
 
     }
 
-    public ArrayList<String> getCardFromEnum(){
+    public List<String> getCardFromEnum(){
         ArrayList<String> words = new ArrayList<>();
 
         for (CardWords cardWord : CardWords.values()){
@@ -125,10 +119,10 @@ public class Card{
         actor.setBounds(positionX,positionY,width,height);
     }
 
-    public ArrayList<String> getCardDeck(){
+    public List<String> getCardDeck(){
         return this.carddeck;
     }
-    public void setCarddeck(ArrayList<String> carddeck){
+    public void setCarddeck(List<String> carddeck){
         this.carddeck = carddeck;
     }
 

@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.screens.LoadingScreen;
-import se2.ticktackbumm.core.screens.MainGameScreen;
-import se2.ticktackbumm.core.screens.TestScreen;
 
 public class TickTackBummGame extends Game {
     public static final int HEIGHT = 1080;
@@ -31,9 +29,7 @@ public class TickTackBummGame extends Game {
         font.getData().setScale(2);
 
         // display loading-screen on startup
-        //setScreen(new LoadingScreen());
-
-        setScreen(new MainGameScreen());
+        setScreen(new LoadingScreen());
     }
 
     public static TickTackBummGame getTickTackBummGame() {
