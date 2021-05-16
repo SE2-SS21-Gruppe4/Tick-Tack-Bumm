@@ -149,10 +149,10 @@ public class MainGameScreen extends ScreenAdapter {
 
         card.render();
 
-        //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
+     /*   //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
         if (Gdx.input.isTouched()) {
             game.setScreen(new SpinWheelScreen());
-        }
+        }*/
     }
 
     @Override

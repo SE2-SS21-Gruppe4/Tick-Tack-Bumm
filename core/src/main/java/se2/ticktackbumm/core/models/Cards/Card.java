@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.models.Cards;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -54,12 +55,16 @@ public class Card{
     }
 
     public void render(){
-        stage.addListener(new ClickListener(){
+        /*stage.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 openCard();
             }
-        });
+        });*/
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            openCard();
+        }
 
             drawBackSide();
 
