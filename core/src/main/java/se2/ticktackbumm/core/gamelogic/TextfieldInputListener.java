@@ -85,7 +85,7 @@ public class TextfieldInputListener extends ClickListener {
         }
 
         if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_BEGIN) {
-
+            card.getWord();
         }
 
         return true;

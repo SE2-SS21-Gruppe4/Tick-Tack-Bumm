@@ -137,6 +137,9 @@ public class Card{
         this.isRevealed= isRevealed;
     }
 
+    public String getWord(){
+        return this.randomWord;
+    }
 
 
 
