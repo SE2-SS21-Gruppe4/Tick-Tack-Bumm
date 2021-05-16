@@ -18,11 +18,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import java.security.SecureRandom;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.models.WheelZustand;
 import se2.ticktackbumm.core.models.WordPosition;
 
 public class SpinWheelScreen extends ScreenAdapter{
     private TickTackBummGame game;
     private final OrthographicCamera camera;
+
+    private WheelZustand wheelZustand;
 
     private SpriteBatch batch;
     private TextButton textButton;
@@ -48,6 +51,8 @@ public class SpinWheelScreen extends ScreenAdapter{
         batch = new SpriteBatch();
         stage = new Stage();
         randomNumb = new SecureRandom();
+
+        wheelZustand = WheelZustand.START;
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         skin.getFont("default-font").getData().setScale(3);
@@ -99,14 +104,17 @@ public class SpinWheelScreen extends ScreenAdapter{
                     case 0:
                         textField.setText(wordPosition.TICK.toString());
                         setDescription("This group of letters from the card " + '\n' + "must not be at the beginning of your new word.");
+                        wheelZustand = WheelZustand.NOT_BEGIN;
                         break;
                     case 1:
                         textField.setText(wordPosition.TICK_TACK.toString());
                         setDescription("This group of letters from the card can be" + '\n' + " anywhere.");
+                        wheelZustand = WheelZustand.ANYWHERE;
                         break;
                     case 2:
                         textField.setText(wordPosition.BOMBE.toString());
                         setDescription("This group of letters from the card " + '\n' + "must not be at the end of your new word.");
+                        wheelZustand = WheelZustand.NOT_END;
                         break;
                 }
 
@@ -172,6 +180,14 @@ public class SpinWheelScreen extends ScreenAdapter{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setWheelZustand(WheelZustand wheelZustand){
+        this.wheelZustand = wheelZustand;
+    }
+
+    public WheelZustand getWheelZustand(){
+        return this.wheelZustand;
     }
 
 

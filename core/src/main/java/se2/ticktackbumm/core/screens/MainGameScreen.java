@@ -27,6 +27,7 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
 import se2.ticktackbumm.core.models.Cards.Card;
 import se2.ticktackbumm.core.models.Score;
+import se2.ticktackbumm.core.models.WheelZustand;
 
 
 public class MainGameScreen extends ScreenAdapter {
@@ -39,6 +40,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final SpriteBatch batch;
 
     Score score;
+
+    SpinWheelScreen spinWheelScreen;
 
 
     // scene2d UI
@@ -63,6 +66,9 @@ public class MainGameScreen extends ScreenAdapter {
         font = game.getFont();
         assetManager = game.getManager();
         networkClient = game.getNetworkClient();
+
+        //Wheel zustand
+        spinWheelScreen = new SpinWheelScreen();
 
         // maxScore
         textMaxScore = new BitmapFont();
@@ -174,4 +180,6 @@ public class MainGameScreen extends ScreenAdapter {
         skin.dispose();
         font.dispose();
     }
+
+
 }
