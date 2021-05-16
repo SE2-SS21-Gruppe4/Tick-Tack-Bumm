@@ -19,12 +19,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.client.NetworkClient;
 
 public class LoadingScreen extends ScreenAdapter {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
-    private final NetworkClient networkClient;
     private final BitmapFont font;
     private final Batch batch;
     private final OrthographicCamera camera;
@@ -34,7 +32,6 @@ public class LoadingScreen extends ScreenAdapter {
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.camera = TickTackBummGame.getGameCamera();
-        this.networkClient = game.getNetworkClient();
         this.assetManager = game.getManager();
         this.batch = game.getBatch();
         this.font = game.getFont();
@@ -43,9 +40,6 @@ public class LoadingScreen extends ScreenAdapter {
         sprite = new Sprite(image);
 
         this.assetManager.load("explosion.atlas", TextureAtlas.class);
-
-        this.networkClient.tryConnectClient();
-        this.networkClient.getClientMessageSender().sendSomeRequest("Here is a request!");
     }
 
     @Override

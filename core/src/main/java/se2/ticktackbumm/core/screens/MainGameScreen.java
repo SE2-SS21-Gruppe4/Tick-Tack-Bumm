@@ -19,10 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.models.Cards.Card;
 import se2.ticktackbumm.core.models.Score;
+
 
 public class MainGameScreen extends ScreenAdapter {
     private final TickTackBummGame game;
@@ -45,9 +48,10 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture table;
     private final Image image;
 
-    private final BitmapFont textMaxScore;
-    private static final int MAX_SCORE = 10;
-
+    private Card card;
+    private BitmapFont textMaxScore;
+    private static final int MAX_SCORE= 10;
+    private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -62,6 +66,9 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.setColor(Color.RED);
         textMaxScore.getData().setScale(5);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        //card
+        card = new Card();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -131,13 +138,23 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+
         textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
         score.getBitmaps().get(0).draw(batch, "7", stage.getWidth()/2-250, stage.getHeight()/2+600);
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth()/2+250, stage.getHeight()/2+600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth()/2+250, stage.getHeight()/2-330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth()/2-250, stage.getHeight()/2-330);
+
         stage.draw();
+        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight()/ 1.0f);
         batch.end();
+
+        card.render();
+
+        //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
+        if (Gdx.input.isTouched()) {
+            game.setScreen(new SpinWheelScreen());
+        }
     }
 
     @Override
@@ -146,6 +163,5 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
         font.dispose();
-        textMaxScore.dispose();
     }
 }

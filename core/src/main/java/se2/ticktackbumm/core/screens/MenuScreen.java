@@ -62,6 +62,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainGameScreen());
+                // game.getNetworkClient().tryConnectClient();
             }
         });
         // TODO: add RulesScreen
