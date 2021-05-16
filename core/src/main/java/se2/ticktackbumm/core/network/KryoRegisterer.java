@@ -1,7 +1,8 @@
 package se2.ticktackbumm.core.network;
 
 import com.esotericsoftware.kryo.Kryo;
-
+import se2.ticktackbumm.core.network.messages.ConnectionRejected;
+import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
 import se2.ticktackbumm.core.network.messages.SomeRequest;
 import se2.ticktackbumm.core.network.messages.SomeResponse;
 
@@ -17,5 +18,7 @@ public class KryoRegisterer {
     public static void registerMessages(Kryo kryo) {
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
+        kryo.register(ConnectionSuccessful.class);
+        kryo.register(ConnectionRejected.class);
     }
 }
