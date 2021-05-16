@@ -46,8 +46,8 @@ public class LaunchScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        font.draw(batch, "Welcome to TickTackBumm!", 800, 200);
-        font.draw(batch, "Tap anywhere to begin!", 800, 150);
+        font.draw(batch, "Welcome to Tick..Tack.. Bumm!", 800, 200);
+        font.draw(batch, "Tap Play to start a new Game.", 800, 150);
         batch.end();
 
         batch.begin();
