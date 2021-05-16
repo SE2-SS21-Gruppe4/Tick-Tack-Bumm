@@ -67,6 +67,8 @@ public class TextfieldInputListener extends ClickListener {
     }
 
     boolean isValidWord(String userInput) {
+        char[] text = textField.toString().toCharArray();
+        char[] syllable = card.getWord().toCharArray();
         if (!isValidInput(userInput)) {
             Log.error(LOG_TAG, "User input was invalid: " + userInput);
             return false;
@@ -85,7 +87,27 @@ public class TextfieldInputListener extends ClickListener {
         }
 
         if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_BEGIN) {
-            card.getWord();
+            for (int i = 0; i < syllable.length; i++) {
+                if(text[i]==syllable[i]){
+                    return false;
+                }
+            }
+        }
+        if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_END) {
+            int count =0;
+            for (int i = syllable.length; i >= 0; i--) {
+                if(text[text.length-1-count]==syllable[i-1]){
+                    return false;
+                }
+                count++;
+            }
+        }
+        if (spinWheelScreen.getWheelZustand() == WheelZustand.START) {
+            for (int i = 0; i < syllable.length; i++) {
+                if(!(text[i]==syllable[i])){
+                    return false;
+                }
+            }
         }
 
         return true;
