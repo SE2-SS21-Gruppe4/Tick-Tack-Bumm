@@ -23,7 +23,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.models.Cards.Card;
 import se2.ticktackbumm.core.models.Score;
+
 
 public class MainGameScreen extends ScreenAdapter {
     private final TickTackBummGame game;
@@ -46,6 +48,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture table;
     private final Image image;
 
+    private Card card;
     private BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
@@ -63,6 +66,9 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.setColor(Color.RED);
         textMaxScore.getData().setScale(5);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        //card
+        card = new Card();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -142,6 +148,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight()/ 1.0f);
         batch.end();
+
+        card.render();
 
         //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
         if (Gdx.input.isTouched()) {
