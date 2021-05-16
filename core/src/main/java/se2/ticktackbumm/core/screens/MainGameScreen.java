@@ -138,8 +138,6 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
-        textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
         score.getBitmaps().get(0).draw(batch, "7", stage.getWidth()/2-250, stage.getHeight()/2+600);
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth()/2+250, stage.getHeight()/2+600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth()/2+250, stage.getHeight()/2-330);
