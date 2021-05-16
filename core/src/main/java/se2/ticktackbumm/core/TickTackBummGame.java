@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.ticktackbumm.core.client.NetworkClient;
+import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 
 public class TickTackBummGame extends Game {
@@ -13,6 +14,8 @@ public class TickTackBummGame extends Game {
     public static final int WIDTH = 1080;
 
     private static TickTackBummGame tickTackBummGame;
+
+    private Player localPlayer; // TODO: add current player from server response at game start?
 
     private AssetManager manager;
     private NetworkClient networkClient;
@@ -59,6 +62,14 @@ public class TickTackBummGame extends Game {
 
     public SpriteBatch getBatch() {
         return batch;
+    }
+
+    public Player getLocalPlayer() {
+        return localPlayer;
+    }
+
+    public void setLocalPlayer(Player localPlayer) {
+        this.localPlayer = localPlayer;
     }
 
     @Override
