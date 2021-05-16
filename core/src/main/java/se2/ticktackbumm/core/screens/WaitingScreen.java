@@ -13,9 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 
-public class MenuScreen extends ScreenAdapter {
+public class WaitingScreen extends ScreenAdapter {
 
     // Button constants
     private final float BUTTON_WIDTH = 350f;
@@ -35,7 +36,7 @@ public class MenuScreen extends ScreenAdapter {
     private final Table menuButtonTable;
 
 
-    public MenuScreen() {
+    public WaitingScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
@@ -62,7 +63,6 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainGameScreen());
-                // game.getNetworkClient().tryConnectClient();
             }
         });
         // TODO: add RulesScreen
