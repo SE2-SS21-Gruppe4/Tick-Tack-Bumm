@@ -11,6 +11,11 @@ import com.esotericsoftware.minlog.Log;
 import java.io.*;
 import java.util.ArrayList;
 
+import se2.ticktackbumm.core.models.Cards.Card;
+import se2.ticktackbumm.core.models.WheelZustand;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
+import sun.security.provider.ConfigFile;
+
 
 public class TextfieldInputListener extends ClickListener {
     private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
@@ -20,16 +25,21 @@ public class TextfieldInputListener extends ClickListener {
 
     private final TextField textField;
     private String userInput;
+    SpinWheelScreen spinWheelScreen;
+    Card card;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
     public TextfieldInputListener() {
         textField = null;
+
     }
 
-    public TextfieldInputListener(TextField textField) {
+    public TextfieldInputListener(SpinWheelScreen spinWheelScreen, Card card, TextField textField) {
         this.textField = textField;
+        this.spinWheelScreen = spinWheelScreen;
+        this.card = card;
     }
 
     @Override
@@ -72,6 +82,10 @@ public class TextfieldInputListener extends ClickListener {
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
             return false;
+        }
+
+        if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_BEGIN) {
+
         }
 
         return true;

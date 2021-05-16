@@ -7,12 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ public class Card{
     private Texture backsideTexture;
     private Image backsideImage;
 
-    private String ranodmWord;
+    private String randomWord;
     private Texture frontsideTexture;
     private Image frontsideImage;
 
@@ -45,7 +42,7 @@ public class Card{
         backsideTexture = new Texture("card/backside.jpg");
         backsideImage = new Image(backsideTexture);
 
-        ranodmWord = getRandomWord();
+        randomWord = getRandomWord();
         //TODO with assetmanager called
         frontsideTexture = new Texture("card/frontside.png");
         frontsideImage = new Image(frontsideTexture);
@@ -78,7 +75,7 @@ public class Card{
         stage.draw();
     }
     public void drawFontSide(){
-        Label cardwordLabel = new Label(ranodmWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label cardwordLabel = new Label(randomWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
         setActorSettings(frontsideImage,0,0,170,240);
         setActorSettings(cardwordLabel,((frontsideImage.getX()+ frontsideImage.getWidth())/2)-(cardwordLabel.getWidth()/2),((frontsideImage.getImageY()+ frontsideImage.getHeight())/2)-(cardwordLabel.getHeight()/2),50,27);
@@ -103,7 +100,7 @@ public class Card{
 
 
     public void openCard(){
-        this.ranodmWord = getRandomWord();
+        this.randomWord = getRandomWord();
         drawFontSide();
     }
 
@@ -140,7 +137,7 @@ public class Card{
         this.isRevealed= isRevealed;
     }
 
-    public String getRanodmWord(){
-        return this.ranodmWord;
-    }
+
+
+
 }
