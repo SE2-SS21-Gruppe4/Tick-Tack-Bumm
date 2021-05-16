@@ -39,6 +39,36 @@ class TextfieldInputListenerTest {
     }
 
     @Test
+    void validPrefixes() {
+        Assertions.assertTrue(textfieldInputListener.hasValidPrefix("gelaufen", "ge"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPrefix("gelungen", "ge"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPrefix("Schere", "sch"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPrefix("Schaufel", "sch"));
+        Assertions.assertTrue(textfieldInputListener.hasValidPrefix("unangenehm", "un"));
+    }
+
+    @Test
+    void invalidPrefixes() {
+        Assertions.assertFalse(textfieldInputListener.hasValidPrefix("", "ge"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPrefix("klein", "ge"));
+        Assertions.assertFalse(textfieldInputListener.hasValidPrefix("foobar", "Sch"));
+    }
+
+    @Test
+    void validInfixes() {
+        Assertions.assertTrue(textfieldInputListener.hasValidInfix("Anleitung", "lei"));
+        Assertions.assertTrue(textfieldInputListener.hasValidInfix("Wasserschlauch", "sch"));
+    }
+
+    @Test
+    void invalidInfixes() {
+        Assertions.assertFalse(textfieldInputListener.hasValidInfix("", "ge"));
+        Assertions.assertFalse(textfieldInputListener.hasValidInfix("hallo", "ge"));
+        Assertions.assertFalse(textfieldInputListener.hasValidInfix("foobar", "Sch"));
+
+    }
+
+    @Test
     void validPostfixes() {
         Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Umleitung", "ung"));
         Assertions.assertTrue(textfieldInputListener.hasValidPostfix("Schulung", "ung"));
@@ -54,6 +84,23 @@ class TextfieldInputListenerTest {
         Assertions.assertFalse(textfieldInputListener.hasValidPostfix("Wunsch", "den"));
         Assertions.assertFalse(textfieldInputListener.hasValidPostfix("kehren", "sch"));
         Assertions.assertFalse(textfieldInputListener.hasValidPostfix("gehen", "be"));
+    }
+
+    @Test
+    void isInScrambledWord() {
+        Assertions.assertTrue(textfieldInputListener.isInScrambledWord("Press", "iexospensr"));
+        Assertions.assertTrue(textfieldInputListener.isInScrambledWord("express", "iexospensr"));
+        Assertions.assertTrue(textfieldInputListener.isInScrambledWord("expression", "iexospensr"));
+        Assertions.assertTrue(textfieldInputListener.isInScrambledWord("Java", "iwjoapva"));
+    }
+
+    @Test
+    void isNotInScrambledWord() {
+        Assertions.assertFalse(textfieldInputListener.isInScrambledWord("", "iwjoapva"));
+        Assertions.assertFalse(textfieldInputListener.isInScrambledWord("rep", "iexospensr"));
+        Assertions.assertFalse(textfieldInputListener.isInScrambledWord("espresso", "iexospensr"));
+        Assertions.assertFalse(textfieldInputListener.isInScrambledWord("foobar", "iwjoapva"));
+        Assertions.assertFalse(textfieldInputListener.isInScrambledWord("FooBar", "iwjoapva"));
     }
 
     @Test
@@ -102,6 +149,8 @@ class TextfieldInputListenerTest {
     void isValidWord() {
         // TODO: add more cases once more checks are supported by the listener
         Assertions.assertTrue(textfieldInputListener.isValidWord("Umleitung"));
-        Assertions.assertTrue(textfieldInputListener.isValidWord("Schulung"));
+        Assertions.assertTrue(textfieldInputListener.isValidWord("schnell"));
+        Assertions.assertTrue(textfieldInputListener.isValidWord("Zopf"));
+        Assertions.assertTrue(textfieldInputListener.isValidWord("gelb"));
     }
 }
