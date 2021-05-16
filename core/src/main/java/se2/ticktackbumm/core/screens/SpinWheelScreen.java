@@ -16,7 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.security.SecureRandom;
 import java.util.Random;
+
+import javax.crypto.SecretKeyFactorySpi;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.models.WordPosition;
@@ -31,11 +34,13 @@ public class SpinWheelScreen extends ScreenAdapter{
     private Skin skin;
     private Stage stage;
     private static WordPosition wordPosition;
-    private BitmapFont wordPositionOutput, challengeText, descriptionText;
-    private Random randomNumb;
+    private BitmapFont wordPositionOutput;
+    private BitmapFont challengeText;
+    private BitmapFont descriptionText;
+    private SecureRandom randomNumb;
 
     private int randomNumber;
-    private final String challengeString= "Your challenge: ";
+    private static final String CHALLENGE_STRING= "Your challenge: ";
     private String description = "";
 
 
@@ -44,7 +49,7 @@ public class SpinWheelScreen extends ScreenAdapter{
         camera = TickTackBummGame.getGameCamera();
         batch = new SpriteBatch();
         stage = new Stage();
-        randomNumb = new Random();
+        randomNumb = new SecureRandom();
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         skin.getFont("default-font").getData().setScale(3);
@@ -119,7 +124,7 @@ public class SpinWheelScreen extends ScreenAdapter{
         batch.begin();
         stage.act();
         stage.draw();
-        challengeText.draw(batch,challengeString,((Gdx.graphics.getWidth() / 2.0f)-200),Gdx.graphics.getHeight()/ 1.15f);
+        challengeText.draw(batch,CHALLENGE_STRING,((Gdx.graphics.getWidth() / 2.0f)-200),Gdx.graphics.getHeight()/ 1.15f);
         wordPositionOutput.draw(batch,textField.getText(),(Gdx.graphics.getWidth() / 2.0f)-225,
                 Gdx.graphics.getHeight()/ 1.80f);
         descriptionText.draw(batch,getDescription(),150,Gdx.graphics.getHeight()/ 2.20f);

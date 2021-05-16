@@ -40,7 +40,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     private BitmapFont textMaxScore;
     private static final int MAX_SCORE= 10;
-    private static final String maxScoreText = "Max Score: " + MAX_SCORE;
+    private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
 
     public MainGameScreen() {
@@ -106,7 +106,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         batch.begin();
         stage.draw();
-        textMaxScore.draw(batch,maxScoreText,((Gdx.graphics.getWidth() / 2.0f)-200),Gdx.graphics.getHeight()/ 1.15f);
+        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight()/ 1.0f);
         batch.end();
 
         //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
