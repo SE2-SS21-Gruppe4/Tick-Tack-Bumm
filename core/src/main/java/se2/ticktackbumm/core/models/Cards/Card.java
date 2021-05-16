@@ -38,10 +38,12 @@ public class Card{
 
         isRevealed = false;
 
+        //TODO with assetmanager called
         backsideTexture = new Texture("card/backside.jpg");
         backsideImage = new Image(backsideTexture);
 
         ranodmWord = getRandomWord();
+        //TODO with assetmanager called
         frontsideTexture = new Texture("card/frontside.png");
         frontsideImage = new Image(frontsideTexture);
 

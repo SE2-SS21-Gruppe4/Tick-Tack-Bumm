@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.models.CardLayout;
+package se2.ticktackbumm.core.models.Cards;
 
 public enum CardWords {
 

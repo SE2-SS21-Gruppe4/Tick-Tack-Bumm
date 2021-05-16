@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
-import se2.ticktackbumm.core.models.CardLayout.Card;
+import se2.ticktackbumm.core.models.Cards.Card;
 
 public class MainGameScreen extends ScreenAdapter {
     private final TickTackBummGame game;
