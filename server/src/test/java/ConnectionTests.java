@@ -11,13 +11,12 @@ import java.io.IOException;
 import se2.ticktackbumm.core.network.NetworkConstants;
 import se2.ticktackbumm.core.network.messages.SomeRequest;
 import se2.ticktackbumm.core.network.messages.SomeResponse;
-import se2.ticktackbumm.server.NetworkServer;
+import se2.ticktackbumm.server.network.NetworkServer;
 
 public class ConnectionTests {
     @Test
     public void testClientServerConnection() throws IOException {
         NetworkServer server = new NetworkServer();
-        server.startServer();
 
         Client client = new Client();
 
