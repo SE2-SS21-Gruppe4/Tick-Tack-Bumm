@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 
-public class WatingScreen extends ScreenAdapter {
+public class WaitingScreen extends ScreenAdapter {
 
     // Button constants
     private final float BUTTON_WIDTH = 350f;
@@ -36,7 +36,7 @@ public class WatingScreen extends ScreenAdapter {
     private final Table menuButtonTable;
 
 
-    public WatingScreen() {
+    public WaitingScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
