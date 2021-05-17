@@ -3,7 +3,6 @@ package se2.ticktackbumm.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -68,8 +67,8 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SpinWheelScreen());
-                // game.getNetworkClient().tryConnectClient();
+//                game.setScreen(new SpinWheelScreen()); // only for testing
+                game.getNetworkClient().tryConnectClient();
             }
         });
         // TODO: add RulesScreen
