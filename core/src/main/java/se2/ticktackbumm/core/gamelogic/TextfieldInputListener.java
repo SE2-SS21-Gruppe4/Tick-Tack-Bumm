@@ -7,10 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
-
-import se2.ticktackbumm.core.data.GameMode;
-import se2.ticktackbumm.core.models.cards.Card;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,23 +20,21 @@ public class TextfieldInputListener extends ClickListener {
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
 
+    private GameData gameData;
+
     private final TextField textField;
     private String userInput;
-    SpinWheelScreen spinWheelScreen;
-    private String syllable;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
     public TextfieldInputListener() {
         textField = null;
-
     }
 
-    public TextfieldInputListener(SpinWheelScreen spinWheelScreen, String syllable, TextField textField) {
+    public TextfieldInputListener(TextField textField) {
         this.textField = textField;
-        this.spinWheelScreen = spinWheelScreen;
-        this.syllable = syllable;
+        gameData = TickTackBummGame.getTickTackBummGame().getGameData();
     }
 
     @Override
@@ -72,28 +68,40 @@ public class TextfieldInputListener extends ClickListener {
             return false;
         }
 
-        // TODO: switch over different game types; disabled for testing only
-//        if (!hasValidPostfix(userInput, "ung")) {
-//            // TODO: replace with postfix from game data
-//            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
-//            return false;
-//        }
-//
-        switch (spinWheelScreen.getGameMode()) {
+        switch (gameData.getCurrentGameMode()) {
+            case NONE:
+                // TODO: add error handling; NONE should never appear here
+                break;
             case PREFIX:
-                return hasValidPrefix(userInput, syllable);
-            case POSTFIX:
-                return hasValidPostfix(userInput, syllable);
+                if (!hasValidPrefix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required prefix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
             case INFIX:
-                return hasValidInfix(userInput, syllable);
+                if (!hasValidInfix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required infix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+            case POSTFIX:
+                if (!hasValidPostfix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required postfix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+            case SCRAMBLED_WORD:
+                if (!isInScrambledWord(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input is not in the scrambled word '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
         }
-
 
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
             return false;
         }
-
 
         return true;
     }
