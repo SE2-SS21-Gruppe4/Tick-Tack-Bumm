@@ -5,8 +5,8 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.messages.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
+import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.SomeRequest;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
 
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.
@@ -16,9 +16,11 @@ public class NetworkServerListener extends Listener {
     private final String LOG_TAG = "NETWORK_SERVER_LISTENER";
 
     private final NetworkServer networkServer;
+    private final ServerMessageHandler serverMessageHandler;
 
-    public NetworkServerListener(NetworkServer networkServer) {
+    public NetworkServerListener(NetworkServer networkServer, ServerMessageHandler serverMessageHandler) {
         this.networkServer = networkServer;
+        this.serverMessageHandler = serverMessageHandler;
     }
 
     @Override
@@ -52,11 +54,10 @@ public class NetworkServerListener extends Listener {
     public void received(Connection connection, Object object) {
         if (object instanceof SomeRequest) {
             SomeRequest request = (SomeRequest) object;
-            System.out.println(request.text);
-
-            SomeResponse response = new SomeResponse();
-            response.text = "Thanks";
-            connection.sendTCP(response);
+            serverMessageHandler.handleSomeRequest(request);
+        } else if (object instanceof PlayerTaskCompleted) {
+            PlayerTaskCompleted playerTaskCompleted = (PlayerTaskCompleted) object;
+            serverMessageHandler.handlePlayerTaskCompleted(playerTaskCompleted);
         }
     }
 }
