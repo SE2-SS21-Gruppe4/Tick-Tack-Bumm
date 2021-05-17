@@ -33,9 +33,6 @@ public class MainGameScreen extends ScreenAdapter {
 
     Score score;
 
-    SpinWheelScreen spinWheelScreen;
-
-
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
@@ -58,9 +55,6 @@ public class MainGameScreen extends ScreenAdapter {
         font = game.getFont();
         assetManager = game.getManager();
         networkClient = game.getNetworkClient();
-
-        //Wheel zustand
-        spinWheelScreen = new SpinWheelScreen();
 
         // maxScore
         textMaxScore = new BitmapFont();
@@ -113,7 +107,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(spinWheelScreen, card.getWord(), textField));
+        checkButton.addListener(new TextfieldInputListener(textField));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();
@@ -121,7 +115,6 @@ public class MainGameScreen extends ScreenAdapter {
 
         return textFieldTable;
     }
-
 
     private void createTTF() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JetBrainsMono-Medium.ttf"));
