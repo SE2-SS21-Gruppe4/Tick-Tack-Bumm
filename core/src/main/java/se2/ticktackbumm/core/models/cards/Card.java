@@ -12,22 +12,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Card {
 
     private final String[] syllableArray;
-    private GameData gameData;
+    private final GameData gameData;
 
-    public Stage stage;
+    private final Stage stage;
 
-    private Texture backsideTexture;
-    private Image backsideImage;
+    private final Texture backsideTexture;
+    private final Image backsideImage;
 
-    private Texture frontsideTexture;
-    private Image frontsideImage;
+    private final Texture frontsideTexture;
+    private final Image frontsideImage;
 
-    private Random random;
+    private final SecureRandom random;
 
     private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
 
@@ -36,7 +36,7 @@ public class Card {
 
         syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER", "GER", "ACK", "EXP", "UNG"};
 
-        random = new Random();
+        random = new SecureRandom();
 
         isRevealed = false;
 
