@@ -16,7 +16,7 @@ import java.security.SecureRandom;
 
 public class Card {
 
-    private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER", "GER", "ACK", "EXP", "UNG"};
+    private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "GER", "ACK", "EXP", "UNG"};
 
     private final GameData gameData;
     private final Stage stage;
@@ -39,7 +39,7 @@ public class Card {
         isRevealed = false;
 
         // TODO: load and get with AssetManager
-        backsideTexture = new Texture("card/backside.jpg");
+        backsideTexture = new Texture("card/backside.png");
         backsideImage = new Image(backsideTexture);
 
         // TODO: add switch over game modes?
@@ -50,7 +50,7 @@ public class Card {
         frontsideImage = new Image(frontsideTexture);
 
         // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         setupBackSide();
     }
@@ -74,7 +74,7 @@ public class Card {
         cardWordLabel.setFontScale(4);
 
         setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 90, cardWordLabel.getWidth(), cardWordLabel.getHeight());
+        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
 
         stage.addActor(frontsideImage);
         stage.addActor(cardWordLabel);
