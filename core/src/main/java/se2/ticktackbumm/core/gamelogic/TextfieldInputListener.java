@@ -7,14 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.models.cards.Card;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 import java.io.*;
 import java.util.ArrayList;
-
-import se2.ticktackbumm.core.models.Cards.Card;
-import se2.ticktackbumm.core.models.WheelZustand;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
-import sun.security.provider.ConfigFile;
 
 
 public class TextfieldInputListener extends ClickListener {
@@ -67,8 +64,7 @@ public class TextfieldInputListener extends ClickListener {
     }
 
     boolean isValidWord(String userInput) {
-        char[] text = textField.toString().toCharArray();
-        char[] syllable = card.getWord().toCharArray();
+
         if (!isValidInput(userInput)) {
             Log.error(LOG_TAG, "User input was invalid: " + userInput);
             return false;
@@ -84,30 +80,6 @@ public class TextfieldInputListener extends ClickListener {
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
             return false;
-        }
-
-        if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_BEGIN) {
-            for (int i = 0; i < syllable.length; i++) {
-                if(text[i]==syllable[i]){
-                    return false;
-                }
-            }
-        }
-        if (spinWheelScreen.getWheelZustand() == WheelZustand.NOT_END) {
-            int count =0;
-            for (int i = syllable.length; i >= 0; i--) {
-                if(text[text.length-1-count]==syllable[i-1]){
-                    return false;
-                }
-                count++;
-            }
-        }
-        if (spinWheelScreen.getWheelZustand() == WheelZustand.START) {
-            for (int i = 0; i < syllable.length; i++) {
-                if(!(text[i]==syllable[i])){
-                    return false;
-                }
-            }
         }
 
         return true;

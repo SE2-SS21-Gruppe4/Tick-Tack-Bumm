@@ -15,21 +15,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import java.security.SecureRandom;
-
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.models.WheelZustand;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.models.WordPosition;
 
-public class SpinWheelScreen extends ScreenAdapter{
+import java.security.SecureRandom;
+
+public class SpinWheelScreen extends ScreenAdapter {
     private TickTackBummGame game;
     private final OrthographicCamera camera;
 
-    private WheelZustand wheelZustand;
+    private GameMode gameMode;
 
     private SpriteBatch batch;
     private TextButton textButton;
-    private TextButton backButton;
+    private TextButton gameButton;
     private TextField textField;
     private TextField buttonBackTextField;
     private Skin skin;
@@ -41,18 +41,18 @@ public class SpinWheelScreen extends ScreenAdapter{
     private SecureRandom randomNumb;
 
     private int randomNumber;
-    private static final String CHALLENGE_STRING= "Your challenge: ";
+    private static final String CHALLENGE_STRING = "Your challenge: ";
     private String description = "";
 
 
-    public SpinWheelScreen(){
+    public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = new SpriteBatch();
         stage = new Stage();
         randomNumb = new SecureRandom();
 
-        wheelZustand = WheelZustand.START;
+        gameMode = GameMode.NONE;
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         skin.getFont("default-font").getData().setScale(3);
@@ -61,37 +61,37 @@ public class SpinWheelScreen extends ScreenAdapter{
         spinOutput();
         challengeDisplayText();
         descriptionDisplayText();
-        backClick();
+        setupGameButton();
     }
 
-    public void spinOutput(){
+    public void spinOutput() {
         wordPositionOutput = new BitmapFont();
         wordPositionOutput.setColor(Color.RED);
         wordPositionOutput.getData().setScale(8);
         wordPositionOutput.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
-    public void challengeDisplayText(){
+    public void challengeDisplayText() {
         challengeText = new BitmapFont();
         challengeText.setColor(Color.WHITE);
         challengeText.getData().setScale(4);
         challengeText.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
-    public void descriptionDisplayText(){
+    public void descriptionDisplayText() {
         descriptionText = new BitmapFont();
         descriptionText.setColor(Color.WHITE);
         descriptionText.getData().setScale(3);
         descriptionText.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
-    public void spinClick(){
-        textField = new TextField("",skin);
+    public void spinClick() {
+        textField = new TextField("", skin);
         textField.setColor(Color.RED);
         textField.setAlignment(Align.center);
 
         textButton = new TextButton("SPIN", skin);
-        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f) - 300,Gdx.graphics.getHeight()/ 5.0f,300,100);
+        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f) - 150, Gdx.graphics.getHeight() / 5.0f, 300, 100);
 
         stage.addActor(textButton);
         Gdx.input.setInputProcessor(stage);
@@ -102,44 +102,54 @@ public class SpinWheelScreen extends ScreenAdapter{
                 setRandomNumber(randomNumb.nextInt(3));
                 switch (getRandomNumber()) {
                     case 0:
-                        textField.setText(wordPosition.TICK.toString());
-                        setDescription("This group of letters from the card " + '\n' + "must not be at the beginning of your new word.");
-                        wheelZustand = WheelZustand.NOT_BEGIN;
+                        textField.setText(WordPosition.TICK.toString());
+                        setDescription("Diese Silbe muss am Anfang" + '\n' + "deines Wortes stehen.");
+                        gameMode = GameMode.PREFIX;
                         break;
                     case 1:
-                        textField.setText(wordPosition.TICK_TACK.toString());
-                        setDescription("This group of letters from the card can be" + '\n' + " anywhere.");
-                        wheelZustand = WheelZustand.ANYWHERE;
+                        textField.setText(WordPosition.TICK_TACK.toString());
+                        setDescription("Diese Silbe muss in der Mitte" + '\n' + "deines Wortes zu finden sein.");
+                        gameMode = GameMode.INFIX;
                         break;
                     case 2:
-                        textField.setText(wordPosition.BOMBE.toString());
-                        setDescription("This group of letters from the card " + '\n' + "must not be at the end of your new word.");
-                        wheelZustand = WheelZustand.NOT_END;
+                        textField.setText(WordPosition.BOMBE.toString());
+                        setDescription("Diese Silbe muss am Ende" + '\n' + "deines Wortes stehen.");
+                        gameMode = GameMode.POSTFIX;
                         break;
                 }
 
-                 textButton.clearListeners();
+                // hide and disable button for user after spin
+                textButton.setDisabled(true);
+                textButton.setVisible(false);
+
+                // show game button
+                gameButton.setDisabled(false);
+                gameButton.setVisible(true);
+
+                // TODO: refactor to use LibGDX helpers and timer
             }
         });
     }
 
-    public void backClick(){
-        buttonBackTextField = new TextField("",skin);
+    public void setupGameButton() {
+        buttonBackTextField = new TextField("", skin);
         buttonBackTextField.setAlignment(Align.center);
 
-        backButton = new TextButton("BACK",skin);
-        backButton.setBounds((Gdx.graphics.getWidth() / 2.0f),Gdx.graphics.getHeight()/ 5.0f,300,100);
+        gameButton = new TextButton("GAME", skin);
+        gameButton.setBounds((Gdx.graphics.getWidth() / 2.0f) - 150, Gdx.graphics.getHeight() / 5.0f, 300, 100);
 
-        stage.addActor(backButton);
+        stage.addActor(gameButton);
         Gdx.input.setInputProcessor(stage);
 
-        backButton.addListener(new ClickListener(){
+        gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainGameScreen());
             }
         });
 
+        gameButton.setDisabled(true);
+        gameButton.setVisible(false);
     }
 
     @Override
@@ -150,12 +160,13 @@ public class SpinWheelScreen extends ScreenAdapter{
         batch.begin();
         stage.act();
         stage.draw();
-        challengeText.draw(batch,CHALLENGE_STRING,((Gdx.graphics.getWidth() / 2.0f)-200),Gdx.graphics.getHeight()/ 1.15f);
-        wordPositionOutput.draw(batch,textField.getText(),(Gdx.graphics.getWidth() / 2.0f)-225,
-                Gdx.graphics.getHeight()/ 1.80f);
-        descriptionText.draw(batch,getDescription(),150,Gdx.graphics.getHeight()/ 2.20f);
+        challengeText.draw(batch, CHALLENGE_STRING, ((Gdx.graphics.getWidth() / 2.0f) - 200), Gdx.graphics.getHeight() / 1.15f);
+        wordPositionOutput.draw(batch, textField.getText(), (Gdx.graphics.getWidth() / 2.0f) - 225,
+                Gdx.graphics.getHeight() / 1.80f);
+        descriptionText.draw(batch, getDescription(), 150, Gdx.graphics.getHeight() / 2.20f);
         batch.end();
     }
+
     @Override
     public void dispose() {
         batch.dispose();
@@ -182,14 +193,13 @@ public class SpinWheelScreen extends ScreenAdapter{
         this.description = description;
     }
 
-    public void setWheelZustand(WheelZustand wheelZustand){
-        this.wheelZustand = wheelZustand;
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
     }
 
-    public WheelZustand getWheelZustand(){
-        return this.wheelZustand;
+    public GameMode getGameMode() {
+        return this.gameMode;
     }
-
 
 
 }

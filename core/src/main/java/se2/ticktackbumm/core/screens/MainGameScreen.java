@@ -9,25 +9,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
+import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
-import se2.ticktackbumm.core.models.Cards.Card;
 import se2.ticktackbumm.core.models.Score;
-import se2.ticktackbumm.core.models.WheelZustand;
+import se2.ticktackbumm.core.models.cards.Card;
 
 
 public class MainGameScreen extends ScreenAdapter {
@@ -52,12 +44,11 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture table;
     private final Image image;
-    private TextButton textButton;
 
     private Card card;
 
     private BitmapFont textMaxScore;
-    private static final int MAX_SCORE= 10;
+    private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
     public MainGameScreen() {
@@ -96,12 +87,12 @@ public class MainGameScreen extends ScreenAdapter {
         image = new Image(table);
 
         score = new Score();
-        score.getPlayer().get(0).setPosition(stage.getWidth()/2-350, stage.getHeight()/2+330);
-        score.getPlayer().get(1).setPosition(stage.getWidth()/2+100, stage.getHeight()/2+310);
-        score.getPlayer().get(2).setPosition(stage.getWidth()/2+140, stage.getHeight()/2-320);
-        score.getPlayer().get(3).setPosition(stage.getWidth()/2-350, stage.getHeight()/2-330);
+        score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
+        score.getPlayer().get(1).setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 + 310);
+        score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
+        score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
 
-        image.setPosition(stage.getWidth()/2-313, stage.getHeight()/2-200);
+        image.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
         textFieldTable = setupTextfieldTable();
 
@@ -132,7 +123,6 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
 
-
     private void createTTF() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JetBrainsMono-Medium.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -148,30 +138,16 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth()/2-250, stage.getHeight()/2+600);
-        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth()/2+250, stage.getHeight()/2+600);
-        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth()/2+250, stage.getHeight()/2-330);
-        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth()/2-250, stage.getHeight()/2-330);
+        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
+        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 330);
 
         stage.draw();
-        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight());
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f)), Gdx.graphics.getHeight());
         batch.end();
 
         card.render();
-
-        textButton = new TextButton("SPIN",skin);
-        textButton.setBounds((Gdx.graphics.getWidth() / 2.0f+200),Gdx.graphics.getHeight()/ 2.0f-1025,300,100);
-
-        stage.addActor(textButton);
-        Gdx.input.setInputProcessor(stage);
-
-        textButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SpinWheelScreen());
-            }
-        });
-
     }
 
     @Override
@@ -181,6 +157,4 @@ public class MainGameScreen extends ScreenAdapter {
         skin.dispose();
         font.dispose();
     }
-
-
 }

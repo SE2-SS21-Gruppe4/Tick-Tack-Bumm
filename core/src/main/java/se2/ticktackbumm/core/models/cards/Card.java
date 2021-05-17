@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.models.Cards;
+package se2.ticktackbumm.core.models.cards;
 
 
 import com.badlogic.gdx.Gdx;
@@ -10,11 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Card{
+public class Card {
 
     private String[] arraywords;
 
@@ -31,7 +32,7 @@ public class Card{
 
     private boolean isRevealed;
 
-    public Card(){
+    public Card() {
         arraywords = new String[]{"CRO", "AB", "WO", "CHA",
                 "ABL", "OR", "SE", "FRE", "UNC", "FL", "NG", "WER",
                 "BIR", "GER", "ONS", "ACK", "EXP", "IGN", "IL"};
@@ -53,28 +54,29 @@ public class Card{
 
     }
 
-    public void render(){
+    public void render() {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             openCard();
         }
 
-            drawBackSide();
+        drawBackSide();
 
     }
 
-    public void drawBackSide(){
-        setActorSettings(backsideImage,0,0,170,240);
+    public void drawBackSide() {
+        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         stage.addActor(backsideImage);
 
         stage.act();
         stage.draw();
     }
-    public void drawFontSide(){
-        Label cardwordLabel = new Label(randomWord,new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
-        setActorSettings(frontsideImage,0,0,170,240);
-        setActorSettings(cardwordLabel,((frontsideImage.getX()+ frontsideImage.getWidth())/2)-(cardwordLabel.getWidth()/2),((frontsideImage.getImageY()+ frontsideImage.getHeight())/2)-(cardwordLabel.getHeight()/2),50,27);
+    public void drawFontSide() {
+        Label cardwordLabel = new Label(randomWord, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+
+        setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        setActorSettings(cardwordLabel, ((frontsideImage.getX() + frontsideImage.getWidth()) / 2) - (cardwordLabel.getWidth() / 2), ((frontsideImage.getImageY() + frontsideImage.getHeight()) / 2) - (cardwordLabel.getHeight() / 2), 50, 27);
 
         stage.addActor(frontsideImage);
         stage.addActor(cardwordLabel);
@@ -91,38 +93,35 @@ public class Card{
             }
         };
 
-        timer.schedule(task,3000);
+        timer.schedule(task, 3000);
     }
 
 
-    public void openCard(){
+    public void openCard() {
         this.randomWord = getRandomWord();
         drawFontSide();
     }
 
 
-    public String getRandomWord(){
-       int randomIndex = random.nextInt(18)+1;
+    public String getRandomWord() {
+        int randomIndex = random.nextInt(18) + 1;
 
-       return arraywords[randomIndex];
+        return arraywords[randomIndex];
     }
 
-    public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height){
-        actor.setBounds(positionX,positionY,width,height);
+    public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height) {
+        actor.setBounds(positionX, positionY, width, height);
     }
 
-    public boolean isRevealed(){
+    public boolean isRevealed() {
         return isRevealed;
     }
 
-    public void setRevealed(boolean isRevealed){
-        this.isRevealed= isRevealed;
+    public void setRevealed(boolean isRevealed) {
+        this.isRevealed = isRevealed;
     }
 
-    public String getWord(){
+    public String getWord() {
         return this.randomWord;
     }
-
-
-
 }

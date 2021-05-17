@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.assets.Explosion;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -24,7 +26,10 @@ public class MenuScreen extends ScreenAdapter {
     // TickTackBumm resources
     private final TickTackBummGame game;
     private OrthographicCamera camera;
-    private Batch batch;
+    private SpriteBatch batch;
+
+    // VFX
+    private final Explosion explosion;
 
     // Scene2D UI
     private final Stage stage;
@@ -39,6 +44,8 @@ public class MenuScreen extends ScreenAdapter {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
+
+        explosion = new Explosion();
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -61,7 +68,7 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainGameScreen());
+                game.setScreen(new SpinWheelScreen());
                 // game.getNetworkClient().tryConnectClient();
             }
         });
@@ -92,6 +99,7 @@ public class MenuScreen extends ScreenAdapter {
 
         batch.begin();
         stage.draw();
+//        explosion.render(delta, batch); // better UI position/integration
         batch.end();
     }
 
