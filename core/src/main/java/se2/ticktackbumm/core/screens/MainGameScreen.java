@@ -106,7 +106,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(textField));
+        checkButton.addListener(new TextfieldInputListener(textField, checkButton));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();
@@ -137,7 +137,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         stage.draw();
         card.draw();
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f)), Gdx.graphics.getHeight());
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f)), Gdx.graphics.getHeight() - 50f);
         batch.end();
     }
 
