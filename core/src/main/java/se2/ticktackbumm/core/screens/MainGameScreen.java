@@ -84,7 +84,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         textureMaxScoreBoard = new Texture(Gdx.files.internal("maxScoreBoard.png"));
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
-        imageMaxScoreBoard.setPosition((Gdx.graphics.getWidth() / 2.0f + 25), Gdx.graphics.getHeight()-30.0f);
+        imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight()-30f);
 
         score = new Score();
         score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
@@ -144,7 +144,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         stage.draw();
         card.draw();
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f + 95)), Gdx.graphics.getHeight()-55.0f);
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight()-55f);
         batch.end();
     }
 
