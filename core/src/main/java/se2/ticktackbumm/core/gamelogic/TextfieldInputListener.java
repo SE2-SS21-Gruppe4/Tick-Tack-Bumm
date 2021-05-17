@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
+
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.models.cards.Card;
 import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
@@ -23,7 +25,7 @@ public class TextfieldInputListener extends ClickListener {
     private final TextField textField;
     private String userInput;
     SpinWheelScreen spinWheelScreen;
-    Card card;
+    private String syllable;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
@@ -33,10 +35,10 @@ public class TextfieldInputListener extends ClickListener {
 
     }
 
-    public TextfieldInputListener(SpinWheelScreen spinWheelScreen, Card card, TextField textField) {
+    public TextfieldInputListener(SpinWheelScreen spinWheelScreen, String syllable, TextField textField) {
         this.textField = textField;
         this.spinWheelScreen = spinWheelScreen;
-        this.card = card;
+        this.syllable = syllable;
     }
 
     @Override
@@ -76,11 +78,22 @@ public class TextfieldInputListener extends ClickListener {
 //            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
 //            return false;
 //        }
+//
+        switch (spinWheelScreen.getGameMode()) {
+            case PREFIX:
+                return hasValidPrefix(userInput, syllable);
+            case POSTFIX:
+                return hasValidPostfix(userInput, syllable);
+            case INFIX:
+                return hasValidInfix(userInput, syllable);
+        }
+
 
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
             return false;
         }
+
 
         return true;
     }
