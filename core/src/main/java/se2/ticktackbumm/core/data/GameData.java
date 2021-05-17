@@ -1,11 +1,14 @@
 package se2.ticktackbumm.core.data;
 
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
+    private final String LOG_TAG = "GAME_DATA";
+
     private final int maxGameScore;
 
     private List<Player> players;
@@ -55,5 +58,18 @@ public class GameData {
 
     public void setCurrentGameModeText(String currentGameModeText) {
         this.currentGameModeText = currentGameModeText;
+    }
+
+    public Player getPlayerByConnectionId(int connectionId) {
+        for (Player player : players) {
+            if (player.getConnectionId() == connectionId) {
+                return player;
+            }
+        }
+
+        Log.error(LOG_TAG, "Could not find player with connection ID '" + connectionId
+                + "' in players");
+
+        return null;
     }
 }
