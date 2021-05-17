@@ -2,76 +2,67 @@ package se2.ticktackbumm.core.models.cards;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
-import java.awt.Font;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import sun.font.Font2D;
-import sun.font.FontScaler;
 
 public class Card {
 
-    private String[] arraywords;
+    private final String[] syllableArray;
+    private GameData gameData;
 
-    public static Stage stage;
+    public Stage stage;
 
     private Texture backsideTexture;
     private Image backsideImage;
 
-    private String randomWord;
     private Texture frontsideTexture;
     private Image frontsideImage;
 
     private Random random;
 
-    private boolean isRevealed;
-
-
-
+    private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
 
     public Card() {
-        arraywords = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER",
-                "GER", "ACK", "EXP", "UNG"};
+        gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+
+        syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER", "GER", "ACK", "EXP", "UNG"};
 
         random = new Random();
 
         isRevealed = false;
 
-        //TODO with assetmanager called
+        // TODO: load and get with AssetManager
         backsideTexture = new Texture("card/backside.jpg");
         backsideImage = new Image(backsideTexture);
 
-        randomWord = getRandomWord();
-        //TODO with assetmanager called
+        // TODO: add switch over game modes?
+        gameData.setCurrentGameModeText(getRandomSyllable());
+
+        // TODO: load and get with AssetManager
         frontsideTexture = new Texture("card/frontside.png");
         frontsideImage = new Image(frontsideTexture);
 
         stage = new Stage();
-
     }
 
     public void render() {
-
+        // TODO: set touch listener on card?
         if (Gdx.input.isTouched()) {
             drawFontSide();
         }
-
         drawBackSide();
-
     }
 
+    // TODO: refactor draw methods/render methods
     public void drawBackSide() {
         setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         stage.addActor(backsideImage);
@@ -80,27 +71,26 @@ public class Card {
         stage.draw();
     }
 
+    // TODO: refactor draw methods/render methods
     public void drawFontSide() {
-
-        Label cardwordLabel = new Label(randomWord, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        cardwordLabel.setFontScale(3);
+        Label cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        cardWordLabel.setFontScale(3);
 
         setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        setActorSettings(cardwordLabel, Gdx.graphics.getWidth() / 2.0f -50, Gdx.graphics.getHeight() / 2.0f+90,cardwordLabel.getWidth(), cardwordLabel.getHeight());
+        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 90, cardWordLabel.getWidth(), cardWordLabel.getHeight());
 
         stage.addActor(frontsideImage);
-        stage.addActor(cardwordLabel);
+        stage.addActor(cardWordLabel);
 
         stage.act();
         stage.draw();
     }
 
-
-    public String getRandomWord() {
-        int randomIndex = random.nextInt(18) + 1;
-        return arraywords[randomIndex];
+    public String getRandomSyllable() {
+        return syllableArray[random.nextInt(syllableArray.length)];
     }
 
+    // TODO: refactor to have more logic, split image and label?
     public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height) {
         actor.setBounds(positionX, positionY, width, height);
     }
@@ -111,9 +101,5 @@ public class Card {
 
     public void setRevealed(boolean isRevealed) {
         this.isRevealed = isRevealed;
-    }
-
-    public String getWord() {
-        return this.randomWord;
     }
 }
