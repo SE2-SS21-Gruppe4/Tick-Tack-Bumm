@@ -113,7 +113,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(spinWheelScreen, card, textField));
+        checkButton.addListener(new TextfieldInputListener(spinWheelScreen, card.getWord(), textField));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();
