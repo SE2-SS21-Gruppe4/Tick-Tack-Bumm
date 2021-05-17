@@ -34,7 +34,7 @@ public class ClientMessageHandler {
     // Test method
     public void handleSomeResponse(SomeResponse someResponse) {
         Log.info(LOG_TAG, "Server response to " + someResponse.getClass()
-                + ": " + someResponse.text);
+                + ": " + someResponse.getText());
     }
 
     public void handleConnectionSuccessful() {
