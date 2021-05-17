@@ -59,7 +59,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         // maxScore
         textMaxScore = new BitmapFont();
-        textMaxScore.setColor(Color.ROYAL);
+        textMaxScore.setColor(Color.DARK_GRAY);
         textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
