@@ -10,21 +10,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
-import se2.ticktackbumm.core.models.Cards.Card;
 import se2.ticktackbumm.core.models.Score;
+import se2.ticktackbumm.core.models.cards.Card;
 
 
 public class MainGameScreen extends ScreenAdapter {
@@ -38,19 +32,21 @@ public class MainGameScreen extends ScreenAdapter {
 
     Score score;
 
-
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
     private final Table textFieldTable;
     private final TextField textField;
     private final TextButton checkButton;
-    private final Texture table;
-    private final Image image;
+    private final Texture textureTable;
+    private final Image imageTable;
+    private final Texture textureMaxScoreBoard;
+    private final Image imageMaxScoreBoard;
 
     private Card card;
+
     private BitmapFont textMaxScore;
-    private static final int MAX_SCORE= 10;
+    private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
     public MainGameScreen() {
@@ -63,8 +59,8 @@ public class MainGameScreen extends ScreenAdapter {
 
         // maxScore
         textMaxScore = new BitmapFont();
-        textMaxScore.setColor(Color.RED);
-        textMaxScore.getData().setScale(5);
+        textMaxScore.setColor(Color.DARK_GRAY);
+        textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         //card
@@ -82,16 +78,21 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
-        table = new Texture(Gdx.files.internal("table.png"));
-        image = new Image(table);
+        textureTable = new Texture(Gdx.files.internal("table.png"));
+        imageTable = new Image(textureTable);
+        imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
+
+        textureMaxScoreBoard = new Texture(Gdx.files.internal("maxScoreBoard.png"));
+        imageMaxScoreBoard = new Image(textureMaxScoreBoard);
+        imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight()-30f);
 
         score = new Score();
-        score.getPlayer().get(0).setPosition(stage.getWidth()/2-350, stage.getHeight()/2+330);
-        score.getPlayer().get(1).setPosition(stage.getWidth()/2+100, stage.getHeight()/2+310);
-        score.getPlayer().get(2).setPosition(stage.getWidth()/2+140, stage.getHeight()/2-320);
-        score.getPlayer().get(3).setPosition(stage.getWidth()/2-350, stage.getHeight()/2-330);
+        score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
+        score.getPlayer().get(1).setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 + 310);
+        score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
+        score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
 
-        image.setPosition(stage.getWidth()/2-313, stage.getHeight()/2-200);
+
 
         textFieldTable = setupTextfieldTable();
 
@@ -100,8 +101,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(score.getPlayer().get(2));
         stage.addActor(score.getPlayer().get(3));
 
-        stage.addActor(image);
-
+        stage.addActor(imageTable);
+        stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
     }
 
@@ -121,8 +122,6 @@ public class MainGameScreen extends ScreenAdapter {
         return textFieldTable;
     }
 
-
-
     private void createTTF() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JetBrainsMono-Medium.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -138,23 +137,15 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
-        textMaxScore.draw(batch, "Max Score: " + MAX_SCORE, 100f, Gdx.graphics.getHeight() - 50f);
-        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth()/2-250, stage.getHeight()/2+600);
-        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth()/2+250, stage.getHeight()/2+600);
-        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth()/2+250, stage.getHeight()/2-330);
-        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth()/2-250, stage.getHeight()/2-330);
+        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
+        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
         stage.draw();
-        textMaxScore.draw(batch,MAX_SCORE_TEXT,((Gdx.graphics.getWidth() / 2.0f)),Gdx.graphics.getHeight()/ 1.0f);
+        card.draw();
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight()-55f);
         batch.end();
-
-        card.render();
-
-        //  uncomment für Zugriff auf SpinWheelScreen - daweil Lösung
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new SpinWheelScreen());
-        }
     }
 
     @Override

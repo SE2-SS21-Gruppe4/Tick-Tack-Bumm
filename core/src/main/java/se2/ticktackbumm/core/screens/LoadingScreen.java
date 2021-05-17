@@ -55,7 +55,7 @@ public class LoadingScreen extends ScreenAdapter {
 
         if (assetManager.update()) {
             try {
-                Thread.sleep(6000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Log.error("Thread got interrupted while sleeping: " + e.getMessage());
                 Thread.currentThread().interrupt();

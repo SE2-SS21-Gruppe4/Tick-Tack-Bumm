@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class TextfieldInputListener extends ClickListener {
 
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
+
+    private GameData gameData;
 
     private final TextField textField;
     private String userInput;
@@ -30,6 +34,7 @@ public class TextfieldInputListener extends ClickListener {
 
     public TextfieldInputListener(TextField textField) {
         this.textField = textField;
+        gameData = TickTackBummGame.getTickTackBummGame().getGameData();
     }
 
     @Override
@@ -57,17 +62,41 @@ public class TextfieldInputListener extends ClickListener {
     }
 
     boolean isValidWord(String userInput) {
+
         if (!isValidInput(userInput)) {
             Log.error(LOG_TAG, "User input was invalid: " + userInput);
             return false;
         }
 
-        // TODO: switch over different game types; disabled for testing only
-//        if (!hasValidPostfix(userInput, "ung")) {
-//            // TODO: replace with postfix from game data
-//            Log.error(LOG_TAG, "User input does not match the required postfix '-ung': " + userInput);
-//            return false;
-//        }
+        switch (gameData.getCurrentGameMode()) {
+            case NONE:
+                // TODO: add error handling; NONE should never appear here
+                break;
+            case PREFIX:
+                if (!hasValidPrefix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required prefix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+            case INFIX:
+                if (!hasValidInfix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required infix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+            case POSTFIX:
+                if (!hasValidPostfix(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input does not match the required postfix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+            case SCRAMBLED_WORD:
+                if (!isInScrambledWord(userInput, gameData.getCurrentGameModeText())) {
+                    Log.error(LOG_TAG, "User input is not in the scrambled word '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    return false;
+                }
+                break;
+        }
 
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);

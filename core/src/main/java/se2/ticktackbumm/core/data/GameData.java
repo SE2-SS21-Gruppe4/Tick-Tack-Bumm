@@ -11,6 +11,7 @@ public class GameData {
     private List<Player> players;
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
+    private String currentGameModeText;
 
     public GameData() {
         maxGameScore = 10; // hardcoded for testing purposes
@@ -46,5 +47,13 @@ public class GameData {
 
     public void setCurrentGameMode(GameMode currentGameMode) {
         this.currentGameMode = currentGameMode;
+    }
+
+    public String getCurrentGameModeText() {
+        return currentGameModeText;
+    }
+
+    public void setCurrentGameModeText(String currentGameModeText) {
+        this.currentGameModeText = currentGameModeText;
     }
 }
