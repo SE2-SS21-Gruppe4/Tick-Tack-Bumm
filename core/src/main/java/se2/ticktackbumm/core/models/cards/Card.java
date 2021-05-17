@@ -16,9 +16,9 @@ import java.security.SecureRandom;
 
 public class Card {
 
-    private final String[] syllableArray;
-    private final GameData gameData;
+    private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER", "GER", "ACK", "EXP", "UNG"};
 
+    private final GameData gameData;
     private final Stage stage;
 
     private final Texture backsideTexture;
@@ -26,16 +26,14 @@ public class Card {
 
     private final Texture frontsideTexture;
     private final Image frontsideImage;
+    private final Label cardWordLabel;
 
     private final SecureRandom random;
-
     private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
 
     public Card() {
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
-
-        syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "WER", "GER", "ACK", "EXP", "UNG"};
-
+        stage = new Stage();
         random = new SecureRandom();
 
         isRevealed = false;
@@ -51,39 +49,35 @@ public class Card {
         frontsideTexture = new Texture("card/frontside.png");
         frontsideImage = new Image(frontsideTexture);
 
-        stage = new Stage();
+        // TODO: use skin instead of LabelStyle
+        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+
+        setupBackSide();
     }
 
-    public void render() {
-        // TODO: set touch listener on card?
+    public void draw() {
         if (Gdx.input.isTouched()) {
-            drawFontSide();
+            setupFrontSide();
         }
-        drawBackSide();
-    }
 
-    // TODO: refactor draw methods/render methods
-    public void drawBackSide() {
-        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        stage.addActor(backsideImage);
-
-        stage.act();
         stage.draw();
     }
 
     // TODO: refactor draw methods/render methods
-    public void drawFontSide() {
-        Label cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        cardWordLabel.setFontScale(3);
+    public void setupBackSide() {
+        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        stage.addActor(backsideImage);
+    }
+
+    // TODO: refactor draw methods/render methods
+    public void setupFrontSide() {
+        cardWordLabel.setFontScale(4);
 
         setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 90, cardWordLabel.getWidth(), cardWordLabel.getHeight());
 
         stage.addActor(frontsideImage);
         stage.addActor(cardWordLabel);
-
-        stage.act();
-        stage.draw();
     }
 
     public String getRandomSyllable() {

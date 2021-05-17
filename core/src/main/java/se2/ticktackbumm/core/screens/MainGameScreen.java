@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
@@ -137,10 +136,9 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 330);
 
         stage.draw();
+        card.draw();
         textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f)), Gdx.graphics.getHeight());
         batch.end();
-
-        card.render();
     }
 
     @Override
