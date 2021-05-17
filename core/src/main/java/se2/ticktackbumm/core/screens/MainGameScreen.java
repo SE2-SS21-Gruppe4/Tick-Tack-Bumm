@@ -38,8 +38,10 @@ public class MainGameScreen extends ScreenAdapter {
     private final Table textFieldTable;
     private final TextField textField;
     private final TextButton checkButton;
-    private final Texture table;
-    private final Image image;
+    private final Texture textureTable;
+    private final Image imageTable;
+    private final Texture textureMaxScoreBoard;
+    private final Image imageMaxScoreBoard;
 
     private Card card;
 
@@ -57,8 +59,8 @@ public class MainGameScreen extends ScreenAdapter {
 
         // maxScore
         textMaxScore = new BitmapFont();
-        textMaxScore.setColor(Color.RED);
-        textMaxScore.getData().setScale(5);
+        textMaxScore.setColor(Color.ROYAL);
+        textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         //card
@@ -76,8 +78,13 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
-        table = new Texture(Gdx.files.internal("table.png"));
-        image = new Image(table);
+        textureTable = new Texture(Gdx.files.internal("table.png"));
+        imageTable = new Image(textureTable);
+        imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
+
+        textureMaxScoreBoard = new Texture(Gdx.files.internal("maxScoreBoard.png"));
+        imageMaxScoreBoard = new Image(textureMaxScoreBoard);
+        imageMaxScoreBoard.setPosition((Gdx.graphics.getWidth() / 2.0f + 25), Gdx.graphics.getHeight()-30);
 
         score = new Score();
         score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
@@ -85,7 +92,7 @@ public class MainGameScreen extends ScreenAdapter {
         score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
         score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
 
-        image.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
+
 
         textFieldTable = setupTextfieldTable();
 
@@ -94,8 +101,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(score.getPlayer().get(2));
         stage.addActor(score.getPlayer().get(3));
 
-        stage.addActor(image);
-
+        stage.addActor(imageTable);
+        stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
     }
 
@@ -133,11 +140,11 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
-        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 330);
+        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
         stage.draw();
         card.draw();
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f)), Gdx.graphics.getHeight());
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, ((Gdx.graphics.getWidth() / 2.0f + 95)), Gdx.graphics.getHeight()-55);
         batch.end();
     }
 
