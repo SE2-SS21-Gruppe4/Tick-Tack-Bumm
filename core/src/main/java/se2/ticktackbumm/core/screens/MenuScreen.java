@@ -20,8 +20,8 @@ import se2.ticktackbumm.core.assets.Explosion;
 public class MenuScreen extends ScreenAdapter {
 
     // Button constants
-    private final float BUTTON_WIDTH = 350f;
-    private final float BUTTON_HEIGHT = 80f;
+    private final float BUTTON_WIDTH = 450f;
+    private final float BUTTON_HEIGHT = 120f;
 
     // TickTackBumm resources
     private final TickTackBummGame game;
@@ -58,9 +58,9 @@ public class MenuScreen extends ScreenAdapter {
         rulesButton = new TextButton("RULES", skin);
         exitButton = new TextButton("EXIT", skin);
 
-        playButton.getLabel().setFontScale(3);
-        rulesButton.getLabel().setFontScale(3);
-        exitButton.getLabel().setFontScale(3);
+        playButton.getLabel().setFontScale(4);
+        rulesButton.getLabel().setFontScale(4);
+        exitButton.getLabel().setFontScale(4);
 
         menuButtonTable = new Table();
         menuButtonTable.setWidth(stage.getWidth());
@@ -72,7 +72,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new SpinWheelScreen());
-                // game.getNetworkClient().tryConnectClient();
+                 game.getNetworkClient().tryConnectClient();
             }
         });
         // TODO: add RulesScreen
