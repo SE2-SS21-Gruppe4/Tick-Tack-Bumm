@@ -11,6 +11,9 @@ import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 
 public class TickTackBummGame extends Game {
+
+    // TODO: add log tag with local player ID?
+
     public static final int HEIGHT = 2220;
     public static final int WIDTH = 1080;
 

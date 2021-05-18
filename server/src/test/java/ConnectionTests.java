@@ -16,7 +16,7 @@ import se2.ticktackbumm.server.network.NetworkServer;
 public class ConnectionTests {
     @Test
     public void testClientServerConnection() throws IOException {
-        NetworkServer server = new NetworkServer();
+        NetworkServer server = NetworkServer.getNetworkServer();
 
         Client client = new Client();
 
