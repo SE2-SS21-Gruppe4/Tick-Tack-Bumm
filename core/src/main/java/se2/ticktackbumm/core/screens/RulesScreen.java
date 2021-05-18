@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class RulesScreen extends ScreenAdapter {
@@ -43,7 +42,7 @@ public class RulesScreen extends ScreenAdapter {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.camera = TickTackBummGame.getGameCamera();
         this.batch = game.getBatch();
-        this.assetManager=game.getManager();
+        this.assetManager = game.getManager();
 
         //scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -64,16 +63,14 @@ public class RulesScreen extends ScreenAdapter {
 
 
         textrueImage = new Texture("rulescreen.png");
-        backgroundImage=new Image(textrueImage);
+        backgroundImage = new Image(textrueImage);
 
         backToMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen());
-                // game.getNetworkClient().tryConnectClient();
             }
         });
-
 
         quitButton.addListener(new ClickListener() {
             @Override
@@ -88,8 +85,8 @@ public class RulesScreen extends ScreenAdapter {
 
         stage.addActor(backgroundImage);
         stage.addActor(menuButtonTable);
-
     }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);

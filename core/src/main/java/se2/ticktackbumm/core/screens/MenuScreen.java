@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
 
@@ -26,7 +26,7 @@ public class MenuScreen extends ScreenAdapter {
 
     // TickTackBumm resources
     private final TickTackBummGame game;
-    private final Texture backgroundImage;
+    private final Image backgroundImage;
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
@@ -49,7 +49,7 @@ public class MenuScreen extends ScreenAdapter {
 
         explosion = new Explosion();
 
-        backgroundImage = new Texture("menuscreen.png");
+        backgroundImage = new Image(new Texture("menuscreen.png"));
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -72,7 +72,7 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SpinWheelScreen());
+//                game.setScreen(new SpinWheelScreen()); // testing only
                 game.getNetworkClient().tryConnectClient();
             }
         });
@@ -97,6 +97,7 @@ public class MenuScreen extends ScreenAdapter {
         menuButtonTable.row();
         menuButtonTable.add(exitButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
+        stage.addActor(backgroundImage);
         stage.addActor(menuButtonTable);
     }
 
@@ -105,10 +106,6 @@ public class MenuScreen extends ScreenAdapter {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
-
-        batch.begin();
-        batch.draw(backgroundImage, 0, 0);
-        batch.end();
 
         batch.begin();
         stage.draw();
