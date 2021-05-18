@@ -64,7 +64,7 @@ public class TextfieldInputListener extends ClickListener {
             textField.setText("KORREKT");
             checkButton.clearListeners();
 //            textField.setVisible(false); // hide text field after correct guess?
-            clientMessageSender.sendPlayerTaskCompleted(gameData.getCurrentPlayerTurnIndex());
+            clientMessageSender.sendPlayerTaskCompleted();
         } else {
             textField.setText("FALSCH");
             textField.setDisabled(false); // wrong guess; guess again

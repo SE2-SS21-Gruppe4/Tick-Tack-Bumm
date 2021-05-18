@@ -3,10 +3,8 @@ package se2.ticktackbumm.server.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.ConnectionRejected;
-import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.*;
+import se2.ticktackbumm.core.player.Player;
 
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.
@@ -27,10 +25,11 @@ public class NetworkServerListener extends Listener {
     public void connected(Connection connection) {
         Log.info(LOG_TAG, "Player trying to connect: " + connection);
 
-        if (networkServer.getServerData().connectPlayer(connection.getID())) {
+        Player connectedPlayer;
+        if ((connectedPlayer = networkServer.getServerData().connectPlayer(connection.getID())) != null) {
             Log.info(LOG_TAG, "Player successfully connected: " + connection);
 
-            connection.sendTCP(new ConnectionSuccessful());
+            connection.sendTCP(new ConnectionSuccessful(connectedPlayer));
         } else {
             Log.error(LOG_TAG, "Player connection failed: " + connection);
 
@@ -58,6 +57,8 @@ public class NetworkServerListener extends Listener {
         } else if (object instanceof PlayerTaskCompleted) {
             PlayerTaskCompleted playerTaskCompleted = (PlayerTaskCompleted) object;
             serverMessageHandler.handlePlayerTaskCompleted(playerTaskCompleted);
+        } else if (object instanceof BombExploded) {
+            serverMessageHandler.handleBombExploded((BombExploded) object, connection.getID());
         }
     }
 }

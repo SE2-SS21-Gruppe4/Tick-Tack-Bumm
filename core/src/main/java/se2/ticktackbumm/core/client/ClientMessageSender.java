@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.client;
 
 import com.esotericsoftware.kryonet.Client;
+import se2.ticktackbumm.core.network.messages.BombExploded;
 import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.SomeRequest;
 
@@ -31,7 +32,11 @@ public class ClientMessageSender {
         client.sendTCP(new SomeRequest(text));
     }
 
-    public void sendPlayerTaskCompleted(int playerIndex) {
-        client.sendTCP(new PlayerTaskCompleted(playerIndex));
+    public void sendPlayerTaskCompleted() {
+        client.sendTCP(new PlayerTaskCompleted());
+    }
+
+    public void sendBombExploded() {
+        client.sendTCP(new BombExploded());
     }
 }
