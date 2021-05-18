@@ -25,6 +25,7 @@ public class MenuScreen extends ScreenAdapter {
 
     // TickTackBumm resources
     private final TickTackBummGame game;
+    private final Texture backgroundImage;
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
@@ -46,6 +47,8 @@ public class MenuScreen extends ScreenAdapter {
         batch = game.getBatch();
 
         explosion = new Explosion();
+
+        backgroundImage = new Texture("menuscreen.png");
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -96,6 +99,10 @@ public class MenuScreen extends ScreenAdapter {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+        batch.draw(backgroundImage, 0, 0);
+        batch.end();
 
         batch.begin();
         stage.draw();
