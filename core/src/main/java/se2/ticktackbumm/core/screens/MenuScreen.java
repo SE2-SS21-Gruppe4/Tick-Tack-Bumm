@@ -88,8 +88,14 @@ public class MenuScreen extends ScreenAdapter {
                 // game.getNetworkClient().tryConnectClient();
             }
         });
-        // TODO: add RulesScreen
-        rulesButton.addListener(new ClickListener());
+        rulesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new RulesScreen());
+                // game.getNetworkClient().tryConnectClient();
+            }
+        });
+
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -110,7 +116,6 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        // TODO: Add background image
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
