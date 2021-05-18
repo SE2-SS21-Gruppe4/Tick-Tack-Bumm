@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
+import se2.ticktackbumm.server.network.NetworkServer;
 
 public class ServerData {
 
@@ -81,8 +82,23 @@ public class ServerData {
         gameData.getPlayers().remove(player.getPlayerId());
         Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
 
-        if (playersReady > 0) playersReady--;
+        decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
                 ", " + playersReady + " players ready");
+    }
+
+    public void incPlayersReady() {
+        if (playersReady < MAX_PLAYERS) {
+            Log.info(LOG_TAG, "Incrementing players ready count");
+            playersReady++;
+        }
+
+        Log.info(LOG_TAG, "Players ready count: " + playersReady);
+
+        if (playersReady >= MIN_PLAYERS) NetworkServer.getNetworkServer().getServerMessageSender().sendStartGame();
+    }
+
+    public void decPlayersReady() {
+        if (playersReady > 0) playersReady--;
     }
 }

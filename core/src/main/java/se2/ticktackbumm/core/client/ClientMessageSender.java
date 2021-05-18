@@ -1,7 +1,10 @@
 package se2.ticktackbumm.core.client;
 
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.network.messages.BombExploded;
+import se2.ticktackbumm.core.network.messages.PlayerReady;
 import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.SomeRequest;
 
@@ -33,10 +36,17 @@ public class ClientMessageSender {
     }
 
     public void sendPlayerTaskCompleted() {
+        Log.info(LOG_TAG, "Sending message TaskCompleted from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
         client.sendTCP(new PlayerTaskCompleted());
     }
 
     public void sendBombExploded() {
+        Log.info(LOG_TAG, "Sending message BombExploded from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
         client.sendTCP(new BombExploded());
+    }
+
+    public void sendPlayerReady() {
+        Log.info(LOG_TAG, "Sending message PlayerReady from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
+        client.sendTCP(new PlayerReady());
     }
 }

@@ -54,13 +54,21 @@ public class NetworkServerListener extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof SomeRequest) {
-            SomeRequest request = (SomeRequest) object;
-            serverMessageHandler.handleSomeRequest(request);
+            Log.info(LOG_TAG, "Disconnected player from server: " + connection.getID());
+            serverMessageHandler.handleSomeRequest((SomeRequest) object);
+
         } else if (object instanceof PlayerTaskCompleted) {
-            PlayerTaskCompleted playerTaskCompleted = (PlayerTaskCompleted) object;
-            serverMessageHandler.handlePlayerTaskCompleted(playerTaskCompleted);
+            Log.info(LOG_TAG, "Received message PlayerTaskCompleted from ID: " + connection.getID());
+            serverMessageHandler.handlePlayerTaskCompleted();
+
         } else if (object instanceof BombExploded) {
-            serverMessageHandler.handleBombExploded((BombExploded) object, connection.getID());
+            Log.info(LOG_TAG, "Received message BombExploded from ID: " + connection.getID());
+            serverMessageHandler.handleBombExploded(connection.getID());
+
+        } else if (object instanceof PlayerReady) {
+            Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
+            serverMessageHandler.handlePlayerReady();
+
         }
     }
 }

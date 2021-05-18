@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -62,6 +63,11 @@ public class WaitingScreen extends ScreenAdapter {
         readyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.getNetworkClient().getClientMessageSender().sendPlayerReady();
+
+                readyButton.getStyle().disabledFontColor = new Color(0, 1, 0, 1);
+                readyButton.setDisabled(true);
+                readyButton.clearListeners();
             }
         });
 
@@ -71,8 +77,8 @@ public class WaitingScreen extends ScreenAdapter {
                 game.getNetworkClient().disconnectClient();
                 game.setLocalPlayer(null);
 
-                Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game\n" +
-                        "Switching to MainMenuScreen");
+                Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+                        "switching to MainMenuScreen");
 
                 Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen()));
             }
