@@ -19,6 +19,8 @@ public class NetworkServer {
     private final Server server;
 
     private final ServerData serverData;
+    private final ServerMessageHandler serverMessageHandler;
+    private final ServerMessageSender serverMessageSender;
 
     /**
      * Class constructor.
@@ -28,7 +30,13 @@ public class NetworkServer {
     public NetworkServer() {
         this.server = new Server();
         KryoRegisterer.registerMessages(this.server.getKryo());
-        server.addListener(new NetworkServerListener(this));
+
+        serverData = new ServerData(server);
+
+        serverMessageSender = new ServerMessageSender(server);
+        serverMessageHandler = new ServerMessageHandler(this, serverMessageSender);
+        server.addListener(new NetworkServerListener(this, serverMessageHandler));
+
 
         try {
             this.startServer();
@@ -36,7 +44,6 @@ public class NetworkServer {
             Log.error("Error starting game server instance: " + e.getMessage());
         }
 
-        this.serverData = new ServerData(server);
     }
 
     /**

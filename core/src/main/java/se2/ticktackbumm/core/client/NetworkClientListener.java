@@ -14,6 +14,9 @@ import se2.ticktackbumm.core.screens.MenuScreen;
  * Listener for the TickTackBumm game client. Reacts to events on the client port.
  */
 public class NetworkClientListener extends Listener {
+
+    private final String LOG_TAG = "NETWORK_CLIENT_LISTENER";
+
     private final ClientMessageHandler clientMessageHandler;
 
     public NetworkClientListener(ClientMessageHandler clientMessageHandler) {
@@ -36,9 +39,9 @@ public class NetworkClientListener extends Listener {
         if (object instanceof SomeResponse) {
             clientMessageHandler.handleSomeResponse((SomeResponse) object);
         } else if (object instanceof ConnectionSuccessful) {
-            clientMessageHandler.handleConnectionSuccessful();
+            clientMessageHandler.handleConnectionSuccessful((ConnectionSuccessful) object);
         } else if (object instanceof ConnectionRejected) {
-            Log.error("Player connection was rejected by server");
+            Log.error(LOG_TAG, "Player connection was rejected by server");
         }
     }
 }

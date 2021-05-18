@@ -3,10 +3,11 @@ package se2.ticktackbumm.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,11 +21,12 @@ import se2.ticktackbumm.core.assets.Explosion;
 public class MenuScreen extends ScreenAdapter {
 
     // Button constants
-    private final float BUTTON_WIDTH = 350f;
-    private final float BUTTON_HEIGHT = 80f;
+    private final float BUTTON_WIDTH = 450f;
+    private final float BUTTON_HEIGHT = 120f;
 
     // TickTackBumm resources
     private final TickTackBummGame game;
+    private final Image backgroundImage;
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
@@ -47,6 +49,8 @@ public class MenuScreen extends ScreenAdapter {
 
         explosion = new Explosion();
 
+        backgroundImage = new Image(new Texture("menuscreen.png"));
+
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
@@ -55,9 +59,9 @@ public class MenuScreen extends ScreenAdapter {
         rulesButton = new TextButton("RULES", skin);
         exitButton = new TextButton("EXIT", skin);
 
-        playButton.getLabel().setFontScale(3);
-        rulesButton.getLabel().setFontScale(3);
-        exitButton.getLabel().setFontScale(3);
+        playButton.getLabel().setFontScale(4);
+        rulesButton.getLabel().setFontScale(4);
+        exitButton.getLabel().setFontScale(4);
 
         menuButtonTable = new Table();
         menuButtonTable.setWidth(stage.getWidth());
@@ -68,12 +72,18 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SpinWheelScreen());
-                // game.getNetworkClient().tryConnectClient();
+//                game.setScreen(new SpinWheelScreen()); // testing only
+                game.getNetworkClient().tryConnectClient();
             }
         });
-        // TODO: add RulesScreen
-        rulesButton.addListener(new ClickListener());
+
+        rulesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new RulesScreen());
+            }
+        });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -87,12 +97,12 @@ public class MenuScreen extends ScreenAdapter {
         menuButtonTable.row();
         menuButtonTable.add(exitButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
+        stage.addActor(backgroundImage);
         stage.addActor(menuButtonTable);
     }
 
     @Override
     public void render(float delta) {
-        // TODO: Add background image
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);

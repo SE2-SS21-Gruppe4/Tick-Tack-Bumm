@@ -11,6 +11,7 @@ import java.io.IOException;
  * The network client of each player.
  */
 public class NetworkClient {
+
     private final String LOG_TAG = "NETWORK_CLIENT";
     /**
      * Kryonet-Client to connect to server, send and receive messages.
@@ -34,11 +35,12 @@ public class NetworkClient {
         client = new Client();
         KryoRegisterer.registerMessages(this.client.getKryo());
 
-        clientMessageHandler = new ClientMessageHandler(this.client);
-        clientMessageSender = new ClientMessageSender(this.client);
+        clientMessageSender = new ClientMessageSender(client);
+        clientMessageHandler = new ClientMessageHandler(client, clientMessageSender);
 
-        this.client.start();
-        this.client.addListener(new NetworkClientListener(clientMessageHandler));
+        client.addListener(new NetworkClientListener(clientMessageHandler));
+
+        client.start();
     }
 
     /**

@@ -3,11 +3,13 @@ package se2.ticktackbumm.core.gamelogic;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.client.ClientMessageSender;
 import se2.ticktackbumm.core.data.GameData;
 
 import java.io.*;
@@ -16,25 +18,32 @@ import java.util.ArrayList;
 
 public class TextfieldInputListener extends ClickListener {
     private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
-
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
 
+    private TickTackBummGame game;
     private GameData gameData;
+    private ClientMessageSender clientMessageSender;
 
     private final TextField textField;
+    private final TextButton checkButton;
     private String userInput;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
     public TextfieldInputListener() {
-        textField = null;
+        this.textField = null;
+        this.checkButton = null;
     }
 
-    public TextfieldInputListener(TextField textField) {
+    public TextfieldInputListener(TextField textField, TextButton checkButton) {
         this.textField = textField;
-        gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+        this.checkButton = checkButton;
+
+        this.game = TickTackBummGame.getTickTackBummGame();
+        this.gameData = game.getGameData();
+        this.clientMessageSender = game.getNetworkClient().getClientMessageSender();
     }
 
     @Override
@@ -49,16 +58,20 @@ public class TextfieldInputListener extends ClickListener {
 
 //        textField.setText(""); // clear/consume user input?
         textField.setDisabled(true); // disable field until next guess/next turn
+        checkButton.setDisabled(true); // disable check button until next guess/next turn
 
         if (isValidWord(userInput)) {
             textField.setText("KORREKT");
+            checkButton.clearListeners();
 //            textField.setVisible(false); // hide text field after correct guess?
+            clientMessageSender.sendPlayerTaskCompleted();
         } else {
             textField.setText("FALSCH");
-//            textField.setDisabled(false); // wrong guess; guess again
+            textField.setDisabled(false); // wrong guess; guess again
+            checkButton.setDisabled(false); // wrong guess; guess again
         }
 
-        textField.setDisabled(false); // enable here again for testing only
+//        textField.setDisabled(false); // enable here again for testing only
     }
 
     boolean isValidWord(String userInput) {

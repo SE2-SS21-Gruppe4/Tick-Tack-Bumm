@@ -1,10 +1,8 @@
 package se2.ticktackbumm.core.network;
 
 import com.esotericsoftware.kryo.Kryo;
-import se2.ticktackbumm.core.network.messages.ConnectionRejected;
-import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
+import se2.ticktackbumm.core.network.messages.*;
+import se2.ticktackbumm.core.player.Player;
 
 /**
  * Kryonet Helper Class.
@@ -20,5 +18,9 @@ public class KryoRegisterer {
         kryo.register(SomeResponse.class);
         kryo.register(ConnectionSuccessful.class);
         kryo.register(ConnectionRejected.class);
+        kryo.register(PlayerTaskCompleted.class);
+        kryo.register(BombExploded.class);
+
+        kryo.register(Player.class);
     }
 }
