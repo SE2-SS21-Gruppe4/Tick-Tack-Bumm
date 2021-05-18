@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
 
@@ -72,11 +73,17 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new SpinWheelScreen());
-                 game.getNetworkClient().tryConnectClient();
+                game.getNetworkClient().tryConnectClient();
             }
         });
-        // TODO: add RulesScreen
-        rulesButton.addListener(new ClickListener());
+
+        rulesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new RulesScreen());
+            }
+        });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,7 +102,6 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        // TODO: Add background image
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
