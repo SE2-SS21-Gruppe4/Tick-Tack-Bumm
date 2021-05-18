@@ -59,4 +59,10 @@ public class ServerData {
     public void setWinner(Player winner) {
         this.winner = winner;
     }
+
+    public void incPlayerScoreByConnectionId(int connectionId) {
+        Player currentPlayer = gameData.getPlayerByConnectionId(connectionId);
+        int currentScore = currentPlayer.getGameScore();
+        currentPlayer.setGameScore(++currentScore);
+    }
 }

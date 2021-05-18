@@ -34,11 +34,12 @@ public class NetworkClient {
         client = new Client();
         KryoRegisterer.registerMessages(this.client.getKryo());
 
-        clientMessageHandler = new ClientMessageHandler(this.client);
-        clientMessageSender = new ClientMessageSender(this.client);
+        clientMessageSender = new ClientMessageSender(client);
+        clientMessageHandler = new ClientMessageHandler(client, clientMessageSender);
 
-        this.client.start();
-        this.client.addListener(new NetworkClientListener(clientMessageHandler));
+        client.addListener(new NetworkClientListener(clientMessageHandler));
+
+        client.start();
     }
 
     /**

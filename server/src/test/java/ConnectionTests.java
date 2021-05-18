@@ -27,16 +27,14 @@ public class ConnectionTests {
         client.start();
         client.connect(NetworkConstants.TIMEOUT, "localhost", NetworkConstants.TCP_PORT);
 
-        SomeRequest request = new SomeRequest();
-        request.text = "Here is a request";
-        client.sendTCP(request);
+        client.sendTCP(new SomeRequest("Here is a request"));
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof SomeResponse) {
                     SomeResponse response = (SomeResponse) object;
-                    System.out.println(response.text);
-                    Assertions.assertEquals("Thanks", response.text);
+                    System.out.println(response.getText());
+                    Assertions.assertEquals("Thanks", response.getText());
                 }
             }
         });
