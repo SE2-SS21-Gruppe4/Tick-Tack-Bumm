@@ -6,7 +6,7 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
 import se2.ticktackbumm.core.network.messages.SomeResponse;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
+import se2.ticktackbumm.core.screens.WaitingScreen;
 
 /**
  * Handles all incoming server messages for a client.
@@ -36,16 +36,16 @@ public class ClientMessageHandler {
 
     // Test method
     public void handleSomeResponse(SomeResponse someResponse) {
-        Log.info(LOG_TAG, "Server response to " + someResponse.getClass()
+        Log.info(LOG_TAG, "<SomeResponse> Server response to " + someResponse.getClass()
                 + ": " + someResponse.getText());
     }
 
     public void handleConnectionSuccessful(ConnectionSuccessful connectionSuccessful) {
-        Log.info(LOG_TAG, "Player successfully connected to server");
+        Log.info(LOG_TAG, "<ConnectionSuccessful> Player successfully connected to server");
 
         game.setLocalPlayer(connectionSuccessful.getConnectedPlayer());
-        Log.info(LOG_TAG, "Connected player added as local player: " + game.getLocalPlayer());
+        Log.info(LOG_TAG, "<ConnectionSuccessful> Connected player added as local player: " + game.getLocalPlayer());
 
-        Gdx.app.postRunnable(() -> game.setScreen(new SpinWheelScreen()));
+        Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen()));
     }
 }
