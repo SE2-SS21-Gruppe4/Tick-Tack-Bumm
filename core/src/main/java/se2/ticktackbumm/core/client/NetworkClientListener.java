@@ -39,7 +39,7 @@ public class NetworkClientListener extends Listener {
         if (object instanceof SomeResponse) {
             clientMessageHandler.handleSomeResponse((SomeResponse) object);
         } else if (object instanceof ConnectionSuccessful) {
-            clientMessageHandler.handleConnectionSuccessful();
+            clientMessageHandler.handleConnectionSuccessful((ConnectionSuccessful) object);
         } else if (object instanceof ConnectionRejected) {
             Log.error(LOG_TAG, "Player connection was rejected by server");
         }

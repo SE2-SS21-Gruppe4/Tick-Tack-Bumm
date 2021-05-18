@@ -21,15 +21,15 @@ public class ServerData {
         this.gameState = GameState.WAITING_FOR_PLAYERS; // which initial state?
     }
 
-    public boolean connectPlayer(int connectionId) {
+    public Player connectPlayer(int connectionId) {
         if (gameData.getPlayers().size() < MAX_PLAYERS) {
             Player newPlayer = new Player(connectionId, gameData.getPlayers().size());
             gameData.getPlayers().add(newPlayer);
 
-            return true;
+            return newPlayer;
         }
 
-        return false;
+        return null;
     }
 
     public static int getMaxPlayers() {
