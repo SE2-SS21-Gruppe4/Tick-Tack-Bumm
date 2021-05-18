@@ -1,7 +1,9 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.messages.SomeResponse;
+import se2.ticktackbumm.core.network.messages.StartGame;
 
 /**
  * Handles the sending of messages from the server to the clients.
@@ -32,5 +34,11 @@ public class ServerMessageSender {
 
     public void sendPlayerUpdate() {
         // TODO: update all clients with the new player turn and new player score
+    }
+
+    public void sendStartGame() {
+        Log.info(LOG_TAG, "Sending message StartGame to all clients");
+        // TODO: collect data for game start; create useful message class
+        server.sendToAllTCP(new StartGame());
     }
 }

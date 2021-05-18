@@ -1,11 +1,14 @@
 package se2.ticktackbumm.core.client;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
 import se2.ticktackbumm.core.network.messages.SomeResponse;
+import se2.ticktackbumm.core.network.messages.StartGame;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
 /**
@@ -47,5 +50,17 @@ public class ClientMessageHandler {
         Log.info(LOG_TAG, "<ConnectionSuccessful> Connected player added as local player: " + game.getLocalPlayer());
 
         Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen()));
+    }
+
+    public void handleStartGame(StartGame startGame) {
+        Log.info(LOG_TAG, "<StartGame> Starting game...");
+        // TODO: parse data from message; init players and game
+
+        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
+            @Override
+            public void run() {
+                game.setScreen(new SpinWheelScreen());
+            }
+        }, 2f));
     }
 }

@@ -14,13 +14,18 @@ public class KryoRegisterer {
      * @param kryo the Kryo instance to register Messages on
      */
     public static void registerMessages(Kryo kryo) {
+
+        // register messages
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
         kryo.register(ConnectionSuccessful.class);
         kryo.register(ConnectionRejected.class);
         kryo.register(PlayerTaskCompleted.class);
         kryo.register(BombExploded.class);
+        kryo.register(PlayerReady.class);
+        kryo.register(StartGame.class);
 
+        // register classes to send in messages
         kryo.register(Player.class);
     }
 }
