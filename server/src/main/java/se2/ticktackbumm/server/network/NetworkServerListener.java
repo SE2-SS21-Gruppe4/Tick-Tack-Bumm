@@ -40,7 +40,9 @@ public class NetworkServerListener extends Listener {
 
     @Override
     public void disconnected(Connection connection) {
-        super.disconnected(connection);
+        Log.info(LOG_TAG, "Disconnected player from server: " + connection.getID());
+
+        networkServer.getServerData().disconnectPlayer(connection.getID());
     }
 
     /**

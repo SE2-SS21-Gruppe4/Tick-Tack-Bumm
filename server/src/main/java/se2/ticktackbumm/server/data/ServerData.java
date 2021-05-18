@@ -1,10 +1,14 @@
 package se2.ticktackbumm.server.data;
 
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
 
 public class ServerData {
+
+    private final String LOG_TAG = "SERVER_DATA";
+
     private static final int MAX_PLAYERS = 4;
     private static final int MIN_PLAYERS = 1;
 
@@ -13,12 +17,15 @@ public class ServerData {
     private final GameState gameState;
 
     private Player winner;
+    private int playersReady;
 
     public ServerData(Server kryoServer) {
         this.kryoServer = kryoServer;
 
         this.gameData = new GameData();
         this.gameState = GameState.WAITING_FOR_PLAYERS; // which initial state?
+
+        this.playersReady = 0;
     }
 
     public Player connectPlayer(int connectionId) {
@@ -64,5 +71,18 @@ public class ServerData {
         Player currentPlayer = gameData.getPlayerByConnectionId(connectionId);
         int currentScore = currentPlayer.getGameScore();
         currentPlayer.setGameScore(++currentScore);
+    }
+
+    public void disconnectPlayer(int connectionID) {
+        Player player = gameData.getPlayerByConnectionId(connectionID);
+        if (player == null) return;
+        Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
+
+        gameData.getPlayers().remove(player.getPlayerId());
+        Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+
+        if (playersReady > 0) playersReady--;
+        Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
+                ", " + playersReady + " players ready");
     }
 }

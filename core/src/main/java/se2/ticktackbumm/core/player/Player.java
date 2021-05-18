@@ -48,4 +48,9 @@ public class Player {
     public void setHasCheated(boolean hasCheated) {
         this.hasCheated = hasCheated;
     }
+
+    @Override
+    public String toString() {
+        return "Player " + playerId + " with connectionId " + connectionId;
+    }
 }

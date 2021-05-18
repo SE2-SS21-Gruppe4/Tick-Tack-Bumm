@@ -50,9 +50,17 @@ public class NetworkClient {
     public void tryConnectClient() {
         try {
             client.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            Log.info(LOG_TAG, "Connected client to server with IP " + NetworkConstants.HOST_IP + " on port " +
+                    NetworkConstants.TCP_PORT);
         } catch (IOException e) {
             Log.error(LOG_TAG, "Failed to connect client: " + e, e);
         }
+    }
+
+    public void disconnectClient() {
+        client.close();
+        Log.info(LOG_TAG, "Disconnected client from server with IP " + NetworkConstants.HOST_IP + " on port " +
+                NetworkConstants.TCP_PORT);
     }
 
     /**
@@ -73,5 +81,9 @@ public class NetworkClient {
      */
     public ClientMessageSender getClientMessageSender() {
         return clientMessageSender;
+    }
+
+    public Client getClient() {
+        return client;
     }
 }
