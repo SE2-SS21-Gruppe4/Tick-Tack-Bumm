@@ -138,6 +138,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 break;
         }
 
+        // TODO: testing only
+        gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
+
         // show game button
         gameButton.setDisabled(false);
         gameButton.setVisible(true);

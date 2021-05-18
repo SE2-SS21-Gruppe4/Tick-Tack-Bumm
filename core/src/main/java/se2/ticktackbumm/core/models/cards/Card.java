@@ -44,6 +44,8 @@ public class Card {
 
         // TODO: add switch over game modes?
         gameData.setCurrentGameModeText(getRandomSyllable());
+        // TODO: testing only
+        gameData.setCurrentGameModeText("UNG"); // set syllable always to UNG for testing
 
         // TODO: load and get with AssetManager
         frontsideTexture = new Texture("card/frontside.png");
