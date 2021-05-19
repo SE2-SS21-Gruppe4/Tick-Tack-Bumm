@@ -29,17 +29,6 @@ public class ServerData {
         this.playersReady = 0;
     }
 
-    public Player connectPlayer(int connectionId) {
-        if (gameData.getPlayers().size() < MAX_PLAYERS) {
-            Player newPlayer = new Player(connectionId, gameData.getPlayers().size());
-            gameData.getPlayers().add(newPlayer);
-
-            return newPlayer;
-        }
-
-        return null;
-    }
-
     public static int getMaxPlayers() {
         return MAX_PLAYERS;
     }
@@ -68,10 +57,15 @@ public class ServerData {
         this.winner = winner;
     }
 
-    public void incPlayerScoreByConnectionId(int connectionId) {
-        Player currentPlayer = gameData.getPlayerByConnectionId(connectionId);
-        int currentScore = currentPlayer.getGameScore();
-        currentPlayer.setGameScore(++currentScore);
+    public Player connectPlayer(int connectionId) {
+        if (gameData.getPlayers().size() < MAX_PLAYERS) {
+            Player newPlayer = new Player(connectionId, gameData.getPlayers().size());
+            gameData.getPlayers().add(newPlayer);
+
+            return newPlayer;
+        }
+
+        return null;
     }
 
     public void disconnectPlayer(int connectionID) {
@@ -87,6 +81,12 @@ public class ServerData {
                 ", " + playersReady + " players ready");
     }
 
+    public void incPlayerScoreByConnectionId(int connectionId) {
+        Player currentPlayer = gameData.getPlayerByConnectionId(connectionId);
+        int currentScore = currentPlayer.getGameScore();
+        currentPlayer.setGameScore(++currentScore);
+    }
+
     public void incPlayersReady() {
         if (playersReady < MAX_PLAYERS) {
             Log.info(LOG_TAG, "Incrementing players ready count");
@@ -94,6 +94,8 @@ public class ServerData {
         }
 
         Log.info(LOG_TAG, "Players ready count: " + playersReady);
+
+        // TODO: send message to all clients with new player ready count
 
         if (playersReady >= MIN_PLAYERS) NetworkServer.getNetworkServer().getServerMessageSender().sendStartGame();
     }

@@ -33,7 +33,7 @@ public class ServerMessageSender {
     }
 
     public void sendPlayerUpdate() {
-        // TODO: update all clients with the new player turn and new player score
+        // TODO: update all clients with the new player turn
     }
 
     public void sendStartGame() {

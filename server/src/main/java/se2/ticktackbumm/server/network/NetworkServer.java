@@ -27,7 +27,7 @@ public class NetworkServer {
     /**
      * Kryonet-Server instance.
      */
-    private final Server server;
+    private final Server kryoServer;
 
     private final ServerData serverData;
     private final ServerMessageHandler serverMessageHandler;
@@ -39,14 +39,14 @@ public class NetworkServer {
      * {@link NetworkServerListener} to handle messages.
      */
     private NetworkServer() {
-        this.server = new Server();
-        KryoRegisterer.registerMessages(this.server.getKryo());
+        this.kryoServer = new Server();
+        KryoRegisterer.registerMessages(this.kryoServer.getKryo());
 
-        serverData = new ServerData(server);
+        serverData = new ServerData(kryoServer);
 
-        serverMessageSender = new ServerMessageSender(server);
+        serverMessageSender = new ServerMessageSender(kryoServer);
         serverMessageHandler = new ServerMessageHandler(this, serverMessageSender);
-        server.addListener(new NetworkServerListener(this, serverMessageHandler));
+        kryoServer.addListener(new NetworkServerListener(this, serverMessageHandler));
 
         try {
             this.startServer();
@@ -64,14 +64,14 @@ public class NetworkServer {
     public void startServer() throws IOException {
         Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
 
-        server.start();
-        server.bind(NetworkConstants.TCP_PORT);
+        kryoServer.start();
+        kryoServer.bind(NetworkConstants.TCP_PORT);
 
         Log.info("Server started on port " + NetworkConstants.TCP_PORT);
     }
 
-    public Server getServer() {
-        return server;
+    public Server getKryoServer() {
+        return kryoServer;
     }
 
     public ServerData getServerData() {
