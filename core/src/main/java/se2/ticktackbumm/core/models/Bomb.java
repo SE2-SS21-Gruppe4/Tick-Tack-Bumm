@@ -19,6 +19,8 @@ public class Bomb {
     private Texture bombTexture;
     private Image bombImage;
 
+    private BombState bombState;
+
     public Bomb(){
         tickTackBummGame = TickTackBummGame.getTickTackBummGame();
         assetManager = tickTackBummGame.getManager();
@@ -31,10 +33,17 @@ public class Bomb {
         bombTexture = assetManager.get("bomb/bomb.png",Texture.class);
         bombImage = new Image(bombTexture);
 
+        bombState = BombState.NORMAL;
+
+    }
+
+    public enum BombState{
+        NORMAL,
+        EXPLODED
     }
 
     public void drawBomb(){
-        bombImage.setBounds(20,40,50,60);
+        bombImage.setBounds(20,40,80,80);
         stage.addActor(bombImage);
         stage.draw();
     }
