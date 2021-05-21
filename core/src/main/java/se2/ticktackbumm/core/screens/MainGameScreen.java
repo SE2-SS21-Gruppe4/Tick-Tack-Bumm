@@ -14,9 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.util.ArrayList;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.models.BombImpl.Bomb;
+import se2.ticktackbumm.core.models.BombImpl.BombExplosion;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -45,6 +50,11 @@ public class MainGameScreen extends ScreenAdapter {
 
     private Card card;
 
+    //Bomb and explosion
+    private Bomb bomb;
+    private Texture explosionTexture;
+    private ArrayList<BombExplosion> explosionList;
+
     private BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
@@ -65,6 +75,14 @@ public class MainGameScreen extends ScreenAdapter {
 
         //card
         card = new Card();
+
+        //bomb
+        bomb = new Bomb();
+        assetManager.load("bombexplosion.png",Texture.class);
+        assetManager.finishLoading();
+
+        explosionTexture = assetManager.get("bombexplosion.png",Texture.class);
+        explosionList = new ArrayList<>();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -143,6 +161,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         stage.draw();
         card.draw();
+
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
     }

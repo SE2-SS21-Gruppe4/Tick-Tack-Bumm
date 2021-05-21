@@ -1,15 +1,20 @@
-package se2.ticktackbumm.core.models;
+package se2.ticktackbumm.core.models.BombImpl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.Random;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.assets.Explosion;
 
 public class Bomb {
 
@@ -26,6 +31,8 @@ public class Bomb {
     private Random radnomExplosion;
     private float explodeTime;
     private float timerToExplode;
+
+    private Explosion explosion;
 
 
     public Bomb(){
@@ -45,6 +52,10 @@ public class Bomb {
         radnomExplosion = new Random();
         explodeTime = (float)radnomExplosion.nextInt(5)+1;
         timerToExplode = 0;
+        Log.info(String.valueOf(this.explodeTime));
+
+        explosion = new Explosion();
+
 
     }
 
@@ -53,12 +64,7 @@ public class Bomb {
         EXPLODED
     }
 
-    public void renderBomb(){
-        this.timerToExplode += Gdx.graphics.getDeltaTime();
-
-        if (this.timerToExplode >= explodeTime){
-            this.bombState = BombState.EXPLODED;
-        }
+    public void renderBomb(float delta,SpriteBatch spriteBatch){
         drawBomb();
     }
 
@@ -66,11 +72,12 @@ public class Bomb {
         if (this.bombState == BombState.NORMAL){
         bombImage.setBounds(20,40,80,80);
         stage.addActor(bombImage);
+        stage.act();
         stage.draw();}
     }
 
-    public void menageExplode(float delta){
-        this.timerToExplode += delta;
+    public void explode(float delta, SpriteBatch spriteBatch){
+
     }
 
     public void setNewRandomTimer(){
