@@ -43,7 +43,7 @@ public class Bomb {
         bombState = BombState.NORMAL;
 
         radnomExplosion = new Random();
-        explodeTime = (float)radnomExplosion.nextInt(30)+1;
+        explodeTime = (float)radnomExplosion.nextInt(5)+1;
         timerToExplode = 0;
 
     }
@@ -53,14 +53,24 @@ public class Bomb {
         EXPLODED
     }
 
+    public void renderBomb(){
+        this.timerToExplode += Gdx.graphics.getDeltaTime();
+
+        if (this.timerToExplode >= explodeTime){
+            this.bombState = BombState.EXPLODED;
+        }
+        drawBomb();
+    }
+
     public void drawBomb(){
+        if (this.bombState == BombState.NORMAL){
         bombImage.setBounds(20,40,80,80);
         stage.addActor(bombImage);
-        stage.draw();
+        stage.draw();}
     }
 
     public void menageExplode(float delta){
-
+        this.timerToExplode += delta;
     }
 
     public void setNewRandomTimer(){
