@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import java.util.Random;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class Bomb {
@@ -20,6 +22,11 @@ public class Bomb {
     private Image bombImage;
 
     private BombState bombState;
+
+    private Random radnomExplosion;
+    private float explodeTime;
+    private float timerToExplode;
+
 
     public Bomb(){
         tickTackBummGame = TickTackBummGame.getTickTackBummGame();
@@ -35,6 +42,10 @@ public class Bomb {
 
         bombState = BombState.NORMAL;
 
+        radnomExplosion = new Random();
+        explodeTime = (float)radnomExplosion.nextInt(30)+1;
+        timerToExplode = 0;
+
     }
 
     public enum BombState{
@@ -46,6 +57,27 @@ public class Bomb {
         bombImage.setBounds(20,40,80,80);
         stage.addActor(bombImage);
         stage.draw();
+    }
+
+    public void menageExplode(float delta){
+
+    }
+
+    public void setNewRandomTimer(){
+        this.explodeTime = (float) radnomExplosion.nextInt(30)+1;
+    }
+
+    private float getExplodeTime(){
+        return this.explodeTime;
+    }
+    private float getTimerToExplode(){
+        return this.timerToExplode;
+    }
+    public void setTimerToExplode(float timerToExplode){
+        this.timerToExplode = timerToExplode;
+    }
+    public void setExplodeTime(float explodeTime){
+        this.explodeTime = explodeTime;
     }
 
 
