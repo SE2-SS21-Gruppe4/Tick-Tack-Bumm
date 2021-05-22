@@ -14,7 +14,7 @@ public class BombExplosion {
 
     private Rectangle boundsOfExplosion;
 
-    public BombExplosion(Texture texture, Rectangle boundsOfExplosion, float animationTime){
+    public BombExplosion(Texture texture, float animationTime){
         this.boundsOfExplosion = boundsOfExplosion;
 
         //split png from MainScreen
@@ -38,8 +38,8 @@ public class BombExplosion {
         explosionTime += delta;
     }
 
-    public void renderExplosion(SpriteBatch spriteBatch){
-        spriteBatch.draw(explosionAnimation.getKeyFrame(explosionTime), boundsOfExplosion.x,boundsOfExplosion.y,boundsOfExplosion.width,boundsOfExplosion.height);
+    public void renderExplosion(SpriteBatch spriteBatch,float posX,float posY, float width, float height){
+        spriteBatch.draw(explosionAnimation.getKeyFrame(explosionTime), posX,posY,width,height);
     }
 
     public boolean isFinished(){
