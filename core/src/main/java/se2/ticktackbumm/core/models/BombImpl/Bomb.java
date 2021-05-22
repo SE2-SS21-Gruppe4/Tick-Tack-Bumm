@@ -54,7 +54,7 @@ public class Bomb {
         bombState = BombState.NORMAL;
 
         radnomExplosion = new Random();
-        explodeTime = (float)radnomExplosion.nextInt(5)+1;
+        explodeTime = (float)radnomExplosion.nextInt(10)+1;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
@@ -62,7 +62,7 @@ public class Bomb {
         assetManager.finishLoading();
         explosionTexture = assetManager.get("bombexplosion.png",Texture.class);
 
-        bombExplosion = new BombExplosion(explosionTexture,new Rectangle(50,(Gdx.graphics.getHeight())-50,400,400),0.7f);
+        bombExplosion = new BombExplosion(explosionTexture,0.7f);
     }
 
     public enum BombState{
@@ -71,26 +71,19 @@ public class Bomb {
     }
 
     public void renderBomb(float delta,SpriteBatch spriteBatch){
-        spriteBatch.draw(bombTexture,50,(Gdx.graphics.getHeight())-50,320,320);
+        makeExplosion(delta,spriteBatch);
+        spriteBatch.draw(bombTexture,10,((Gdx.graphics.getHeight()))-270,290,290);
     }
 
-    public void makeExplosion(float deltaTime,SpriteBatch spriteBatch){
-                bombExplosion.updateExplosion(deltaTime);
-                if (!bombExplosion.isFinished()){
-                    bombExplosion.renderExplosion(spriteBatch);
-                }
+    public void makeExplosion(float deltaTime,SpriteBatch spriteBatch) {
+        this.timerToExplode += deltaTime;
+        if (timerToExplode >= explodeTime) {
+            bombExplosion.updateExplosion(deltaTime);
+            if (!bombExplosion.isFinished()) {
+                bombExplosion.renderExplosion(spriteBatch,10,Gdx.graphics.getHeight()+390,400,400);
             }
-
-    public void drawBomb(){
-        if (this.bombState == BombState.NORMAL){
-        bombImage.setBounds(20,40,80,80);
-        stage.addActor(bombImage);
-        stage.act();
-        stage.draw();}
-    }
-
-    public void explode(float delta, SpriteBatch spriteBatch){
-
+            this.bombState = BombState.EXPLODED;
+        }
     }
 
     public void setNewRandomTimer(){
