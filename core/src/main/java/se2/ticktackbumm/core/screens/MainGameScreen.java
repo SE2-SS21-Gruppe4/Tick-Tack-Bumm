@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
@@ -54,6 +56,7 @@ public class MainGameScreen extends ScreenAdapter {
     private Bomb bomb;
     private Texture explosionTexture;
     private ArrayList<BombExplosion> explosionList;
+    private BombExplosion bombExplosion;
 
     private BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
@@ -83,6 +86,8 @@ public class MainGameScreen extends ScreenAdapter {
 
         explosionTexture = assetManager.get("bombexplosion.png",Texture.class);
         explosionList = new ArrayList<>();
+        bombExplosion = new BombExplosion(explosionTexture,new Rectangle(5,20,50,50),0.7f);
+
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -148,6 +153,20 @@ public class MainGameScreen extends ScreenAdapter {
         generator.dispose();
     }
 
+    public void makeExplosion(float deltaTime){
+        ListIterator<BombExplosion> bombExplosionListIterator = explosionList.listIterator();
+
+        while (bombExplosionListIterator.hasNext()){
+            BombExplosion bombExplosion = bombExplosionListIterator.next();
+            if (bombExplosion.isFinished()){
+                bombExplosionListIterator.remove();
+            }
+            else{
+                bombExplosion.renderExplosion(batch);
+            }
+        }
+    }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
@@ -158,6 +177,8 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
+
+        makeExplosion(delta);
 
         stage.draw();
         card.draw();
