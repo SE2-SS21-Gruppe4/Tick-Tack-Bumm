@@ -16,9 +16,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 

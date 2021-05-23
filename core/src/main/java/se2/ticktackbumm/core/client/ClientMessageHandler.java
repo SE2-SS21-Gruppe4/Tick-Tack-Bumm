@@ -56,11 +56,11 @@ public class ClientMessageHandler {
         Log.info(LOG_TAG, "<StartGame> Starting game...");
         // TODO: parse data from message; init players and game
 
-        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
-            @Override
-            public void run() {
-                game.setScreen(new SpinWheelScreen());
-            }
-        }, 2f));
+//        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
+//            @Override
+//            public void run() {
+//                game.setScreen(new SpinWheelScreen());
+//            }
+//        }, 2f));
     }
 }

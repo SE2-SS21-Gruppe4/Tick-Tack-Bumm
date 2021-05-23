@@ -2,14 +2,11 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,8 +14,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.listeners.ReadyButtonListener;
-
-import java.awt.*;
 
 public class WaitingScreen extends ScreenAdapter {
 
@@ -36,7 +31,12 @@ public class WaitingScreen extends ScreenAdapter {
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
-    private final TextField playerName;
+
+    private final Label playerNameLabel;
+    private final TextField playerNameTextField;
+    private final Label playerColorLabel;
+    private final Table nameAndColorTable;
+
     private final TextButton readyButton;
     private final TextButton backButton;
     private final Table waitingButtonTable;
@@ -50,8 +50,30 @@ public class WaitingScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        playerName = new TextField();
+        // increase font scale
+        skin.getFont("default-font").getData().setScale(3f);
 
+        // name and color input
+        playerNameLabel = new Label("SPIELERNAME", skin);
+        playerNameTextField = new TextField("Spieler " + game.getLocalPlayer().getPlayerId(), skin);
+        playerColorLabel = new Label("SPIELERFARBE", skin);
+
+        playerNameLabel.setFontScale(4);
+        playerNameTextField.setAlignment(Align.center);
+        playerColorLabel.setFontScale(4);
+
+        nameAndColorTable = new Table();
+        nameAndColorTable.setWidth(stage.getWidth());
+        nameAndColorTable.setHeight(stage.getHeight());
+
+        nameAndColorTable.add(playerNameLabel).padTop(600f).padBottom(20f);
+        nameAndColorTable.row();
+        nameAndColorTable.add(playerNameTextField).padBottom(100f).width(600f).height(125f);
+        nameAndColorTable.row();
+        nameAndColorTable.add(playerColorLabel).padBottom(20f);
+
+
+        // bottom bar buttons
         readyButton = new TextButton("BEREIT", skin);
         backButton = new TextButton("ZURÜCK", skin);
 
@@ -61,7 +83,7 @@ public class WaitingScreen extends ScreenAdapter {
         waitingButtonTable = new Table();
         waitingButtonTable.setWidth(stage.getWidth());
         waitingButtonTable.setHeight(stage.getHeight());
-        waitingButtonTable.align(Align.center);
+        waitingButtonTable.align(Align.center | Align.bottom);
 
         readyButton.addListener(new ReadyButtonListener(this));
 
@@ -78,11 +100,11 @@ public class WaitingScreen extends ScreenAdapter {
             }
         });
 
+        waitingButtonTable.add(backButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        waitingButtonTable.add(readyButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
-        waitingButtonTable.add(readyButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        waitingButtonTable.row();
-        waitingButtonTable.add(backButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-
+        // add tables to stage
+        stage.addActor(nameAndColorTable);
         stage.addActor(waitingButtonTable);
     }
 
