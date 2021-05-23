@@ -6,18 +6,16 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 
-public class LoadingScreen extends ScreenAdapter implements Screen{
+public class LoadingScreen extends ScreenAdapter implements Screen {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private final BitmapFont font;
@@ -33,17 +31,18 @@ public class LoadingScreen extends ScreenAdapter implements Screen{
 
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
+        this.assetManager = game.getManager();
         this.bf_loadProgress = new BitmapFont();
-        bf_loadProgress.getData().setScale(2, 1);
         mShapeRenderer = new ShapeRenderer();
         startTime = TimeUtils.nanoTime();
 
         this.camera = TickTackBummGame.getGameCamera();
         initCamera();
-        this.assetManager = game.getManager();
         this.font = game.getFont();
 
-        image = new Texture("loadingscreen.jpg");
+        loadAllAssets();
+
+        image = assetManager.get("loadingscreen.jpg", Texture.class);
         sprite = new Sprite(image);
     }
 
@@ -51,6 +50,24 @@ public class LoadingScreen extends ScreenAdapter implements Screen{
         int screenHeight = 2220;
         this.camera.setToOrtho(false, screenWidth, screenHeight);
         this.camera.update();
+    }
+
+    private void loadAllAssets() {
+        assetManager.load("bombeStart.png", Texture.class);
+        assetManager.load("explosion.atlas", TextureAtlas.class);
+        assetManager.load("loadingscreen.jpg", Texture.class);
+        assetManager.load("maxScoreBoard.png", Texture.class);
+        assetManager.load("menuscreen.png", Texture.class);
+        assetManager.load("rulescreen.png", Texture.class);
+        assetManager.load("table.jpg", Texture.class);
+        assetManager.load("table.png", Texture.class);
+        assetManager.load("card/backside.png", Texture.class);
+        assetManager.load("card/frontside.png", Texture.class);
+        assetManager.load("score/player1.png", Texture.class);
+        assetManager.load("score/player2.png", Texture.class);
+        assetManager.load("score/player3.png", Texture.class);
+        assetManager.load("score/player4.png", Texture.class);
+        assetManager.finishLoading();
     }
 
     @Override
@@ -61,6 +78,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen{
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
+
         showLoadProgress();
     }
 
@@ -86,7 +104,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen{
 
     @Override
     public void dispose() {
-        bf_loadProgress.dispose();
         mShapeRenderer.dispose();
     }
 
@@ -101,7 +118,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen{
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
-        bf_loadProgress.draw(game.getBatch(), "Loading " + progress + " / " + 100, 0, 40);
+        sprite.draw(game.getBatch());
         game.getBatch().end();
 
         mShapeRenderer.setProjectionMatrix(camera.combined);
