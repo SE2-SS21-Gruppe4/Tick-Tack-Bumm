@@ -22,9 +22,12 @@ public class WaitingScreen extends ScreenAdapter {
 
     private final String LOG_TAG = "WAITING_SCREEN";
 
-    // Button constants
+    // Style constants
     private final float BUTTON_WIDTH = 450f;
     private final float BUTTON_HEIGHT = 120f;
+    private final float AVATAR_BUTTON_SIZE = 200f;
+    private final float AVATAR_BUTTON_PADDING = 20f;
+    private final int AVATAR_TEXTURE_SIZE = 180;
 
     // TickTackBumm resources
     private final TickTackBummGame game;
@@ -66,12 +69,38 @@ public class WaitingScreen extends ScreenAdapter {
         playerNameLabel = new Label("SPIELERNAME", skin);
         playerNameTextField = new TextField("Spieler " + game.getLocalPlayer().getPlayerId(), skin);
         playerColorLabel = new Label("AVATAR", skin);
+        nameAndColorTable = new Table();
 
+        setupNameInput();
+
+        // avatar buttons
+        avatarButtonTable = new Table();
+        avatarButtonTable.setWidth(stage.getWidth());
+        avatarButtonTable.setY(460f);
+
+        playerAvatarButton0 = createAndAddAvatarButton("avatars/square_blue.png");
+        playerAvatarButton1 = createAndAddAvatarButton("avatars/square_green.png");
+        playerAvatarButton2 = createAndAddAvatarButton("avatars/square_yellow.png");
+        playerAvatarButton3 = createAndAddAvatarButton("avatars/square_red.png");
+
+        // bottom bar buttons
+        readyButton = new TextButton("BEREIT", skin);
+        backButton = new TextButton("ZURÜCK", skin);
+        waitingButtonTable = new Table();
+
+        setupBottomButtons();
+
+        // add tables to stage
+        stage.addActor(nameAndColorTable);
+        stage.addActor(avatarButtonTable);
+        stage.addActor(waitingButtonTable);
+    }
+
+    private void setupNameInput() {
         playerNameLabel.setFontScale(4);
         playerNameTextField.setAlignment(Align.center);
         playerColorLabel.setFontScale(4);
 
-        nameAndColorTable = new Table();
         nameAndColorTable.setWidth(stage.getWidth());
         nameAndColorTable.setY(800);
 
@@ -80,74 +109,33 @@ public class WaitingScreen extends ScreenAdapter {
         nameAndColorTable.add(playerNameTextField).padBottom(100f).width(600f).height(125f);
         nameAndColorTable.row();
         nameAndColorTable.add(playerColorLabel).padBottom(20f);
+    }
 
-        // avatar buttons
-        ImageButton.ImageButtonStyle avatarStyle0 =
+    private ImageButton createAndAddAvatarButton(String avatarTexturePath) {
+        ImageButton.ImageButtonStyle avatarStyle =
                 new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
-        avatarStyle0.imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_blue.png", Texture.class), 180, 180
-                ));
-        ImageButton.ImageButtonStyle avatarStyle1 =
-                new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
-        avatarStyle1.imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_green.png", Texture.class), 180, 180
-                ));
-        ImageButton.ImageButtonStyle avatarStyle2 =
-                new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
-        avatarStyle2.imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_yellow.png", Texture.class), 180, 180
+
+        avatarStyle.imageUp =
+                new TextureRegionDrawable(new TextureRegion(
+                        game.getManager().get(avatarTexturePath, Texture.class),
+                        AVATAR_TEXTURE_SIZE,
+                        AVATAR_TEXTURE_SIZE
                 ));
 
-        ImageButton.ImageButtonStyle avatarStyle3 =
-                new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
-        avatarStyle3.imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_red.png", Texture.class), 180, 180
-                ));
+        ImageButton avatarButton = new ImageButton(avatarStyle);
 
-        playerAvatarButton0 = new ImageButton(avatarStyle0);
-        playerAvatarButton1 = new ImageButton(avatarStyle1);
-        playerAvatarButton2 = new ImageButton(avatarStyle2);
-        playerAvatarButton3 = new ImageButton(avatarStyle3);
+        avatarButtonTable.add(avatarButton)
+                .padLeft(AVATAR_BUTTON_PADDING).padRight(AVATAR_BUTTON_PADDING)
+                .width(AVATAR_BUTTON_SIZE).height(AVATAR_BUTTON_SIZE);
 
-        playerAvatarButton0.getStyle().imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_blue.png", Texture.class), 180, 180
-                )
-        );
-        playerAvatarButton1.getStyle().imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_green.png", Texture.class), 180, 180
-                )
-        );
-        playerAvatarButton2.getStyle().imageUp = new TextureRegionDrawable(
-                new TextureRegion(
-                        game.getManager().get("avatars/square_yellow.png", Texture.class), 180, 180
-                )
-        );
+        return avatarButton;
+    }
 
-        avatarButtonTable = new Table();
-        avatarButtonTable.setWidth(stage.getWidth());
-        avatarButtonTable.setY(460f);
-
-        avatarButtonTable.add(playerAvatarButton0).padLeft(20f).padRight(20f).width(200f).height(200f);
-        avatarButtonTable.add(playerAvatarButton1).padLeft(20f).padRight(20f).width(200f).height(200f);
-        avatarButtonTable.add(playerAvatarButton2).padLeft(20f).padRight(20f).width(200f).height(200f);
-        avatarButtonTable.add(playerAvatarButton3).padLeft(20f).padRight(20f).width(200f).height(200f);
-
-        // bottom bar buttons
-        readyButton = new TextButton("BEREIT", skin);
-        backButton = new TextButton("ZURÜCK", skin);
-
+    private void setupBottomButtons() {
         readyButton.getLabel().setFontScale(4);
         backButton.getLabel().setFontScale(4);
 
-        waitingButtonTable = new Table();
         waitingButtonTable.setWidth(stage.getWidth());
-        waitingButtonTable.setHeight(stage.getHeight());
         waitingButtonTable.align(Align.center | Align.bottom);
 
         readyButton.addListener(new ReadyButtonListener(this));
@@ -167,11 +155,6 @@ public class WaitingScreen extends ScreenAdapter {
 
         waitingButtonTable.add(backButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         waitingButtonTable.add(readyButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-
-        // add tables to stage
-        stage.addActor(nameAndColorTable);
-        stage.addActor(avatarButtonTable);
-        stage.addActor(waitingButtonTable);
     }
 
     @Override
