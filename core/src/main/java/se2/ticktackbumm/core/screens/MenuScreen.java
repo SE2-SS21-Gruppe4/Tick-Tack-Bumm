@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.assets.Explosion;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -29,9 +29,6 @@ public class MenuScreen extends ScreenAdapter {
     private final Image backgroundImage;
     private OrthographicCamera camera;
     private SpriteBatch batch;
-
-    // VFX
-    private final Explosion explosion;
 
     // Scene2D UI
     private final Stage stage;
@@ -46,8 +43,6 @@ public class MenuScreen extends ScreenAdapter {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
-
-        explosion = new Explosion();
 
         backgroundImage = new Image(new Texture("menuscreen.png"));
 
@@ -72,8 +67,8 @@ public class MenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                game.setScreen(new SpinWheelScreen()); // testing only
-                game.getNetworkClient().tryConnectClient();
+                game.setScreen(new SpinWheelScreen()); // testing only
+                //game.getNetworkClient().tryConnectClient();
             }
         });
 
