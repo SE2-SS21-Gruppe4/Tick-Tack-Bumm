@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.Avatars;
 
 public class LoadingScreen extends ScreenAdapter implements Screen {
     private final TickTackBummGame game;

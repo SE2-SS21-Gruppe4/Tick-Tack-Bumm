@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.network;
 
 import com.esotericsoftware.kryo.Kryo;
+import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.network.messages.*;
 import se2.ticktackbumm.core.player.Player;
 
@@ -27,5 +28,6 @@ public class KryoRegisterer {
 
         // register classes to send in messages
         kryo.register(Player.class);
+        kryo.register(Avatars.class);
     }
 }

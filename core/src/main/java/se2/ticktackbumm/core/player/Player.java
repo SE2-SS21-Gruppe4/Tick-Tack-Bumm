@@ -1,11 +1,15 @@
 package se2.ticktackbumm.core.player;
 
+import se2.ticktackbumm.core.data.Avatars;
+
 public class Player {
     private int connectionId;
     private int playerId;
 
     private int gameScore;
     private boolean hasCheated;
+
+    private Avatars playerAvatar;
 
     public Player() {
         // kryonet
@@ -47,6 +51,14 @@ public class Player {
 
     public void setHasCheated(boolean hasCheated) {
         this.hasCheated = hasCheated;
+    }
+
+    public Avatars getPlayerAvatar() {
+        return playerAvatar;
+    }
+
+    public void setPlayerAvatar(Avatars playerAvatar) {
+        this.playerAvatar = playerAvatar;
     }
 
     @Override

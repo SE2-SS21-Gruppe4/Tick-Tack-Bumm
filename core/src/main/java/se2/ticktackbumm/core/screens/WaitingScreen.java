@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.Avatars;
+import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.listeners.ReadyButtonListener;
 
 public class WaitingScreen extends ScreenAdapter {
@@ -78,10 +80,10 @@ public class WaitingScreen extends ScreenAdapter {
         avatarButtonTable.setWidth(stage.getWidth());
         avatarButtonTable.setY(460f);
 
-        playerAvatarButton0 = createAndAddAvatarButton("avatars/square_blue.png");
-        playerAvatarButton1 = createAndAddAvatarButton("avatars/square_green.png");
-        playerAvatarButton2 = createAndAddAvatarButton("avatars/square_yellow.png");
-        playerAvatarButton3 = createAndAddAvatarButton("avatars/square_red.png");
+        playerAvatarButton0 = createAndSetupAvatarButton(Avatars.BLUE, "avatars/square_blue.png");
+        playerAvatarButton1 = createAndSetupAvatarButton(Avatars.GREEN, "avatars/square_green.png");
+        playerAvatarButton2 = createAndSetupAvatarButton(Avatars.YELLOW, "avatars/square_yellow.png");
+        playerAvatarButton3 = createAndSetupAvatarButton(Avatars.RED, "avatars/square_red.png");
 
         // bottom bar buttons
         readyButton = new TextButton("BEREIT", skin);
@@ -111,7 +113,7 @@ public class WaitingScreen extends ScreenAdapter {
         nameAndColorTable.add(playerColorLabel).padBottom(20f);
     }
 
-    private ImageButton createAndAddAvatarButton(String avatarTexturePath) {
+    private ImageButton createAndSetupAvatarButton(Avatars avatar, String avatarTexturePath) {
         ImageButton.ImageButtonStyle avatarStyle =
                 new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
 
@@ -123,6 +125,8 @@ public class WaitingScreen extends ScreenAdapter {
                 ));
 
         ImageButton avatarButton = new ImageButton(avatarStyle);
+
+        avatarButton.addListener(new AvatarButtonListener(this, avatar));
 
         avatarButtonTable.add(avatarButton)
                 .padLeft(AVATAR_BUTTON_PADDING).padRight(AVATAR_BUTTON_PADDING)
@@ -153,8 +157,10 @@ public class WaitingScreen extends ScreenAdapter {
             }
         });
 
-        waitingButtonTable.add(backButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        waitingButtonTable.add(readyButton).padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        waitingButtonTable.add(backButton)
+                .padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        waitingButtonTable.add(readyButton)
+                .padBottom(100f).padRight(25f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
     }
 
     @Override
@@ -175,5 +181,9 @@ public class WaitingScreen extends ScreenAdapter {
 
     public TextButton getReadyButton() {
         return readyButton;
+    }
+
+    public TextField getPlayerNameTextField() {
+        return playerNameTextField;
     }
 }
