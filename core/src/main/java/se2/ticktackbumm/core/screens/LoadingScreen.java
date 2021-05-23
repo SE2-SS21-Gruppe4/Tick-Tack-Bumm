@@ -32,7 +32,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final ShapeRenderer mShapeRenderer;
     private final int screenWidth = TickTackBummGame.WIDTH;
 
-
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
