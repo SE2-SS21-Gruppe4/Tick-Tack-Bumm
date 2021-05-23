@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.esotericsoftware.kryonet.Server;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 /**
@@ -32,6 +33,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final ShapeRenderer mShapeRenderer;
     private final int screenWidth = TickTackBummGame.WIDTH;
 
+    /**
+     * Class constructor.
+     * init variables, load assets and add img to sprite
+     */
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
