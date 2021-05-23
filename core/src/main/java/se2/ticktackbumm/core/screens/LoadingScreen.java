@@ -14,7 +14,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import se2.ticktackbumm.core.TickTackBummGame;
-
+/**
+ * LoadingScreen is for loading all the assets which are used for the game
+ * @author  Daniel Fabian Frankl
+ * @version 1.0
+ */
 public class LoadingScreen extends ScreenAdapter implements Screen {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
@@ -26,7 +30,8 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private long progress = 0;
     private long startTime = 0;
     private final ShapeRenderer mShapeRenderer;
-    private final int screenWidth = 1080;
+    private final int screenWidth = TickTackBummGame.WIDTH;
+
 
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
@@ -44,12 +49,19 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         sprite = new Sprite(image);
     }
 
+    /**
+     * initialize camera
+     * set camera height and width to fit to the game and update camera
+     */
     private void initCamera() {
-        int screenHeight = 2220;
+        int screenHeight = TickTackBummGame.HEIGHT;
         this.camera.setToOrtho(false, screenWidth, screenHeight);
         this.camera.update();
     }
-
+    /**
+     * load all assets
+     * loads the assets from the asset folder
+     */
     private void loadAssets(){
         assetManager.load("bombeStart.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
@@ -76,7 +88,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
-
         showLoadProgress();
     }
 
@@ -105,6 +116,12 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.dispose();
     }
 
+    /**
+     * Print loadingbar
+     * prints the loadingbar with ShapeRenderer
+     * every 0,5sec the loadingbar progresses 10%
+     if it reaches 100%, set the screen to MenuScreen
+     */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();
         if (currentTimeStamp - startTime > TimeUtils.millisToNanos(500)) {
@@ -129,7 +146,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             moveToMenuScreen();
         }
     }
-
+    /**
+     * switch Screen
+     * switch the Screen from loadingScreen to menuScreen and dispose ShapeRenderer
+     */
     private void moveToMenuScreen() {
         game.setScreen(new MenuScreen());
         dispose();
