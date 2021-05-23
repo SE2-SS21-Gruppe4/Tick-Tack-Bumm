@@ -23,10 +23,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final Texture image;
     private final Sprite sprite;
 
-    private long progress = 0;
-    private long startTime = 0;
+    private int progress = 0;
+    private long startTime;
     private final ShapeRenderer mShapeRenderer;
-    private final int screenWidth = 1080;
 
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
@@ -35,19 +34,12 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         startTime = TimeUtils.nanoTime();
 
         this.camera = TickTackBummGame.getGameCamera();
-        initCamera();
         this.font = game.getFont();
 
         loadAssets();
 
         image = assetManager.get("loadingscreen.jpg", Texture.class);
         sprite = new Sprite(image);
-    }
-
-    private void initCamera() {
-        int screenHeight = 2220;
-        this.camera.setToOrtho(false, screenWidth, screenHeight);
-        this.camera.update();
     }
 
     private void loadAssets() {
@@ -79,35 +71,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         showLoadProgress();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
@@ -122,7 +89,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             progress = progress + 10;
         }
 
-        float progressBarWidth = ((float) (screenWidth / 100)) * progress;
+        float progressBarWidth = (TickTackBummGame.WIDTH / 100f) * progress;
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
@@ -132,7 +99,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.setProjectionMatrix(camera.combined);
         mShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         mShapeRenderer.setColor(Color.YELLOW);
-        mShapeRenderer.rect(0, 10, progressBarWidth, 20);
+        mShapeRenderer.rect(0f, 10f, progressBarWidth, 20f);
         mShapeRenderer.end();
 
         if (progress == 10) { // TODO: testing only -> 10
