@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
+import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
@@ -29,6 +30,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
+
+    private final GameData gameData;
 
     Score score;
 
@@ -51,6 +54,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
         font = game.getFont();
@@ -136,6 +140,11 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        //for when the multiplayer mode works
+        //score.getBitmaps().get(0).draw(batch, Integer.toString(gameData.getPlayerByConnectionId(0).getGameScore()), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(1).draw(batch, Integer.toString(gameData.getPlayerByConnectionId(1).getGameScore()), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(2).draw(batch, Integer.toString(gameData.getPlayerByConnectionId(2).getGameScore()), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
+        //score.getBitmaps().get(3).draw(batch, Integer.toString(gameData.getPlayerByConnectionId(3).getGameScore()), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
         score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
