@@ -30,10 +30,8 @@ public class Score{
     private final BitmapFont player4Score;
     private final ArrayList<Image> player;
     private final ArrayList<BitmapFont> bitmapFonts;
-    private final GameData gameData;
 
     public Score() {
-        this.gameData = TickTackBummGame.getTickTackBummGame().getGameData();
         this.assetManager = TickTackBummGame.getTickTackBummGame().getManager();
         player1Score = new BitmapFont();
         player2Score = new BitmapFont();
@@ -85,10 +83,6 @@ public class Score{
         score1.setPosition(100f,10f);
         score1.setPosition(10f,100f);
         score1.setPosition(100f,100f);
-    }
-
-    public void updateScore(){
-
     }
 
     public ArrayList<BitmapFont> getBitmaps() {
