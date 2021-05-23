@@ -63,7 +63,6 @@ public class MenuScreen extends ScreenAdapter {
         menuButtonTable.setHeight(stage.getHeight());
         menuButtonTable.align(Align.center);
 
-        // TODO: player login, waiting for other player? (WaitingScreen?)
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

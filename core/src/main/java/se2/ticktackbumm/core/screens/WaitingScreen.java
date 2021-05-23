@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.listeners.ReadyButtonListener;
+
+import java.awt.*;
 
 public class WaitingScreen extends ScreenAdapter {
 
@@ -33,9 +36,9 @@ public class WaitingScreen extends ScreenAdapter {
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
+    private final TextField playerName;
     private final TextButton readyButton;
     private final TextButton backButton;
-    private final TextButton exitButton;
     private final Table waitingButtonTable;
 
     public WaitingScreen() {
@@ -47,29 +50,20 @@ public class WaitingScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
+        playerName = new TextField();
+
         readyButton = new TextButton("BEREIT", skin);
         backButton = new TextButton("ZURÜCK", skin);
-        exitButton = new TextButton("BEENDEN", skin);
 
         readyButton.getLabel().setFontScale(4);
         backButton.getLabel().setFontScale(4);
-        exitButton.getLabel().setFontScale(4);
 
         waitingButtonTable = new Table();
         waitingButtonTable.setWidth(stage.getWidth());
         waitingButtonTable.setHeight(stage.getHeight());
         waitingButtonTable.align(Align.center);
 
-        readyButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.getNetworkClient().getClientMessageSender().sendPlayerReady();
-
-                readyButton.getStyle().disabledFontColor = new Color(0, 1, 0, 1);
-                readyButton.setDisabled(true);
-                readyButton.clearListeners();
-            }
-        });
+        readyButton.addListener(new ReadyButtonListener(this));
 
         backButton.addListener(new ClickListener() {
             @Override
@@ -84,18 +78,10 @@ public class WaitingScreen extends ScreenAdapter {
             }
         });
 
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
 
         waitingButtonTable.add(readyButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         waitingButtonTable.row();
         waitingButtonTable.add(backButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        waitingButtonTable.row();
-        waitingButtonTable.add(exitButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
         stage.addActor(waitingButtonTable);
     }
@@ -114,5 +100,9 @@ public class WaitingScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public TextButton getReadyButton() {
+        return readyButton;
     }
 }

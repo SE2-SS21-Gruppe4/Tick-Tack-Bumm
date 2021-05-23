@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -30,7 +30,7 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
-    Score score;
+    private final Score score;
 
     // scene2d UI
     private final Stage stage;
@@ -43,9 +43,9 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
-    private Card card;
+    private final Card card;
 
-    private BitmapFont textMaxScore;
+    private final BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
@@ -92,7 +92,6 @@ public class MainGameScreen extends ScreenAdapter {
         score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
         score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
 
-
         textFieldTable = setupTextfieldTable();
 
         stage.addActor(score.getPlayer().get(0));
@@ -112,7 +111,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(textField, checkButton));
+        checkButton.addListener(new CheckButtonListener(textField, checkButton));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();

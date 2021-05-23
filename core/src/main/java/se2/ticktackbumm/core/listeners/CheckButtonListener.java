@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.gamelogic;
+package se2.ticktackbumm.core.listeners;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 
-public class TextfieldInputListener extends ClickListener {
+public class CheckButtonListener extends ClickListener {
     private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
@@ -32,12 +32,12 @@ public class TextfieldInputListener extends ClickListener {
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
-    public TextfieldInputListener() {
+    public CheckButtonListener() {
         this.textField = null;
         this.checkButton = null;
     }
 
-    public TextfieldInputListener(TextField textField, TextButton checkButton) {
+    public CheckButtonListener(TextField textField, TextButton checkButton) {
         this.textField = textField;
         this.checkButton = checkButton;
 
@@ -169,7 +169,7 @@ public class TextfieldInputListener extends ClickListener {
                 dictionaryFileReader = Gdx.files.internal(dictionaryInternalPath).reader("Cp1252");
             } else { // for testing
                 InputStream dictionaryStream;
-                if ((dictionaryStream = TextfieldInputListener.class.getResourceAsStream("/" + dictionaryInternalPath)) != null) {
+                if ((dictionaryStream = CheckButtonListener.class.getResourceAsStream("/" + dictionaryInternalPath)) != null) {
                     dictionaryFileReader = new InputStreamReader(dictionaryStream, "Cp1252");
                 } else {
                     throw new FileNotFoundException("Dictionary file could not be found at: " + dictionaryInternalPath);
