@@ -23,7 +23,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final Texture image;
     private final Sprite sprite;
 
-    private final BitmapFont bf_loadProgress;
     private long progress = 0;
     private long startTime = 0;
     private final ShapeRenderer mShapeRenderer;
@@ -32,7 +31,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
-        this.bf_loadProgress = new BitmapFont();
         mShapeRenderer = new ShapeRenderer();
         startTime = TimeUtils.nanoTime();
 
@@ -124,7 +122,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.setProjectionMatrix(camera.combined);
         mShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         mShapeRenderer.setColor(Color.YELLOW);
-        mShapeRenderer.rect(0, 10, progressBarWidth, 10);
+        mShapeRenderer.rect(0, 10, progressBarWidth, 20);
         mShapeRenderer.end();
 
         if (progress == 100) {
