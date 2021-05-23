@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 /**
- * LoadingScreen is for loading all the assets which are used for the game
+ * LoadingScreen is for loading all the UI-components which are used for the game
  * @author  Daniel Fabian Frankl
  * @version 2.0
  */
@@ -121,7 +121,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     /**
      * Print loadingbar
      * prints the loadingbar with ShapeRenderer
-     * every 0,5sec the loadingbar progresses 10%
+     * every 0,5sec the loadingbar progresses 10%,
      if it reaches 100%, set the screen to MenuScreen
      */
     private void showLoadProgress() {
