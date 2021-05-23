@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,10 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.assets.Explosion;
 
 public class MenuScreen extends ScreenAdapter {
+
+    private final AssetManager assetManager;
 
     // Button constants
     private final float BUTTON_WIDTH = 450f;
@@ -41,10 +44,11 @@ public class MenuScreen extends ScreenAdapter {
 
     public MenuScreen() {
         game = TickTackBummGame.getTickTackBummGame();
+        assetManager = game.getManager();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
 
-        backgroundImage = new Image(new Texture("menuscreen.png"));
+        backgroundImage = new Image(assetManager.get("menuscreen.png", Texture.class));
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));

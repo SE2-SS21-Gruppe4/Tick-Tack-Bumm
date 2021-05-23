@@ -1,50 +1,50 @@
 package se2.ticktackbumm.core.models;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.ArrayList;
 
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.models.attributes.Position;
 
 public class Score{
-    private final Image score1;
-    private final Image score2;
-    private final Image score3;
-    private final Image score4;
-    private final BitmapFont player1Score;
-    private final BitmapFont player2Score;
-    private final BitmapFont player3Score;
-    private final BitmapFont player4Score;
+    private final AssetManager assetManager;
+    private Image score1;
+    private Image score2;
+    private Image score3;
+    private Image score4;
+    private BitmapFont player1Score;
+    private BitmapFont player2Score;
+    private BitmapFont player3Score;
+    private BitmapFont player4Score;
     private final ArrayList<Image> player;
     private final ArrayList<BitmapFont> bitmapFonts;
 
     public Score() {
-        player1Score = new BitmapFont();
-        player2Score = new BitmapFont();
-        player3Score = new BitmapFont();
-        player4Score = new BitmapFont();
-        Texture player1 = new Texture("score/player1.png");
-        Texture player2 = new Texture("score/player2.png");
-        Texture player3 = new Texture("score/player3.png");
-        Texture player4 = new Texture("score/player4.png");
-        score1 = new Image(player1);
-        score2 = new Image(player2);
-        score3 = new Image(player3);
-        score4 = new Image(player4);
+        assetManager = TickTackBummGame.getTickTackBummGame().getManager();
+        initPictures();
         player = new ArrayList<>();
         bitmapFonts = new ArrayList<>();
         addPlayer();
         addBitmaps();
+    }
+
+    public void initPictures(){
+        player1Score = new BitmapFont();
+        player2Score = new BitmapFont();
+        player3Score = new BitmapFont();
+        player4Score = new BitmapFont();
+        Texture player1 = assetManager.get("score/player1.png", Texture.class);
+        Texture player2 = assetManager.get("score/player2.png", Texture.class);
+        Texture player3 = assetManager.get("score/player3.png", Texture.class);
+        Texture player4 = assetManager.get("score/player4.png", Texture.class);
+        score1 = new Image(player1);
+        score2 = new Image(player2);
+        score3 = new Image(player3);
+        score4 = new Image(player4);
     }
 
 

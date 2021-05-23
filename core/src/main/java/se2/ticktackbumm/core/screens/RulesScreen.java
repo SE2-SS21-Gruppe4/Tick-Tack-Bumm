@@ -62,7 +62,7 @@ public class RulesScreen extends ScreenAdapter {
         menuButtonTable.align(Align.bottom);
 
 
-        textrueImage = new Texture("rulescreen.png");
+        textrueImage = assetManager.get("rulescreen.png", Texture.class);
         backgroundImage = new Image(textrueImage);
 
         backToMenuButton.addListener(new ClickListener() {

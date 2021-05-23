@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
+import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -30,7 +32,11 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
+    private final GameData gameData;
+
     private final Score score;
+
+    private final int[] playerScore;
 
     // scene2d UI
     private final Stage stage;
@@ -51,6 +57,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
         font = game.getFont();
@@ -66,6 +73,8 @@ public class MainGameScreen extends ScreenAdapter {
         //card
         card = new Card();
 
+        playerScore = gameData.getPlayerScores();
+
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -78,11 +87,11 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
-        textureTable = new Texture(Gdx.files.internal("table.png"));
+        textureTable = assetManager.get("table.png", Texture.class);
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
-        textureMaxScoreBoard = new Texture(Gdx.files.internal("maxScoreBoard.png"));
+        textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
@@ -135,6 +144,11 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        //for when the multiplayer mode works
+        //score.getBitmaps().get(0).draw(batch, Integer.toString(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(1).draw(batch, Integer.toString(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(2).draw(batch, Integer.toString(playerScore[2]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
+        //score.getBitmaps().get(3).draw(batch, Integer.toString(playerScore[3]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
         score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
