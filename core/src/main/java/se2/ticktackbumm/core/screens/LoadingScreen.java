@@ -6,25 +6,23 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class LoadingScreen extends ScreenAdapter implements Screen {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
-    private final BitmapFont font;
     private final OrthographicCamera camera;
     private final Texture image;
     private final Sprite sprite;
 
     private long progress = 0;
-    private long startTime = 0;
+    private long startTime;
     private final ShapeRenderer mShapeRenderer;
 
     /**
@@ -88,7 +86,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
      * Print loadingbar
      * prints the loadingbar with ShapeRenderer
      * every 0,5sec the loadingbar progresses 10%,
-     if it reaches 100%, set the screen to MenuScreen
+     * if it reaches 100%, set the screen to MenuScreen
      */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();
