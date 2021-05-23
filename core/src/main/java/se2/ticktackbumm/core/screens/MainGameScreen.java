@@ -33,7 +33,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     private final GameData gameData;
 
-    Score score;
+    private final Score score;
 
     // scene2d UI
     private final Stage stage;

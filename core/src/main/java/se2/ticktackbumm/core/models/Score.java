@@ -12,19 +12,27 @@ import se2.ticktackbumm.core.TickTackBummGame;
 
 public class Score{
     private final AssetManager assetManager;
-    private final Image score1;
-    private final Image score2;
-    private final Image score3;
-    private final Image score4;
-    private final BitmapFont player1Score;
-    private final BitmapFont player2Score;
-    private final BitmapFont player3Score;
-    private final BitmapFont player4Score;
+    private Image score1;
+    private Image score2;
+    private Image score3;
+    private Image score4;
+    private BitmapFont player1Score;
+    private BitmapFont player2Score;
+    private BitmapFont player3Score;
+    private BitmapFont player4Score;
     private final ArrayList<Image> player;
     private final ArrayList<BitmapFont> bitmapFonts;
 
     public Score() {
-        this.assetManager = TickTackBummGame.getTickTackBummGame().getManager();
+        assetManager = TickTackBummGame.getTickTackBummGame().getManager();
+        initPictures();
+        player = new ArrayList<>();
+        bitmapFonts = new ArrayList<>();
+        addPlayer();
+        addBitmaps();
+    }
+
+    public void initPictures(){
         player1Score = new BitmapFont();
         player2Score = new BitmapFont();
         player3Score = new BitmapFont();
@@ -37,10 +45,6 @@ public class Score{
         score2 = new Image(player2);
         score3 = new Image(player3);
         score4 = new Image(player4);
-        player = new ArrayList<>();
-        bitmapFonts = new ArrayList<>();
-        addPlayer();
-        addBitmaps();
     }
 
 
