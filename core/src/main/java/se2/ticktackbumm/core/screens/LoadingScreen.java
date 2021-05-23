@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class LoadingScreen extends ScreenAdapter implements Screen {
@@ -50,7 +50,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         this.camera.update();
     }
 
-    private void loadAssets(){
+    private void loadAssets() {
+        // load skins
+        assetManager.load("ui/uiskin.json", Skin.class);
+
         assetManager.load("bombeStart.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
         assetManager.load("loadingscreen.jpg", Texture.class);
@@ -65,6 +68,13 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("score/player2.png", Texture.class);
         assetManager.load("score/player3.png", Texture.class);
         assetManager.load("score/player4.png", Texture.class);
+
+        // load player avatars for WaitingScreen
+        assetManager.load("avatars/square_blue.png", Texture.class);
+        assetManager.load("avatars/square_green.png", Texture.class);
+        assetManager.load("avatars/square_red.png", Texture.class);
+        assetManager.load("avatars/square_yellow.png", Texture.class);
+
         assetManager.finishLoading();
     }
 
@@ -125,7 +135,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.rect(0, 10, progressBarWidth, 20);
         mShapeRenderer.end();
 
-        if (progress == 100) {
+        if (progress == 10) { // TODO: testing only -> 10
             moveToMenuScreen();
         }
     }
