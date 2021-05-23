@@ -1,7 +1,7 @@
 package se2.ticktackbumm.core.models.cards;
 
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +15,8 @@ import se2.ticktackbumm.core.data.GameData;
 import java.security.SecureRandom;
 
 public class Card {
+
+    private final AssetManager assetManager;
 
     private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "GER", "ACK", "EXP", "UNG"};
 
@@ -32,6 +34,7 @@ public class Card {
     private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
 
     public Card() {
+        assetManager = TickTackBummGame.getTickTackBummGame().getManager();
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
         stage = new Stage();
         random = new SecureRandom();
@@ -39,14 +42,14 @@ public class Card {
         isRevealed = false;
 
         // TODO: load and get with AssetManager
-        backsideTexture = new Texture("card/backside.png");
+        backsideTexture = assetManager.get("card/backside.png", Texture.class);
         backsideImage = new Image(backsideTexture);
 
         // TODO: add switch over game modes?
         gameData.setCurrentGameModeText(getRandomSyllable());
 
         // TODO: load and get with AssetManager
-        frontsideTexture = new Texture("card/frontside.png");
+        frontsideTexture = assetManager.get("card/frontside.png", Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
         // TODO: use skin instead of LabelStyle
