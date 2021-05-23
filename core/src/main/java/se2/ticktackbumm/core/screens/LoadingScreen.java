@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class LoadingScreen extends ScreenAdapter implements Screen {
@@ -23,10 +23,14 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final Texture image;
     private final Sprite sprite;
 
-    private int progress = 0;
-    private long startTime;
+    private long progress = 0;
+    private long startTime = 0;
     private final ShapeRenderer mShapeRenderer;
 
+    /**
+     * Class constructor.
+     * init variables, load assets and add img to sprite
+     */
     public LoadingScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
@@ -34,7 +38,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         startTime = TimeUtils.nanoTime();
 
         this.camera = TickTackBummGame.getGameCamera();
-        this.font = game.getFont();
 
         loadAssets();
 
@@ -73,7 +76,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
-
         showLoadProgress();
     }
 
@@ -82,6 +84,12 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.dispose();
     }
 
+    /**
+     * Print loadingbar
+     * prints the loadingbar with ShapeRenderer
+     * every 0,5sec the loadingbar progresses 10%,
+     if it reaches 100%, set the screen to MenuScreen
+     */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();
         if (currentTimeStamp - startTime > TimeUtils.millisToNanos(500)) {
@@ -107,6 +115,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         }
     }
 
+    /**
+     * switch Screen
+     * switch the Screen from loadingScreen to menuScreen and dispose ShapeRenderer
+     */
     private void moveToMenuScreen() {
         game.setScreen(new MenuScreen());
         dispose();
