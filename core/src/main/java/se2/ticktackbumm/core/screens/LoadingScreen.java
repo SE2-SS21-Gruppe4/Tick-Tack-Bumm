@@ -38,7 +38,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         initCamera();
         this.font = game.getFont();
 
-        loadAllAssets();
+        loadAssets();
 
         image = assetManager.get("loadingscreen.jpg", Texture.class);
         sprite = new Sprite(image);
@@ -50,7 +50,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         this.camera.update();
     }
 
-    private void loadAllAssets() {
+    private void loadAssets(){
         assetManager.load("bombeStart.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
         assetManager.load("loadingscreen.jpg", Texture.class);
