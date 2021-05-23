@@ -30,9 +30,6 @@ public class MenuScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
-    // VFX
-    private final Explosion explosion;
-
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
@@ -46,8 +43,6 @@ public class MenuScreen extends ScreenAdapter {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
-
-        explosion = new Explosion();
 
         backgroundImage = new Image(new Texture("menuscreen.png"));
 
