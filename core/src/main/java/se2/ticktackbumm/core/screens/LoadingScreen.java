@@ -109,7 +109,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     public void hide() {
 
     }
-
+    /**
+     * dispose shapeRenderer
+     */
     @Override
     public void dispose() {
         mShapeRenderer.dispose();
