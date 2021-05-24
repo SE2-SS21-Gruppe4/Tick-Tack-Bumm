@@ -1,14 +1,13 @@
 package se2.ticktackbumm.core.client;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
-import se2.ticktackbumm.core.network.messages.StartGame;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
+import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
+import se2.ticktackbumm.core.network.messages.server.PlayersUpdate;
+import se2.ticktackbumm.core.network.messages.server.SomeResponse;
+import se2.ticktackbumm.core.network.messages.server.StartGame;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
 /**
@@ -53,7 +52,7 @@ public class ClientMessageHandler {
     }
 
     public void handleStartGame(StartGame startGame) {
-        Log.info(LOG_TAG, "<StartGame> Starting game...");
+        Log.info(LOG_TAG, "<StartGame> Starting game");
         // TODO: parse data from message; init players and game
 
 //        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
@@ -62,5 +61,15 @@ public class ClientMessageHandler {
 //                game.setScreen(new SpinWheelScreen());
 //            }
 //        }, 2f));
+    }
+
+    public void handlePlayersUpdate(PlayersUpdate playersUpdate) {
+        Log.info(LOG_TAG, "<PlayersUpdate> Updating players in GameData");
+        game.getGameData().setPlayers(playersUpdate.getPlayers());
+
+        // if waiting for player, update player names in WaitingScreen
+        if (game.getScreen() instanceof WaitingScreen) {
+            ((WaitingScreen) game.getScreen()).updatePlayerLabels();
+        }
     }
 }
