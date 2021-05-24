@@ -83,10 +83,13 @@ public class Bomb {
                 bombExplosion.renderExplosion(spriteBatch,10,Gdx.graphics.getHeight()+390,400,400);
             }
             this.bombState = BombState.EXPLODED;
+            restartBombSettings();
         }
     }
 
-    public void setNewRandomTimer(){
+    public void restartBombSettings(){
+        this.bombState = BombState.NORMAL;
+        this.timerToExplode = 0;
         this.explodeTime = (float) radnomExplosion.nextInt(30)+1;
     }
 
