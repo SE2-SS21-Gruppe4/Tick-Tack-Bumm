@@ -14,7 +14,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
-
+/**
+ * LoadingScreen is for loading all the UI-components which are used for the game
+ * @author  Daniel Fabian Frankl
+ * @version 2.0
+ */
 public class LoadingScreen extends ScreenAdapter implements Screen {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
@@ -23,7 +27,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final Sprite sprite;
 
     private long progress = 0;
-    private long startTime;
+    private long startTime = 0;
     private final ShapeRenderer mShapeRenderer;
 
     /**
@@ -37,6 +41,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         startTime = TimeUtils.nanoTime();
 
         this.camera = TickTackBummGame.getGameCamera();
+        initCamera();
 
         loadAssets();
 
@@ -44,7 +49,19 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         sprite = new Sprite(image);
     }
 
-    private void loadAssets() {
+    /**
+     * initialize camera
+     * set camera height and width to fit to the game and update camera
+     */
+    private void initCamera() {
+        this.camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
+        this.camera.update();
+    }
+    /**
+     * load all assets
+     * loads the assets from the asset folder
+     */
+    private void loadAssets(){
         // load skins
         assetManager.load("ui/uiskin.json", Skin.class);
 
@@ -73,11 +90,38 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     }
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
         showLoadProgress();
     }
 
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+    /**
+     * dispose shapeRenderer
+     */
     @Override
     public void dispose() {
         mShapeRenderer.dispose();
@@ -87,7 +131,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
      * Print loadingbar
      * prints the loadingbar with ShapeRenderer
      * every 0,5sec the loadingbar progresses 10%,
-     * if it reaches 100%, set the screen to MenuScreen
+     if it reaches 100%, set the screen to MenuScreen
      */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();
@@ -96,7 +140,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             progress = progress + 10;
         }
 
-        float progressBarWidth = (TickTackBummGame.WIDTH / 100f) * progress;
+        float progressBarWidth = ((float)TickTackBummGame.WIDTH / 100f) * progress;
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
@@ -113,7 +157,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             moveToMenuScreen();
         }
     }
-
     /**
      * switch Screen
      * switch the Screen from loadingScreen to menuScreen and dispose ShapeRenderer
