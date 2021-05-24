@@ -83,22 +83,28 @@ public class Bomb {
     }
 
     public void makeExplosion(float deltaTime,SpriteBatch spriteBatch) {
-        this.timerToExplode += deltaTime;
-        if (timerToExplode >= explodeTime) {
-            bombExplosion.updateExplosion(deltaTime);
-            if (!bombExplosion.isFinished()) {
-                bombExplosion.renderExplosion(spriteBatch,10,Gdx.graphics.getHeight()+390,400,400);
+
+            this.timerToExplode += deltaTime;
+            if (timerToExplode >= explodeTime) {
+                bombExplosion.updateExplosion(deltaTime);
+                if (!bombExplosion.isFinished()) {
+                    bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() + 380, 400, 400);
+                }
+                this.bombState = BombState.EXPLODED;
+                //    restartBombSettings();
             }
-            this.bombState = BombState.EXPLODED;
-            restartBombSettings();
-        }
+
     }
 
     public void drawBomb(SpriteBatch spriteBatch){
         if (bombState.equals(BombState.NORMAL)){
             bombTick.play();
         }
-        spriteBatch.draw(bombTexture,10,((Gdx.graphics.getHeight()))-270,290,290);
+        else{
+            bombTick.pause();
+        }
+        spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-270,290,290);
+
     }
 
     public void restartBombSettings(){

@@ -37,7 +37,7 @@ public class BombExplosion {
         explosionAnimation = new Animation<TextureRegion>(animationTime/16,textureRegions1D);
         explosionTime = 0;
 
-        explosionSound = Gdx.audio.newSound(Gdx.files.internal("bomb/explosion.mp3"));
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal("bomb/bombexplosion.mp3"));
     }
 
     public void updateExplosion(float delta){
