@@ -131,7 +131,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             progress = progress + 10;
         }
 
-        float progressBarWidth = ((float) (screenWidth / 100)) * progress;
+        float progressBarWidth = ((float)screenWidth / (float)100) * progress;
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
