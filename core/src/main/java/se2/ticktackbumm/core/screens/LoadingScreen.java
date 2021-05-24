@@ -109,7 +109,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.rect(0f, 10f, progressBarWidth, 20f);
         mShapeRenderer.end();
 
-        if (progress == 10) { // TODO: testing only -> 10
+        if (progress == 100) { // TODO: testing only -> 10
             moveToMenuScreen();
         }
     }
