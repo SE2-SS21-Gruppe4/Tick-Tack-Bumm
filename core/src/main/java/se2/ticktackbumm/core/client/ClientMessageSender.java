@@ -3,10 +3,11 @@ package se2.ticktackbumm.core.client;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.network.messages.BombExploded;
-import se2.ticktackbumm.core.network.messages.PlayerReady;
-import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.data.Avatars;
+import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 
 /**
  * Handles the sending of messages from the client to the server.
@@ -36,17 +37,22 @@ public class ClientMessageSender {
     }
 
     public void sendPlayerTaskCompleted() {
-        Log.info(LOG_TAG, "Sending message TaskCompleted from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
+        logSendingMessage("TaskCompleted");
         client.sendTCP(new PlayerTaskCompleted());
     }
 
     public void sendBombExploded() {
-        Log.info(LOG_TAG, "Sending message BombExploded from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
+        logSendingMessage("BombExploded");
         client.sendTCP(new BombExploded());
     }
 
-    public void sendPlayerReady() {
-        Log.info(LOG_TAG, "Sending message PlayerReady from player " + TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerId());
-        client.sendTCP(new PlayerReady());
+    public void sendPlayerReady(String playerName, Avatars playerAvatar) {
+        logSendingMessage("PlayerReady");
+        client.sendTCP(new PlayerReady(playerName, playerAvatar));
+    }
+
+    private void logSendingMessage(String messageType) {
+        Log.info(LOG_TAG, "Sending message " + messageType + " from player: " +
+                TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerName());
     }
 }
