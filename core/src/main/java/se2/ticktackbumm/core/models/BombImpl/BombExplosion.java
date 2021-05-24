@@ -46,7 +46,7 @@ public class BombExplosion {
 
     public void renderExplosion(SpriteBatch spriteBatch,float posX,float posY, float width, float height){
         spriteBatch.draw(explosionAnimation.getKeyFrame(explosionTime), posX,posY,width,height);
-        explosionSound.play();
+        explosionSound.play(0.15f);
     }
 
     public boolean isFinished(){

@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 
-public class Explosion {
+public class Explosion extends Actor {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private Animation<TextureRegion> explosionAnimation;
@@ -24,9 +26,9 @@ public class Explosion {
         explosionAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("explosion"), Animation.PlayMode.LOOP);
     }
 
-    public void render(float delta, SpriteBatch batch) {
+    public void render(float delta, SpriteBatch spriteBatch) {
         animationTime += delta;
         TextureRegion currentFrame = explosionAnimation.getKeyFrame(animationTime);
-        batch.draw(currentFrame, 20, 40, 400, 400);
+        spriteBatch.draw(currentFrame, 20, 40, 400, 400);
     }
 }
