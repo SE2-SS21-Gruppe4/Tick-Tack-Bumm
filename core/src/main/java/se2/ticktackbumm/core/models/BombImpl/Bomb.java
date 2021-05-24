@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.models.BombImpl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -37,6 +38,8 @@ public class Bomb {
     private Texture explosionTexture;
     private BombExplosion bombExplosion;
 
+    private Music bombTick;
+
 
 
     public Bomb(){
@@ -63,6 +66,10 @@ public class Bomb {
         explosionTexture = assetManager.get("bombexplosion.png",Texture.class);
 
         bombExplosion = new BombExplosion(explosionTexture,0.7f);
+
+        bombTick = Gdx.audio.newMusic(Gdx.files.internal("bomb/bombtick.wav"));
+        bombTick.setLooping(true);
+        bombTick.setVolume(0.2f);
     }
 
     public enum BombState{

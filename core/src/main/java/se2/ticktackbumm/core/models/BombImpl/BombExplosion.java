@@ -1,5 +1,7 @@
 package se2.ticktackbumm.core.models.BombImpl;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,6 +15,8 @@ public class BombExplosion {
     private float explosionTime;
 
     private Rectangle boundsOfExplosion;
+
+    private Sound explosionSound;
 
     public BombExplosion(Texture texture, float animationTime){
         this.boundsOfExplosion = boundsOfExplosion;
@@ -32,6 +36,8 @@ public class BombExplosion {
 
         explosionAnimation = new Animation<TextureRegion>(animationTime/16,textureRegions1D);
         explosionTime = 0;
+
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal("bomb/explosion.mp3"));
     }
 
     public void updateExplosion(float delta){
