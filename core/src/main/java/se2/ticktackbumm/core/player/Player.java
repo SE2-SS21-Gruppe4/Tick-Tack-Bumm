@@ -9,6 +9,7 @@ public class Player {
     private int gameScore;
     private boolean hasCheated;
 
+    private String playerName;
     private Avatars playerAvatar;
 
     public Player() {
@@ -51,6 +52,14 @@ public class Player {
 
     public void setHasCheated(boolean hasCheated) {
         this.hasCheated = hasCheated;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     public Avatars getPlayerAvatar() {
