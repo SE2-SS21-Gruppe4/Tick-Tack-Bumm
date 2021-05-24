@@ -1,7 +1,9 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.data.ServerData;
 
 /**
@@ -42,7 +44,7 @@ public class ServerMessageHandler {
     public void handlePlayerTaskCompleted() {
         Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
         // TODO: update client state
-        serverMessageSender.sendPlayerUpdate();
+        serverMessageSender.sendPlayersUpdate();
     }
 
     public void handleBombExploded(int connectionId) {
@@ -51,8 +53,15 @@ public class ServerMessageHandler {
         serverData.incPlayerScoreByConnectionId(connectionId);
     }
 
-    public void handlePlayerReady() {
+    public void handlePlayerReady(PlayerReady playerReady, int connectionId) {
         Log.info(LOG_TAG, "<PlayerReady> Handling message PlayerReady");
+
+        Player currentPlayer = serverData.getGameData().getPlayerByConnectionId(connectionId);
+        currentPlayer.setPlayerName(playerReady.getPlayerName());
+        currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
+
         serverData.incPlayersReady();
+
+        serverMessageSender.sendPlayersUpdate();
     }
 }

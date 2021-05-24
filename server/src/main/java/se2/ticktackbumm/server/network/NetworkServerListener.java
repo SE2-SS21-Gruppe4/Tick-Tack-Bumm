@@ -3,7 +3,12 @@ package se2.ticktackbumm.server.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.*;
+import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
+import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
 
 /**
@@ -67,7 +72,7 @@ public class NetworkServerListener extends Listener {
 
         } else if (object instanceof PlayerReady) {
             Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
-            serverMessageHandler.handlePlayerReady();
+            serverMessageHandler.handlePlayerReady((PlayerReady) object, connection.getID());
 
         }
     }
