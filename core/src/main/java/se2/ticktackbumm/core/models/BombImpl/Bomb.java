@@ -79,7 +79,7 @@ public class Bomb {
 
     public void renderBomb(float delta,SpriteBatch spriteBatch){
         makeExplosion(delta,spriteBatch);
-        spriteBatch.draw(bombTexture,10,((Gdx.graphics.getHeight()))-270,290,290);
+        drawBomb(spriteBatch);
     }
 
     public void makeExplosion(float deltaTime,SpriteBatch spriteBatch) {
@@ -92,6 +92,13 @@ public class Bomb {
             this.bombState = BombState.EXPLODED;
             restartBombSettings();
         }
+    }
+
+    public void drawBomb(SpriteBatch spriteBatch){
+        if (bombState.equals(BombState.NORMAL)){
+            bombTick.play();
+        }
+        spriteBatch.draw(bombTexture,10,((Gdx.graphics.getHeight()))-270,290,290);
     }
 
     public void restartBombSettings(){
