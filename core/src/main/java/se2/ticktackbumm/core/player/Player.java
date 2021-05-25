@@ -3,6 +3,7 @@ package se2.ticktackbumm.core.player;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
+import sun.net.NetworkServer;
 
 public class Player {
     private static final String LOG_TAG = "PLAYER";
@@ -34,8 +35,9 @@ public class Player {
         }
     }
 
+    // TODO: refactor to work on server side with max player constant
     public void incPlayerScore() {
-        if (gameScore < TickTackBummGame.getTickTackBummGame().getGameData().getMaxGameScore()) {
+        if (gameScore < 10) {
             Log.info(LOG_TAG, "Increasing game score of player: " + getPlayerName());
             gameScore++;
         }
