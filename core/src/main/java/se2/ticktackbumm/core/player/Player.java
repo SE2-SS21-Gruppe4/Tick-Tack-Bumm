@@ -1,8 +1,12 @@
 package se2.ticktackbumm.core.player;
 
+import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 
 public class Player {
+    private static final String LOG_TAG = "PLAYER";
+
     private int connectionId;
     private int playerId;
 
@@ -28,6 +32,15 @@ public class Player {
             this.setGameScore(player.getGameScore());
             this.setHasCheated(player.getHasCheated());
         }
+    }
+
+    public void incPlayerScore() {
+        if (gameScore < TickTackBummGame.getTickTackBummGame().getGameData().getMaxGameScore()) {
+            Log.info(LOG_TAG, "Increasing game score of player: " + getPlayerName());
+            gameScore++;
+        }
+
+        Log.info(LOG_TAG, "Player game score: " + getGameScore());
     }
 
     public int getConnectionId() {

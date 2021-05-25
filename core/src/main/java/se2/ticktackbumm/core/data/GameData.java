@@ -60,7 +60,7 @@ public class GameData {
         this.currentGameModeText = currentGameModeText;
     }
 
-    public int[] getPlayerScores(){
+    public int[] getPlayerScores() {
         int[] playerScores = new int[4];
         for (int i = 0; i < players.size(); i++) {
             playerScores[i] = players.get(i).getGameScore();
@@ -79,5 +79,9 @@ public class GameData {
                 + "' in players");
 
         return null;
+    }
+
+    public void setNextPlayerTurn() {
+        currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
     }
 }

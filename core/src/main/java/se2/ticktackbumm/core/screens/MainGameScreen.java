@@ -35,7 +35,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     private final Score score;
 
-    private final int[] playerScore;
+    private int[] playerScore;
 
     // scene2d UI
     private final Stage stage;
@@ -86,6 +86,9 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
+        // player controls disabled by default
+        hideControls();
+
         textureTable = assetManager.get("table.png", Texture.class);
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
@@ -119,7 +122,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new CheckButtonListener(textField, checkButton));
+        checkButton.addListener(new CheckButtonListener(this));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();
@@ -137,6 +140,33 @@ public class MainGameScreen extends ScreenAdapter {
         generator.dispose();
     }
 
+    public void hideControls() {
+        textField.setVisible(false);
+        textField.setDisabled(true);
+        checkButton.setVisible(false);
+        checkButton.setDisabled(true);
+    }
+
+    public void showControls() {
+        textField.setVisible(true);
+        textField.setDisabled(false);
+        checkButton.setVisible(true);
+        checkButton.setDisabled(false);
+    }
+
+    public void updatePlayerScores() {
+        playerScore = gameData.getPlayerScores();
+    }
+
+    public void updateCurrentPlayerMarker() {
+        // TODO: update marker for current player turn (red font, icon, ...)?
+    }
+
+    public void resetCard() {
+        card.setupBackSide();
+        // TODO: set new random syllable for card
+    }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
@@ -148,8 +178,8 @@ public class MainGameScreen extends ScreenAdapter {
         //score.getBitmaps().get(1).draw(batch, Integer.toString(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         //score.getBitmaps().get(2).draw(batch, Integer.toString(playerScore[2]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         //score.getBitmaps().get(3).draw(batch, Integer.toString(playerScore[3]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
-        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
@@ -165,5 +195,13 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
         font.dispose();
+    }
+
+    public TextField getTextField() {
+        return textField;
+    }
+
+    public TextButton getCheckButton() {
+        return checkButton;
     }
 }

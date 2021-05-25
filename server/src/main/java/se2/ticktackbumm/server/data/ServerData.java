@@ -79,12 +79,8 @@ public class ServerData {
         decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
                 ", " + playersReady + " players ready");
-    }
 
-    public void incPlayerScoreByConnectionId(int connectionId) {
-        Player currentPlayer = gameData.getPlayerByConnectionId(connectionId);
-        int currentScore = currentPlayer.getGameScore();
-        currentPlayer.setGameScore(++currentScore);
+        NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
     }
 
     public void incPlayersReady() {
@@ -94,13 +90,23 @@ public class ServerData {
         }
 
         Log.info(LOG_TAG, "Players ready count: " + playersReady);
-
-        // TODO: send message to all clients with new player ready count
-
-        if (playersReady >= MIN_PLAYERS) NetworkServer.getNetworkServer().getServerMessageSender().sendStartGame();
     }
 
     public void decPlayersReady() {
         if (playersReady > 0) playersReady--;
+    }
+
+    public boolean arePlayersReady() {
+        return playersReady >= MIN_PLAYERS;
+    }
+
+    public boolean hasGameFinished() {
+        for (Player player : gameData.getPlayers()) {
+            if (player.getGameScore() >= gameData.getMaxGameScore()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

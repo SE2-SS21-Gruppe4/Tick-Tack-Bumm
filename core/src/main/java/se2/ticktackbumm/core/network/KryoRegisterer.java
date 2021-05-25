@@ -2,6 +2,7 @@ package se2.ticktackbumm.core.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import se2.ticktackbumm.core.data.Avatars;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.network.messages.client.BombExploded;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
@@ -32,11 +33,15 @@ public class KryoRegisterer {
         kryo.register(BombExploded.class);
         kryo.register(PlayerReady.class);
         kryo.register(StartGame.class);
-        kryo.register(PlayersUpdate.class);
+        kryo.register(GameUpdate.class);
+        kryo.register(NextTurn.class);
 
-        // register classes to send in messages
+        // register owned classes to send in messages
         kryo.register(Player.class);
         kryo.register(Avatars.class);
+        kryo.register(GameMode.class);
+
+        // register java classes to sind in messages
         kryo.register(List.class);
         kryo.register(ArrayList.class);
     }

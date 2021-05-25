@@ -31,6 +31,11 @@ public class ClientMessageSender {
         this.client = client;
     }
 
+    private void logSendingMessage(String messageType) {
+        Log.info(LOG_TAG, "Sending message " + messageType + " from player: " +
+                TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerName());
+    }
+
     // Test method
     public void sendSomeRequest(String text) {
         client.sendTCP(new SomeRequest(text));
@@ -51,8 +56,8 @@ public class ClientMessageSender {
         client.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
-    private void logSendingMessage(String messageType) {
-        Log.info(LOG_TAG, "Sending message " + messageType + " from player: " +
-                TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerName());
+    public void sendGameFinished() {
+        logSendingMessage("GameFinished");
+//        client.sendTCP(new GameFinished());
     }
 }

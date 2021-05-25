@@ -5,11 +5,10 @@ import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.server.PlayersUpdate;
+import se2.ticktackbumm.core.network.messages.server.GameUpdate;
 import se2.ticktackbumm.core.network.messages.server.SomeResponse;
-import se2.ticktackbumm.core.network.messages.server.StartGame;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
 /**
@@ -20,6 +19,8 @@ public class ClientMessageHandler {
     private final String LOG_TAG = "CLIENT_MESSAGE_HANDLER";
 
     private final TickTackBummGame game;
+    private final GameData gameData;
+
     /**
      * Client instance to handle messages for.
      */
@@ -34,6 +35,8 @@ public class ClientMessageHandler {
      */
     public ClientMessageHandler(Client client, ClientMessageSender clientMessageSender) {
         this.game = TickTackBummGame.getTickTackBummGame();
+        this.gameData = game.getGameData();
+
         this.client = client;
         this.clientMessageSender = clientMessageSender;
     }
@@ -48,30 +51,40 @@ public class ClientMessageHandler {
         Log.info(LOG_TAG, "<ConnectionSuccessful> Player successfully connected to server");
 
         game.setLocalPlayer(connectionSuccessful.getConnectedPlayer());
-        Log.info(LOG_TAG, "<ConnectionSuccessful> Connected player added as local player: " + game.getLocalPlayer());
+        Log.info(LOG_TAG, "<ConnectionSuccessful> Connected player added as local player: "
+                + game.getLocalPlayer());
 
         Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen()));
     }
 
-    public void handleStartGame(StartGame startGame) {
+    public void handleStartGame() {
         Log.info(LOG_TAG, "<StartGame> Starting game");
-        // TODO: parse data from message; init players and game
 
         Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
             @Override
             public void run() {
-                game.setScreen(new SpinWheelScreen());
+                game.startNewRound();
             }
         }, 2f));
     }
 
-    public void handlePlayersUpdate(PlayersUpdate playersUpdate) {
-        Log.info(LOG_TAG, "<PlayersUpdate> Updating players in GameData");
-        game.getGameData().setPlayers(playersUpdate.getPlayers());
+    public void handleGameUpdate(GameUpdate gameUpdate) {
+        Log.info(LOG_TAG, "<GameUpdate> Updating game data");
 
-        // if waiting for player, update player names in WaitingScreen
+        Log.info(gameUpdate.getPlayers().toString());
+
+        gameData.setPlayers(gameUpdate.getPlayers());
+        gameData.setCurrentPlayerTurnIndex(gameUpdate.getCurrentPlayerTurnIndex());
+        gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
+        gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
+
+        // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
             ((WaitingScreen) game.getScreen()).updatePlayerLabels();
         }
+    }
+
+    public void handleNextTurn() {
+        game.startNewTurn();
     }
 }

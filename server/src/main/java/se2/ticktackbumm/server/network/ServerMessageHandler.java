@@ -43,14 +43,25 @@ public class ServerMessageHandler {
 
     public void handlePlayerTaskCompleted() {
         Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
-        // TODO: update client state
-        serverMessageSender.sendPlayersUpdate();
+
+        serverData.getGameData().setNextPlayerTurn();
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendNextTurn();
     }
 
     public void handleBombExploded(int connectionId) {
         Log.info(LOG_TAG, "<BombExploded> Handling message BombExploded");
-        // TODO: setup player data on game start
-        serverData.incPlayerScoreByConnectionId(connectionId);
+
+        serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
+
+        if (serverData.hasGameFinished()) {
+            serverMessageSender.sendGameFinished();
+        }
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendNextRound();
     }
 
     public void handlePlayerReady(PlayerReady playerReady, int connectionId) {
@@ -59,9 +70,11 @@ public class ServerMessageHandler {
         Player currentPlayer = serverData.getGameData().getPlayerByConnectionId(connectionId);
         currentPlayer.setPlayerName(playerReady.getPlayerName());
         currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
+        serverMessageSender.sendGameUpdate();
 
         serverData.incPlayersReady();
-
-        serverMessageSender.sendPlayersUpdate();
+        if (serverData.arePlayersReady()) {
+            serverMessageSender.sendStartGame();
+        }
     }
 }
