@@ -11,6 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.ClientMessageSender;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.screens.MainGameScreen;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class CheckButtonListener extends ClickListener {
     private GameData gameData;
     private ClientMessageSender clientMessageSender;
 
+    private final MainGameScreen gameScreen;
     private final TextField textField;
     private final TextButton checkButton;
     private String userInput;
@@ -33,13 +35,15 @@ public class CheckButtonListener extends ClickListener {
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
     public CheckButtonListener() {
+        this.gameScreen = null;
         this.textField = null;
         this.checkButton = null;
     }
 
-    public CheckButtonListener(TextField textField, TextButton checkButton) {
-        this.textField = textField;
-        this.checkButton = checkButton;
+    public CheckButtonListener(MainGameScreen mainGameScreen) {
+        this.gameScreen = mainGameScreen;
+        this.textField = mainGameScreen.getTextField();
+        this.checkButton = mainGameScreen.getCheckButton();
 
         this.game = TickTackBummGame.getTickTackBummGame();
         this.gameData = game.getGameData();
@@ -56,22 +60,15 @@ public class CheckButtonListener extends ClickListener {
         userInput = textField.getText().trim();
         Log.info(LOG_TAG, "Got user input: " + userInput);
 
-//        textField.setText(""); // clear/consume user input?
-        textField.setDisabled(true); // disable field until next guess/next turn
-        checkButton.setDisabled(true); // disable check button until next guess/next turn
+        gameScreen.hideControls();
 
         if (isValidWord(userInput)) {
-            textField.setText("KORREKT");
-            checkButton.clearListeners();
-//            textField.setVisible(false); // hide text field after correct guess?
+            textField.clear();
             clientMessageSender.sendPlayerTaskCompleted();
         } else {
-            textField.setText("FALSCH");
-            textField.setDisabled(false); // wrong guess; guess again
-            checkButton.setDisabled(false); // wrong guess; guess again
+            textField.clear();
+            gameScreen.showControls();
         }
-
-//        textField.setDisabled(false); // enable here again for testing only
     }
 
     boolean isValidWord(String userInput) {
