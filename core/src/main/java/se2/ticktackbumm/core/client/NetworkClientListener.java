@@ -46,14 +46,17 @@ public class NetworkClientListener extends Listener {
             logReceivedMessage("ConnectionRejected");
             Log.error(LOG_TAG, "Player connection was rejected by server");
 
+        } else if (object instanceof GameUpdate) {
+            logReceivedMessage("GameUpdate");
+            clientMessageHandler.handleGameUpdate((GameUpdate) object);
+
         } else if (object instanceof StartGame) {
             logReceivedMessage("StartGame");
-            clientMessageHandler.handleStartGame((StartGame) object);
+            clientMessageHandler.handleStartGame();
 
-        } else if (object instanceof PlayersUpdate) {
-            logReceivedMessage("PlayersUpdate");
-            clientMessageHandler.handlePlayersUpdate((PlayersUpdate) object);
-
+        } else if (object instanceof NextTurn) {
+            logReceivedMessage("NextTurn");
+            clientMessageHandler.handleNextTurn();
         }
     }
 
