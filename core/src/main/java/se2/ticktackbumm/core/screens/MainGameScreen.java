@@ -89,9 +89,15 @@ public class MainGameScreen extends ScreenAdapter {
         // player controls disabled by default
         hideControls();
 
+        assetManager.load("table.png", Texture.class);
+        assetManager.finishLoading();
+
         textureTable = assetManager.get("table.png", Texture.class);
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
+
+        assetManager.load("maxScoreBoard.png", Texture.class);
+        assetManager.finishLoading();
 
         textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
@@ -163,7 +169,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void resetCard() {
-        card.setupBackSide();
+        card.setupBackSide(batch);
         // TODO: set new random syllable for card
     }
 
@@ -182,9 +188,9 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
+        card.draw(batch);
 
         stage.draw();
-        card.draw();
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
     }
