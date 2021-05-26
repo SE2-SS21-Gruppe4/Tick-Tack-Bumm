@@ -20,7 +20,9 @@ import java.security.SecureRandom;
 
 public class Card {
 
-    private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "GER", "ACK", "EXP", "UNG"};
+    private final String[] vorArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
+    private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
+    private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
 
     private final GameData gameData;
 
@@ -99,7 +101,9 @@ public class Card {
     public void drawFrontSide(){
         wordFromArray = getRandomSyllable();
         // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cardWordLabel = new Label(wordFromArray, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        cardWordLabel.setScale(4);
 
         frontsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
@@ -114,6 +118,9 @@ public class Card {
             public void run() {
               frontsideImage.remove();
               cardWordLabel.remove();
+
+                drawBackSide();
+
             }
         },5);
 
@@ -128,13 +135,11 @@ public class Card {
     }
 
 
+
     public String getRandomSyllable() {
-        return syllableArray[random.nextInt(syllableArray.length)];
+        return vorArray[random.nextInt(vorArray.length)];
     }
 
-    // TODO: refactor to have more logic, split image and label?
-    public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height) {
-        actor.setBounds(positionX, positionY, width, height);
-    }
+
 
 }
