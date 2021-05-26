@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.network.messages;
+package se2.ticktackbumm.core.network.messages.server;
 
 import se2.ticktackbumm.core.player.Player;
 

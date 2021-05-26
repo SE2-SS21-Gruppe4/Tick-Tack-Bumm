@@ -5,9 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.network.messages.ConnectionRejected;
-import se2.ticktackbumm.core.network.messages.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
+import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.screens.MenuScreen;
 
 /**
@@ -37,11 +35,32 @@ public class NetworkClientListener extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof SomeResponse) {
+            logReceivedMessage("SomeResponse");
             clientMessageHandler.handleSomeResponse((SomeResponse) object);
+
         } else if (object instanceof ConnectionSuccessful) {
+            logReceivedMessage("ConnectionSuccessful");
             clientMessageHandler.handleConnectionSuccessful((ConnectionSuccessful) object);
+
         } else if (object instanceof ConnectionRejected) {
+            logReceivedMessage("ConnectionRejected");
             Log.error(LOG_TAG, "Player connection was rejected by server");
+
+        } else if (object instanceof GameUpdate) {
+            logReceivedMessage("GameUpdate");
+            clientMessageHandler.handleGameUpdate((GameUpdate) object);
+
+        } else if (object instanceof StartGame) {
+            logReceivedMessage("StartGame");
+            clientMessageHandler.handleStartGame();
+
+        } else if (object instanceof NextTurn) {
+            logReceivedMessage("NextTurn");
+            clientMessageHandler.handleNextTurn();
         }
+    }
+
+    private void logReceivedMessage(String messageType) {
+        Log.info(LOG_TAG, "Received message " + messageType + " from server");
     }
 }

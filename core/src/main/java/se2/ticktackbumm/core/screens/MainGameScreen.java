@@ -16,7 +16,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
+import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -30,7 +31,11 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
-    Score score;
+    private final GameData gameData;
+
+    private final Score score;
+
+    private int[] playerScore;
 
     // scene2d UI
     private final Stage stage;
@@ -43,14 +48,15 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
-    private Card card;
+    private final Card card;
 
-    private BitmapFont textMaxScore;
+    private final BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
         font = game.getFont();
@@ -66,6 +72,8 @@ public class MainGameScreen extends ScreenAdapter {
         //card
         card = new Card();
 
+        playerScore = gameData.getPlayerScores();
+
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -78,11 +86,14 @@ public class MainGameScreen extends ScreenAdapter {
         textField = new TextField("", skin);
         checkButton = new TextButton("CHECK", skin);
 
-        textureTable = new Texture(Gdx.files.internal("table.png"));
+        // player controls disabled by default
+        hideControls();
+
+        textureTable = assetManager.get("table.png", Texture.class);
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
-        textureMaxScoreBoard = new Texture(Gdx.files.internal("maxScoreBoard.png"));
+        textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
@@ -91,7 +102,6 @@ public class MainGameScreen extends ScreenAdapter {
         score.getPlayer().get(1).setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 + 310);
         score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
         score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
-
 
         textFieldTable = setupTextfieldTable();
 
@@ -112,7 +122,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(textField, checkButton));
+        checkButton.addListener(new CheckButtonListener(this));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();
@@ -130,14 +140,46 @@ public class MainGameScreen extends ScreenAdapter {
         generator.dispose();
     }
 
+    public void hideControls() {
+        textField.setVisible(false);
+        textField.setDisabled(true);
+        checkButton.setVisible(false);
+        checkButton.setDisabled(true);
+    }
+
+    public void showControls() {
+        textField.setVisible(true);
+        textField.setDisabled(false);
+        checkButton.setVisible(true);
+        checkButton.setDisabled(false);
+    }
+
+    public void updatePlayerScores() {
+        playerScore = gameData.getPlayerScores();
+    }
+
+    public void updateCurrentPlayerMarker() {
+        // TODO: update marker for current player turn (red font, icon, ...)?
+    }
+
+    public void resetCard() {
+        card.setupBackSide();
+        // TODO: set new random syllable for card
+    }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        score.getBitmaps().get(0).draw(batch, "7", stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(1).draw(batch, "4", stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        //for when the multiplayer mode works
+        //score.getBitmaps().get(0).draw(batch, Integer.toString(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(1).draw(batch, Integer.toString(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
+        //score.getBitmaps().get(2).draw(batch, Integer.toString(playerScore[2]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
+        //score.getBitmaps().get(3).draw(batch, Integer.toString(playerScore[3]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
+        score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
+        score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
@@ -153,5 +195,13 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
         font.dispose();
+    }
+
+    public TextField getTextField() {
+        return textField;
+    }
+
+    public TextButton getCheckButton() {
+        return checkButton;
     }
 }

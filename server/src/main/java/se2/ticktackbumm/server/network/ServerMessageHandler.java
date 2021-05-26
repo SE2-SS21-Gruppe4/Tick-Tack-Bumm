@@ -1,9 +1,9 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.BombExploded;
-import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.data.ServerData;
 
 /**
@@ -41,21 +41,40 @@ public class ServerMessageHandler {
         serverMessageSender.sendSomeResponse("Hello from the server.");
     }
 
-    public void handlePlayerTaskCompleted(PlayerTaskCompleted playerTaskCompleted) {
-        Log.info(LOG_TAG,
-                "Server got message (" + playerTaskCompleted.getClass() +
-                        ") from player 0");
+    public void handlePlayerTaskCompleted() {
+        Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
 
-        // TODO: update client state
-        serverMessageSender.sendPlayerUpdate();
+        serverData.getGameData().setNextPlayerTurn();
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendNextTurn();
     }
 
-    public void handleBombExploded(BombExploded bombExploded, int connectionId) {
-        Log.info(LOG_TAG,
-                "Server got message (" + bombExploded.getClass() +
-                        ") from player 0");
+    public void handleBombExploded(int connectionId) {
+        Log.info(LOG_TAG, "<BombExploded> Handling message BombExploded");
 
-        // TODO: setup player data on game start
-        serverData.incPlayerScoreByConnectionId(connectionId);
+        serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
+
+        if (serverData.hasGameFinished()) {
+            serverMessageSender.sendGameFinished();
+        }
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendNextRound();
+    }
+
+    public void handlePlayerReady(PlayerReady playerReady, int connectionId) {
+        Log.info(LOG_TAG, "<PlayerReady> Handling message PlayerReady");
+
+        Player currentPlayer = serverData.getGameData().getPlayerByConnectionId(connectionId);
+        currentPlayer.setPlayerName(playerReady.getPlayerName());
+        currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
+        serverMessageSender.sendGameUpdate();
+
+        serverData.incPlayersReady();
+        if (serverData.arePlayersReady()) {
+            serverMessageSender.sendStartGame();
+        }
     }
 }
