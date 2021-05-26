@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Timer;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 
@@ -75,7 +77,7 @@ public class Card {
 
     }
 
-    public void draw(SpriteBatch spriteBatch) {
+    public void drawBomb() {
      /*   if (Gdx.input.isTouched()) {
             setupFrontSide(spriteBatch);
         }
@@ -83,16 +85,10 @@ public class Card {
         setupBackSide(spriteBatch);*/
 
         if (Gdx.input.isTouched()){
-            isRevealed = true;
+              drawFrontSide();
         }
 
-        if (isRevealed){
-            drawFrontSide();
-        }
-        else{
-            drawBackSide();
-        }
-
+        drawBackSide();
         stage.draw();
 
     }
@@ -103,6 +99,14 @@ public class Card {
 
         stage.addActor(frontsideImage);
         stage.addActor(cardWordLabel);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+              frontsideImage.remove();
+              cardWordLabel.remove();
+            }
+        },5);
     }
 
     public void drawBackSide(){
