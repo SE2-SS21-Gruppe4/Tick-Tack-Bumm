@@ -31,7 +31,9 @@ public class Card {
 
     private final Texture frontsideTexture;
     private final Image frontsideImage;
-    private final Label cardWordLabel;
+
+    private String wordFromArray;
+    private  Label cardWordLabel;
 
     private final SecureRandom random;
 
@@ -72,6 +74,7 @@ public class Card {
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
+        wordFromArray = getRandomSyllable();
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -94,11 +97,17 @@ public class Card {
     }
 
     public void drawFrontSide(){
-        setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
+        wordFromArray = getRandomSyllable();
+        // TODO: use skin instead of LabelStyle
+        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        frontsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
 
         stage.addActor(frontsideImage);
         stage.addActor(cardWordLabel);
+
+        gameData.setCardRevealed(true);
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -107,33 +116,17 @@ public class Card {
               cardWordLabel.remove();
             }
         },5);
+
+        //TODO check if it make sense
+        gameData.setCardRevealed(false);
     }
 
     public void drawBackSide(){
-        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         stage.addActor(backsideImage);
     }
 
-    // TODO: refactor draw methods/render methods
-    public void setupBackSide(SpriteBatch spriteBatch){
-        spriteBatch.draw(backsideTexture, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
-
-
-    }
-
-    // TODO: refactor draw methods/render methods
-    public void setupFrontSide(SpriteBatch spriteBatch) {
-        cardWordLabel.setFontScale(4);
-
-       // setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        //setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
-
-        spriteBatch.draw(frontsideTexture, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-
-        gameData.setCardRevealed(true);
-    }
 
     public String getRandomSyllable() {
         return syllableArray[random.nextInt(syllableArray.length)];
