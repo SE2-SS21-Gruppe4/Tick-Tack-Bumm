@@ -9,6 +9,6 @@ import se2.ticktackbumm.server.network.NetworkServer;
  */
 public class Main {
     public static void main(String[] args) {
-        new NetworkServer();
+        NetworkServer.getNetworkServer();
     }
 }

@@ -3,7 +3,12 @@ package se2.ticktackbumm.server.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.*;
+import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
+import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
 
 /**
@@ -40,7 +45,9 @@ public class NetworkServerListener extends Listener {
 
     @Override
     public void disconnected(Connection connection) {
-        super.disconnected(connection);
+        Log.info(LOG_TAG, "Disconnected player from server: " + connection.getID());
+
+        networkServer.getServerData().disconnectPlayer(connection.getID());
     }
 
     /**
@@ -52,13 +59,21 @@ public class NetworkServerListener extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof SomeRequest) {
-            SomeRequest request = (SomeRequest) object;
-            serverMessageHandler.handleSomeRequest(request);
+            Log.info(LOG_TAG, "Disconnected player from server: " + connection.getID());
+            serverMessageHandler.handleSomeRequest((SomeRequest) object);
+
         } else if (object instanceof PlayerTaskCompleted) {
-            PlayerTaskCompleted playerTaskCompleted = (PlayerTaskCompleted) object;
-            serverMessageHandler.handlePlayerTaskCompleted(playerTaskCompleted);
+            Log.info(LOG_TAG, "Received message PlayerTaskCompleted from ID: " + connection.getID());
+            serverMessageHandler.handlePlayerTaskCompleted();
+
         } else if (object instanceof BombExploded) {
-            serverMessageHandler.handleBombExploded((BombExploded) object, connection.getID());
+            Log.info(LOG_TAG, "Received message BombExploded from ID: " + connection.getID());
+            serverMessageHandler.handleBombExploded(connection.getID());
+
+        } else if (object instanceof PlayerReady) {
+            Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
+            serverMessageHandler.handlePlayerReady((PlayerReady) object, connection.getID());
+
         }
     }
 }

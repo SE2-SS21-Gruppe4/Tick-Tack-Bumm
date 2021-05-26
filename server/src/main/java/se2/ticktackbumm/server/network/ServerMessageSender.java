@@ -1,7 +1,11 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
+import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.network.messages.server.GameUpdate;
+import se2.ticktackbumm.core.network.messages.server.NextTurn;
+import se2.ticktackbumm.core.network.messages.server.SomeResponse;
+import se2.ticktackbumm.core.network.messages.server.StartGame;
 
 /**
  * Handles the sending of messages from the server to the clients.
@@ -30,7 +34,31 @@ public class ServerMessageSender {
         server.sendToAllTCP(new SomeResponse(text));
     }
 
-    public void sendPlayerUpdate() {
-        // TODO: update all clients with the new player turn and new player score
+    public void sendGameUpdate() {
+        Log.info(LOG_TAG, "Sending message GameUpdate to all clients");
+        server.sendToAllTCP(
+                new GameUpdate(NetworkServer.getNetworkServer().getServerData().getGameData())
+        );
+    }
+
+    public void sendStartGame() {
+        Log.info(LOG_TAG, "Sending message StartGame to all clients");
+        // TODO: collect data for game start; create useful message class
+        server.sendToAllTCP(new StartGame());
+    }
+
+    public void sendNextTurn() {
+        Log.info(LOG_TAG, "Sending message NextTurn to all clients");
+        server.sendToAllTCP(new NextTurn());
+    }
+
+    public void sendNextRound() {
+        Log.info(LOG_TAG, "Sending message NextRound to all clients");
+//        server.sendToAllTCP(new NextRound());
+    }
+
+    public void sendGameFinished() {
+        Log.info(LOG_TAG, "Sending message GameFinished to all clients");
+//        server.sendToAllTCP(new GameFinished());
     }
 }

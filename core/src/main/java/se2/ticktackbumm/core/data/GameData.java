@@ -60,6 +60,14 @@ public class GameData {
         this.currentGameModeText = currentGameModeText;
     }
 
+    public int[] getPlayerScores() {
+        int[] playerScores = new int[4];
+        for (int i = 0; i < players.size(); i++) {
+            playerScores[i] = players.get(i).getGameScore();
+        }
+        return playerScores;
+    }
+
     public Player getPlayerByConnectionId(int connectionId) {
         for (Player player : players) {
             if (player.getConnectionId() == connectionId) {
@@ -71,5 +79,9 @@ public class GameData {
                 + "' in players");
 
         return null;
+    }
+
+    public void setNextPlayerTurn() {
+        currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
     }
 }

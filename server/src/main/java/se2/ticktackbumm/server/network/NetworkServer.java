@@ -13,10 +13,21 @@ import java.io.IOException;
  * Uses a Kryonet-{@link Server} to handle connecting clients, game state and incoming messages.
  */
 public class NetworkServer {
+
+    // TODO: refactor classes to make use of singleton pattern
+    private static NetworkServer networkServer;
+
+    public static NetworkServer getNetworkServer() {
+        if (networkServer == null) {
+            networkServer = new NetworkServer();
+        }
+        return networkServer;
+    }
+
     /**
      * Kryonet-Server instance.
      */
-    private final Server server;
+    private final Server kryoServer;
 
     private final ServerData serverData;
     private final ServerMessageHandler serverMessageHandler;
@@ -27,23 +38,21 @@ public class NetworkServer {
      * Create the Kryonet-{@link Server}, register all Kryo message classes and adds a
      * {@link NetworkServerListener} to handle messages.
      */
-    public NetworkServer() {
-        this.server = new Server();
-        KryoRegisterer.registerMessages(this.server.getKryo());
+    private NetworkServer() {
+        this.kryoServer = new Server();
+        KryoRegisterer.registerMessages(this.kryoServer.getKryo());
 
-        serverData = new ServerData(server);
+        serverData = new ServerData(kryoServer);
 
-        serverMessageSender = new ServerMessageSender(server);
+        serverMessageSender = new ServerMessageSender(kryoServer);
         serverMessageHandler = new ServerMessageHandler(this, serverMessageSender);
-        server.addListener(new NetworkServerListener(this, serverMessageHandler));
-
+        kryoServer.addListener(new NetworkServerListener(this, serverMessageHandler));
 
         try {
             this.startServer();
         } catch (IOException e) {
             Log.error("Error starting game server instance: " + e.getMessage());
         }
-
     }
 
     /**
@@ -55,17 +64,25 @@ public class NetworkServer {
     public void startServer() throws IOException {
         Log.info("Starting server on port " + NetworkConstants.TCP_PORT);
 
-        server.start();
-        server.bind(NetworkConstants.TCP_PORT);
+        kryoServer.start();
+        kryoServer.bind(NetworkConstants.TCP_PORT);
 
         Log.info("Server started on port " + NetworkConstants.TCP_PORT);
     }
 
-    public Server getServer() {
-        return server;
+    public Server getKryoServer() {
+        return kryoServer;
     }
 
     public ServerData getServerData() {
         return serverData;
+    }
+
+    public ServerMessageHandler getServerMessageHandler() {
+        return serverMessageHandler;
+    }
+
+    public ServerMessageSender getServerMessageSender() {
+        return serverMessageSender;
     }
 }
