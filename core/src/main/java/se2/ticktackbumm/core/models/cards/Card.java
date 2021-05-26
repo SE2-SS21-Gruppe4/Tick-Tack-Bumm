@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,7 +21,8 @@ public class Card {
     private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "GER", "ACK", "EXP", "UNG"};
 
     private final GameData gameData;
-    private final Stage stage;
+
+    private Stage stage;
 
     private final Texture backsideTexture;
     private final Image backsideImage;
@@ -30,7 +32,11 @@ public class Card {
     private final Label cardWordLabel;
 
     private final SecureRandom random;
-    private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
+
+    private boolean isRevealed;
+
+    //isRevealed moved in GameData class
+    //private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
 
     private AssetManager assetManager;
     private TickTackBummGame game;
@@ -41,7 +47,9 @@ public class Card {
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+
         stage = new Stage();
+
         random = new SecureRandom();
 
         isRevealed = false;
@@ -65,32 +73,62 @@ public class Card {
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        setupBackSide();
     }
 
-    public void draw() {
-        if (Gdx.input.isTouched()) {
-            setupFrontSide();
+    public void draw(SpriteBatch spriteBatch) {
+     /*   if (Gdx.input.isTouched()) {
+            setupFrontSide(spriteBatch);
+        }
+
+        setupBackSide(spriteBatch);*/
+
+        if (Gdx.input.isTouched()){
+            isRevealed = true;
+        }
+
+        if (isRevealed){
+            drawFrontSide();
+        }
+        else{
+            drawBackSide();
         }
 
         stage.draw();
+
     }
 
-    // TODO: refactor draw methods/render methods
-    public void setupBackSide() {
-        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        stage.addActor(backsideImage);
-    }
-
-    // TODO: refactor draw methods/render methods
-    public void setupFrontSide() {
-        cardWordLabel.setFontScale(4);
-
+    public void drawFrontSide(){
         setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
 
         stage.addActor(frontsideImage);
         stage.addActor(cardWordLabel);
+    }
+
+    public void drawBackSide(){
+        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+
+        stage.addActor(backsideImage);
+    }
+
+    // TODO: refactor draw methods/render methods
+    public void setupBackSide(SpriteBatch spriteBatch){
+        spriteBatch.draw(backsideTexture, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
+
+
+    }
+
+    // TODO: refactor draw methods/render methods
+    public void setupFrontSide(SpriteBatch spriteBatch) {
+        cardWordLabel.setFontScale(4);
+
+       // setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        //setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
+
+        spriteBatch.draw(frontsideTexture, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+
+        gameData.setCardRevealed(true);
     }
 
     public String getRandomSyllable() {
@@ -102,11 +140,4 @@ public class Card {
         actor.setBounds(positionX, positionY, width, height);
     }
 
-    public boolean isRevealed() {
-        return isRevealed;
-    }
-
-    public void setRevealed(boolean isRevealed) {
-        this.isRevealed = isRevealed;
-    }
 }
