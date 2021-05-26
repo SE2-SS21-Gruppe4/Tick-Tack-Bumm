@@ -15,6 +15,7 @@ public class GameData {
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
     private String currentGameModeText;
+    private boolean isCardRevealed;
 
     public GameData() {
         maxGameScore = 10; // hardcoded for testing purposes
@@ -22,6 +23,7 @@ public class GameData {
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;
         currentGameMode = GameMode.NONE;
+        isCardRevealed = false;
     }
 
     public int getMaxGameScore() {
@@ -58,6 +60,13 @@ public class GameData {
 
     public void setCurrentGameModeText(String currentGameModeText) {
         this.currentGameModeText = currentGameModeText;
+    }
+
+    public void setCardRevealed(boolean cardRevealed){
+        this.isCardRevealed = cardRevealed;
+    }
+    public boolean getCardRevealed(){
+        return this.isCardRevealed;
     }
 
     public int[] getPlayerScores() {
