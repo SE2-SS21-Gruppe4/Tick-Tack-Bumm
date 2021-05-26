@@ -5,19 +5,14 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.minlog.Log;
 
-import java.util.ListIterator;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.assets.Explosion;
 
 public class Bomb {
 
@@ -31,7 +26,7 @@ public class Bomb {
 
     private BombState bombState;
 
-    private Random radnomExplosion;
+    private SecureRandom radnomExplosion;
     private float explodeTime;
     private float timerToExplode;
 
@@ -56,7 +51,7 @@ public class Bomb {
 
         bombState = BombState.NORMAL;
 
-        radnomExplosion = new Random();
+        radnomExplosion = new SecureRandom();
         explodeTime = (float)radnomExplosion.nextInt(10)+1;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
