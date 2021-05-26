@@ -37,9 +37,13 @@ public class Score{
         player2Score = new BitmapFont();
         player3Score = new BitmapFont();
         player4Score = new BitmapFont();
+        loadTexturesFromManager("score/player1.png");
         Texture player1 = assetManager.get("score/player1.png", Texture.class);
+        loadTexturesFromManager("score/player2.png");
         Texture player2 = assetManager.get("score/player2.png", Texture.class);
+        loadTexturesFromManager("score/player3.png");
         Texture player3 = assetManager.get("score/player3.png", Texture.class);
+        loadTexturesFromManager("score/player4.png");
         Texture player4 = assetManager.get("score/player4.png", Texture.class);
         score1 = new Image(player1);
         score2 = new Image(player2);
@@ -79,6 +83,11 @@ public class Score{
         score1.setPosition(100f,10f);
         score1.setPosition(10f,100f);
         score1.setPosition(100f,100f);
+    }
+
+    public void loadTexturesFromManager(String path){
+        this.assetManager.load(path,Texture.class);
+        this.assetManager.finishLoading();
     }
 
     public ArrayList<BitmapFont> getBitmaps() {
