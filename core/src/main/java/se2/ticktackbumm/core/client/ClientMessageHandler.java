@@ -63,7 +63,7 @@ public class ClientMessageHandler {
         Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() { // TODO: testing only
             @Override
             public void run() {
-                game.startNewRound();
+                game.startNewGame();
             }
         }, 2f));
     }
@@ -91,6 +91,6 @@ public class ClientMessageHandler {
     public void handleNextRound() {
         Log.info(LOG_TAG, "<NextRound> Starting next round");
 
-        game.startNewRound();
+        game.startNextRound();
     }
 }

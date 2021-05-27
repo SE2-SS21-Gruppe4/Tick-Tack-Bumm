@@ -57,6 +57,10 @@ public class NetworkClientListener extends Listener {
         } else if (object instanceof NextTurn) {
             logReceivedMessage("NextTurn");
             clientMessageHandler.handleNextTurn();
+
+        } else if (object instanceof NextRound) {
+            logReceivedMessage("NextRound");
+            clientMessageHandler.handleNextRound();
         }
     }
 
