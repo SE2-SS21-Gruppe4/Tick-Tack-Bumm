@@ -71,8 +71,6 @@ public class ClientMessageHandler {
     public void handleGameUpdate(GameUpdate gameUpdate) {
         Log.info(LOG_TAG, "<GameUpdate> Updating game data");
 
-        Log.info(gameUpdate.getPlayers().toString());
-
         gameData.setPlayers(gameUpdate.getPlayers());
         gameData.setCurrentPlayerTurnIndex(gameUpdate.getCurrentPlayerTurnIndex());
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
@@ -85,6 +83,14 @@ public class ClientMessageHandler {
     }
 
     public void handleNextTurn() {
+        Log.info(LOG_TAG, "<NextTurn> Starting next turn");
+
         game.startNewTurn();
+    }
+
+    public void handleNextRound() {
+        Log.info(LOG_TAG, "<NextRound> Starting next round");
+
+        game.startNewRound();
     }
 }

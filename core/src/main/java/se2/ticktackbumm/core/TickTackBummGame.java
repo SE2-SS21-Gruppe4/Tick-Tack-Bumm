@@ -96,9 +96,10 @@ public class TickTackBummGame extends Game {
 
     public void startNewRound() {
         if (isLocalPlayerTurn()) {
-            this.setScreen(new SpinWheelScreen());
+            setScreen(new SpinWheelScreen());
         } else {
-            this.setScreen(new MainGameScreen());
+            setScreen(new MainGameScreen());
+            startNewTurn();
         }
     }
 
