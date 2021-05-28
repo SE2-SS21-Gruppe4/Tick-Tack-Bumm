@@ -9,6 +9,7 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class TickTackBummGame extends Game {
     public static final int HEIGHT = 2220;
