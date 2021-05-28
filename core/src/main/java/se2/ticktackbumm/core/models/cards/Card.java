@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Timer;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 
 import java.security.SecureRandom;
 
@@ -24,7 +25,11 @@ public class Card {
     private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
     private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
 
+    private String [] currentTypeOfWord;
+
     private final GameData gameData;
+
+    private GameMode gameMode;
 
     private Stage stage;
 
@@ -53,6 +58,7 @@ public class Card {
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+        gameMode = gameData.getCurrentGameMode();
 
         stage = new Stage();
 
@@ -134,10 +140,20 @@ public class Card {
         stage.addActor(backsideImage);
     }
 
+    public String getWordsDependOnMode(){
+        switch (gameMode){
+            case PREFIX:
+                return getRandomSyllable(this.vorArray);
+                break;
 
+        }
 
-    public String getRandomSyllable() {
-        return vorArray[random.nextInt(vorArray.length)];
+    }
+
+    public String getRandomSyllable(String[] currentArray) {
+       // return vorArray[random.nextInt(vorArray.length)];
+
+        return currentArray[random.nextInt(currentArray.length)];
     }
 
 
