@@ -21,7 +21,6 @@ import java.util.ListIterator;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.gamelogic.TextfieldInputListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.BombImpl.BombExplosion;
 import se2.ticktackbumm.core.models.Score;
@@ -127,7 +126,7 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable.align(Align.center | Align.bottom);
 
         textField.setAlignment(Align.center);
-        checkButton.addListener(new TextfieldInputListener(textField, checkButton));
+       // checkButton.addListener(new TextfieldInputListener(textField, checkButton));
 
         textFieldTable.add(textField).padBottom(20f).width(600f).height(125f);
         textFieldTable.row();

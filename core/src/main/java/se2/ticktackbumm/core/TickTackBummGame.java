@@ -105,15 +105,15 @@ public class TickTackBummGame extends Game {
     public void startNewTurn() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
         if (isLocalPlayerTurn()) {
-            gameScreen.showControls();
+           /* gameScreen.showControls();
             gameScreen.updatePlayerScores();
             gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();
+            gameScreen.resetCard();*/
         } else {
-            gameScreen.hideControls();
+        /*    gameScreen.hideControls();
             gameScreen.updatePlayerScores();
             gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();
+            gameScreen.resetCard();*/
             // hide waiting for spin wheel message
         }
     }
