@@ -3,6 +3,7 @@ package se2.ticktackbumm.core.models.cards;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,11 +26,10 @@ public class Card {
     private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
     private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
 
-    private String [] currentTypeOfWord;
+
 
     private final GameData gameData;
 
-    private GameMode gameMode;
 
     private Stage stage;
 
@@ -52,13 +52,15 @@ public class Card {
     private AssetManager assetManager;
     private TickTackBummGame game;
 
+    private Sound openCardSound;
+    private Sound cardSchufflingSound;
+
     public Card() {
 
         game = TickTackBummGame.getTickTackBummGame();
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
-        gameMode = gameData.getCurrentGameMode();
 
         stage = new Stage();
 
@@ -74,27 +76,28 @@ public class Card {
 
 
 
-        // TODO: add switch over game modes?
-        gameData.setCurrentGameModeText(getRandomSyllable());
-
         assetManager.load("card/frontside.png",Texture.class);
         assetManager.finishLoading();
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
-        wordFromArray = getRandomSyllable();
+        assetManager.load("card/opencardSound.wav",Sound.class);
+        assetManager.finishLoading();
+
+        openCardSound = assetManager.get("card/opencardSound.wav",Sound.class);
+
+        assetManager.load("card/cardSchuffling.wav",Sound.class);
+        assetManager.finishLoading();
+
+        cardSchufflingSound = assetManager.get("card/cardSchuffling.wav",Sound.class);
+
+        wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
     }
 
-    public void drawBomb() {
-     /*   if (Gdx.input.isTouched()) {
-            setupFrontSide(spriteBatch);
-        }
-
-        setupBackSide(spriteBatch);*/
-
+    public void drawCard() {
         if (Gdx.input.isTouched()){
               drawFrontSide();
         }
@@ -105,7 +108,8 @@ public class Card {
     }
 
     public void drawFrontSide(){
-        wordFromArray = getRandomSyllable();
+        openCardSound.play(0.3f);
+        wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(wordFromArray, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -122,6 +126,7 @@ public class Card {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                wordFromArray = "";
               frontsideImage.remove();
               cardWordLabel.remove();
 
@@ -135,13 +140,16 @@ public class Card {
     }
 
     public void drawBackSide(){
+        cardSchufflingSound.play(0.2f);
         backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         stage.addActor(backsideImage);
     }
 
     public String getWordsDependOnMode(){
-        switch (gameMode){
+        switch (gameData.getCurrentGameMode()){
+            case NONE:
+                return "";
             case PREFIX:
                 return getRandomSyllable(this.vorArray);
 
@@ -153,7 +161,6 @@ public class Card {
 
             default:
                 return null;
-
         }
 
     }
@@ -164,6 +171,22 @@ public class Card {
         return currentArray[random.nextInt(currentArray.length)];
     }
 
+    public String[] getVorArray(){
+        return this.vorArray;
+    }
+    public String[] getMiddleArray(){
+        return this.middleArray;
+    }
+    public String[] getNachArray(){
+        return this.nachArray;
+    }
 
 
+    public boolean isRevealed() {
+        return isRevealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
 }
