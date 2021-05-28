@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 
 import se2.ticktackbumm.core.TickTackBummGame;
@@ -26,8 +27,6 @@ public class Card {
     private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
     private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
 
-
-
     private final GameData gameData;
 
 
@@ -40,6 +39,7 @@ public class Card {
     private final Image frontsideImage;
 
     private String wordFromArray;
+    private Skin labelSkin;
     private  Label cardWordLabel;
 
     private final SecureRandom random;
@@ -81,19 +81,11 @@ public class Card {
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
-        assetManager.load("card/opencardSound.wav",Sound.class);
-        assetManager.finishLoading();
-
-        openCardSound = assetManager.get("card/opencardSound.wav",Sound.class);
-
-        assetManager.load("card/cardSchuffling.wav",Sound.class);
-        assetManager.finishLoading();
-
-        cardSchufflingSound = assetManager.get("card/cardSchuffling.wav",Sound.class);
 
         wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        labelSkin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        cardWordLabel = new Label(gameData.getCurrentGameModeText(), labelSkin);
 
     }
 
@@ -108,12 +100,11 @@ public class Card {
     }
 
     public void drawFrontSide(){
-        openCardSound.play(0.3f);
         wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(wordFromArray, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cardWordLabel = new Label(wordFromArray,labelSkin);
+        cardWordLabel.setSize(500,300);
 
-        cardWordLabel.setScale(4);
 
         frontsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
         cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
@@ -130,6 +121,7 @@ public class Card {
               frontsideImage.remove();
               cardWordLabel.remove();
 
+                 stage.draw();
                 drawBackSide();
 
             }
@@ -140,7 +132,6 @@ public class Card {
     }
 
     public void drawBackSide(){
-        cardSchufflingSound.play(0.2f);
         backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         stage.addActor(backsideImage);
