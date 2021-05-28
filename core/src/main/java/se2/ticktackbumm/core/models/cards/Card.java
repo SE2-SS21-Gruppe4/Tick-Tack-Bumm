@@ -144,7 +144,15 @@ public class Card {
         switch (gameMode){
             case PREFIX:
                 return getRandomSyllable(this.vorArray);
-                break;
+
+            case INFIX:
+                return getRandomSyllable(this.middleArray);
+
+            case POSTFIX:
+                return getRandomSyllable(this.nachArray);
+
+            default:
+                return null;
 
         }
 
