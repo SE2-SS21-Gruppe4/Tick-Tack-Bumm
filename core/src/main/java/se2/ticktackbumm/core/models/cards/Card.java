@@ -36,7 +36,7 @@ public class Card {
     private Stage stage;
 
     private final Texture backsideTexture;
-    private final Image backsideImage;
+   // private final Image backsideImage;
 
     private final Texture frontsideTexture;
     private final Image frontsideImage;
@@ -97,12 +97,12 @@ public class Card {
         fontSprite = new Sprite(vorWordsList.get(0));
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
-        wordFromArray = getWordsDependOnMode();
+      /*  wordFromArray = getWordsDependOnMode();
 
         labelSkin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         labelSkin.getFont("default-font").getData().setScale(3);
 
-        cardWordLabel = new Label(getWordsDependOnMode(), labelSkin);
+        cardWordLabel = new Label(getWordsDependOnMode(), labelSkin);*/
 
     }
 
@@ -117,7 +117,6 @@ public class Card {
         }
         if (!isRevealed){
             fontSprite.draw(spriteBatch);
-            addLabel();
            /* this.backsideImage.setVisible(true);
             drawBackSide();*/
         }
@@ -129,7 +128,7 @@ public class Card {
 
     }
 
-    public void addLabel(){
+  /*  public void addLabel(){
         gameData.setCurrentGameMode(GameMode.POSTFIX);
         wordFromArray = "";
         wordFromArray = getWordsDependOnMode();
@@ -140,7 +139,7 @@ public class Card {
         stage.draw();
     }
 
-    public void drawFrontSide(){
+ /*   public void drawFrontSide(){
         //TODO connect with real game mode; it is just test
         gameData.setCurrentGameMode(GameMode.INFIX);
         wordFromArray = getWordsDependOnMode();
@@ -174,7 +173,7 @@ public class Card {
 
     }
 
-    public void drawBackSide(){
+  /*  public void drawBackSide(){
 
         this.cardWordLabel.setVisible(false);
         this.frontsideImage.setVisible(false);
@@ -211,10 +210,10 @@ public class Card {
         ArrayList<Texture> wordsFromAsset = new ArrayList<>();
 
         for (int i = 0; i < 10; i++){
-            assetManager.load("card/"+path+"/"+i+"png",Texture.class);
+            assetManager.load("card/"+path+"/"+i+".png",Texture.class);
             assetManager.finishLoading();
 
-            Texture wordImage = assetManager.get("card/"+path+"/"+i+"png",Texture.class);
+            Texture wordImage = assetManager.get("card/"+path+"/"+i+".png",Texture.class);
 
             wordsFromAsset.add(wordImage);
         }
@@ -223,7 +222,7 @@ public class Card {
     }
 
 
-//TODO delete after implementation with list
+/*//TODO delete after implementation with list
     public String getRandomSyllable(String[] currentArray) {
        // return vorArray[random.nextInt(vorArray.length)];
 
@@ -247,5 +246,5 @@ public class Card {
 
     public void setRevealed(boolean revealed) {
         isRevealed = revealed;
-    }
+    }*/
 }
