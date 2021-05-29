@@ -100,12 +100,20 @@ public class Card {
 
     }
 
-    public void drawCard() {
+    public void drawCard(SpriteBatch spriteBatch) {
+        if (Gdx.input.isTouched()){
+            if (isRevealed){
+                isRevealed = false;
+            }
+            else{
+                isRevealed = true;
+            }
+        }
         if (!isRevealed){
-            drawFrontSide();
+            fontSprite.draw(spriteBatch);
         }
         else{
-            drawBackSide();
+            backSprite.draw(spriteBatch);
         }
     }
 
