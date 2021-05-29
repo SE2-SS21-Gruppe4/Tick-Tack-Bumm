@@ -13,6 +13,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
 public class Bomb {
 
@@ -20,6 +21,7 @@ public class Bomb {
     private AssetManager assetManager;
 
     private Stage stage;
+
 
     private Texture bombTexture;
     private Image bombImage;
@@ -45,7 +47,6 @@ public class Bomb {
 
         stage = new Stage();
 
-      //  bombTexture = new Texture("bomb/bomb.png");
         bombTexture = assetManager.get("bomb/bomb.png",Texture.class);
         bombImage = new Image(bombTexture);
 
