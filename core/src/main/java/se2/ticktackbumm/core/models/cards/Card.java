@@ -4,29 +4,31 @@ package se2.ticktackbumm.core.models.cards;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Timer;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class Card {
 
+    //TODO delete after implementation with ArrayList
     private final String[] vorArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
     private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
     private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
+
+    private ArrayList<Texture> vorWordsList;
+    private ArrayList<Texture> middleWordsList;
+    private ArrayList<Texture> afterWordsList;
 
     private final GameData gameData;
 
@@ -73,6 +75,10 @@ public class Card {
 
         isRevealed = false;
 
+        vorWordsList =getVorWordsFromAsset(afterWordsList);
+        middleWordsList = getMiddleWordsFromAsset();
+        afterWordsList = getAfterWordsFromAsser();
+
         assetManager.load("card/backside.png",Texture.class);
         assetManager.finishLoading();
 
@@ -80,7 +86,7 @@ public class Card {
         backsideImage = new Image(backsideTexture);
 
         backSprite = new Sprite(backsideTexture);
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
         assetManager.load("card/frontside.png",Texture.class);
         assetManager.finishLoading();
@@ -89,7 +95,7 @@ public class Card {
         frontsideImage = new Image(frontsideTexture);
 
         fontSprite = new Sprite(frontsideTexture);
-        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
         wordFromArray = getWordsDependOnMode();
 
@@ -111,13 +117,44 @@ public class Card {
         }
         if (!isRevealed){
             fontSprite.draw(spriteBatch);
+            addLabel();
+           /* this.backsideImage.setVisible(true);
+            drawBackSide();*/
         }
         else{
-            backSprite.draw(spriteBatch);
+           backSprite.draw(spriteBatch);
+           // this.backsideImage.setVisible(false);*/
+           // drawFront2Side();
         }
+
+    }
+
+    public void addLabel(){
+        gameData.setCurrentGameMode(GameMode.POSTFIX);
+        wordFromArray = "";
+        wordFromArray = getWordsDependOnMode();
+        // TODO: use skin instead of LabelStyle
+        cardWordLabel = new Label(wordFromArray,labelSkin);
+        cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 200, 200);
+        stage.addActor(cardWordLabel);
+        stage.draw();
     }
 
     public void drawFrontSide(){
+        //TODO connect with real game mode; it is just test
+        gameData.setCurrentGameMode(GameMode.INFIX);
+        wordFromArray = getWordsDependOnMode();
+
+        cardWordLabel = new Label(wordFromArray,labelSkin);
+
+     //   cardWordLabel.setV
+    }
+
+    public void drawFront2Side(){
+
+        this.backsideImage.setVisible(false);
+
+
         gameData.setCurrentGameMode(GameMode.POSTFIX);
         wordFromArray = "";
         wordFromArray = getWordsDependOnMode();
@@ -133,16 +170,21 @@ public class Card {
 
         gameData.setCardRevealed(true);
 
-        stage.draw();
+      //  stage.draw();
 
     }
 
     public void drawBackSide(){
+
+        this.cardWordLabel.setVisible(false);
+        this.frontsideImage.setVisible(false);
+
+
         backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         stage.addActor(backsideImage);
 
-        stage.draw();
+      //  stage.draw();
     }
 
     public void handleClick(){
@@ -175,6 +217,14 @@ public class Card {
 
     }
 
+    public ArrayList<Texture> getVorWordsFromAsset(){
+        ArrayList<Texture> vorWordsFromAsset = new ArrayList<>();
+
+        for (int i = 0; )
+    }
+
+
+//TODO delete after implementation with list
     public String getRandomSyllable(String[] currentArray) {
        // return vorArray[random.nextInt(vorArray.length)];
 
