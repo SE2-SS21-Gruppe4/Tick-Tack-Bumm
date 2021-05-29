@@ -79,7 +79,6 @@ public class Card {
 
 
         backSprite = new Sprite(backsideTexture);
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
         assetManager.load("card/frontside.png",Texture.class);
         assetManager.finishLoading();
@@ -104,16 +103,21 @@ public class Card {
         }
         if (isRevealed){
             fontSprite.draw(spriteBatch);
-           // drawFontSide(spriteBatch);
 
         }
         else{
-           backSprite.draw(spriteBatch);
-
+           drawBackSide(spriteBatch);
         }
     }
 
-    public void drawFontSide(SpriteBatch spriteBatch){
+    public void drawBackSide(SpriteBatch spriteBatch){
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
+        backSprite.draw(spriteBatch);
+    }
+
+
+
+   /* public void drawFontSide(SpriteBatch spriteBatch){
         Texture randomWord = getTextureDepentOnMode();
 
         fontSprite = new Sprite(randomWord);
@@ -121,7 +125,7 @@ public class Card {
 
         fontSprite.draw(spriteBatch);
 
-    }
+    }*/
 
 
     public Texture getTextureDepentOnMode(){
@@ -168,6 +172,14 @@ public class Card {
     }
 
 
+    //set method in mainscreen to open card every time on new start
+    public void setWordFromStack(Texture texture){
+        this.wordFromStack = wordFromStack;
+    }
+
+    public Texture getWordFromStack(){
+        return this.wordFromStack;
+    }
 
     public boolean isRevealed() {
         return isRevealed;
@@ -175,5 +187,45 @@ public class Card {
 
     public void setRevealed(boolean revealed) {
         isRevealed = revealed;
+    }
+
+    public ArrayList<Texture> getVorWordsList() {
+        return vorWordsList;
+    }
+
+    public void setVorWordsList(ArrayList<Texture> vorWordsList) {
+        this.vorWordsList = vorWordsList;
+    }
+
+    public ArrayList<Texture> getMiddleWordsList() {
+        return middleWordsList;
+    }
+
+    public void setMiddleWordsList(ArrayList<Texture> middleWordsList) {
+        this.middleWordsList = middleWordsList;
+    }
+
+    public ArrayList<Texture> getAfterWordsList() {
+        return afterWordsList;
+    }
+
+    public void setAfterWordsList(ArrayList<Texture> afterWordsList) {
+        this.afterWordsList = afterWordsList;
+    }
+
+    public Sprite getFontSprite() {
+        return fontSprite;
+    }
+
+    public void setFontSprite(Sprite fontSprite) {
+        this.fontSprite = fontSprite;
+    }
+
+    public Sprite getBackSprite() {
+        return backSprite;
+    }
+
+    public void setBackSprite(Sprite backSprite) {
+        this.backSprite = backSprite;
     }
 }
