@@ -94,9 +94,15 @@ public class MainGameScreen extends ScreenAdapter {
         // player controls disabled by default
         hideControls();
 
+        assetManager.load("table.png", Texture.class);
+        assetManager.finishLoading();
+
         textureTable = assetManager.get("table.png", Texture.class);
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
+
+        assetManager.load("maxScoreBoard.png", Texture.class);
+        assetManager.finishLoading();
 
         textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
@@ -183,7 +189,9 @@ public class MainGameScreen extends ScreenAdapter {
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
         // TODO: show card backside again
+        card.setRevealed(false);
         // TODO: set new random syllable for card frontside
+        card.setWordFromStack(card.getTextureDepentOnMode());
     }
 
     @Override
@@ -203,7 +211,7 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
         stage.draw();
-        card.draw();
+        card.drawCard(batch);
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
     }
