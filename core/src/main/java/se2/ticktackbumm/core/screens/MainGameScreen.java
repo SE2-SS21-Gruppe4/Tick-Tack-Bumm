@@ -188,9 +188,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
-        // TODO: show card backside again
+
         card.setRevealed(false);
-        // TODO: set new random syllable for card frontside
         card.setWordFromStack(card.getTextureDepentOnMode());
     }
 
