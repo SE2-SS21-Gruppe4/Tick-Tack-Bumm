@@ -1,10 +1,13 @@
 package se2.ticktackbumm.core;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
@@ -94,28 +97,45 @@ public class TickTackBummGame extends Game {
         return gameData.getCurrentPlayerTurnIndex() == localPlayer.getPlayerId();
     }
 
-    public void startNewRound() {
+    public void startNewGame() {
         if (isLocalPlayerTurn()) {
-            this.setScreen(new SpinWheelScreen());
+            switchScreen(new SpinWheelScreen());
         } else {
-            this.setScreen(new MainGameScreen());
+            switchScreen(new MainGameScreen());
+            startNewTurn();
+        }
+    }
+
+    public void startNextRound() {
+        if (isLocalPlayerTurn()) {
+            // TODO: fixme, why is this necessary?
+            Gdx.app.postRunnable(() -> switchScreen(new SpinWheelScreen()));
+        } else {
+            startNewTurn();
         }
     }
 
     public void startNewTurn() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
         if (isLocalPlayerTurn()) {
-           /* gameScreen.showControls();
+            gameScreen.showControls();
             gameScreen.updatePlayerScores();
             gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();*/
+            gameScreen.resetCard();
         } else {
-        /*    gameScreen.hideControls();
+            Log.info("NOT LOCAL PLAYER TURN");
+            gameScreen.hideControls();
             gameScreen.updatePlayerScores();
             gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();*/
+            gameScreen.resetCard();
             // hide waiting for spin wheel message
         }
+    }
+
+    public void switchScreen(Screen screen) {
+        Screen currentScreen = getScreen();
+        setScreen(screen);
+        currentScreen.dispose();
     }
 
     @Override
