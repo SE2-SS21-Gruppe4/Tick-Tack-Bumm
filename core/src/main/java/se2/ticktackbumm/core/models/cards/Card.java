@@ -78,14 +78,17 @@ public class Card {
 
         assetManager.load("card/frontside.png",Texture.class);
         assetManager.finishLoading();
+
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
 
         wordFromArray = getWordsDependOnMode();
-        // TODO: use skin instead of LabelStyle
+
         labelSkin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        cardWordLabel = new Label(gameData.getCurrentGameModeText(), labelSkin);
+        labelSkin.getFont("default-font").getData().setScale(3);
+
+        cardWordLabel = new Label(getWordsDependOnMode(), labelSkin);
 
     }
 
@@ -100,10 +103,10 @@ public class Card {
     }
 
     public void drawFrontSide(){
+        gameData.setCurrentGameMode(GameMode.POSTFIX);
         wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(wordFromArray,labelSkin);
-        cardWordLabel.setSize(500,300);
 
 
         frontsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
