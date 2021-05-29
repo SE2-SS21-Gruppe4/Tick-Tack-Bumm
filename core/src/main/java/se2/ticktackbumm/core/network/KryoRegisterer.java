@@ -35,6 +35,7 @@ public class KryoRegisterer {
         kryo.register(StartGame.class);
         kryo.register(GameUpdate.class);
         kryo.register(NextTurn.class);
+        kryo.register(NextRound.class);
 
         // register owned classes to send in messages
         kryo.register(Player.class);
