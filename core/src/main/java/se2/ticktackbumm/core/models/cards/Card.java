@@ -18,6 +18,8 @@ import se2.ticktackbumm.core.data.GameMode;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Card {
 
@@ -32,20 +34,10 @@ public class Card {
 
     private final GameData gameData;
 
-
-    private Stage stage;
-
     private final Texture backsideTexture;
-   // private final Image backsideImage;
 
     private final Texture frontsideTexture;
-    private final Image frontsideImage;
 
-    private String wordFromArray;
-    private Skin labelSkin;
-    private  Label cardWordLabel;
-
-    private final SecureRandom random;
 
     private boolean isRevealed;
 
@@ -54,6 +46,8 @@ public class Card {
 
     private AssetManager assetManager;
     private TickTackBummGame game;
+
+    private Texture wordFromStack;
 
     private Sprite fontSprite;
     private Sprite backSprite;
@@ -68,10 +62,9 @@ public class Card {
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+        //Only for testing
+        gameData.setCurrentGameMode(GameMode.PREFIX);
 
-        stage = new Stage();
-
-        random = new SecureRandom();
 
         isRevealed = false;
 
@@ -83,7 +76,7 @@ public class Card {
         assetManager.finishLoading();
 
         backsideTexture = assetManager.get("card/backside.png",Texture.class);
-       // backsideImage = new Image(backsideTexture);
+
 
         backSprite = new Sprite(backsideTexture);
         backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
@@ -92,17 +85,11 @@ public class Card {
         assetManager.finishLoading();
 
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
-        frontsideImage = new Image(frontsideTexture);
 
-        fontSprite = new Sprite(vorWordsList.get(0));
+        wordFromStack = getTextureDepentOnMode();
+        fontSprite = new Sprite(wordFromStack);
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
-      /*  wordFromArray = getWordsDependOnMode();
-
-        labelSkin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        labelSkin.getFont("default-font").getData().setScale(3);
-
-        cardWordLabel = new Label(getWordsDependOnMode(), labelSkin);*/
 
     }
 
@@ -115,96 +102,55 @@ public class Card {
                 isRevealed = true;
             }
         }
-        if (!isRevealed){
+        if (isRevealed){
             fontSprite.draw(spriteBatch);
-           /* this.backsideImage.setVisible(true);
-            drawBackSide();*/
+           // drawFontSide(spriteBatch);
+
         }
         else{
            backSprite.draw(spriteBatch);
-           // this.backsideImage.setVisible(false);*/
-           // drawFront2Side();
+
         }
+    }
+
+    public void drawFontSide(SpriteBatch spriteBatch){
+        Texture randomWord = getTextureDepentOnMode();
+
+        fontSprite = new Sprite(randomWord);
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
+
+        fontSprite.draw(spriteBatch);
 
     }
 
-  /*  public void addLabel(){
-        gameData.setCurrentGameMode(GameMode.POSTFIX);
-        wordFromArray = "";
-        wordFromArray = getWordsDependOnMode();
-        // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(wordFromArray,labelSkin);
-        cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 200, 200);
-        stage.addActor(cardWordLabel);
-        stage.draw();
-    }
 
- /*   public void drawFrontSide(){
-        //TODO connect with real game mode; it is just test
-        gameData.setCurrentGameMode(GameMode.INFIX);
-        wordFromArray = getWordsDependOnMode();
-
-        cardWordLabel = new Label(wordFromArray,labelSkin);
-
-     //   cardWordLabel.setV
-    }
-
-    public void drawFront2Side(){
-
-        this.backsideImage.setVisible(false);
-
-
-        gameData.setCurrentGameMode(GameMode.POSTFIX);
-        wordFromArray = "";
-        wordFromArray = getWordsDependOnMode();
-        // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(wordFromArray,labelSkin);
-
-
-        frontsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        cardWordLabel.setBounds(Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
-
-        stage.addActor(frontsideImage);
-        stage.addActor(cardWordLabel);
-
-        gameData.setCardRevealed(true);
-
-      //  stage.draw();
-
-    }
-
-  /*  public void drawBackSide(){
-
-        this.cardWordLabel.setVisible(false);
-        this.frontsideImage.setVisible(false);
-
-
-        backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-
-        stage.addActor(backsideImage);
-
-      //  stage.draw();
-    }
-
-
-  /*  public String getWordsDependOnMode(){
+    public Texture getTextureDepentOnMode(){
         switch (gameData.getCurrentGameMode()){
-            case NONE:
-                return "";
             case PREFIX:
-                return getRandomSyllable(this.vorArray);
+               return getRandomWordFromList(vorWordsList);
 
             case INFIX:
-                return getRandomSyllable(this.middleArray);
+                return getRandomWordFromList(middleWordsList);
+
 
             case POSTFIX:
-                return getRandomSyllable(this.nachArray);
+              return  getRandomWordFromList(afterWordsList);
 
             default:
+                //TODO check if in this case backside should be drawn
                 return null;
         }
+    }
 
-    }*/
+
+    public Texture getRandomWordFromList(ArrayList<Texture> words){
+        Collections.shuffle(words);
+
+        return words.get(0);
+    }
+
+
+
 
     public ArrayList<Texture> getWordsFromAsset(String path){
         ArrayList<Texture> wordsFromAsset = new ArrayList<>();
@@ -222,23 +168,6 @@ public class Card {
     }
 
 
-/*//TODO delete after implementation with list
-    public String getRandomSyllable(String[] currentArray) {
-       // return vorArray[random.nextInt(vorArray.length)];
-
-        return currentArray[random.nextInt(currentArray.length)];
-    }
-
-    public String[] getVorArray(){
-        return this.vorArray;
-    }
-    public String[] getMiddleArray(){
-        return this.middleArray;
-    }
-    public String[] getNachArray(){
-        return this.nachArray;
-    }
-
 
     public boolean isRevealed() {
         return isRevealed;
@@ -246,5 +175,5 @@ public class Card {
 
     public void setRevealed(boolean revealed) {
         isRevealed = revealed;
-    }*/
+    }
 }
