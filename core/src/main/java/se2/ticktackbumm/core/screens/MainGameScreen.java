@@ -9,11 +9,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
@@ -21,8 +24,9 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
-
 public class MainGameScreen extends ScreenAdapter {
+    private static final String LOG_TAG = "MAIN_GAME_SCREEN";
+
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
@@ -69,9 +73,10 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        //card
+        // card
         card = new Card();
 
+        // initialize player scores
         playerScore = gameData.getPlayerScores();
 
         // scene2d UI
@@ -113,6 +118,19 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(imageTable);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
+
+        // TODO: testing only, next round
+        TextButton bombButton = new TextButton("BOMB", skin);
+        bombButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                networkClient.getClientMessageSender().sendBombExploded();
+            }
+        });
+        bombButton.setHeight(125);
+        bombButton.setWidth(200);
+        bombButton.setPosition(100, 200, Align.center);
+        stage.addActor(bombButton);
     }
 
     private Table setupTextfieldTable() {
@@ -163,8 +181,9 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void resetCard() {
-        card.setupBackSide();
-        // TODO: set new random syllable for card
+        Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
+        // TODO: show card backside again
+        // TODO: set new random syllable for card frontside
     }
 
     @Override
@@ -191,10 +210,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        batch.dispose();
         stage.dispose();
         skin.dispose();
-        font.dispose();
     }
 
     public TextField getTextField() {
