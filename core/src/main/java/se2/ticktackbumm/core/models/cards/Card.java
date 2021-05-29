@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -52,6 +53,10 @@ public class Card {
     private AssetManager assetManager;
     private TickTackBummGame game;
 
+    private Sprite fontSprite;
+    private Sprite backSprite;
+
+
     private Sound openCardSound;
     private Sound cardSchufflingSound;
 
@@ -74,7 +79,8 @@ public class Card {
         backsideTexture = assetManager.get("card/backside.png",Texture.class);
         backsideImage = new Image(backsideTexture);
 
-
+        backSprite = new Sprite(backsideTexture);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         assetManager.load("card/frontside.png",Texture.class);
         assetManager.finishLoading();
@@ -82,6 +88,8 @@ public class Card {
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
+        fontSprite = new Sprite(frontsideTexture);
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         wordFromArray = getWordsDependOnMode();
 
@@ -93,17 +101,17 @@ public class Card {
     }
 
     public void drawCard() {
-        if (Gdx.input.isTouched()){
-              drawFrontSide();
+        if (!isRevealed){
+            drawFrontSide();
         }
-
-        drawBackSide();
-        stage.draw();
-
+        else{
+            drawBackSide();
+        }
     }
 
     public void drawFrontSide(){
         gameData.setCurrentGameMode(GameMode.POSTFIX);
+        wordFromArray = "";
         wordFromArray = getWordsDependOnMode();
         // TODO: use skin instead of LabelStyle
         cardWordLabel = new Label(wordFromArray,labelSkin);
@@ -117,27 +125,27 @@ public class Card {
 
         gameData.setCardRevealed(true);
 
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                wordFromArray = "";
-              frontsideImage.remove();
-              cardWordLabel.remove();
+        stage.draw();
 
-                 stage.draw();
-                drawBackSide();
-
-            }
-        },5);
-
-        //TODO check if it make sense
-        gameData.setCardRevealed(false);
     }
 
     public void drawBackSide(){
         backsideImage.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
 
         stage.addActor(backsideImage);
+
+        stage.draw();
+    }
+
+    public void handleClick(){
+        if (Gdx.input.isTouched()){
+            if (isRevealed){
+                isRevealed = false;
+            }
+            else{
+                isRevealed = true;
+            }
+        }
     }
 
     public String getWordsDependOnMode(){
