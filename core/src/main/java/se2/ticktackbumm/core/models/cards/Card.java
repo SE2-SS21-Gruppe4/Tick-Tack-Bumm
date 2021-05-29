@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 public class Card {
 
-    //TODO delete after implementation with ArrayList
+  /*  //TODO delete after implementation with ArrayList
     private final String[] vorArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
     private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
-    private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
+    private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};*/
 
     private ArrayList<Texture> vorWordsList;
     private ArrayList<Texture> middleWordsList;
@@ -75,15 +75,15 @@ public class Card {
 
         isRevealed = false;
 
-        vorWordsList =getVorWordsFromAsset(afterWordsList);
-        middleWordsList = getMiddleWordsFromAsset();
-        afterWordsList = getAfterWordsFromAsser();
+        vorWordsList =getWordsFromAsset("vorWords");
+        middleWordsList = getWordsFromAsset("middleWords");
+        afterWordsList = getWordsFromAsset("afterWords");
 
         assetManager.load("card/backside.png",Texture.class);
         assetManager.finishLoading();
 
         backsideTexture = assetManager.get("card/backside.png",Texture.class);
-        backsideImage = new Image(backsideTexture);
+       // backsideImage = new Image(backsideTexture);
 
         backSprite = new Sprite(backsideTexture);
         backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
@@ -94,7 +94,7 @@ public class Card {
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
         frontsideImage = new Image(frontsideTexture);
 
-        fontSprite = new Sprite(frontsideTexture);
+        fontSprite = new Sprite(vorWordsList.get(0));
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
         wordFromArray = getWordsDependOnMode();
@@ -187,18 +187,8 @@ public class Card {
       //  stage.draw();
     }
 
-    public void handleClick(){
-        if (Gdx.input.isTouched()){
-            if (isRevealed){
-                isRevealed = false;
-            }
-            else{
-                isRevealed = true;
-            }
-        }
-    }
 
-    public String getWordsDependOnMode(){
+  /*  public String getWordsDependOnMode(){
         switch (gameData.getCurrentGameMode()){
             case NONE:
                 return "";
@@ -215,12 +205,21 @@ public class Card {
                 return null;
         }
 
-    }
+    }*/
 
-    public ArrayList<Texture> getVorWordsFromAsset(){
-        ArrayList<Texture> vorWordsFromAsset = new ArrayList<>();
+    public ArrayList<Texture> getWordsFromAsset(String path){
+        ArrayList<Texture> wordsFromAsset = new ArrayList<>();
 
-        for (int i = 0; )
+        for (int i = 0; i < 10; i++){
+            assetManager.load("card/"+path+"/"+i+"png",Texture.class);
+            assetManager.finishLoading();
+
+            Texture wordImage = assetManager.get("card/"+path+"/"+i+"png",Texture.class);
+
+            wordsFromAsset.add(wordImage);
+        }
+
+        return wordsFromAsset;
     }
 
 
