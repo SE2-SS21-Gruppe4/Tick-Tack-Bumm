@@ -21,6 +21,8 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
+import se2.ticktackbumm.core.models.BombImpl.Bomb;
+import se2.ticktackbumm.core.models.BombImpl.BombExplosion;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -54,6 +56,9 @@ public class MainGameScreen extends ScreenAdapter {
 
     private final Card card;
 
+    //Bomb and explosion
+    private Bomb bomb;
+
     private final BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
@@ -78,6 +83,11 @@ public class MainGameScreen extends ScreenAdapter {
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
+
+        //bomb
+        bomb = new Bomb();
+        assetManager.load("bombexplosion.png",Texture.class);
+        assetManager.finishLoading();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -202,8 +212,11 @@ public class MainGameScreen extends ScreenAdapter {
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
+        bomb.renderBomb(delta,batch);
+
         stage.draw();
         card.draw();
+
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
     }
