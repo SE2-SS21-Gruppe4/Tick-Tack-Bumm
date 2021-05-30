@@ -94,10 +94,10 @@ public class GameData {
                 avatar = new Image(game.getManager().get("avatars/blackhaired_guy.png", Texture.class));
                 break;
             case BLOND_GUY:
-                avatar = new Image(game.getManager().get("score/blond_guy.png", Texture.class));
+                avatar = new Image(game.getManager().get("avatars/blond_guy.png", Texture.class));
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + player.getPlayerAvatar());
+                avatar = new Image(game.getManager().get("score/player1.png", Texture.class));
         }
         return avatar;
     }
