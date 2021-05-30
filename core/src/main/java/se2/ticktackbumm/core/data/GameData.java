@@ -102,6 +102,27 @@ public class GameData {
         return avatar;
     }
 
+    public Image setPlayerAvatarImage(Player player) {
+        Image avatar;
+        switch (player.getPlayerAvatar()) {
+            case BRUNETTE_GIRL:
+                avatar = new Image(game.getManager().get("avatars/brunette_girl_picked.png", Texture.class));
+                break;
+            case BLOND_GIRL:
+                avatar = new Image(game.getManager().get("avatars/blond_girl_picked.png", Texture.class));
+                break;
+            case BLACKHAIRED_GUY:
+                avatar = new Image(game.getManager().get("avatars/blackhaired_guy_picked.png", Texture.class));
+                break;
+            case BLOND_GUY:
+                avatar = new Image(game.getManager().get("avatars/blond_guy_picked.png", Texture.class));
+                break;
+            default:
+                avatar = new Image(game.getManager().get("score/player1.png", Texture.class));
+        }
+        return avatar;
+    }
+
     public Player getPlayerByConnectionId(int connectionId) {
         for (Player player : players) {
             if (player.getConnectionId() == connectionId) {
