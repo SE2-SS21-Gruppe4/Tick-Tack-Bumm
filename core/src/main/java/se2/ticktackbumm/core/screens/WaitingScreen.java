@@ -204,7 +204,7 @@ public class WaitingScreen extends ScreenAdapter {
             case BLOND_GUY:
                 textureRegionDrawable =
                         new TextureRegionDrawable(new TextureRegion(
-                                game.getManager().get("score/blond_guy_picked.png", Texture.class),
+                                game.getManager().get("avatars/blond_guy_picked.png", Texture.class),
                                 AVATAR_TEXTURE_SIZE,
                                 AVATAR_TEXTURE_SIZE
                         ));
