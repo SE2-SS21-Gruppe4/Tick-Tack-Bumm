@@ -1,5 +1,5 @@
 package se2.ticktackbumm.core.data;
 
 public enum Avatars {
-    BLUE, GREEN, YELLOW, RED
+    BLOND_GIRL, BLACKHAIRED_GUY, BLOND_GUY, BRUNETTE_GIRL
 }

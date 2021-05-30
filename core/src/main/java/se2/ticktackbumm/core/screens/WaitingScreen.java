@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameData;
@@ -107,10 +108,10 @@ public class WaitingScreen extends ScreenAdapter {
         avatarButtonTable.setWidth(stage.getWidth());
         avatarButtonTable.setY(600f);
 
-        playerAvatarButton0 = createAndSetupAvatarButton(Avatars.BLUE, "avatars/square_blue.png");
-        playerAvatarButton1 = createAndSetupAvatarButton(Avatars.GREEN, "avatars/square_green.png");
-        playerAvatarButton2 = createAndSetupAvatarButton(Avatars.YELLOW, "avatars/square_yellow.png");
-        playerAvatarButton3 = createAndSetupAvatarButton(Avatars.RED, "avatars/square_red.png");
+        playerAvatarButton0 = createAndSetupAvatarButton(Avatars.BLOND_GIRL, "avatars/blond_girl.png");
+        playerAvatarButton1 = createAndSetupAvatarButton(Avatars.BLACKHAIRED_GUY, "avatars/blackhaired_guy.png");
+        playerAvatarButton2 = createAndSetupAvatarButton(Avatars.BLOND_GUY, "avatars/blond_guy.png");
+        playerAvatarButton3 = createAndSetupAvatarButton(Avatars.BRUNETTE_GIRL, "avatars/brunette_girl.png");
 
         avatarButtonGroup =
                 new ButtonGroup<>(playerAvatarButton0, playerAvatarButton1, playerAvatarButton2, playerAvatarButton3);
@@ -173,13 +174,46 @@ public class WaitingScreen extends ScreenAdapter {
                         AVATAR_TEXTURE_SIZE
                 ));
 
-        avatarStyle.imageChecked =
-                new TextureRegionDrawable(new TextureRegion(
-                        game.getManager().get("score/player1.png", Texture.class),
-                        AVATAR_TEXTURE_SIZE,
-                        AVATAR_TEXTURE_SIZE
-                ));
+        TextureRegionDrawable textureRegionDrawable;
 
+        switch (avatar) {
+            case BRUNETTE_GIRL:
+                textureRegionDrawable =
+                        new TextureRegionDrawable(new TextureRegion(
+                                game.getManager().get("avatars/brunette_girl_picked.png", Texture.class),
+                                AVATAR_TEXTURE_SIZE,
+                                AVATAR_TEXTURE_SIZE
+                        ));
+                break;
+            case BLOND_GIRL:
+                textureRegionDrawable =
+                        new TextureRegionDrawable(new TextureRegion(
+                                game.getManager().get("avatars/blond_girl_picked.png", Texture.class),
+                                AVATAR_TEXTURE_SIZE,
+                                AVATAR_TEXTURE_SIZE
+                        ));
+                break;
+            case BLACKHAIRED_GUY:
+                textureRegionDrawable =
+                        new TextureRegionDrawable(new TextureRegion(
+                                game.getManager().get("avatars/blackhaired_guy_picked.png", Texture.class),
+                                AVATAR_TEXTURE_SIZE,
+                                AVATAR_TEXTURE_SIZE
+                        ));
+                break;
+            case BLOND_GUY:
+                textureRegionDrawable =
+                        new TextureRegionDrawable(new TextureRegion(
+                                game.getManager().get("score/blond_guy_picked.png", Texture.class),
+                                AVATAR_TEXTURE_SIZE,
+                                AVATAR_TEXTURE_SIZE
+                        ));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + avatar);
+        }
+        avatarStyle.imageChecked = textureRegionDrawable;
+        
         ImageButton avatarButton = new ImageButton(avatarStyle);
 
         avatarButton.addListener(new AvatarButtonListener(this, avatar));
