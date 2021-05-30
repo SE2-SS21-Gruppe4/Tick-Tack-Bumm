@@ -20,7 +20,7 @@ public class Score {
     private Label player4;
     private Skin skin;
 
-    private final int[] playerScore;
+    private int[] playerScore;
 
     private final ArrayList<Label> playerScores;
 
@@ -49,6 +49,10 @@ public class Score {
         player4.setColor(Color.BLACK);
     }
 
+    public void setPlayerScore(int[] playerScore) {
+        this.playerScore = playerScore;
+        initScores();
+    }
 
     public void addScoresToList() {
         playerScores.add(player1);
