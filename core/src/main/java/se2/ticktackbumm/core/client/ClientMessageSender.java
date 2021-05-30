@@ -1,9 +1,13 @@
 package se2.ticktackbumm.core.client;
 
 import com.esotericsoftware.kryonet.Client;
-import se2.ticktackbumm.core.network.messages.BombExploded;
-import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.Avatars;
+import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 
 /**
  * Handles the sending of messages from the client to the server.
@@ -27,16 +31,33 @@ public class ClientMessageSender {
         this.client = client;
     }
 
+    private void logSendingMessage(String messageType) {
+        Log.info(LOG_TAG, "Sending message " + messageType + " from player: " +
+                TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerName());
+    }
+
     // Test method
     public void sendSomeRequest(String text) {
         client.sendTCP(new SomeRequest(text));
     }
 
     public void sendPlayerTaskCompleted() {
+        logSendingMessage("TaskCompleted");
         client.sendTCP(new PlayerTaskCompleted());
     }
 
     public void sendBombExploded() {
+        logSendingMessage("BombExploded");
         client.sendTCP(new BombExploded());
+    }
+
+    public void sendPlayerReady(String playerName, Avatars playerAvatar) {
+        logSendingMessage("PlayerReady");
+        client.sendTCP(new PlayerReady(playerName, playerAvatar));
+    }
+
+    public void sendGameFinished() {
+        logSendingMessage("GameFinished");
+//        client.sendTCP(new GameFinished());
     }
 }

@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.gamelogic;
+package se2.ticktackbumm.core.listeners;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -11,12 +11,13 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.ClientMessageSender;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.screens.MainGameScreen;
 
 import java.io.*;
 import java.util.ArrayList;
 
 
-public class TextfieldInputListener extends ClickListener {
+public class CheckButtonListener extends ClickListener {
     private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
@@ -25,6 +26,7 @@ public class TextfieldInputListener extends ClickListener {
     private GameData gameData;
     private ClientMessageSender clientMessageSender;
 
+    private final MainGameScreen gameScreen;
     private final TextField textField;
     private final TextButton checkButton;
     private String userInput;
@@ -32,14 +34,16 @@ public class TextfieldInputListener extends ClickListener {
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
      */
-    public TextfieldInputListener() {
+    public CheckButtonListener() {
+        this.gameScreen = null;
         this.textField = null;
         this.checkButton = null;
     }
 
-    public TextfieldInputListener(TextField textField, TextButton checkButton) {
-        this.textField = textField;
-        this.checkButton = checkButton;
+    public CheckButtonListener(MainGameScreen mainGameScreen) {
+        this.gameScreen = mainGameScreen;
+        this.textField = mainGameScreen.getTextField();
+        this.checkButton = mainGameScreen.getCheckButton();
 
         this.game = TickTackBummGame.getTickTackBummGame();
         this.gameData = game.getGameData();
@@ -56,22 +60,15 @@ public class TextfieldInputListener extends ClickListener {
         userInput = textField.getText().trim();
         Log.info(LOG_TAG, "Got user input: " + userInput);
 
-//        textField.setText(""); // clear/consume user input?
-        textField.setDisabled(true); // disable field until next guess/next turn
-        checkButton.setDisabled(true); // disable check button until next guess/next turn
+        gameScreen.hideControls();
 
         if (isValidWord(userInput)) {
-            textField.setText("KORREKT");
-            checkButton.clearListeners();
-//            textField.setVisible(false); // hide text field after correct guess?
+            textField.clear();
             clientMessageSender.sendPlayerTaskCompleted();
         } else {
-            textField.setText("FALSCH");
-            textField.setDisabled(false); // wrong guess; guess again
-            checkButton.setDisabled(false); // wrong guess; guess again
+            textField.clear();
+            gameScreen.showControls();
         }
-
-//        textField.setDisabled(false); // enable here again for testing only
     }
 
     boolean isValidWord(String userInput) {
@@ -169,7 +166,7 @@ public class TextfieldInputListener extends ClickListener {
                 dictionaryFileReader = Gdx.files.internal(dictionaryInternalPath).reader("Cp1252");
             } else { // for testing
                 InputStream dictionaryStream;
-                if ((dictionaryStream = TextfieldInputListener.class.getResourceAsStream("/" + dictionaryInternalPath)) != null) {
+                if ((dictionaryStream = CheckButtonListener.class.getResourceAsStream("/" + dictionaryInternalPath)) != null) {
                     dictionaryFileReader = new InputStreamReader(dictionaryStream, "Cp1252");
                 } else {
                     throw new FileNotFoundException("Dictionary file could not be found at: " + dictionaryInternalPath);

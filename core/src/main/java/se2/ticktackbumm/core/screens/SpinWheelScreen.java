@@ -95,7 +95,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainGameScreen());
+                game.switchScreen(new MainGameScreen());
+                game.startNewTurn();
             }
         });
 
@@ -137,6 +138,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 gameData.setCurrentGameMode(GameMode.POSTFIX);
                 break;
         }
+
+        // TODO: testing only
+        gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
 
         // show game button
         gameButton.setDisabled(false);

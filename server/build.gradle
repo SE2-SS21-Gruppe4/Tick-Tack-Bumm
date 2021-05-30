@@ -24,7 +24,7 @@ jacocoTestReport {
 
 jar {
     manifest {
-        attributes "Main-Class": "at.aau.se2.server.Main"
+        attributes "Main-Class": "se2.ticktackbumm.server.Main"
     }
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }

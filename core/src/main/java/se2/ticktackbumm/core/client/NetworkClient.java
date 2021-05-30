@@ -16,7 +16,7 @@ public class NetworkClient {
     /**
      * Kryonet-Client to connect to server, send and receive messages.
      */
-    private final Client client;
+    private final Client kryoClient;
     /**
      * MessageHandler to handle all received messages.
      */
@@ -32,15 +32,15 @@ public class NetworkClient {
      * Create the Kryonet-Client, register all message classes and start the Kryonet-Client.
      */
     public NetworkClient() {
-        client = new Client();
-        KryoRegisterer.registerMessages(this.client.getKryo());
+        kryoClient = new Client();
+        KryoRegisterer.registerMessages(this.kryoClient.getKryo());
 
-        clientMessageSender = new ClientMessageSender(client);
-        clientMessageHandler = new ClientMessageHandler(client, clientMessageSender);
+        clientMessageSender = new ClientMessageSender(kryoClient);
+        clientMessageHandler = new ClientMessageHandler(kryoClient, clientMessageSender);
 
-        client.addListener(new NetworkClientListener(clientMessageHandler));
+        kryoClient.addListener(new NetworkClientListener(clientMessageHandler));
 
-        client.start();
+        kryoClient.start();
     }
 
     /**
@@ -49,10 +49,18 @@ public class NetworkClient {
      */
     public void tryConnectClient() {
         try {
-            client.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            kryoClient.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            Log.info(LOG_TAG, "Connected client to server with IP " + NetworkConstants.HOST_IP + " on port " +
+                    NetworkConstants.TCP_PORT);
         } catch (IOException e) {
             Log.error(LOG_TAG, "Failed to connect client: " + e, e);
         }
+    }
+
+    public void disconnectClient() {
+        kryoClient.close();
+        Log.info(LOG_TAG, "Disconnected client from server with IP " + NetworkConstants.HOST_IP + " on port " +
+                NetworkConstants.TCP_PORT);
     }
 
     /**
@@ -73,5 +81,9 @@ public class NetworkClient {
      */
     public ClientMessageSender getClientMessageSender() {
         return clientMessageSender;
+    }
+
+    public Client getKryoClient() {
+        return kryoClient;
     }
 }
