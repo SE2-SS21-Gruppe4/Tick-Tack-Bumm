@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
@@ -54,6 +55,12 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
+    //tables for the playerscores and avatars
+    private final Table score1Table;
+    private final Table score2Table;
+    private final Table score3Table;
+    private final Table score4Table;
+
     private final Card card;
 
     //Bomb and explosion
@@ -86,7 +93,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         //bomb
         bomb = new Bomb();
-        assetManager.load("bombexplosion.png",Texture.class);
+        assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
 
         // scene2d UI
@@ -112,18 +119,37 @@ public class MainGameScreen extends ScreenAdapter {
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
+        //init tables for scores
+        score1Table = new Table();
+        score1Table.setWidth(200);
+        score1Table.setHeight(200);
+        score1Table.align(Align.center);
+
+        score1Table.add();
+
+        score2Table = new Table();
+        score2Table.setWidth(200);
+        score2Table.setHeight(200);
+        score2Table.align(Align.center);
+
+        score3Table = new Table();
+        score3Table.setWidth(200);
+        score3Table.setHeight(200);
+        score3Table.align(Align.center);
+
+        score4Table = new Table();
+        score4Table.setWidth(200);
+        score4Table.setHeight(200);
+        score4Table.align(Align.center);
+
         score = new Score();
-        score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
-        score.getPlayer().get(1).setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 + 310);
-        score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
-        score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
 
         textFieldTable = setupTextfieldTable();
 
-        stage.addActor(score.getPlayer().get(0));
-        stage.addActor(score.getPlayer().get(1));
-        stage.addActor(score.getPlayer().get(2));
-        stage.addActor(score.getPlayer().get(3));
+        stage.addActor(score1Table);
+        stage.addActor(score2Table);
+        stage.addActor(score3Table);
+        stage.addActor(score4Table);
 
         stage.addActor(imageTable);
         stage.addActor(imageMaxScoreBoard);
@@ -202,17 +228,12 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        //for when the multiplayer mode works
-        //score.getBitmaps().get(0).draw(batch, Integer.toString(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        //score.getBitmaps().get(1).draw(batch, Integer.toString(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
-        //score.getBitmaps().get(2).draw(batch, Integer.toString(playerScore[2]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
-        //score.getBitmaps().get(3).draw(batch, Integer.toString(playerScore[3]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
         score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
         score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
         score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
 
-        bomb.renderBomb(delta,batch);
+        bomb.renderBomb(delta, batch);
 
         stage.draw();
         card.draw();
