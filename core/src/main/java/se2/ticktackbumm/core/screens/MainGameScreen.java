@@ -123,48 +123,51 @@ public class MainGameScreen extends ScreenAdapter {
         //init tables for scores
         score1Table = new Table();
         score1Table.setWidth(200);
-        score1Table.setHeight(200);
+        score1Table.setHeight(300);
         score1Table.align(Align.center);
 
-        score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.add(score.getPlayer1());
         score1Table.row();
-        score1Table.add((CharSequence) score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600));
+        score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
 
         score2Table = new Table();
         score2Table.setWidth(200);
-        score2Table.setHeight(200);
+        score2Table.setHeight(300);
         score2Table.align(Align.center);
 
-        score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.add(score.getPlayer2());
         score2Table.row();
-        score2Table.add((CharSequence) score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600));
+        score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
 
         score3Table = new Table();
         score3Table.setWidth(200);
-        score3Table.setHeight(200);
+        score3Table.setHeight(300);
         score3Table.align(Align.center);
 
-        score3Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(2)));
+        score3Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
         score3Table.row();
-        score3Table.add((CharSequence) score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330));
+        score3Table.add(score.getPlayer3());
+        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
 
         score4Table = new Table();
         score4Table.setWidth(200);
-        score4Table.setHeight(200);
+        score4Table.setHeight(300);
         score4Table.align(Align.center);
 
-        score4Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(3)));
+        score4Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
         score4Table.row();
-        score4Table.add((CharSequence) score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375));
+        score4Table.add(score.getPlayer4());
+        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
 
         textFieldTable = setupTextfieldTable();
 
         stage.addActor(score1Table);
         stage.addActor(score2Table);
+        stage.addActor(imageTable);
         stage.addActor(score3Table);
         stage.addActor(score4Table);
-
-        stage.addActor(imageTable);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
 
