@@ -135,17 +135,27 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.setHeight(200);
         score2Table.align(Align.center);
 
+        score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.row();
+        score2Table.add((CharSequence) score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600));
+
         score3Table = new Table();
         score3Table.setWidth(200);
         score3Table.setHeight(200);
         score3Table.align(Align.center);
+
+        score3Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(2)));
+        score3Table.row();
+        score3Table.add((CharSequence) score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330));
 
         score4Table = new Table();
         score4Table.setWidth(200);
         score4Table.setHeight(200);
         score4Table.align(Align.center);
 
-
+        score4Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(3)));
+        score4Table.row();
+        score4Table.add((CharSequence) score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375));
 
         textFieldTable = setupTextfieldTable();
 
@@ -231,13 +241,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
-        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
-
         bomb.renderBomb(delta, batch);
-
         stage.draw();
         card.draw();
 
