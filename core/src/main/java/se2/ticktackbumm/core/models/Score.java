@@ -3,56 +3,104 @@ package se2.ticktackbumm.core.models;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 
-public class Score {
-    private BitmapFont player1Score;
-    private BitmapFont player2Score;
-    private BitmapFont player3Score;
-    private BitmapFont player4Score;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
-    private final ArrayList<BitmapFont> bitmapFonts;
+public class Score {
+    private final TickTackBummGame game;
+    private final GameData gameData;
+    private Label player1;
+    private Label player2;
+    private Label player3;
+    private Label player4;
+    private Skin skin;
+
+    private final int[] playerScore;
+
+    private final ArrayList<Label> playerScores;
 
     public Score() {
-        initPictures();
-        bitmapFonts = new ArrayList<>();
-        addScores();
-        addBitmaps();
+        game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
+
+        playerScore = gameData.getPlayerScores();
+
+        skin = game.getManager().get("ui/uiskin.json", Skin.class);
+        skin.getFont("default-font").getData().setScale(3f);
+
+        playerScores = new ArrayList<>();
+        initScores();
+        addScoresToList();
     }
 
-    public void initPictures() {
-        player1Score = new BitmapFont();
-        player2Score = new BitmapFont();
-        player3Score = new BitmapFont();
-        player4Score = new BitmapFont();
+    public void initScores() {
+        player1 = new Label(String.valueOf(playerScore[0]), skin);
+        player2 = new Label(String.valueOf(playerScore[1]), skin);
+        player3 = new Label("1", skin);
+        player4 = new Label("2", skin);
+        player1.setColor(Color.BLACK);
+        player2.setColor(Color.BLACK);
+        player3.setColor(Color.BLACK);
+        player4.setColor(Color.BLACK);
     }
 
 
-    public void addScores() {
-        player1Score.setColor(Color.BLACK);
-        player1Score.getData().setScale(3);
-        player1Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player2Score.setColor(Color.BLACK);
-        player2Score.getData().setScale(3);
-        player2Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player3Score.setColor(Color.BLACK);
-        player3Score.getData().setScale(3);
-        player3Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player4Score.setColor(Color.BLACK);
-        player4Score.getData().setScale(3);
-        player4Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    public void addScoresToList() {
+        playerScores.add(player1);
+        playerScores.add(player2);
+        playerScores.add(player3);
+        playerScores.add(player4);
     }
 
-    public void addBitmaps() {
-        bitmapFonts.add(player1Score);
-        bitmapFonts.add(player2Score);
-        bitmapFonts.add(player3Score);
-        bitmapFonts.add(player4Score);
+    public Label getPlayer1() {
+        return player1;
     }
 
-    public ArrayList<BitmapFont> getBitmaps() {
-        return bitmapFonts;
+    public Label getPlayer2() {
+        return player2;
+    }
+
+    public Label getPlayer3() {
+        return player3;
+    }
+
+    public Label getPlayer4() {
+        return player4;
+    }
+
+    public ArrayList<Label> getPlayerScores() {
+        return playerScores;
+    }
+
+    public void setPlayer1(Label player1) {
+        this.player1 = player1;
+    }
+
+    public void setPlayer2(Label player2) {
+        this.player2 = player2;
+    }
+
+    public void setPlayer3(Label player3) {
+        this.player3 = player3;
+    }
+
+    public void setPlayer4(Label player4) {
+        this.player4 = player4;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "player1=" + player1 +
+                ", player2=" + player2 +
+                ", player3=" + player3 +
+                ", player4=" + player4 +
+                '}';
     }
 }
 
