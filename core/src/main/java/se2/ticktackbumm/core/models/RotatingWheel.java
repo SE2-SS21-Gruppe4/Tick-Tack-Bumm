@@ -405,12 +405,10 @@ public class RotatingWheel implements Disposable {
 
         @Override
         public void preSolve(Contact contact, Manifold oldManifold) {
-
         }
 
         @Override
         public void postSolve(Contact contact, ContactImpulse impulse) {
-
         }
     }
 
