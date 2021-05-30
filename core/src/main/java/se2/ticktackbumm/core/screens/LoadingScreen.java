@@ -81,10 +81,14 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("score/player4.png", Texture.class);
 
         // load player avatars for WaitingScreen
-        assetManager.load("avatars/square_blue.png", Texture.class);
-        assetManager.load("avatars/square_green.png", Texture.class);
-        assetManager.load("avatars/square_red.png", Texture.class);
-        assetManager.load("avatars/square_yellow.png", Texture.class);
+        assetManager.load("avatars/blackhaired_guy.png", Texture.class);
+        assetManager.load("avatars/blackhaired_guy_picked.png", Texture.class);
+        assetManager.load("avatars/blond_girl.png", Texture.class);
+        assetManager.load("avatars/blond_girl_picked.png", Texture.class);
+        assetManager.load("avatars/blond_guy.png", Texture.class);
+        assetManager.load("avatars/blond_guy_picked.png", Texture.class);
+        assetManager.load("avatars/brunette_girl.png", Texture.class);
+        assetManager.load("avatars/brunette_girl_picked.png", Texture.class);
 
         assetManager.finishLoading();
     }
