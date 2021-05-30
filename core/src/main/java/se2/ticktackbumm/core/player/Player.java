@@ -1,6 +1,9 @@
 package se2.ticktackbumm.core.player;
 
 import com.esotericsoftware.minlog.Log;
+
+import java.awt.Image;
+
 import se2.ticktackbumm.core.data.Avatars;
 
 public class Player {
