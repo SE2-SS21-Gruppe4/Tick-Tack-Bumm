@@ -7,14 +7,21 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.utils.ObjectMap;
 
+@SuppressWarnings("GDXJavaUnsafeIterator")
 public class RotatingWheel implements Disposable {
     public static final float N_LAW = 100f;
     private static final float STANDARD_SIZE = 512f;
@@ -82,6 +89,9 @@ public class RotatingWheel implements Disposable {
 
         // debugging
         renderer = new Box2DDebugRenderer();
+
+        createWheel();
+        createNeedle();
     }
 
     private void createWheel(){
@@ -178,7 +188,7 @@ public class RotatingWheel implements Disposable {
 
     private void createNeedle(){
 
-        needleCore(30F * (diameter / STANDARD_SIZE), 70F * (diameter / STANDARD_SIZE));
+        needleCore(30F * (diameter / STANDARD_SIZE), 80F * (diameter / STANDARD_SIZE));
         needleMainBody();
         needleJointMainBodyWithCN();
         needleLeftBody();
@@ -328,7 +338,81 @@ public class RotatingWheel implements Disposable {
         return !wheelCore.isAwake();
     }
 
+    public Body getWheelBody(){ return wheelCore;}
 
+    public Body getNeedleBody(){ return needle;}
+
+    public float getNeedleCenterX(float needleWidth){ return needleWidth/2;}
+
+    public float getNeedleCenterY(float needleHeight) { return 3 * needleHeight/ 4 ;}
+
+    // contains two pegs with the object between them
+    private final IntArray pegsSelectors = new IntArray(2);
+
+    //connection between data(two pegs) and object (color)
+    private ObjectMap<IntArray,Object>elements = new ObjectMap<>();
+
+    public void setElements(ObjectMap<IntArray,Object> elemets){ this.elements = elemets;}
+
+    public void addElementData(IntArray data, Object object){ elements.put(data, object);}
+
+    public Object getElementFromWheel(){
+
+        if (pegsSelectors.size>0){
+            for (IntArray array : elements.keys()){
+                if (array.contains(pegsSelectors.get(0)) && array.contains(pegsSelectors.get(1))){
+                    return elements.get(array);
+                }
+            }
+        }
+        return null;
+    }
+
+    private final class WheelContact implements ContactListener {
+
+        @Override
+        public void beginContact(Contact contact) {
+
+        }
+
+        @Override
+        public void endContact(Contact contact) {
+            Object data = contact.getFixtureB().getUserData();
+            int first ;
+            int second ;
+            int peg2= 0 ;
+            if (data == null) return;
+
+            int numberOfPeg = (Integer) data;
+
+
+            if (wheelCore.getAngularVelocity() <= 0){
+                first = numberOfPeg + 1;
+                if (first == numberOfPegs){
+                    first = 0;
+                    peg2 = first;
+                }else{
+                    second = numberOfPeg - 1;
+                    if (second ==0){
+                        second = numberOfPegs;
+                        peg2 = second;
+                    }
+                }
+            }
+            pegsSelectors.clear();
+            pegsSelectors.addAll(numberOfPeg,peg2);
+        }
+
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {
+
+        }
+
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {
+
+        }
+    }
 
 
 
