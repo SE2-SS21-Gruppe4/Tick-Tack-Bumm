@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Disposable;
 public class RotatingWheel implements Disposable {
     public static final float N_LAW = 100f;
     private static final float STANDARD_SIZE = 512f;
-    private static final short BIT_PEG = 2;
-    private static final short BIT_NEEDLE = 6;
+    private static final short BIT_PEG = 4;
+    private static final short BIT_NEEDLE = 8;
     private static final short BIT_BODY1 = 16;
     private static final short BIT_BODY2 = 32;
 
@@ -43,9 +43,12 @@ public class RotatingWheel implements Disposable {
 
     private Body needle;
     // three bodies to constrain and keep the needle in the place.
-    private Body needleBody0;
-    private Body needleBody1;
-    private Body needleBody2;
+    // main body
+    private Body needleMainBody;
+    // left body of needle
+    private Body needleLeftBody;
+    // right body of needle
+    private Body needleRightBody;
 
     //diameter of wheel
     private final float diameter;
@@ -172,6 +175,142 @@ public class RotatingWheel implements Disposable {
         revoluteJointDef.collideConnected = false;
         world.createJoint(revoluteJointDef);
     }
+
+    private void createNeedle(){
+
+        needleCore(30F * (diameter / STANDARD_SIZE), 70F * (diameter / STANDARD_SIZE));
+        needleMainBody();
+        needleJointMainBodyWithCN();
+        needleLeftBody();
+        needleRightBody();
+        needleJointAllPartsOfNeedle();
+    }
+
+    private void needleCore(float needleWidth, float needleHeight){
+        polygon = new PolygonShape();
+        // shape of needle
+        float[] vertices = { - needleWidth / 2, 0f,0f, needleHeight /4 , needleWidth / 2, 0f,0f, -3 * needleHeight / 4};
+        polygon.set(vertices);
+        fixtureDef.shape = polygon;
+
+        //needle define
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        farNeedle = diameter / 1.95f;
+        bodyDef.position.set(x,y + farNeedle);
+
+
+        bodyDef.bullet = true;
+        bodyDef.angularDamping = 0.25f;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.0f;
+
+        //create needle body
+        needle = world.createBody(bodyDef);
+
+        //allow needle to collide with peg, left body and right body
+        fixtureDef.filter.categoryBits = BIT_NEEDLE;
+        fixtureDef.filter.maskBits = BIT_PEG | BIT_BODY1 | BIT_BODY2;
+
+
+    }
+    // center static body to join needle
+    private void needleMainBody(){
+        circle = new CircleShape();
+
+        //shape of base
+        circle.setRadius(4 * (diameter / STANDARD_SIZE));
+        fixtureDef.shape = circle;
+
+        //base of wheel
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        bodyDef.position.set(x,y + farNeedle + 5F * (diameter / STANDARD_SIZE));
+
+        // create main body
+        needleMainBody = world.createBody(bodyDef);
+        // physics propertis of shape
+        fixtureDef.density = 0.0f;
+
+        needleMainBody.createFixture(fixtureDef);
+    }
+
+    private void needleLeftBody(){
+        circle = new CircleShape();
+        // set shape of left body
+        circle.setRadius(4*(diameter/STANDARD_SIZE));
+        fixtureDef.shape = circle;
+
+        // define
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        bodyDef.bullet = true;
+
+        bodyDef.position.set(x - 40f * (diameter/STANDARD_SIZE), y + farNeedle);
+
+        //create left body
+        needleLeftBody = world.createBody(bodyDef);
+
+        //physics propertis of shape
+        fixtureDef.density = 1f;
+        fixtureDef.restitution = 1f;
+        fixtureDef.friction = 1f;
+
+        // allow collision with needle
+        fixtureDef.filter.categoryBits = BIT_BODY1;
+        fixtureDef.filter.maskBits = BIT_NEEDLE;
+
+        needleLeftBody.createFixture(fixtureDef);
+    }
+
+    private void needleRightBody(){
+        circle = new CircleShape();
+        // set The Shape of B2
+        circle.setRadius(4 * (diameter / STANDARD_SIZE));
+        fixtureDef.shape = circle;
+
+        // Define The B2 Of Wheel
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.bullet = true;
+
+        bodyDef.position.set(x + 40F * (diameter / STANDARD_SIZE), y + farNeedle);
+
+        // Create The B2 Body
+        needleRightBody = world.createBody(bodyDef);
+
+        // set The physics properties of The Shape
+        fixtureDef.density = 1f;
+        fixtureDef.restitution = 1f;
+        fixtureDef.friction = 1f;
+
+        // set categoryBits To allow collide with (needle)
+        fixtureDef.filter.categoryBits = BIT_BODY2;
+        fixtureDef.filter.maskBits = BIT_NEEDLE;
+
+        // Create The B2 Fixture
+        needleRightBody.createFixture(fixtureDef);
+    }
+
+    private void needleJointAllPartsOfNeedle(){
+        distanceJoinDef.bodyA = needleLeftBody;
+        distanceJoinDef.bodyB = needle;
+        distanceJoinDef.localAnchorB.set(0, 15 / N_LAW);
+        distanceJoinDef.length = (float) Math.sqrt(Math.pow(40F * (diameter / STANDARD_SIZE), 2) + Math.pow(15 / N_LAW + 5F * (diameter / STANDARD_SIZE), 2));
+        distanceJoinDef.collideConnected = true;
+        world.createJoint(distanceJoinDef);
+
+        distanceJoinDef.bodyA = needleRightBody;
+        distanceJoinDef.bodyB = needle;
+        distanceJoinDef.collideConnected = true;
+        world.createJoint(distanceJoinDef);
+    }
+
+    private void needleJointMainBodyWithCN(){
+        revoluteJointDef.bodyA = needleMainBody;
+        revoluteJointDef.bodyB = needle;
+        world.createJoint(distanceJoinDef);
+    }
+
 
     public void render(boolean debug){
         world.step(1/60f,8,2);
