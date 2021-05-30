@@ -70,6 +70,11 @@ public class MainGameScreen extends ScreenAdapter {
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
+    private final Label player1;
+    private final Label player2;
+    private final Label player3;
+    private final Label player4;
+
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         gameData = game.getGameData();
@@ -126,10 +131,10 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.setHeight(400);
         score1Table.align(Align.center);
 
-        Label player1 = new Label(gameData.getPlayers().get(0).getPlayerName(), skin);
-        Label player2 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
-        Label player3 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
-        Label player4 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player1 = new Label(gameData.getPlayers().get(0).getPlayerName(), skin);
+        player2 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player3 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player4 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
 
         score1Table.add(score.getPlayer1());
         score1Table.row();
@@ -242,8 +247,49 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateCurrentPlayerMarker() {
+        switch(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()){
+            case 0:
+                score2Table.reset();
+                score1Table.reset();
 
-        // TODO: update marker for current player turn (red font, icon, ...)?
+                score1Table.add(score.getPlayer1());
+                score1Table.row();
+                score1Table.add(gameData.setPlayerAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score1Table.row();
+                score1Table.add(player1);
+                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+                score2Table.add(score.getPlayer2());
+                score2Table.row();
+                score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+                score2Table.row();
+                score2Table.add(player2);
+                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                break;
+            case 1:
+                score2Table.reset();
+                score1Table.reset();
+
+                score1Table.add(score.getPlayer1());
+                score1Table.row();
+                score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+                score1Table.row();
+                score1Table.add(player1);
+                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+                score2Table.add(score.getPlayer2());
+                score2Table.row();
+                score2Table.add(gameData.setPlayerAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score2Table.row();
+                score2Table.add(player2);
+                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        // TODO: update when 4 player are enabled
     }
 
     public void resetCard() {
