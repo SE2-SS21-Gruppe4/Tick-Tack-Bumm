@@ -242,10 +242,6 @@ public class MainGameScreen extends ScreenAdapter {
         checkButton.setDisabled(false);
     }
 
-    public void updatePlayerScores() {
-        playerScore = gameData.getPlayerScores();
-    }
-
     public void updateCurrentPlayerMarker() {
         switch(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()){
             case 0:
@@ -298,6 +294,8 @@ public class MainGameScreen extends ScreenAdapter {
         // TODO: set new random syllable for card frontside
     }
 
+
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
@@ -310,6 +308,10 @@ public class MainGameScreen extends ScreenAdapter {
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
+    }
+
+    public void updatePlayerScores() {
+        score.setPlayerScore(gameData.getPlayerScores());
     }
 
     @Override
