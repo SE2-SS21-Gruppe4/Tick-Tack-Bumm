@@ -17,7 +17,7 @@ public class GameData {
     private String currentGameModeText;
 
     public GameData() {
-        maxGameScore = 10; // hardcoded for testing purposes
+        maxGameScore = 2; // hardcoded for testing purposes
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;

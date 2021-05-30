@@ -61,6 +61,11 @@ public class NetworkClientListener extends Listener {
         } else if (object instanceof NextRound) {
             logReceivedMessage("NextRound");
             clientMessageHandler.handleNextRound();
+
+        } else if (object instanceof GameFinished) {
+            logReceivedMessage("GameFinished");
+            clientMessageHandler.handleGameFinished((GameFinished) object);
+
         }
     }
 

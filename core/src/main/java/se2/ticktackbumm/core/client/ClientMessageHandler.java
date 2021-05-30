@@ -7,9 +7,12 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
+import se2.ticktackbumm.core.network.messages.server.GameFinished;
 import se2.ticktackbumm.core.network.messages.server.GameUpdate;
 import se2.ticktackbumm.core.network.messages.server.SomeResponse;
 import se2.ticktackbumm.core.screens.WaitingScreen;
+
+import java.util.Arrays;
 
 /**
  * Handles all incoming server messages for a client.
@@ -85,12 +88,19 @@ public class ClientMessageHandler {
     public void handleNextTurn() {
         Log.info(LOG_TAG, "<NextTurn> Starting next turn");
 
-        game.startNewTurn();
+        game.startNextTurn();
     }
 
     public void handleNextRound() {
         Log.info(LOG_TAG, "<NextRound> Starting next round");
 
         game.startNextRound();
+    }
+
+    public void handleGameFinished(GameFinished gameFinished) {
+        Log.info(LOG_TAG, "<GameFinished> Finishing game; displaying final scores");
+        Log.info(LOG_TAG, "<GameFinished> " + Arrays.toString(gameFinished.getPlacedPlayers()));
+
+        game.finishGame();
     }
 }

@@ -2,12 +2,10 @@ package se2.ticktackbumm.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
@@ -17,14 +15,12 @@ import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class TickTackBummGame extends Game {
 
-    // TODO: add log tag with local player ID?
-
     public static final int HEIGHT = 2220;
     public static final int WIDTH = 1080;
 
     private static TickTackBummGame tickTackBummGame;
 
-    private Player localPlayer; // TODO: add current player from server response at game start?
+    private Player localPlayer;
 
     private GameData gameData;
 
@@ -99,43 +95,48 @@ public class TickTackBummGame extends Game {
 
     public void startNewGame() {
         if (isLocalPlayerTurn()) {
-            switchScreen(new SpinWheelScreen());
+            setScreen(new SpinWheelScreen());
         } else {
-            switchScreen(new MainGameScreen());
-            startNewTurn();
+            setScreen(new MainGameScreen());
+            startNextTurn();
         }
     }
 
     public void startNextRound() {
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
         if (isLocalPlayerTurn()) {
             // TODO: fixme, why is this necessary?
-            Gdx.app.postRunnable(() -> switchScreen(new SpinWheelScreen()));
+            Gdx.app.postRunnable(() -> setScreen(new SpinWheelScreen()));
         } else {
-            startNewTurn();
+            gameScreen.updatePlayerScores();
+            gameScreen.resetCard();
+
+            startNextTurn();
         }
     }
 
-    public void startNewTurn() {
+    public void startNextTurn() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
         if (isLocalPlayerTurn()) {
             gameScreen.showControls();
-            gameScreen.updatePlayerScores();
-            gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();
         } else {
-            Log.info("NOT LOCAL PLAYER TURN");
             gameScreen.hideControls();
-            gameScreen.updatePlayerScores();
-            gameScreen.updateCurrentPlayerMarker();
-            gameScreen.resetCard();
             // hide waiting for spin wheel message
         }
+
+        gameScreen.updateCurrentPlayerMarker();
     }
 
-    public void switchScreen(Screen screen) {
-        Screen currentScreen = getScreen();
-        setScreen(screen);
-        currentScreen.dispose();
+    public void finishGame() {
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.hideControls();
+        gameScreen.updatePlayerScores();
+        gameScreen.updateCurrentPlayerMarker();
+
+        // TODO: show game finished message, scoreboard screen, ...
     }
 
     @Override
