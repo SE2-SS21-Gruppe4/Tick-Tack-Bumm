@@ -4,7 +4,11 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
+import se2.ticktackbumm.core.player.ScoreComparator;
 import se2.ticktackbumm.server.network.NetworkServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerData {
 
@@ -108,5 +112,17 @@ public class ServerData {
         }
 
         return false;
+    }
+
+    /**
+     * Get an array of all players sorted in descending order.
+     *
+     * @return {@link Player}[] sorted in descending order
+     */
+    public Player[] getPlacedPlayers() {
+        List<Player> placedPlayers = new ArrayList<>(gameData.getPlayers());
+        placedPlayers.sort(new ScoreComparator().reversed());
+
+        return placedPlayers.toArray(new Player[0]);
     }
 }
