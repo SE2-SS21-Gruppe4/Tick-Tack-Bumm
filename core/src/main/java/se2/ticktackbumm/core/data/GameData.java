@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
+    TickTackBummGame game;
+
     private final String LOG_TAG = "GAME_DATA";
 
     private final int maxGameScore;
@@ -26,6 +28,8 @@ public class GameData {
     private String currentGameModeText;
 
     public GameData() {
+        game = TickTackBummGame.getTickTackBummGame();
+
         maxGameScore = 10; // hardcoded for testing purposes
 
         players = new ArrayList<>();
@@ -77,20 +81,20 @@ public class GameData {
         return playerScores;
     }
 
-    private Texture getPlayerAvatarImage(Player player) {
-        Texture avatar;
+    public Image getPlayerAvatarImage(Player player) {
+        Image avatar;
         switch (player.getPlayerAvatar()) {
             case BRUNETTE_GIRL:
-                avatar = new Texture("avatars/brunette_girl_picked.png");
+                avatar = new Image(game.getManager().get("avatars/brunette_girl.png", Texture.class));
                 break;
             case BLOND_GIRL:
-                avatar = new Texture("avatars/blond_girl_picked.png");
+                avatar = new Image(game.getManager().get("avatars/blond_girl.png", Texture.class));
                 break;
             case BLACKHAIRED_GUY:
-                avatar = new Texture("avatars/blackhaired_guy_picked.png");
+                avatar = new Image(game.getManager().get("avatars/blackhaired_guy.png", Texture.class));
                 break;
             case BLOND_GUY:
-                avatar = new Texture("score/blond_guy_picked.png");
+                avatar = new Image(game.getManager().get("score/blond_guy.png", Texture.class));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + player.getPlayerAvatar());
