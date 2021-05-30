@@ -1,6 +1,15 @@
 package se2.ticktackbumm.core.data;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
+
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
 import java.util.ArrayList;
@@ -66,6 +75,27 @@ public class GameData {
             playerScores[i] = players.get(i).getGameScore();
         }
         return playerScores;
+    }
+
+    private Texture getPlayerAvatarImage(Player player) {
+        Texture avatar;
+        switch (player.getPlayerAvatar()) {
+            case BRUNETTE_GIRL:
+                avatar = new Texture("avatars/brunette_girl_picked.png");
+                break;
+            case BLOND_GIRL:
+                avatar = new Texture("avatars/blond_girl_picked.png");
+                break;
+            case BLACKHAIRED_GUY:
+                avatar = new Texture("avatars/blackhaired_guy_picked.png");
+                break;
+            case BLOND_GUY:
+                avatar = new Texture("score/blond_guy_picked.png");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + player.getPlayerAvatar());
+        }
+        return avatar;
     }
 
     public Player getPlayerByConnectionId(int connectionId) {
