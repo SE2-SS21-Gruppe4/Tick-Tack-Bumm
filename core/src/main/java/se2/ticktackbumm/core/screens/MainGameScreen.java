@@ -119,13 +119,16 @@ public class MainGameScreen extends ScreenAdapter {
         imageMaxScoreBoard = new Image(textureMaxScoreBoard);
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
+        score = new Score();
         //init tables for scores
         score1Table = new Table();
         score1Table.setWidth(200);
         score1Table.setHeight(200);
         score1Table.align(Align.center);
 
-        score1Table.add();
+        score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.row();
+        score1Table.add((CharSequence) score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600));
 
         score2Table = new Table();
         score2Table.setWidth(200);
@@ -142,7 +145,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.setHeight(200);
         score4Table.align(Align.center);
 
-        score = new Score();
+
 
         textFieldTable = setupTextfieldTable();
 
