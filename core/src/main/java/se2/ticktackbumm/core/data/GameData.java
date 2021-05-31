@@ -1,12 +1,23 @@
 package se2.ticktackbumm.core.data;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
+
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
+    private final TickTackBummGame game;
+
     private final String LOG_TAG = "GAME_DATA";
 
     private final int maxGameScore;
@@ -18,6 +29,7 @@ public class GameData {
 
     public GameData() {
         maxGameScore = 2; // hardcoded for testing purposes
+        game = TickTackBummGame.getTickTackBummGame();
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;
@@ -66,6 +78,48 @@ public class GameData {
             playerScores[i] = players.get(i).getGameScore();
         }
         return playerScores;
+    }
+
+    public Image getUnfocusedAvatarImage(Player player) {
+        Image avatar;
+        switch (player.getPlayerAvatar()) {
+            case BRUNETTE_GIRL:
+                avatar = new Image(game.getManager().get("avatars/brunette_girl.png", Texture.class));
+                break;
+            case BLOND_GIRL:
+                avatar = new Image(game.getManager().get("avatars/blond_girl.png", Texture.class));
+                break;
+            case BLACKHAIRED_GUY:
+                avatar = new Image(game.getManager().get("avatars/blackhaired_guy.png", Texture.class));
+                break;
+            case BLOND_GUY:
+                avatar = new Image(game.getManager().get("avatars/blond_guy.png", Texture.class));
+                break;
+            default:
+                avatar = new Image(game.getManager().get("score/player1.png", Texture.class));
+        }
+        return avatar;
+    }
+
+    public Image getFocusedAvatarImage(Player player) {
+        Image avatar;
+        switch (player.getPlayerAvatar()) {
+            case BRUNETTE_GIRL:
+                avatar = new Image(game.getManager().get("avatars/brunette_girl_picked.png", Texture.class));
+                break;
+            case BLOND_GIRL:
+                avatar = new Image(game.getManager().get("avatars/blond_girl_picked.png", Texture.class));
+                break;
+            case BLACKHAIRED_GUY:
+                avatar = new Image(game.getManager().get("avatars/blackhaired_guy_picked.png", Texture.class));
+                break;
+            case BLOND_GUY:
+                avatar = new Image(game.getManager().get("avatars/blond_guy_picked.png", Texture.class));
+                break;
+            default:
+                avatar = new Image(game.getManager().get("score/player1.png", Texture.class));
+        }
+        return avatar;
     }
 
     public Player getPlayerByConnectionId(int connectionId) {

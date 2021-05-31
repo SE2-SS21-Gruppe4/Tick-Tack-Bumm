@@ -17,12 +17,12 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
-import se2.ticktackbumm.core.models.BombImpl.BombExplosion;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -54,6 +54,12 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
+    //tables for the playerscores and avatars
+    private final Table score1Table;
+    private final Table score2Table;
+    private final Table score3Table;
+    private final Table score4Table;
+
     private final Card card;
 
     //Bomb and explosion
@@ -62,6 +68,11 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont textMaxScore;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
+
+    private final Label player1;
+    private final Label player2;
+    private final Label player3;
+    private final Label player4;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -86,7 +97,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         //bomb
         bomb = new Bomb();
-        assetManager.load("bombexplosion.png",Texture.class);
+        assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
 
         // scene2d UI
@@ -113,19 +124,67 @@ public class MainGameScreen extends ScreenAdapter {
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
         score = new Score();
-        score.getPlayer().get(0).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 + 330);
-        score.getPlayer().get(1).setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 + 310);
-        score.getPlayer().get(2).setPosition(stage.getWidth() / 2 + 140, stage.getHeight() / 2 - 320);
-        score.getPlayer().get(3).setPosition(stage.getWidth() / 2 - 350, stage.getHeight() / 2 - 330);
+        //init tables for scores
+        score1Table = new Table();
+        score1Table.setWidth(200);
+        score1Table.setHeight(400);
+        score1Table.align(Align.center);
+
+        player1 = new Label(gameData.getPlayers().get(0).getPlayerName(), skin);
+        player2 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player3 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player4 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+
+        score1Table.add(score.getPlayer1());
+        score1Table.row();
+        score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.row();
+        score1Table.add(player1);
+        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+        score2Table = new Table();
+        score2Table.setWidth(200);
+        score2Table.setHeight(400);
+        score2Table.align(Align.center);
+
+        score2Table.add(score.getPlayer2());
+        score2Table.row();
+        score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.row();
+        score2Table.add(player2);
+        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+
+        score3Table = new Table();
+        score3Table.setWidth(200);
+        score3Table.setHeight(400);
+        score3Table.align(Align.center);
+
+        score3Table.add(player3);
+        score3Table.row();
+        score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score3Table.row();
+        score3Table.add(score.getPlayer3());
+        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+
+        score4Table = new Table();
+        score4Table.setWidth(200);
+        score4Table.setHeight(400);
+        score4Table.align(Align.center);
+
+        score4Table.add(player4);
+        score4Table.row();
+        score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score4Table.row();
+        score4Table.add(score.getPlayer4());
+        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
 
         textFieldTable = setupTextfieldTable();
 
-        stage.addActor(score.getPlayer().get(0));
-        stage.addActor(score.getPlayer().get(1));
-        stage.addActor(score.getPlayer().get(2));
-        stage.addActor(score.getPlayer().get(3));
-
+        stage.addActor(score1Table);
+        stage.addActor(score2Table);
         stage.addActor(imageTable);
+        stage.addActor(score3Table);
+        stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
 
@@ -182,12 +241,50 @@ public class MainGameScreen extends ScreenAdapter {
         checkButton.setDisabled(false);
     }
 
-    public void updatePlayerScores() {
-        playerScore = gameData.getPlayerScores();
-    }
-
     public void updateCurrentPlayerMarker() {
-        // TODO: update marker for current player turn (red font, icon, ...)?
+        switch(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()){
+            case 0:
+                score2Table.reset();
+                score1Table.reset();
+
+                score1Table.add(score.getPlayer1());
+                score1Table.row();
+                score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score1Table.row();
+                score1Table.add(player1);
+                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+                score2Table.add(score.getPlayer2());
+                score2Table.row();
+                score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+                score2Table.row();
+                score2Table.add(player2);
+                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                break;
+            case 1:
+                score2Table.reset();
+                score1Table.reset();
+
+                score1Table.add(score.getPlayer1());
+                score1Table.row();
+                score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
+                score1Table.row();
+                score1Table.add(player1);
+                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+                score2Table.add(score.getPlayer2());
+                score2Table.row();
+                score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score2Table.row();
+                score2Table.add(player2);
+                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        // TODO: update when 4 player are enabled
     }
 
     public void resetCard() {
@@ -196,29 +293,24 @@ public class MainGameScreen extends ScreenAdapter {
         // TODO: set new random syllable for card frontside
     }
 
+
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        //for when the multiplayer mode works
-        //score.getBitmaps().get(0).draw(batch, Integer.toString(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        //score.getBitmaps().get(1).draw(batch, Integer.toString(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
-        //score.getBitmaps().get(2).draw(batch, Integer.toString(playerScore[2]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
-        //score.getBitmaps().get(3).draw(batch, Integer.toString(playerScore[3]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
-        score.getBitmaps().get(0).draw(batch, String.valueOf(playerScore[0]), stage.getWidth() / 2 - 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(1).draw(batch, String.valueOf(playerScore[1]), stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 600);
-        score.getBitmaps().get(2).draw(batch, "8", stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 330);
-        score.getBitmaps().get(3).draw(batch, "1", stage.getWidth() / 2 - 250, stage.getHeight() / 2 - 375);
-
-        bomb.renderBomb(delta,batch);
-
+        bomb.renderBomb(delta, batch);
         stage.draw();
         card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
+    }
+
+    public void updatePlayerScores() {
+        score.setPlayerScore(gameData.getPlayerScores());
     }
 
     @Override
