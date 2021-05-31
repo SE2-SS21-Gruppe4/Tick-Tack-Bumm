@@ -56,8 +56,4 @@ public class ClientMessageSender {
         client.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
-    public void sendGameFinished() {
-        logSendingMessage("GameFinished");
-//        client.sendTCP(new GameFinished());
-    }
 }

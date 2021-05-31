@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
-    TickTackBummGame game;
+    private final TickTackBummGame game;
 
     private final String LOG_TAG = "GAME_DATA";
 
@@ -28,9 +28,8 @@ public class GameData {
     private String currentGameModeText;
 
     public GameData() {
+        maxGameScore = 2; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
-
-        maxGameScore = 10; // hardcoded for testing purposes
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;

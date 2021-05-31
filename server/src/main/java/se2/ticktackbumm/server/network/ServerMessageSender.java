@@ -3,6 +3,7 @@ package se2.ticktackbumm.server.network;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.messages.server.*;
+import se2.ticktackbumm.core.player.Player;
 
 /**
  * Handles the sending of messages from the server to the clients.
@@ -54,8 +55,8 @@ public class ServerMessageSender {
         server.sendToAllTCP(new NextRound());
     }
 
-    public void sendGameFinished() {
+    public void sendGameFinished(Player[] placedPlayers) {
         Log.info(LOG_TAG, "Sending message GameFinished to all clients");
-//        server.sendToAllTCP(new GameFinished());
+        server.sendToAllTCP(new GameFinished(placedPlayers));
     }
 }
