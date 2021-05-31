@@ -1,8 +1,6 @@
 package se2.ticktackbumm.core.models;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -22,7 +20,7 @@ public class Score {
 
     private int[] playerScore;
 
-    private final ArrayList<Label> playerScores;
+    private final ArrayList<Label> playerScoreLabels;
 
     public Score() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -33,7 +31,7 @@ public class Score {
         skin = game.getManager().get("ui/uiskin.json", Skin.class);
         skin.getFont("default-font").getData().setScale(3f);
 
-        playerScores = new ArrayList<>();
+        playerScoreLabels = new ArrayList<>();
         initScores();
         addScoresToList();
     }
@@ -55,10 +53,10 @@ public class Score {
     }
 
     public void addScoresToList() {
-        playerScores.add(player1);
-        playerScores.add(player2);
-        playerScores.add(player3);
-        playerScores.add(player4);
+        playerScoreLabels.add(player1);
+        playerScoreLabels.add(player2);
+        playerScoreLabels.add(player3);
+        playerScoreLabels.add(player4);
     }
 
     public Label getPlayer1() {
@@ -77,8 +75,8 @@ public class Score {
         return player4;
     }
 
-    public ArrayList<Label> getPlayerScores() {
-        return playerScores;
+    public ArrayList<Label> getPlayerScoreLabels() {
+        return playerScoreLabels;
     }
 
     public void setPlayer1(Label player1) {

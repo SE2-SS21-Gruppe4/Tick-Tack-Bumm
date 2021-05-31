@@ -81,7 +81,7 @@ public class GameData {
         return playerScores;
     }
 
-    public Image getPlayerAvatarImage(Player player) {
+    public Image getUnfocusedAvatarImage(Player player) {
         Image avatar;
         switch (player.getPlayerAvatar()) {
             case BRUNETTE_GIRL:
@@ -102,7 +102,7 @@ public class GameData {
         return avatar;
     }
 
-    public Image setPlayerAvatarImage(Player player) {
+    public Image getFocusedAvatarImage(Player player) {
         Image avatar;
         switch (player.getPlayerAvatar()) {
             case BRUNETTE_GIRL:

@@ -41,7 +41,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         startTime = TimeUtils.nanoTime();
 
         this.camera = TickTackBummGame.getGameCamera();
-        initCamera();
 
         loadAssets();
 
@@ -49,14 +48,6 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         sprite = new Sprite(image);
     }
 
-    /**
-     * initialize camera
-     * set camera height and width to fit to the game and update camera
-     */
-    private void initCamera() {
-        this.camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
-        this.camera.update();
-    }
     /**
      * load all assets
      * loads the assets from the asset folder
@@ -135,7 +126,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
      * Print loadingbar
      * prints the loadingbar with ShapeRenderer
      * every 0,5sec the loadingbar progresses 10%,
-     if it reaches 100%, set the screen to MenuScreen
+     * if it reaches 100%, set the screen to MenuScreen
      */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();

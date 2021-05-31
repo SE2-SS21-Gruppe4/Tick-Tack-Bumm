@@ -23,7 +23,6 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
-import se2.ticktackbumm.core.models.BombImpl.BombExplosion;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
@@ -138,7 +137,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         score1Table.add(score.getPlayer1());
         score1Table.row();
-        score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
         score1Table.row();
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
@@ -150,7 +149,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         score2Table.add(score.getPlayer2());
         score2Table.row();
-        score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score2Table.row();
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
@@ -162,7 +161,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         score3Table.add(player3);
         score3Table.row();
-        score3Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score3Table.row();
         score3Table.add(score.getPlayer3());
         score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
@@ -174,7 +173,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         score4Table.add(player4);
         score4Table.row();
-        score4Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+        score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score4Table.row();
         score4Table.add(score.getPlayer4());
         score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
@@ -250,14 +249,14 @@ public class MainGameScreen extends ScreenAdapter {
 
                 score1Table.add(score.getPlayer1());
                 score1Table.row();
-                score1Table.add(gameData.setPlayerAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
                 score1Table.row();
                 score1Table.add(player1);
                 score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
 
                 score2Table.add(score.getPlayer2());
                 score2Table.row();
-                score2Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(1)));
+                score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
                 score2Table.row();
                 score2Table.add(player2);
                 score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
@@ -268,14 +267,14 @@ public class MainGameScreen extends ScreenAdapter {
 
                 score1Table.add(score.getPlayer1());
                 score1Table.row();
-                score1Table.add(gameData.getPlayerAvatarImage(gameData.getPlayers().get(0)));
+                score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
                 score1Table.row();
                 score1Table.add(player1);
                 score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
 
                 score2Table.add(score.getPlayer2());
                 score2Table.row();
-                score2Table.add(gameData.setPlayerAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
                 score2Table.row();
                 score2Table.add(player2);
                 score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
