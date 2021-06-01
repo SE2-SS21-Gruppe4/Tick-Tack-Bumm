@@ -121,7 +121,7 @@ public class ServerData {
      */
     public Player[] getPlacedPlayers() {
         List<Player> placedPlayers = new ArrayList<>(gameData.getPlayers());
-        placedPlayers.sort(new ScoreComparator().reversed());
+        placedPlayers.sort(new ScoreComparator());
 
         return placedPlayers.toArray(new Player[0]);
     }
