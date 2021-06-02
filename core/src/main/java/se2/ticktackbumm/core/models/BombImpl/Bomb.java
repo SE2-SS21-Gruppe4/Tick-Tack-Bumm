@@ -15,6 +15,7 @@ import java.util.Random;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class Bomb {
 
@@ -39,6 +40,8 @@ public class Bomb {
     private BombExplosion bombExplosion;
 
     private Music bombTick;
+
+    private SpinWheelScreen spinWheelScreen;
 
 
 
@@ -71,6 +74,8 @@ public class Bomb {
         bombTick = Gdx.audio.newMusic(Gdx.files.internal("bomb/bombtick.wav"));
         bombTick.setLooping(true);
         bombTick.setVolume(0.2f);
+
+        spinWheelScreen = new SpinWheelScreen();
     }
 
     public enum BombState{
@@ -79,8 +84,10 @@ public class Bomb {
     }
 
     public void renderBomb(float delta,SpriteBatch spriteBatch){
-        makeExplosion(delta,spriteBatch);
-        drawBomb(spriteBatch);
+        if (spinWheelScreen.getStart()){
+            makeExplosion(delta,spriteBatch);
+            drawBomb(spriteBatch);
+        }
     }
 
     public void makeExplosion(float deltaTime,SpriteBatch spriteBatch) {
