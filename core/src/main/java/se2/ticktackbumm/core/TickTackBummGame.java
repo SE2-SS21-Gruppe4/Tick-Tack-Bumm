@@ -41,7 +41,8 @@ public class TickTackBummGame extends Game {
         font.getData().setScale(2);
 
         // display loading-screen on startup
-        setScreen(new LoadingScreen());
+       // setScreen(new LoadingScreen());
+        setScreen(new MainGameScreen());
     }
 
     public static TickTackBummGame getTickTackBummGame() {
@@ -141,6 +142,12 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
 
         // TODO: show game finished message, scoreboard screen, ...
+    }
+
+    public void setBombToTick(int timer){
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.getBomb().setExplodeTime(timer);
     }
 
     @Override
