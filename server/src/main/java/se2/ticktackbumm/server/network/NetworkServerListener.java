@@ -77,7 +77,7 @@ public class NetworkServerListener extends Listener {
 
         } else if (object instanceof BombStart) {
             Log.info(LOG_TAG,"Received message BombStart from ID: " + connection.getID());
-            serverMessageHandler.handleBombStart(connection.getID());
+            serverMessageHandler.handleBombStart();
         }
     }
 }
