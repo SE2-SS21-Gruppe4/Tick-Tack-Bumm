@@ -129,6 +129,10 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
+    public void startBomb(){
+        networkClient.getClientMessageSender().sendStartBomb();
+    }
+
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
