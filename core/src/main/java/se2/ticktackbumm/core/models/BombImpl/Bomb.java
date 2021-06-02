@@ -81,14 +81,14 @@ public class Bomb {
         EXPLODED
     }
 
-    public void renderBomb(int delta, SpriteBatch spriteBatch){
+    public void renderBomb(float delta, SpriteBatch spriteBatch){
         if (spinWheelScreen.getStart()){
             makeExplosion(delta,spriteBatch);
             drawBomb(spriteBatch);
         }
     }
 
-    public void makeExplosion(int deltaTime, SpriteBatch spriteBatch) {
+    public void makeExplosion(float deltaTime, SpriteBatch spriteBatch) {
 
             this.timerToExplode += deltaTime;
             if (timerToExplode >= explodeTime) {
