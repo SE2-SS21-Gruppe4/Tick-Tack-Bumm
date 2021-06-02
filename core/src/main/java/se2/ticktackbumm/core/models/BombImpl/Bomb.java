@@ -13,6 +13,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 
 public class Bomb {
@@ -21,6 +22,8 @@ public class Bomb {
     private AssetManager assetManager;
 
     private Stage stage;
+
+    private NetworkClient networkClient;
 
 
     private Texture bombTexture;
@@ -46,6 +49,8 @@ public class Bomb {
         assetManager.finishLoading();
 
         stage = new Stage();
+
+        networkClient = tickTackBummGame.getNetworkClient();
 
         bombTexture = assetManager.get("bomb/bomb.png",Texture.class);
         bombImage = new Image(bombTexture);
@@ -87,6 +92,7 @@ public class Bomb {
                     bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() + (float)380, 400, 400);
                 }
                 this.bombState = BombState.EXPLODED;
+                networkClient.getClientMessageSender().sendBombExploded();
                 //    restartBombSettings();
             }
 
