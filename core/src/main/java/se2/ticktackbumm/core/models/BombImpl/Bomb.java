@@ -10,11 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.minlog.Log;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class Bomb {
@@ -33,8 +31,8 @@ public class Bomb {
     private BombState bombState;
 
     private SecureRandom radnomExplosion;
-    private float explodeTime;
-    private float timerToExplode;
+    private int explodeTime;
+    private int timerToExplode;
 
     private Texture explosionTexture;
     private BombExplosion bombExplosion;
@@ -61,7 +59,7 @@ public class Bomb {
         bombState = BombState.NORMAL;
 
         radnomExplosion = new SecureRandom();
-        explodeTime = (float)radnomExplosion.nextInt(10)+1;
+        explodeTime = radnomExplosion.nextInt(10)+1;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
@@ -83,14 +81,14 @@ public class Bomb {
         EXPLODED
     }
 
-    public void renderBomb(float delta,SpriteBatch spriteBatch){
+    public void renderBomb(int delta, SpriteBatch spriteBatch){
         if (spinWheelScreen.getStart()){
             makeExplosion(delta,spriteBatch);
             drawBomb(spriteBatch);
         }
     }
 
-    public void makeExplosion(float deltaTime,SpriteBatch spriteBatch) {
+    public void makeExplosion(int deltaTime, SpriteBatch spriteBatch) {
 
             this.timerToExplode += deltaTime;
             if (timerToExplode >= explodeTime) {
@@ -100,7 +98,7 @@ public class Bomb {
                 }
                 this.bombState = BombState.EXPLODED;
                 networkClient.getClientMessageSender().sendBombExploded();
-                //    restartBombSettings();
+                restartBombSettings();
             }
 
     }
@@ -119,19 +117,23 @@ public class Bomb {
     public void restartBombSettings(){
         this.bombState = BombState.NORMAL;
         this.timerToExplode = 0;
-        this.explodeTime = (float) radnomExplosion.nextInt(30)+1;
+        this.explodeTime =  radnomExplosion.nextInt(30)+1;
+    }
+
+    public int getRandomBombTimer(){
+        return this.radnomExplosion.nextInt(30)+1;
     }
 
     private float getExplodeTime(){
         return this.explodeTime;
     }
-    private float getTimerToExplode(){
+    private int getTimerToExplode(){
         return this.timerToExplode;
     }
-    public void setTimerToExplode(float timerToExplode){
+    public void setTimerToExplode(int timerToExplode){
         this.timerToExplode = timerToExplode;
     }
-    public void setExplodeTime(float explodeTime){
+    public void setExplodeTime(int explodeTime){
         this.explodeTime = explodeTime;
     }
 
