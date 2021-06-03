@@ -1,6 +1,10 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.minlog.Log;
+
+import java.security.SecureRandom;
+
+import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 import se2.ticktackbumm.core.player.Player;
@@ -77,5 +81,10 @@ public class ServerMessageHandler {
         if (serverData.arePlayersReady()) {
             serverMessageSender.sendStartGame();
         }
+    }
+
+    public void handleBombStart(){
+        int timer = new SecureRandom().nextInt(30)+1;
+        serverMessageSender.sendBombStart(timer);
     }
 }

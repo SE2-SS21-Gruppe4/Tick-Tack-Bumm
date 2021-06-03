@@ -42,6 +42,8 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     private final SecureRandom randomNumb;
 
+    private boolean isStart;
+
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
@@ -73,6 +75,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         setupSpinWheelTable();
 
         stage.addActor(spinWheelTable);
+
+        isStart = false;
     }
 
     private void setupTextLabel(Label label, int textScale) {
@@ -85,6 +89,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent e, float x, float y) {
+                isStart = true;
                 setRandomGameMode();
                 spinWheelTable.removeActor(spinButton);
             }
@@ -162,5 +167,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         batch.dispose();
         skin.dispose();
         stage.dispose();
+    }
+
+    public void setStart(boolean isStart){
+        this.isStart = isStart;
+    }
+    public boolean getStart(){
+        return this.isStart;
     }
 }
