@@ -289,8 +289,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
-        // TODO: show card backside again
-        // TODO: set new random syllable for card frontside
+        card.setRevealed(false);
+        card.setRandomWord(card.getWordDependOnMode());
     }
 
 
@@ -303,7 +303,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.begin();
         bomb.renderBomb(delta, batch);
         stage.draw();
-        card.draw();
+        card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
