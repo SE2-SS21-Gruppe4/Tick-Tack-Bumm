@@ -30,7 +30,7 @@ public class Bomb {
 
     private BombState bombState;
 
-    private SecureRandom radnomExplosion;
+   // private SecureRandom radnomExplosion;
     private int explodeTime;
     private int timerToExplode;
 
@@ -58,8 +58,9 @@ public class Bomb {
 
         bombState = BombState.NORMAL;
 
-        radnomExplosion = new SecureRandom();
-        explodeTime = radnomExplosion.nextInt(10)+1;
+       // radnomExplosion = new SecureRandom();
+        //explode time is going to get random exploder via client message handler
+        explodeTime = 0;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
@@ -117,12 +118,9 @@ public class Bomb {
     public void restartBombSettings(){
         this.bombState = BombState.NORMAL;
         this.timerToExplode = 0;
-        this.explodeTime =  radnomExplosion.nextInt(30)+1;
     }
 
-    public int getRandomBombTimer(){
-        return this.radnomExplosion.nextInt(30)+1;
-    }
+
 
     private float getExplodeTime(){
         return this.explodeTime;
