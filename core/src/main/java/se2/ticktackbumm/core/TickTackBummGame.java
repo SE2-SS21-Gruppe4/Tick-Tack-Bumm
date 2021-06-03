@@ -139,6 +139,12 @@ public class TickTackBummGame extends Game {
         // TODO: show game finished message, scoreboard screen, ...
     }
 
+    public void openCard(){
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.getCard().setRevealed(true);
+    }
+
     @Override
     public void dispose() {
         manager.dispose();
