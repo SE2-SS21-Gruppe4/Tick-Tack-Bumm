@@ -85,7 +85,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         setupTextLabel(descriptionLabel, 3);
 
 
-        final String pathOfAtlas = "spin_wheel_ui.atlas";
+        final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
         atlas = new TextureAtlas(pathOfAtlas);
         wheelImage = setupSpinWheelImages("spin_wheel_image" , TickTackBummGame.WIDTH / 3.8F, TickTackBummGame.HEIGHT / 2f);
         needleImage = setupSpinWheelImages("needle", (TickTackBummGame.WIDTH / 2.1f) + 25f, (TickTackBummGame.HEIGHT / 1.5f) + 100f);
@@ -184,7 +184,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.setHeight(stage.getHeight());
         spinWheelTable.align(Align.center);
 
-        spinWheelTable.add(challengeLabel).width(500f).padBottom(200f);
+        spinWheelTable.add(challengeLabel).width(500f).padBottom(800f);
         spinWheelTable.row();
         spinWheelTable.add(descriptionLabel).width(800f).padBottom(300f);
         spinWheelTable.row();
@@ -266,8 +266,9 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(.18f, .21f, .32f, 1);
+        ScreenUtils.clear(color.r, color.g, color.b, color.a);
         batch.setProjectionMatrix(camera.combined);
+        stage.act();
 
         batch.begin();
         stage.draw();
