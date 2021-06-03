@@ -319,6 +319,10 @@ public class MainGameScreen extends ScreenAdapter {
         skin.dispose();
     }
 
+    public Card getCard(){
+        return card;
+    }
+
     public TextField getTextField() {
         return textField;
     }
