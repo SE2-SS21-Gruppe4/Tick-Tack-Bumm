@@ -1,101 +1,108 @@
 package se2.ticktackbumm.core.models;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
-public class Score{
-    private final AssetManager assetManager;
-    private Image score1;
-    private Image score2;
-    private Image score3;
-    private Image score4;
-    private BitmapFont player1Score;
-    private BitmapFont player2Score;
-    private BitmapFont player3Score;
-    private BitmapFont player4Score;
-    private final ArrayList<Image> player;
-    private final ArrayList<BitmapFont> bitmapFonts;
+public class Score {
+    private final TickTackBummGame game;
+    private final GameData gameData;
+    private Label player1;
+    private Label player2;
+    private Label player3;
+    private Label player4;
+    private Skin skin;
+
+    private int[] playerScore;
+
+    private final ArrayList<Label> playerScoreLabels;
 
     public Score() {
-        assetManager = TickTackBummGame.getTickTackBummGame().getManager();
-        initPictures();
-        player = new ArrayList<>();
-        bitmapFonts = new ArrayList<>();
-        addPlayer();
-        addBitmaps();
+        game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
+
+        playerScore = gameData.getPlayerScores();
+
+        skin = game.getManager().get("ui/uiskin.json", Skin.class);
+        skin.getFont("default-font").getData().setScale(3f);
+
+        playerScoreLabels = new ArrayList<>();
+        initScores();
+        addScoresToList();
     }
 
-    public void initPictures(){
-        player1Score = new BitmapFont();
-        player2Score = new BitmapFont();
-        player3Score = new BitmapFont();
-        player4Score = new BitmapFont();
-        loadTexturesFromManager("score/player1.png");
-        Texture player1 = assetManager.get("score/player1.png", Texture.class);
-        loadTexturesFromManager("score/player2.png");
-        Texture player2 = assetManager.get("score/player2.png", Texture.class);
-        loadTexturesFromManager("score/player3.png");
-        Texture player3 = assetManager.get("score/player3.png", Texture.class);
-        loadTexturesFromManager("score/player4.png");
-        Texture player4 = assetManager.get("score/player4.png", Texture.class);
-        score1 = new Image(player1);
-        score2 = new Image(player2);
-        score3 = new Image(player3);
-        score4 = new Image(player4);
+    public void initScores() {
+        player1 = new Label(String.valueOf(playerScore[0]), skin);
+        player2 = new Label(String.valueOf(playerScore[1]), skin);
+        player3 = new Label("1", skin);
+        player4 = new Label("2", skin);
+        player1.setColor(Color.BLACK);
+        player2.setColor(Color.BLACK);
+        player3.setColor(Color.BLACK);
+        player4.setColor(Color.BLACK);
     }
 
-
-    public void addPlayer(){
-        player1Score.setColor(Color.BLACK);
-        player1Score.getData().setScale(3);
-        player1Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player2Score.setColor(Color.BLACK);
-        player2Score.getData().setScale(3);
-        player2Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player3Score.setColor(Color.BLACK);
-        player3Score.getData().setScale(3);
-        player3Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player4Score.setColor(Color.BLACK);
-        player4Score.getData().setScale(3);
-        player4Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player.add(score1);
-        player.add(score2);
-        player.add(score3);
-        player.add(score4);
+    public void setPlayerScore(int[] playerScore) {
+        this.playerScore = playerScore;
+        initScores();
     }
 
-    public void addBitmaps(){
-        bitmapFonts.add(player1Score);
-        bitmapFonts.add(player2Score);
-        bitmapFonts.add(player3Score);
-        bitmapFonts.add(player4Score);
+    public void addScoresToList() {
+        playerScoreLabels.add(player1);
+        playerScoreLabels.add(player2);
+        playerScoreLabels.add(player3);
+        playerScoreLabels.add(player4);
     }
 
-    public void placePlayer(){
-        player.get(0).setPosition((float)TickTackBummGame.WIDTH/2-200, (float)TickTackBummGame.HEIGHT/2-200);
-        score1.setPosition(100f,10f);
-        score1.setPosition(10f,100f);
-        score1.setPosition(100f,100f);
+    public Label getPlayer1() {
+        return player1;
     }
 
-    public void loadTexturesFromManager(String path){
-        this.assetManager.load(path,Texture.class);
-        this.assetManager.finishLoading();
+    public Label getPlayer2() {
+        return player2;
     }
 
-    public ArrayList<BitmapFont> getBitmaps() {
-        return bitmapFonts;
+    public Label getPlayer3() {
+        return player3;
     }
 
-    public ArrayList<Image> getPlayer() {
-        return player;
+    public Label getPlayer4() {
+        return player4;
+    }
+
+    public ArrayList<Label> getPlayerScoreLabels() {
+        return playerScoreLabels;
+    }
+
+    public void setPlayer1(Label player1) {
+        this.player1 = player1;
+    }
+
+    public void setPlayer2(Label player2) {
+        this.player2 = player2;
+    }
+
+    public void setPlayer3(Label player3) {
+        this.player3 = player3;
+    }
+
+    public void setPlayer4(Label player4) {
+        this.player4 = player4;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "player1=" + player1 +
+                ", player2=" + player2 +
+                ", player3=" + player3 +
+                ", player4=" + player4 +
+                '}';
     }
 }
 

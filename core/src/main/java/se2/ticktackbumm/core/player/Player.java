@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.player;
 
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.data.Avatars;
 
 public class Player {
@@ -85,6 +86,8 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player " + playerId + " with connectionId " + connectionId;
+        return "Player '" + playerName + "' with avatar '" + playerAvatar + "', ID " + playerId +
+                ", connection ID " + connectionId + " and game score: " + gameScore;
     }
+
 }

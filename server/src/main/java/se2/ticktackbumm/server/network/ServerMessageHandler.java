@@ -56,12 +56,13 @@ public class ServerMessageHandler {
         serverData.getGameData().setNextPlayerTurn();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
 
-        if (serverData.hasGameFinished()) {
-            serverMessageSender.sendGameFinished();
-        }
-
         serverMessageSender.sendGameUpdate();
-        serverMessageSender.sendNextRound();
+
+        if (serverData.hasGameFinished()) {
+            serverMessageSender.sendGameFinished(serverData.getPlacedPlayers());
+        } else {
+            serverMessageSender.sendNextRound();
+        }
     }
 
     public void handlePlayerReady(PlayerReady playerReady, int connectionId) {
