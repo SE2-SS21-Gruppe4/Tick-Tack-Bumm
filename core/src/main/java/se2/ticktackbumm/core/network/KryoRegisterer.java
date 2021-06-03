@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
@@ -37,6 +38,7 @@ public class KryoRegisterer {
         kryo.register(NextTurn.class);
         kryo.register(NextRound.class);
         kryo.register(GameFinished.class);
+        kryo.register(CardOpened.class);
 
         // register owned classes to send in messages
         kryo.register(Player.class);
