@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.network.messages.client.BombExploded;
+import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
@@ -74,6 +75,9 @@ public class NetworkServerListener extends Listener {
             Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
             serverMessageHandler.handlePlayerReady((PlayerReady) object, connection.getID());
 
+        } else if (object instanceof CardOpened){
+            Log.info(LOG_TAG, "Received message CardOpened from ID: " + connection.getID());
+            serverMessageHandler.handleCardOpened();
         }
     }
 }
