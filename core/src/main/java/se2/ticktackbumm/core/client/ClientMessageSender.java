@@ -56,4 +56,9 @@ public class ClientMessageSender {
         client.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
+    public void sendCardOpened(){
+        logSendingMessage("CardOpened");
+        client.sendTCP(new CardOpened());
+    }
+
 }
