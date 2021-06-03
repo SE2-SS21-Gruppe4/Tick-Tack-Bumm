@@ -63,8 +63,8 @@ public class Card {
         isRevealed = false;
 
         font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(6);
+        font.setColor(Color.CORAL);
+        font.getData().setScale(7);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 
@@ -118,8 +118,10 @@ public class Card {
     public void drawFrontSide(SpriteBatch spriteBatch){
         spriteBatch.begin();
         fontSprite.draw(spriteBatch);
-        font.draw(spriteBatch,randomWord,Gdx.graphics.getWidth() / 2.0f - 23, Gdx.graphics.getHeight() / 2.0f+192);
+        font.draw(spriteBatch,randomWord,Gdx.graphics.getWidth() / 2.0f - 28, Gdx.graphics.getHeight() / 2.0f+203);
         spriteBatch.end();
+
+        this.game.getNetworkClient().getClientMessageSender().sendCardOpened();
     }
 
 
@@ -155,6 +157,13 @@ public class Card {
         isRevealed = revealed;
     }
 
+    public String getRandomWord(){
+        return this.randomWord;
+    }
+
+    public void setRandomWord(String randomWord){
+        this.randomWord = randomWord;
+    }
 
     public Sprite getFontSprite() {
         return fontSprite;
