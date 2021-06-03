@@ -78,4 +78,8 @@ public class ServerMessageHandler {
             serverMessageSender.sendStartGame();
         }
     }
+
+    public void handleCardOpened() {
+        serverMessageSender.sendCardOpened();
+    }
 }
