@@ -69,7 +69,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
-        randomNumb = new SecureRandom();
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         skin.getFont("default-font").getData().setScale(3);
@@ -78,11 +77,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         descriptionLabel = new Label("", skin);
         gameButton = new TextButton("GAME", skin);
 
-
         spinWheelTable = new Table();
 
         setupTextLabel(challengeLabel, 4);
         setupTextLabel(descriptionLabel, 3);
+
 
 
         final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
@@ -102,6 +101,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = new Color(.18f, .21f, .32f, 1);
         timer = new Timer();
         againSpin = false;
+        randomNumb = new SecureRandom();
 
 
         setupGameButton();
@@ -113,7 +113,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
 
     }
-
+    // set up all parts of spinning wheel for UI
     private Image setupSpinWheelImages(String path, float xWidth, float yHeght) {
         Image image = new Image(atlas.findRegion(path));
         image.setPosition(xWidth, yHeght);
@@ -121,12 +121,13 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     }
 
+    // set listener for rotating on SPIN IMAGE in the center of wheel
     public void btnSpinListener() {
-
         spinButtonImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
+                // first time will always be false to check if we get needle on white point to repeat spinning
                 if (!againSpin) {
                     rotationAmount = randomNumb.nextInt(1800);
                     grade = getGrade(rotationAmount);
@@ -138,6 +139,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
 
+                //set timer to get descrption label and background color when wheel stops
                 task = new Timer.Task() {
                     @Override
                     public void run() {
@@ -159,13 +161,14 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
 
-
+    // set up label
     private void setupTextLabel(Label label, int textScale) {
         label.setAlignment(Align.center);
         label.setWrap(true);
         label.setFontScale(textScale);
     }
 
+    // set game button for going on next screen after getting challenge
     public void setupGameButton() {
         gameButton.addListener(new ClickListener() {
             @Override
@@ -179,6 +182,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.setVisible(false);
     }
 
+    // set up table
     private void setupSpinWheelTable() {
         spinWheelTable.setWidth(stage.getWidth());
         spinWheelTable.setHeight(stage.getHeight());
@@ -191,6 +195,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.add(gameButton).width(300f);
     }
 
+    //set up descriptionLabel and current game mode, depending on received degrees value
     private void setRandomGameMode(float value) {
         if ((value > 120 && value <= 180) || (value > 300 && value < 360)) {
             descriptionLabel.setText("Diese Silbe muss am Anfang deines Wortes stehen.");
@@ -210,7 +215,8 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     }
 
-    // 121 - 181 - 240 -300 - - 360 - 0 pixel on white part of peg
+    //set up background color depending on received degrees value
+    // 121 - 181 - 240 -300 - - 360 - 0 pixels on white part of peg
     private void setBackgroundColor(float value) {
         if (value > 0 && value < 61) {
             color.set(Color.valueOf("0070C0"));
@@ -229,17 +235,16 @@ public class SpinWheelScreen extends ScreenAdapter {
         }
     }
 
-    private float getGrade(float value) {
-        float retVal = value;
-        if (value > 360) {
-            retVal = value % 360;
+    private float getGrade(float grade) {
+        float retVal = grade;
+        if (grade > 360) {
+            retVal = grade % 360;
         }
         return retVal;
     }
 
 
     private float getSpinSpeed(float rotationAmount) {
-
         if (rotationAmount < 360) {
             return 1;
         } else {
@@ -247,17 +252,16 @@ public class SpinWheelScreen extends ScreenAdapter {
         }
     }
 
-    public float spinAgain(float val1 , float val2){
-        System.out.println("Second spin");
-        if ((val1+val2) > 1800){
-            val1=(val1+val2)-1800;
+    public float spinAgain(float newRotationAmount , float oldGrade){
+        if ((newRotationAmount+oldGrade) > 1800){
+            newRotationAmount=(newRotationAmount+oldGrade)-1800;
         }
         float sum = 360;
         float count;
-        count = sum - val2;
-        val1 = getGrade(val1);
+        count = sum - oldGrade;
+        newRotationAmount = getGrade(newRotationAmount);
 
-        return val1-count;
+        return newRotationAmount-count;
     }
 
 
