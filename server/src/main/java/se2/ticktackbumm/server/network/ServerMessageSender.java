@@ -2,6 +2,8 @@ package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+
+import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.player.Player;
 
@@ -58,5 +60,10 @@ public class ServerMessageSender {
     public void sendGameFinished(Player[] placedPlayers) {
         Log.info(LOG_TAG, "Sending message GameFinished to all clients");
         server.sendToAllTCP(new GameFinished(placedPlayers));
+    }
+
+    public void sendCardOpened() {
+        Log.info(LOG_TAG, "Sending message cardOpened to all clients");
+        server.sendToAllTCP(new CardOpened());
     }
 }
