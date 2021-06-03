@@ -63,8 +63,8 @@ public class Card {
         isRevealed = false;
 
         font = new BitmapFont();
-        font.setColor(Color.DARK_GRAY);
-        font.getData().setScale(4);
+        font.setColor(Color.WHITE);
+        font.getData().setScale(6);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 
@@ -81,6 +81,7 @@ public class Card {
 
         frontsideTexture = assetManager.get("card/frontside.png",Texture.class);
 
+        randomWord = getWordDependOnMode();
 
         fontSprite = new Sprite(frontsideTexture);
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
@@ -109,14 +110,16 @@ public class Card {
 
     public void drawBackSide(SpriteBatch spriteBatch){
         backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
+        spriteBatch.begin();
         backSprite.draw(spriteBatch);
+        spriteBatch.end();
     }
 
     public void drawFrontSide(SpriteBatch spriteBatch){
+        spriteBatch.begin();
         fontSprite.draw(spriteBatch);
-
-        randomWord = getWordDependOnMode();
-        font.draw(spriteBatch,randomWord,Gdx.graphics.getWidth() / 2.0f - 100, Gdx.graphics.getHeight() / 2.0f);
+        font.draw(spriteBatch,randomWord,Gdx.graphics.getWidth() / 2.0f - 23, Gdx.graphics.getHeight() / 2.0f+192);
+        spriteBatch.end();
     }
 
 
