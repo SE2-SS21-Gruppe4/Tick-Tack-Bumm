@@ -3,7 +3,6 @@ package se2.ticktackbumm.core.models.cards;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -36,18 +35,12 @@ public class Card {
     private String randomWord;
 
 
-    //isRevealed moved in GameData class
-    //private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
-
     private AssetManager assetManager;
     private TickTackBummGame game;
 
 
     private Sprite fontSprite;
     private Sprite backSprite;
-
-    private Sound openCardSound;
-    private Sound cardSchufflingSound;
 
 
     public Card() {
@@ -99,7 +92,6 @@ public class Card {
             }
         }
         if (isRevealed){
-          //  fontSprite.draw(spriteBatch);
             drawFrontSide(spriteBatch);
 
         }
