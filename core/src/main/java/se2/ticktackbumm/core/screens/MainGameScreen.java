@@ -326,4 +326,8 @@ public class MainGameScreen extends ScreenAdapter {
     public TextButton getCheckButton() {
         return checkButton;
     }
+
+    public Bomb getBomb(){
+        return this.bomb;
+    }
 }
