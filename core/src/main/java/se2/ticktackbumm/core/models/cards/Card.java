@@ -19,9 +19,9 @@ import java.security.SecureRandom;
 public class Card {
 
 
-    private final String[] vorArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
-    private final String[] middleArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
-    private final String[] nachArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
+    private final String[] prefixArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
+    private final String[] infixArray = new String[]{"TER", "UT", "RDI","LEN","ULT","TRA","AHN","KEL","SON","TEN"};
+    private final String[] postfixArray = new String[] {"UNG","SCH","SER","KEN","CHE","EIT","ATZ","NER","ICH","TUR"};
 
     private final GameData gameData;
 
@@ -121,14 +121,14 @@ public class Card {
     public String getWordDependOnMode(){
         switch (gameData.getCurrentGameMode()){
             case PREFIX:
-               return getRandomWord(vorArray);
+               return getRandomWord(prefixArray);
 
             case INFIX:
-                return getRandomWord(middleArray);
+                return getRandomWord(infixArray);
 
 
             case POSTFIX:
-              return  getRandomWord(nachArray);
+              return  getRandomWord(postfixArray);
 
             default:
                 //TODO check if in this case backside should be drawn
