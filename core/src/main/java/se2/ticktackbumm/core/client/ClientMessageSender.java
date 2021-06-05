@@ -5,7 +5,6 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.network.messages.client.BombExploded;
-import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
@@ -55,6 +54,11 @@ public class ClientMessageSender {
     public void sendPlayerReady(String playerName, Avatars playerAvatar) {
         logSendingMessage("PlayerReady");
         client.sendTCP(new PlayerReady(playerName, playerAvatar));
+    }
+
+    public void sendStartBomb(){
+        logSendingMessage("BombStart");
+        client.sendTCP(new BombStart());
     }
 
     public void sendCardOpened(){

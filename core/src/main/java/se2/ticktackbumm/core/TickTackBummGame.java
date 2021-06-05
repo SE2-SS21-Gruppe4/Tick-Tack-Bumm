@@ -129,6 +129,10 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
+    public void startBomb(){
+        networkClient.getClientMessageSender().sendStartBomb();
+    }
+
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
@@ -137,6 +141,12 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
 
         // TODO: show game finished message, scoreboard screen, ...
+    }
+
+    public void setBombToTick(int timer){
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.getBomb().setExplodeTime(timer);
     }
 
     public void openCard(){

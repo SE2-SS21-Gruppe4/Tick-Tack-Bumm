@@ -4,6 +4,8 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.network.messages.client.CardOpened;
+
+import se2.ticktackbumm.core.network.messages.client.BombStart;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.player.Player;
 
@@ -60,6 +62,12 @@ public class ServerMessageSender {
     public void sendGameFinished(Player[] placedPlayers) {
         Log.info(LOG_TAG, "Sending message GameFinished to all clients");
         server.sendToAllTCP(new GameFinished(placedPlayers));
+    }
+
+
+    public void sendBombStart(int timer) {
+        server.sendToAllTCP(new BombStart(timer));
+
     }
 
     public void sendCardOpened() {
