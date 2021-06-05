@@ -126,7 +126,12 @@ public class Card {
         font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 28, Gdx.graphics.getHeight() / 2.0f + 203);
         spriteBatch.end();
 
-        this.game.getNetworkClient().getClientMessageSender().sendCardOpened();
+    }
+
+    public void setMessageToServer(){
+        if (isRevealed){
+            this.game.getNetworkClient().getClientMessageSender().sendCardOpened();
+        }
     }
 
 

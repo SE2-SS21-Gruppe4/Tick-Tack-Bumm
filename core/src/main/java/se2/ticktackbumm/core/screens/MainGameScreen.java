@@ -294,6 +294,7 @@ public class MainGameScreen extends ScreenAdapter {
         String newRandomWord = card.getWordDependOnMode();
         card.setRandomWord(newRandomWord);
         gameData.setCurrentGameModeText(newRandomWord);
+        card.setMessageToServer();
     }
 
 
