@@ -77,6 +77,9 @@ public class Card {
 
         randomWord = getWordDependOnMode();
 
+        gameData.setCurrentGameModeText(randomWord);
+
+
         fontSprite = new Sprite(frontsideTexture);
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
