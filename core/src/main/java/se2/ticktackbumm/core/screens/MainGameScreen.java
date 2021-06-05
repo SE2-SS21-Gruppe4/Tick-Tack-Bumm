@@ -290,7 +290,10 @@ public class MainGameScreen extends ScreenAdapter {
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
         card.setRevealed(false);
-        card.setRandomWord(card.getWordDependOnMode());
+
+        String newRandomWord = card.getWordDependOnMode();
+        card.setRandomWord(newRandomWord);
+        gameData.setCurrentGameModeText(newRandomWord);
     }
 
 
