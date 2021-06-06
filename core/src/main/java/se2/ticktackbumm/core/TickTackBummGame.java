@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 import se2.ticktackbumm.core.screens.MainGameScreen;
@@ -150,9 +151,15 @@ public class TickTackBummGame extends Game {
         gameScreen.getBomb().setExplodeTime(timer);
     }
 
+    public void setSpinWheelFinished(GameMode gameMode) {
+        gameData.setCurrentGameMode(gameMode);
+    }
+
     @Override
     public void dispose() {
         manager.dispose();
         batch.dispose();
     }
+
+
 }
