@@ -39,8 +39,8 @@ public class Score {
     public void initScores() {
         player1 = new Label(String.valueOf(playerScore[0]), skin);
         player2 = new Label(String.valueOf(playerScore[1]), skin);
-        player3 = new Label("1", skin);
-        player4 = new Label("2", skin);
+        player3 = new Label("0", skin);
+        player4 = new Label("0", skin);
         player1.setColor(Color.BLACK);
         player2.setColor(Color.BLACK);
         player3.setColor(Color.BLACK);
