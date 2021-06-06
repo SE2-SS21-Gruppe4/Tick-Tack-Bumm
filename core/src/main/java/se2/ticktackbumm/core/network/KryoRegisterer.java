@@ -8,6 +8,7 @@ import se2.ticktackbumm.core.network.messages.client.BombStart;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.player.Player;
 
@@ -39,6 +40,7 @@ public class KryoRegisterer {
         kryo.register(NextRound.class);
         kryo.register(GameFinished.class);
         kryo.register(BombStart.class);
+        kryo.register(SpinWheelFinished.class);
 
         // register owned classes to send in messages
         kryo.register(Player.class);
