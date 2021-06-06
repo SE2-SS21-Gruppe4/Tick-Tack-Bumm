@@ -5,7 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,27 +14,36 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.assets.Explosion;
+import se2.ticktackbumm.core.assets.Flame;
+import se2.ticktackbumm.core.assets.Lamb;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.player.Player;
 
 
 public class WinnerScreen extends ScreenAdapter {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private final OrthographicCamera camera;
-    private final Batch batch;
     private final Stage stage;
     private final Skin skin;
     private final GameData gameData;
     private final Texture podium;
     private final Image podiumImage;
+    private final Lamb lamb;
+    private final Explosion explosion;
+    private final SpriteBatch spriteBatch;
+    private final Flame flame;
 
     public WinnerScreen(Table[] tables) {
         game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
         camera = TickTackBummGame.getGameCamera();
-        batch = game.getBatch();
         gameData = game.getGameData();
+
+        lamb = new Lamb();
+        spriteBatch = new SpriteBatch();
+        explosion = new Explosion();
+        flame = new Flame();
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -60,10 +69,12 @@ public class WinnerScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
-        batch.setProjectionMatrix(camera.combined);
+        spriteBatch.setProjectionMatrix(camera.combined);
 
-        batch.begin();
+        spriteBatch.begin();
         stage.draw();
-        batch.end();
+        flame.render(delta, spriteBatch);
+        lamb.render(delta, spriteBatch);
+        spriteBatch.end();
     }
 }
