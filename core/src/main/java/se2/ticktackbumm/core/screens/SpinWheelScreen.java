@@ -82,8 +82,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         setupTextLabel(challengeLabel, 4);
         setupTextLabel(descriptionLabel, 3);
 
-
-
         final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
         atlas = new TextureAtlas(pathOfAtlas);
         wheelImage = setupSpinWheelImages("spin_wheel_image" , TickTackBummGame.WIDTH / 3.8F, TickTackBummGame.HEIGHT / 2f);
