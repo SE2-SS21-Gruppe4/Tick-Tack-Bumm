@@ -41,8 +41,7 @@ public class TickTackBummGame extends Game {
         font.getData().setScale(2);
 
         // display loading-screen on startup
-       // setScreen(new LoadingScreen());
-        setScreen(new MainGameScreen());
+        setScreen(new LoadingScreen());
     }
 
     public static TickTackBummGame getTickTackBummGame() {
