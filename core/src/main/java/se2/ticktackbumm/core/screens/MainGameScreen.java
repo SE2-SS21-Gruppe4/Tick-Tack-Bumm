@@ -135,48 +135,24 @@ public class MainGameScreen extends ScreenAdapter {
         player3 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
         player4 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
 
-        score1Table.add(score.getPlayer1());
-        score1Table.row();
-        score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
-        score1Table.row();
-        score1Table.add(player1);
-        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
-
         score2Table = new Table();
         score2Table.setWidth(200);
         score2Table.setHeight(400);
         score2Table.align(Align.center);
 
-        score2Table.add(score.getPlayer2());
-        score2Table.row();
-        score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-        score2Table.row();
-        score2Table.add(player2);
-        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
 
         score3Table = new Table();
         score3Table.setWidth(200);
         score3Table.setHeight(400);
         score3Table.align(Align.center);
 
-        score3Table.add(player3);
-        score3Table.row();
-        score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-        score3Table.row();
-        score3Table.add(score.getPlayer3());
-        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
 
         score4Table = new Table();
         score4Table.setWidth(200);
         score4Table.setHeight(400);
         score4Table.align(Align.center);
 
-        score4Table.add(player4);
-        score4Table.row();
-        score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-        score4Table.row();
-        score4Table.add(score.getPlayer4());
-        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+        resetAvatars();
 
         textFieldTable = setupTextfieldTable();
 
@@ -242,7 +218,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateCurrentPlayerMarker() {
-        switch(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()){
+        switch (gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()) {
             case 0:
                 score2Table.reset();
                 score1Table.reset();
@@ -294,7 +270,6 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
 
-
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
@@ -309,8 +284,191 @@ public class MainGameScreen extends ScreenAdapter {
         batch.end();
     }
 
+    public void resetAvatars(){
+        score1Table.reset();
+        score2Table.reset();
+        score3Table.reset();
+        score4Table.reset();
+
+        score1Table.add(score.getPlayer1());
+        score1Table.row();
+        score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
+        score1Table.row();
+        score1Table.add(player1);
+        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+
+        score2Table.add(score.getPlayer2());
+        score2Table.row();
+        score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score2Table.row();
+        score2Table.add(player2);
+        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+
+        score3Table.add(score.getPlayer3());
+        score3Table.row();
+        score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score3Table.row();
+        score3Table.add(player3);
+        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+
+        score4Table.add(score.getPlayer4());
+        score4Table.row();
+        score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+        score4Table.row();
+        score4Table.add(player4);
+        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+    }
+
     public void updatePlayerScores() {
         score.setPlayerScore(gameData.getPlayerScores());
+    }
+
+    public void setWinnerScreen() {
+        updatePlayerScores();
+        Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen(getBestScores())));
+    }
+
+    public Table[] getBestScores() {
+        resetAvatars();
+        Table[] tables = new Table[3];
+        //player 1 loses
+        if (gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[3]) {
+            //player 2 is first
+            if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score3Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score3Table;
+                    tables[1] = score4Table;
+                }
+                //player 3 is first
+            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score2Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score2Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score3Table;
+                }
+            }
+        }
+
+        //player 2 loses
+        if (gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[3]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score3Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score3Table;
+                    tables[1] = score4Table;
+                }
+                //player 3 is first
+            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score1Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score3Table;
+                }
+            }
+        }
+        //player 3 loses
+        if (gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[3]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score2Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score4Table;
+                }
+                //player 2 is first
+            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+            }
+        }
+        //player 4 loses
+        if (gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[2]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score2Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score3Table;
+                }
+                //player 2 is first
+            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score1Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score3Table;
+                }
+                //player 3 is first
+            } else {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1]) {
+                    tables[1] = score1Table;
+                    tables[2] = score2Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score2Table;
+                }
+            }
+        }
+        return tables;
     }
 
     @Override
@@ -327,7 +485,7 @@ public class MainGameScreen extends ScreenAdapter {
         return checkButton;
     }
 
-    public Bomb getBomb(){
+    public Bomb getBomb() {
         return this.bomb;
     }
 }
