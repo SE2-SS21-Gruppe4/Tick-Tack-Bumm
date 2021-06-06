@@ -35,6 +35,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final GameData gameData;
+    private GameMode gameMode;
 
     private final SpriteBatch batch;
     private final Stage stage;
@@ -64,6 +65,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         gameData = game.getGameData();
+        gameMode = GameMode.NONE;
 
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -101,6 +103,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         againSpin = false;
         randomNumb = new SecureRandom();
         isStart = false;
+
 
 
         setupGameButton();
@@ -199,16 +202,18 @@ public class SpinWheelScreen extends ScreenAdapter {
     private void setRandomGameMode(float value) {
         if ((value > 120 && value <= 180) || (value > 300 && value < 360)) {
             descriptionLabel.setText("Diese Silbe muss am Anfang deines Wortes stehen.");
-            gameData.setCurrentGameMode(GameMode.PREFIX);
+            gameMode = GameMode.PREFIX;
         } else if ((value > 0 && value < 60) || (value > 180 && value < 240)) {
             descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
-            gameData.setCurrentGameMode(GameMode.INFIX);
+            gameMode = GameMode.INFIX;
         } else if ((value > 60 && value < 120) || (value > 240 && value < 300)) {
             descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
-            gameData.setCurrentGameMode(GameMode.POSTFIX);
+            gameMode = GameMode.POSTFIX;
         }else {
             descriptionLabel.setText("Spin nochmal.");
         }
+        gameData.setCurrentGameMode(gameMode);
+        game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameMode);
         // TODO: testing only
         gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
 
