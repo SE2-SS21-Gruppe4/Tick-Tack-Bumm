@@ -8,6 +8,7 @@ import se2.ticktackbumm.core.network.messages.client.BombStart;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
 import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
@@ -78,6 +79,10 @@ public class NetworkServerListener extends Listener {
         } else if (object instanceof BombStart) {
             Log.info(LOG_TAG,"Received message BombStart from ID: " + connection.getID());
             serverMessageHandler.handleBombStart();
+
+        } else if (object instanceof SpinWheelFinished){
+            Log.info(LOG_TAG,"Received message SpinWheelFinished from ID: " + connection.getID());
+            serverMessageHandler.handleSpinWheelFinished(((SpinWheelFinished) object).getGameMode());
         }
     }
 }
