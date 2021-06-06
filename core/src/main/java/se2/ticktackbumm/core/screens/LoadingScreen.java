@@ -57,6 +57,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("ui/uiskin.json", Skin.class);
 
         assetManager.load("bombeStart.png", Texture.class);
+        assetManager.load("winnerScreen/podium.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
         assetManager.load("loadingscreen.jpg", Texture.class);
         assetManager.load("maxScoreBoard.png", Texture.class);
