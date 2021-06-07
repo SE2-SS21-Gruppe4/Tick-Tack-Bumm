@@ -222,6 +222,8 @@ public class MainGameScreen extends ScreenAdapter {
             case 0:
                 score2Table.reset();
                 score1Table.reset();
+                score3Table.reset();
+                score4Table.reset();
 
                 score1Table.add(score.getPlayer1());
                 score1Table.row();
@@ -236,6 +238,20 @@ public class MainGameScreen extends ScreenAdapter {
                 score2Table.row();
                 score2Table.add(player2);
                 score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+
+                score3Table.add(score.getPlayer3());
+                score3Table.row();
+                score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+                score3Table.row();
+                score3Table.add(player3);
+                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+
+                score4Table.add(score.getPlayer4());
+                score4Table.row();
+                score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+                score4Table.row();
+                score4Table.add(player4);
+                score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
                 break;
             case 1:
                 score2Table.reset();
@@ -256,11 +272,42 @@ public class MainGameScreen extends ScreenAdapter {
                 score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
                 break;
             case 2:
+                score2Table.reset();
+                score3Table.reset();
+
+                score2Table.add(score.getPlayer2());
+                score2Table.row();
+                score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+                score2Table.row();
+                score2Table.add(player2);
+                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+
+                score3Table.add(score.getPlayer3());
+                score3Table.row();
+                score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score3Table.row();
+                score3Table.add(player3);
+                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
                 break;
             case 3:
+                score3Table.reset();
+                score4Table.reset();
+
+                score3Table.add(score.getPlayer3());
+                score3Table.row();
+                score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
+                score3Table.row();
+                score3Table.add(player3);
+                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+
+                score4Table.add(score.getPlayer4());
+                score4Table.row();
+                score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+                score4Table.row();
+                score4Table.add(player4);
+                score4Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
                 break;
         }
-        // TODO: update when 4 player are enabled
     }
 
     public void resetCard() {
@@ -325,6 +372,11 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void setWinnerScreen() {
         updatePlayerScores();
+        game.getNetworkClient().disconnectClient();
+        game.setLocalPlayer(null);
+
+        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+                "switching to WinnerScreen");
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen(getBestScores())));
     }
 
