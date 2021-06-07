@@ -5,13 +5,19 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
@@ -31,8 +37,18 @@ public class WinnerScreen extends ScreenAdapter {
     private final Image podiumImage;
     private final Lamb lamb;
     private final Explosion explosion;
-    private final SpriteBatch spriteBatch;
     private final Flame flame;
+
+    private final Sprite sprite;
+
+    private final Texture background;
+
+    private final float BUTTON_WIDTH = 450f;
+    private final float BUTTON_HEIGHT = 120f;
+
+    private final TextButton menuButton;
+    private final Table menuButtonTable;
+
 
     public WinnerScreen(Table[] tables) {
         game = TickTackBummGame.getTickTackBummGame();
@@ -41,15 +57,22 @@ public class WinnerScreen extends ScreenAdapter {
         gameData = game.getGameData();
 
         lamb = new Lamb();
-        spriteBatch = new SpriteBatch();
         explosion = new Explosion();
         flame = new Flame();
 
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
-
         skin.getFont("default-font").getData().setScale(3);
+
+        menuButton = new TextButton("Menue", skin);
+
+        menuButton.getLabel().setFontScale(4);
+
+        menuButtonTable = new Table();
+        menuButtonTable.setWidth(stage.getWidth());
+        menuButtonTable.setHeight(stage.getHeight());
+        menuButtonTable.setPosition(TickTackBummGame.WIDTH/2f-540f, -1000f);
 
         podium = assetManager.get("winnerScreen/podium.png", Texture.class);
         podiumImage = new Image(podium);
@@ -59,22 +82,37 @@ public class WinnerScreen extends ScreenAdapter {
         tables[1].setPosition(TickTackBummGame.WIDTH/2f-350f,TickTackBummGame.HEIGHT/2f-200f);
         tables[2].setPosition(TickTackBummGame.WIDTH/2f+150f,TickTackBummGame.HEIGHT/2f-200f);
 
+        menuButtonTable.add(menuButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+
         stage.addActor(tables[0]);
         stage.addActor(tables[1]);
         stage.addActor(tables[2]);
         stage.addActor(podiumImage);
+        stage.addActor(menuButtonTable);
 
+        background = assetManager.get("winnerScreen/background.png", Texture.class);
+
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen()));
+            }
+        });
+        sprite = new Sprite(background);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
-        spriteBatch.setProjectionMatrix(camera.combined);
+        game.getBatch().setProjectionMatrix(camera.combined);
 
-        spriteBatch.begin();
+        game.getBatch().begin();
+        sprite.draw(game.getBatch());
+        game.getBatch().end();
+        game.getBatch().begin();
         stage.draw();
-        flame.render(delta, spriteBatch);
-        lamb.render(delta, spriteBatch);
-        spriteBatch.end();
+        flame.render(delta, game.getBatch());
+        lamb.render(delta, game.getBatch());
+        game.getBatch().end();
     }
 }
