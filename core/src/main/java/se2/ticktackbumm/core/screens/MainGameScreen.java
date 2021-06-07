@@ -152,7 +152,10 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.setHeight(400);
         score4Table.align(Align.center);
 
-        resetAvatars();
+        initTable1Unfocused();
+        initTable2Unfocused();
+        initTable3Unfocused();
+        initTable4Unfocused();
 
         textFieldTable = setupTextfieldTable();
 
@@ -220,92 +223,22 @@ public class MainGameScreen extends ScreenAdapter {
     public void updateCurrentPlayerMarker() {
         switch (gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()) {
             case 0:
-                score2Table.reset();
-                score1Table.reset();
-                score3Table.reset();
-                score4Table.reset();
-
-                score1Table.add(score.getPlayer1());
-                score1Table.row();
-                score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
-                score1Table.row();
-                score1Table.add(player1);
-                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
-
-                score2Table.add(score.getPlayer2());
-                score2Table.row();
-                score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-                score2Table.row();
-                score2Table.add(player2);
-                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
-
-                score3Table.add(score.getPlayer3());
-                score3Table.row();
-                score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-                score3Table.row();
-                score3Table.add(player3);
-                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
-
-                score4Table.add(score.getPlayer4());
-                score4Table.row();
-                score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-                score4Table.row();
-                score4Table.add(player4);
-                score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+                initTable1Focused();
+                initTable2Unfocused();
+                initTable3Unfocused();
+                initTable4Unfocused();
                 break;
             case 1:
-                score2Table.reset();
-                score1Table.reset();
-
-                score1Table.add(score.getPlayer1());
-                score1Table.row();
-                score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
-                score1Table.row();
-                score1Table.add(player1);
-                score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
-
-                score2Table.add(score.getPlayer2());
-                score2Table.row();
-                score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
-                score2Table.row();
-                score2Table.add(player2);
-                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                initTable1Unfocused();
+                initTable2Focused();
                 break;
             case 2:
-                score2Table.reset();
-                score3Table.reset();
-
-                score2Table.add(score.getPlayer2());
-                score2Table.row();
-                score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-                score2Table.row();
-                score2Table.add(player2);
-                score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
-
-                score3Table.add(score.getPlayer3());
-                score3Table.row();
-                score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
-                score3Table.row();
-                score3Table.add(player3);
-                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                initTable2Unfocused();
+                initTable3Focused();
                 break;
             case 3:
-                score3Table.reset();
-                score4Table.reset();
-
-                score3Table.add(score.getPlayer3());
-                score3Table.row();
-                score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
-                score3Table.row();
-                score3Table.add(player3);
-                score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
-
-                score4Table.add(score.getPlayer4());
-                score4Table.row();
-                score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
-                score4Table.row();
-                score4Table.add(player4);
-                score4Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+                initTable3Unfocused();
+                initTable4Focused();
                 break;
         }
     }
@@ -331,39 +264,77 @@ public class MainGameScreen extends ScreenAdapter {
         batch.end();
     }
 
-    public void resetAvatars(){
+    public void initTable1Unfocused(){
         score1Table.reset();
-        score2Table.reset();
-        score3Table.reset();
-        score4Table.reset();
-
         score1Table.add(score.getPlayer1());
         score1Table.row();
         score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
         score1Table.row();
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
-
+    }
+    public void initTable2Unfocused(){
+        score2Table.reset();
         score2Table.add(score.getPlayer2());
         score2Table.row();
         score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score2Table.row();
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
-
+    }
+    public void initTable3Unfocused(){
+        score3Table.reset();
         score3Table.add(score.getPlayer3());
         score3Table.row();
         score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score3Table.row();
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
-
+    }
+    public void initTable4Unfocused(){
+        score4Table.reset();
         score4Table.add(score.getPlayer4());
         score4Table.row();
         score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score4Table.row();
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+    }
+    public void initTable1Focused(){
+        score1Table.reset();
+        score1Table.add(score.getPlayer1());
+        score1Table.row();
+        score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+        score1Table.row();
+        score1Table.add(player1);
+        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+    }
+    public void initTable2Focused(){
+        score2Table.reset();
+        score2Table.add(score.getPlayer2());
+        score2Table.row();
+        score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+        score2Table.row();
+        score2Table.add(player2);
+        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+    }
+    public void initTable3Focused(){
+        score3Table.reset();
+        score3Table.add(score.getPlayer3());
+        score3Table.row();
+        score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+        score3Table.row();
+        score3Table.add(player3);
+        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+    }
+    public void initTable4Focused(){
+        score4Table.reset();
+        score4Table.add(score.getPlayer4());
+        score4Table.row();
+        score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
+        score4Table.row();
+        score4Table.add(player4);
+        score4Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
     }
 
     public void updatePlayerScores() {
@@ -381,7 +352,10 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public Table[] getBestScores() {
-        resetAvatars();
+        initTable1Unfocused();
+        initTable2Unfocused();
+        initTable3Unfocused();
+        initTable4Unfocused();
         Table[] tables = new Table[3];
         //player 1 loses
         if (gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[3]) {
