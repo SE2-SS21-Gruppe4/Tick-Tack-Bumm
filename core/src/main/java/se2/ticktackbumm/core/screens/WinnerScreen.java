@@ -60,7 +60,7 @@ public class WinnerScreen extends ScreenAdapter {
         explosion = new Explosion();
         flame = new Flame();
 
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH+150f, TickTackBummGame.HEIGHT+150f));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
         skin.getFont("default-font").getData().setScale(3);
@@ -76,11 +76,11 @@ public class WinnerScreen extends ScreenAdapter {
 
         podium = assetManager.get("winnerScreen/podium.png", Texture.class);
         podiumImage = new Image(podium);
-        podiumImage.setPosition(TickTackBummGame.WIDTH / 2.0f -390f, TickTackBummGame.HEIGHT /2f-400f);
+        podiumImage.setPosition(TickTackBummGame.WIDTH / 2.0f -315f, TickTackBummGame.HEIGHT /2f-400f);
 
-        tables[0].setPosition(TickTackBummGame.WIDTH/2f-100f,TickTackBummGame.HEIGHT/2f);
-        tables[1].setPosition(TickTackBummGame.WIDTH/2f-350f,TickTackBummGame.HEIGHT/2f-200f);
-        tables[2].setPosition(TickTackBummGame.WIDTH/2f+150f,TickTackBummGame.HEIGHT/2f-200f);
+        tables[0].setPosition(TickTackBummGame.WIDTH/2f-25f,TickTackBummGame.HEIGHT/2f);
+        tables[1].setPosition(TickTackBummGame.WIDTH/2f-275f,TickTackBummGame.HEIGHT/2f-200f);
+        tables[2].setPosition(TickTackBummGame.WIDTH/2f+225f,TickTackBummGame.HEIGHT/2f-200f);
 
         menuButtonTable.add(menuButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
@@ -99,6 +99,8 @@ public class WinnerScreen extends ScreenAdapter {
             }
         });
         sprite = new Sprite(background);
+        sprite.setRegionWidth(TickTackBummGame.WIDTH);
+        sprite.setRegionHeight(TickTackBummGame.HEIGHT);
     }
 
     @Override

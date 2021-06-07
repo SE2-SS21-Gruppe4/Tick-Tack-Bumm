@@ -25,7 +25,7 @@ public class Flame {
     public void render(float delta, SpriteBatch spriteBatch) {
         animationTime += delta;
         TextureRegion currentFrame = lambAnimation.getKeyFrame(animationTime);
-        spriteBatch.draw(currentFrame, 0, 650, 250, 900);
-        spriteBatch.draw(currentFrame, TickTackBummGame.WIDTH-260f, 650, 250, 900);
+        spriteBatch.draw(currentFrame, 80, 650, 250, 900);
+        spriteBatch.draw(currentFrame, TickTackBummGame.WIDTH-190f, 650, 250, 900);
     }
 }

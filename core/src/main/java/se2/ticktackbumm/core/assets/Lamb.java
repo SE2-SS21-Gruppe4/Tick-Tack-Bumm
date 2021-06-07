@@ -25,8 +25,8 @@ public class Lamb {
     public void render(float delta, SpriteBatch spriteBatch) {
         animationTime += delta;
         TextureRegion currentFrame = lambAnimation.getKeyFrame(animationTime);
-        spriteBatch.draw(currentFrame, 150, 600, 200, 200);
-        spriteBatch.draw(currentFrame, 450, 600, 200, 200);
-        spriteBatch.draw(currentFrame, 750, 600, 200, 200);
+        spriteBatch.draw(currentFrame, 265, 600, 200, 200);
+        spriteBatch.draw(currentFrame, 515, 600, 200, 200);
+        spriteBatch.draw(currentFrame, 765, 600, 200, 200);
     }
 }
