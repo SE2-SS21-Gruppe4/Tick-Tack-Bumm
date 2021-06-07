@@ -16,7 +16,7 @@ import se2.ticktackbumm.core.player.Player;
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.
  */
-public class NetworkServerListener extends Listener {
+public class    NetworkServerListener extends Listener {
 
     private final String LOG_TAG = "NETWORK_SERVER_LISTENER";
 

@@ -91,6 +91,7 @@ public class ServerMessageHandler {
 
 
     public void handleSpinWheelFinished(GameMode gameMode) {
-        serverMessageSender.sendSpinWheelFinished(gameMode);
+        serverData.getGameData().setCurrentGameMode(gameMode);
+        serverMessageSender.sendGameUpdate();
     }
 }

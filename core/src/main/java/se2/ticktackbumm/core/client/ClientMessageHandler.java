@@ -109,8 +109,4 @@ public class ClientMessageHandler {
     public void handleStartBomb(BombStart bombStart) {
         game.setBombToTick(bombStart.getBombTimer());
     }
-
-    public void handleSpinWheelFinished(SpinWheelFinished object) {
-        game.setSpinWheelFinished(object.getGameMode());
-    }
 }
