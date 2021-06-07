@@ -139,7 +139,7 @@ public class TickTackBummGame extends Game {
         gameScreen.hideControls();
         gameScreen.updatePlayerScores();
         gameScreen.updateCurrentPlayerMarker();
-
+        gameScreen.setWinnerScreen();
         // TODO: show game finished message, scoreboard screen, ...
     }
 

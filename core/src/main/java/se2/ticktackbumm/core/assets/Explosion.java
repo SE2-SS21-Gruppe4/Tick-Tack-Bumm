@@ -19,8 +19,6 @@ public class Explosion extends Actor {
     public Explosion() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
-        assetManager.load("explosion.atlas",TextureAtlas.class);
-        assetManager.finishLoading();
 
         TextureAtlas atlas = assetManager.get("explosion.atlas", TextureAtlas.class);
         explosionAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("explosion"), Animation.PlayMode.LOOP);
@@ -29,6 +27,8 @@ public class Explosion extends Actor {
     public void render(float delta, SpriteBatch spriteBatch) {
         animationTime += delta;
         TextureRegion currentFrame = explosionAnimation.getKeyFrame(animationTime);
-        spriteBatch.draw(currentFrame, 20, 40, 400, 400);
+        spriteBatch.draw(currentFrame, 150, 500, 200, 200);
+        spriteBatch.draw(currentFrame, 450, 500, 200, 200);
+        spriteBatch.draw(currentFrame, 750, 500, 200, 200);
     }
 }
