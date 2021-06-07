@@ -8,23 +8,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 
-public class Lamb {
+public class Lamp {
     private final TickTackBummGame game;
     private final AssetManager assetManager;
-    private Animation<TextureRegion> lambAnimation;
+    private Animation<TextureRegion> lampAnimation;
     private float animationTime = 0.0f;
 
-    public Lamb() {
+    public Lamp() {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
 
         TextureAtlas atlas = assetManager.get("lamb.atlas", TextureAtlas.class);
-        lambAnimation = new Animation<TextureRegion>(0.2f, atlas.findRegions("lamb"), Animation.PlayMode.LOOP);
+        lampAnimation = new Animation<TextureRegion>(0.2f, atlas.findRegions("lamb"), Animation.PlayMode.LOOP);
     }
 
     public void render(float delta, SpriteBatch spriteBatch) {
         animationTime += delta;
-        TextureRegion currentFrame = lambAnimation.getKeyFrame(animationTime);
+        TextureRegion currentFrame = lampAnimation.getKeyFrame(animationTime);
         spriteBatch.draw(currentFrame, 265, 600, 200, 200);
         spriteBatch.draw(currentFrame, 515, 600, 200, 200);
         spriteBatch.draw(currentFrame, 765, 600, 200, 200);

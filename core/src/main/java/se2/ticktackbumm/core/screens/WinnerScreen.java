@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -14,15 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
 import se2.ticktackbumm.core.assets.Flame;
-import se2.ticktackbumm.core.assets.Lamb;
+import se2.ticktackbumm.core.assets.Lamp;
 import se2.ticktackbumm.core.data.GameData;
 
 
@@ -35,7 +32,7 @@ public class WinnerScreen extends ScreenAdapter {
     private final GameData gameData;
     private final Texture podium;
     private final Image podiumImage;
-    private final Lamb lamb;
+    private final Lamp lamp;
     private final Explosion explosion;
     private final Flame flame;
 
@@ -56,7 +53,7 @@ public class WinnerScreen extends ScreenAdapter {
         camera = TickTackBummGame.getGameCamera();
         gameData = game.getGameData();
 
-        lamb = new Lamb();
+        lamp = new Lamp();
         explosion = new Explosion();
         flame = new Flame();
 
@@ -114,7 +111,7 @@ public class WinnerScreen extends ScreenAdapter {
         game.getBatch().begin();
         stage.draw();
         flame.render(delta, game.getBatch());
-        lamb.render(delta, game.getBatch());
+        lamp.render(delta, game.getBatch());
         game.getBatch().end();
     }
 }
