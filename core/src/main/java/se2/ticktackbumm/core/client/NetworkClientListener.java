@@ -71,9 +71,6 @@ public class NetworkClientListener extends Listener {
         } else if (object instanceof BombStart){
             logReceivedMessage("BombStart");
             clientMessageHandler.handleStartBomb((BombStart) object);
-        } else if (object instanceof SpinWheelFinished){
-            logReceivedMessage("SpinWheelFinished");
-        //    clientMessageHandler.handleSpinWheelFinished((SpinWheelFinished) object);
         }
     }
 
