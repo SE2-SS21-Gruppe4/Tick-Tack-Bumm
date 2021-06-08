@@ -43,7 +43,6 @@ public class TickTackBummGame extends Game {
 
         // display loading-screen on startup
         setScreen(new LoadingScreen());
-
     }
 
     public static TickTackBummGame getTickTackBummGame() {
@@ -141,7 +140,7 @@ public class TickTackBummGame extends Game {
         gameScreen.hideControls();
         gameScreen.updatePlayerScores();
         gameScreen.updateCurrentPlayerMarker();
-
+        gameScreen.setWinnerScreen();
         // TODO: show game finished message, scoreboard screen, ...
     }
 
