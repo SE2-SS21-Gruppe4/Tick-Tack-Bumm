@@ -26,10 +26,13 @@ public class GameData {
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
     private String currentGameModeText;
+    private Player[] placedPlayers;
 
     public GameData() {
         maxGameScore = 2; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
+
+        placedPlayers = null;
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;
@@ -137,5 +140,13 @@ public class GameData {
 
     public void setNextPlayerTurn() {
         currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
+    }
+
+    public void setPlacedPlayers(Player[] placedPlayers) {
+        this.placedPlayers = placedPlayers;
+    }
+
+    public Player[] getPlacedPlayers() {
+        return placedPlayers;
     }
 }
