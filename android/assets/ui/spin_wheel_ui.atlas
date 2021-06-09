@@ -6,22 +6,22 @@ filter: Linear, Linear
 repeat: none
 needle
   rotate: false
-  xy: 553, 548
-  size: 35, 105
-  orig: 35, 105
+  xy: 653, 683
+  size: 44, 117
+  orig: 44, 117
   offset: 0, 0
   index: -1
 spin
   rotate: false
   xy: 1, 1
-  size: 100, 100
-  orig: 100, 100
+  size: 150, 146
+  orig: 150, 146
   offset: 0, 0
   index: -1
 spin_wheel_image
   rotate: false
-  xy: 1, 103
-  size: 550, 550
-  orig: 550, 550
+  xy: 1, 149
+  size: 650, 651
+  orig: 650, 651
   offset: 0, 0
   index: -1

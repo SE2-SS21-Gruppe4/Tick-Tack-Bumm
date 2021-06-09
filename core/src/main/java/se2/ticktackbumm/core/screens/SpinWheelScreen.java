@@ -19,18 +19,19 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.security.SecureRandom;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
-
-import java.security.SecureRandom;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class SpinWheelScreen extends ScreenAdapter {
-    private static final String CHALLENGE_STRING = "Your challenge: ";
+    private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -59,8 +60,8 @@ public class SpinWheelScreen extends ScreenAdapter {
     private float rotationAmount;
     private float spinSpeed;
     private float grade;
-    private boolean againSpin;
     private boolean isStart;
+
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
@@ -77,7 +78,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         challengeLabel = new Label(CHALLENGE_STRING, skin);
         descriptionLabel = new Label("", skin);
-        gameButton = new TextButton("GAME", skin);
+        gameButton = new TextButton("SPIELEN", skin);
 
         spinWheelTable = new Table();
 
@@ -86,9 +87,9 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
         atlas = new TextureAtlas(pathOfAtlas);
-        wheelImage = setupSpinWheelImages("spin_wheel_image" , TickTackBummGame.WIDTH / 3.8F, TickTackBummGame.HEIGHT / 2f);
-        needleImage = setupSpinWheelImages("needle", (TickTackBummGame.WIDTH / 2.1f) + 25f, (TickTackBummGame.HEIGHT / 1.5f) + 100f);
-        spinButtonImage = setupSpinWheelImages("spin", (TickTackBummGame.WIDTH / 2.2f) + 15f, (TickTackBummGame.HEIGHT / 1.7f) + 22f);
+        wheelImage = setupSpinWheelImages("spin_wheel_image", TickTackBummGame.WIDTH / 4.9f, TickTackBummGame.HEIGHT / 2.5f);
+        needleImage = setupSpinWheelImages("needle", (TickTackBummGame.WIDTH / 2.07f), (TickTackBummGame.HEIGHT / 1.53f));
+        spinButtonImage = setupSpinWheelImages("spin", (TickTackBummGame.WIDTH / 2.31f), (TickTackBummGame.HEIGHT / 1.95f));
 
         stage.addActor(wheelImage);
         stage.addActor(needleImage);
@@ -100,21 +101,16 @@ public class SpinWheelScreen extends ScreenAdapter {
         grade = 0;
         color = new Color(.18f, .21f, .32f, 1);
         timer = new Timer();
-        againSpin = false;
         randomNumb = new SecureRandom();
         isStart = false;
-
-
 
         setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
 
         stage.addActor(spinWheelTable);
-
-
-
     }
+
     // set up all parts of spinning wheel for UI
     private Image setupSpinWheelImages(String path, float xWidth, float yHeght) {
         Image image = new Image(atlas.findRegion(path));
@@ -128,15 +124,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinButtonImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                spinButtonImage.clearListeners();
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
                 // first time will always be false to check if we get needle on white point to repeat spinning
-                if (!againSpin) {
-                    rotationAmount = randomNumb.nextInt(1800);
-                    grade = getGrade(rotationAmount);
-                }else{
-                    rotationAmount = randomNumb.nextInt(1800);
-                    grade = spinAgain(rotationAmount,grade);
-                }
+
+                rotationAmount = randomNumb.nextInt(1800);
+                grade = getDegrees(rotationAmount);
                 spinSpeed = getSpinSpeed(rotationAmount);
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
@@ -147,17 +140,13 @@ public class SpinWheelScreen extends ScreenAdapter {
                     public void run() {
                         setBackgroundColor(grade);
                         setRandomGameMode(grade);
-                        if (!descriptionLabel.getText().contains("Spin nochmal.")){
-                            spinButtonImage.clearListeners();
-                            // show game button
-                            gameButton.setDisabled(false);
-                            gameButton.setVisible(true);
-                        }else{
-                            againSpin = true;
-                        }
+                        // show game button
+                        gameButton.setDisabled(false);
+                        gameButton.setVisible(true);
+
                     }
                 };
-                timer.scheduleTask(task,spinSpeed);
+                timer.scheduleTask(task, spinSpeed);
             }
         });
     }
@@ -191,7 +180,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.setHeight(stage.getHeight());
         spinWheelTable.align(Align.center);
 
-        spinWheelTable.add(challengeLabel).width(500f).padBottom(800f);
+        spinWheelTable.add(challengeLabel).width(1000f).padBottom(1000f);
         spinWheelTable.row();
         spinWheelTable.add(descriptionLabel).width(800f).padBottom(300f);
         spinWheelTable.row();
@@ -199,18 +188,17 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     //set up descriptionLabel and current game mode, depending on received degrees value
-    private void setRandomGameMode(float value) {
-        if ((value > 120 && value <= 180) || (value > 300 && value < 360)) {
+    public void setRandomGameMode(float value) {
+        if ((value > 120 && value <= 180) || (value >= 300 && value < 360)) {
             descriptionLabel.setText("Diese Silbe muss am Anfang deines Wortes stehen.");
             gameMode = GameMode.PREFIX;
-        } else if ((value > 0 && value < 60) || (value > 180 && value < 240)) {
+        } else if ((value > 0 && value < 60) || (value > 180 && value <= 240)) {
             descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
-        } else if ((value > 60 && value < 120) || (value > 240 && value < 300)) {
+        }
+        {
             descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
-        }else {
-            descriptionLabel.setText("Spin nochmal.");
         }
         gameData.setCurrentGameMode(gameMode);
         game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameMode);
@@ -221,26 +209,23 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     //set up background color depending on received degrees value
-    // 121 - 181 - 240 -300 - - 360 - 0 pixels on white part of peg
     private void setBackgroundColor(float value) {
-        if (value > 0 && value < 61) {
+        if (value < 61) {
             color.set(Color.valueOf("0070C0"));
         } else if (value < 121) {
             color.set(Color.valueOf("FFC000"));
-        } else if (value > 121 && value < 181) {
+        } else if (value < 181) {
             color.set(Color.valueOf("7030A0"));
-        } else if (value > 181 && value < 241) {
+        } else if (value < 241) {
             color.set(Color.valueOf("F2CF00"));
-        } else if (value > 240 && value < 300) {
+        } else if (value < 301) {
             color.set(Color.valueOf("FF0000"));
-        } else if (value > 300 && value < 360){
+        } else {
             color.set(Color.valueOf("70AD47"));
-        } else{
-            color.set(.18f, .21f, .32f, 1);
         }
     }
 
-    private float getGrade(float grade) {
+    public float getDegrees(float grade) {
         float retVal = grade;
         if (grade > 360) {
             retVal = grade % 360;
@@ -249,28 +234,13 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
 
-    private float getSpinSpeed(float rotationAmount) {
+    public float getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
             return 1;
         } else {
             return rotationAmount / 360;
         }
     }
-
-    public float spinAgain(float newRotationAmount , float oldGrade){
-        if ((newRotationAmount+oldGrade) > 1800){
-            newRotationAmount=(newRotationAmount+oldGrade)-1800;
-        }
-        float sum = 360;
-        float count;
-        count = sum - oldGrade;
-        newRotationAmount = getGrade(newRotationAmount);
-
-        return newRotationAmount-count;
-    }
-
-
-
 
 
     @Override
@@ -291,10 +261,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public void setStart(boolean isStart){
+    public void setStart(boolean isStart) {
         this.isStart = isStart;
     }
-    public boolean getStart(){
+
+    public boolean getStart() {
         return this.isStart;
     }
 }
