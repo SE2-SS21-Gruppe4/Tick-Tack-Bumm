@@ -58,7 +58,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
 
         assetManager.load("bombeStart.png", Texture.class);
         assetManager.load("winnerScreen/podium.png", Texture.class);
+        assetManager.load("menuScreen/background.png", Texture.class);
         assetManager.load("winnerScreen/background.png", Texture.class);
+        assetManager.load("waitingScreen/background.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
         assetManager.load("flameLoop.atlas", TextureAtlas.class);
         assetManager.load("lamb.atlas", TextureAtlas.class);
@@ -152,7 +154,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         mShapeRenderer.rect(0f, 10f, progressBarWidth, 20f);
         mShapeRenderer.end();
 
-        if (progress == 10) { // TODO: testing only -> 10
+        if (progress == 100) {
             moveToMenuScreen();
         }
     }
