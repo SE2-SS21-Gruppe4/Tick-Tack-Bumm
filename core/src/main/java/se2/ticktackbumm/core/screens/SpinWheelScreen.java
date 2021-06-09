@@ -87,7 +87,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
         atlas = new TextureAtlas(pathOfAtlas);
-        wheelImage = setupSpinWheelImages("spin_wheel_image" , TickTackBummGame.WIDTH / 4.9f, TickTackBummGame.HEIGHT / 2.5f);
+        wheelImage = setupSpinWheelImages("spin_wheel_image", TickTackBummGame.WIDTH / 4.9f, TickTackBummGame.HEIGHT / 2.5f);
         needleImage = setupSpinWheelImages("needle", (TickTackBummGame.WIDTH / 2.07f), (TickTackBummGame.HEIGHT / 1.53f));
         spinButtonImage = setupSpinWheelImages("spin", (TickTackBummGame.WIDTH / 2.31f), (TickTackBummGame.HEIGHT / 1.95f));
 
@@ -140,13 +140,13 @@ public class SpinWheelScreen extends ScreenAdapter {
                     public void run() {
                         setBackgroundColor(grade);
                         setRandomGameMode(grade);
-                            // show game button
+                        // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
 
                     }
                 };
-                timer.scheduleTask(task,spinSpeed);
+                timer.scheduleTask(task, spinSpeed);
             }
         });
     }
@@ -195,7 +195,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         } else if ((value > 0 && value < 60) || (value > 180 && value <= 240)) {
             descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
-        }{
+        }
+        {
             descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
         }
@@ -219,7 +220,7 @@ public class SpinWheelScreen extends ScreenAdapter {
             color.set(Color.valueOf("F2CF00"));
         } else if (value < 301) {
             color.set(Color.valueOf("FF0000"));
-        } else{
+        } else {
             color.set(Color.valueOf("70AD47"));
         }
     }
@@ -260,10 +261,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public void setStart(boolean isStart){
+    public void setStart(boolean isStart) {
         this.isStart = isStart;
     }
-    public boolean getStart(){
+
+    public boolean getStart() {
         return this.isStart;
     }
 }
