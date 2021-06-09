@@ -23,7 +23,8 @@ public class GameUpdate {
         this.players = gameData.getPlayers();
         this.currentPlayerTurnIndex = gameData.getCurrentPlayerTurnIndex();
         this.currentGameMode = gameData.getCurrentGameMode();
-        this.currentGameModeText = gameData.getCurrentGameModeText();
+//        this.currentGameModeText = gameData.getCurrentGameModeText();
+        this.currentGameModeText = "UNG"; // TODO: testing only
         this.lockedWords = gameData.getLockedWords();
     }
 

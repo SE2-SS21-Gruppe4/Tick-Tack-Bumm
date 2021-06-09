@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.ClientMessageSender;
@@ -63,12 +64,19 @@ public class CheckButtonListener extends ClickListener {
         gameScreen.hideControls();
 
         if (isValidWord(userInput)) {
-            textField.clear();
+            textField.setText("KORREKT");
             clientMessageSender.sendPlayerTaskCompleted(userInput);
         } else {
-            textField.clear();
+            textField.setText("FALSCH");
             gameScreen.showControls();
         }
+
+        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                textField.setText("");
+            }
+        }, 1f));
     }
 
     boolean isValidWord(String userInput) {
@@ -82,6 +90,8 @@ public class CheckButtonListener extends ClickListener {
             Log.error(LOG_TAG, "User input was used previously: " + userInput);
             return false;
         }
+
+        Log.info(LOG_TAG, "Syllable: " + gameData.getCurrentGameModeText());
 
         switch (gameData.getCurrentGameMode()) {
             case NONE:

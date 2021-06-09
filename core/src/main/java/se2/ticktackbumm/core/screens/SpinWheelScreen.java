@@ -9,26 +9,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import java.security.SecureRandom;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import java.security.SecureRandom;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class SpinWheelScreen extends ScreenAdapter {
     private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";

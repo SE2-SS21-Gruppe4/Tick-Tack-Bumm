@@ -60,6 +60,7 @@ public class ServerMessageHandler {
 
         serverData.getGameData().setNextPlayerTurn();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
+        serverData.getGameData().resetLockedWords();
 
         serverMessageSender.sendGameUpdate();
 
