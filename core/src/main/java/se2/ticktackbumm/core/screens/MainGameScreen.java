@@ -366,6 +366,152 @@ public class MainGameScreen extends ScreenAdapter {
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
+    public Table[] getBestScores() {
+        initTable1Unfocused();
+        initTable2Unfocused();
+        initTable3Unfocused();
+        initTable4Unfocused();
+        Table[] tables = new Table[3];
+        //player 1 loses
+        if (gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[3]) {
+            //player 2 is first
+            if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score3Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score3Table;
+                    tables[1] = score4Table;
+                }
+                //player 3 is first
+            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score2Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score2Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score3Table;
+                }
+            }
+        }
+
+        //player 2 loses
+        if (gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[3]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score3Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score3Table;
+                    tables[1] = score4Table;
+                }
+                //player 3 is first
+            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score1Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score3Table;
+                }
+            }
+        }
+        //player 3 loses
+        if (gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[3]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score2Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score4Table;
+                }
+                //player 2 is first
+            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+                //player 4 is first
+            } else {
+                tables[0] = score4Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
+                    tables[1] = score1Table;
+                    tables[2] = score4Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score4Table;
+                }
+            }
+        }
+        //player 4 loses
+        if (gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[2]) {
+            //player 1 is first
+            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                tables[0] = score1Table;
+                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score2Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score2Table;
+                    tables[1] = score3Table;
+                }
+                //player 2 is first
+            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
+                tables[0] = score2Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
+                    tables[1] = score1Table;
+                    tables[2] = score3Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score3Table;
+                }
+                //player 3 is first
+            } else {
+                tables[0] = score3Table;
+                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1]) {
+                    tables[1] = score1Table;
+                    tables[2] = score2Table;
+                } else {
+                    tables[2] = score1Table;
+                    tables[1] = score2Table;
+                }
+            }
+        }
+        return tables;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
