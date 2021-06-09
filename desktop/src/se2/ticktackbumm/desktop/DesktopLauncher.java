@@ -16,9 +16,9 @@ public class DesktopLauncher {
         settings.silent = true;
         settings.filterMin = Texture.TextureFilter.Linear;
         settings.filterMag = Texture.TextureFilter.Linear;
-        TexturePacker.process(settings, "android/assets/explosion", "android/assets", "explosion");
-        TexturePacker.process(settings, "android/assets/flameLoop", "android/assets", "flameLoop");
-        TexturePacker.process(settings, "android/assets/firework", "android/assets", "lamb");
+        //TexturePacker.process(settings, "android/assets/explosion", "android/assets", "explosion");
+        //TexturePacker.process(settings, "android/assets/flameLoop", "android/assets", "flameLoop");
+        //TexturePacker.process(settings, "android/assets/firework", "android/assets", "lamb");
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
