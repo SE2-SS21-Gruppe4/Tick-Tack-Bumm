@@ -173,8 +173,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(score1Table);
         stage.addActor(score2Table);
         stage.addActor(imageTable);
-        stage.addActor(score3Table);
-        stage.addActor(score4Table);
+        //stage.addActor(score3Table);
+        //stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
 
@@ -363,12 +363,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void setWinnerScreen() {
         updatePlayerScores();
-        game.getNetworkClient().disconnectClient();
-        game.setLocalPlayer(null);
-
-        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
-                "switching to WinnerScreen");
-        Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen(getBestScores())));
+        Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
     public Table[] getBestScores() {

@@ -9,20 +9,26 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
 import se2.ticktackbumm.core.assets.Flame;
 import se2.ticktackbumm.core.assets.Lamp;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.player.Player;
 
 
 public class WinnerScreen extends ScreenAdapter {
+    private static final String LOG_TAG = "WINNER_SCREEN";
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private final OrthographicCamera camera;
@@ -45,12 +51,19 @@ public class WinnerScreen extends ScreenAdapter {
     private final TextButton menuButton;
     private final Table menuButtonTable;
 
+    private final Player[] placedPlayers;
+    private final Table[] winnerTables;
 
-    public WinnerScreen(Table[] tables) {
+
+    public WinnerScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         this.assetManager = game.getManager();
         camera = TickTackBummGame.getGameCamera();
         gameData = game.getGameData();
+
+        placedPlayers = gameData.getPlacedPlayers();
+
+        winnerTables = new Table[3];
 
         lamp = new Lamp();
         explosion = new Explosion();
@@ -74,15 +87,17 @@ public class WinnerScreen extends ScreenAdapter {
         podiumImage = new Image(podium);
         podiumImage.setPosition(TickTackBummGame.WIDTH / 2.0f - 315f, TickTackBummGame.HEIGHT / 2f - 400f);
 
-        tables[0].setPosition(TickTackBummGame.WIDTH / 2f - 25f, TickTackBummGame.HEIGHT / 2f);
-        tables[1].setPosition(TickTackBummGame.WIDTH / 2f - 275f, TickTackBummGame.HEIGHT / 2f - 200f);
-        tables[2].setPosition(TickTackBummGame.WIDTH / 2f + 225f, TickTackBummGame.HEIGHT / 2f - 200f);
+        initTables(winnerTables);
+
+        winnerTables[0].setPosition(TickTackBummGame.WIDTH / 2f - 25f, TickTackBummGame.HEIGHT / 2f);
+        winnerTables[1].setPosition(TickTackBummGame.WIDTH / 2f - 275f, TickTackBummGame.HEIGHT / 2f - 200f);
+        //winnerTables[2].setPosition(TickTackBummGame.WIDTH / 2f + 225f, TickTackBummGame.HEIGHT / 2f - 200f);
 
         menuButtonTable.add(menuButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
-        stage.addActor(tables[0]);
-        stage.addActor(tables[1]);
-        stage.addActor(tables[2]);
+        stage.addActor(winnerTables[0]);
+        stage.addActor(winnerTables[1]);
+        //stage.addActor(winnerTables[2]);
         stage.addActor(podiumImage);
         stage.addActor(menuButtonTable);
 
@@ -92,11 +107,36 @@ public class WinnerScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen()));
+
+                game.getNetworkClient().disconnectClient();
+                game.setLocalPlayer(null);
+
+                Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+                        "switching to MenuScreen");
             }
         });
         sprite = new Sprite(background);
         sprite.setRegionWidth(TickTackBummGame.WIDTH);
         sprite.setRegionHeight(TickTackBummGame.HEIGHT);
+    }
+
+    public void initTables(Table[] winnerTables) {
+        for (int i = 0; i < placedPlayers.length; i++) {
+            winnerTables[i] = new Table();
+            winnerTables[i].setWidth(200);
+            winnerTables[i].setHeight(400);
+            winnerTables[i].align(Align.center);
+
+            Label playerScore = new Label(String.valueOf(placedPlayers[i].getGameScore()), skin);
+            Label playerName = new Label(placedPlayers[i].getPlayerName(), skin);
+            Image playerImage = new Image(gameData.getUnfocusedAvatarImage(gameData.getPlacedPlayers()[i]).getDrawable());
+
+            winnerTables[i].add(playerScore);
+            winnerTables[i].row();
+            winnerTables[i].add(playerImage);
+            winnerTables[i].row();
+            winnerTables[i].add(playerName);
+        }
     }
 
     @Override
