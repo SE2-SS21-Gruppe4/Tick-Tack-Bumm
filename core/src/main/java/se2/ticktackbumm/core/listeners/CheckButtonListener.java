@@ -64,7 +64,7 @@ public class CheckButtonListener extends ClickListener {
 
         if (isValidWord(userInput)) {
             textField.clear();
-            clientMessageSender.sendPlayerTaskCompleted();
+            clientMessageSender.sendPlayerTaskCompleted(userInput);
         } else {
             textField.clear();
             gameScreen.showControls();
@@ -75,6 +75,11 @@ public class CheckButtonListener extends ClickListener {
 
         if (!isValidInput(userInput)) {
             Log.error(LOG_TAG, "User input was invalid: " + userInput);
+            return false;
+        }
+
+        if (isLockedWord(userInput)) {
+            Log.error(LOG_TAG, "User input was used previously: " + userInput);
             return false;
         }
 
@@ -114,6 +119,10 @@ public class CheckButtonListener extends ClickListener {
         }
 
         return true;
+    }
+
+    boolean isLockedWord(String userInput) {
+        return gameData.getLockedWords().contains(userInput);
     }
 
     boolean isValidInput(String userInput) {
