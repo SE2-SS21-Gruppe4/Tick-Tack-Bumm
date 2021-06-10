@@ -66,6 +66,7 @@ public class MainGameScreen extends ScreenAdapter {
     private Bomb bomb;
 
     private final BitmapFont textMaxScore;
+    private final BitmapFont textGameMode;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
@@ -91,6 +92,11 @@ public class MainGameScreen extends ScreenAdapter {
 
         // card
         card = new Card();
+
+        // gameMode
+        textGameMode = new BitmapFont();
+        textGameMode.setColor(Color.WHITE);
+        textGameMode.getData().setScale(3);
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -261,6 +267,7 @@ public class MainGameScreen extends ScreenAdapter {
         card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
+        textGameMode.draw(batch, "Game Mode: " + updateGameMode(), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
         batch.end();
     }
 
@@ -513,5 +520,25 @@ public class MainGameScreen extends ScreenAdapter {
 
     public Bomb getBomb() {
         return this.bomb;
+    }
+
+    public void hideBanner() {
+    }
+    public String updateGameMode() {
+        String gameMode = "";
+
+        switch (gameData.getCurrentGameMode().toString()){
+            case "PREFIX":
+                gameMode = gameData.getCurrentGameMode().toString();
+                break;
+            case "INFIX":
+                gameMode = gameData.getCurrentGameMode().toString();
+                break;
+            case "POSTFIX": {
+                gameMode = gameData.getCurrentGameMode().toString();
+                break;
+            }
+        }
+        return gameMode;
     }
 }

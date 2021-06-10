@@ -125,9 +125,17 @@ public class TickTackBummGame extends Game {
         } else {
             gameScreen.hideControls();
             // hide waiting for spin wheel message
+
         }
 
         gameScreen.updateCurrentPlayerMarker();
+    }
+
+    public void spinWheelFinished(){
+        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.hideBanner();
+        gameScreen.updateGameMode();
     }
 
     public void startBomb(){
