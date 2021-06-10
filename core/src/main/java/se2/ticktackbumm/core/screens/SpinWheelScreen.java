@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.screens;
+ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -59,7 +59,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Color color;
     private float rotationAmount;
     private float spinSpeed;
-    private float grade;
+    private float degree;
     private boolean isStart;
 
     public SpinWheelScreen() {
@@ -98,7 +98,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         rotationAmount = 0;
         spinSpeed = 0;
-        grade = 0;
+        degree = 0;
         color = new Color(.18f, .21f, .32f, 1);
         timer = new Timer();
         randomNumb = new SecureRandom();
@@ -129,7 +129,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 // first time will always be false to check if we get needle on white point to repeat spinning
 
                 rotationAmount = randomNumb.nextInt(1800);
-                grade = getDegrees(rotationAmount);
+                degree = setDegree(rotationAmount);
                 spinSpeed = getSpinSpeed(rotationAmount);
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
@@ -138,8 +138,8 @@ public class SpinWheelScreen extends ScreenAdapter {
                 task = new Timer.Task() {
                     @Override
                     public void run() {
-                        setBackgroundColor(grade);
-                        setRandomGameMode(grade);
+                        setBackgroundColor(degree);
+                        setGameMode(degree);
                         // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
@@ -188,47 +188,46 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     //set up descriptionLabel and current game mode, depending on received degrees value
-    public void setRandomGameMode(float value) {
-        if ((value > 120 && value <= 180) || (value >= 300 && value < 360)) {
+    public void setGameMode(float degree) {
+        if ((degree > 120 && degree <= 180) || (degree >= 300 && degree < 360)) {
             descriptionLabel.setText("Diese Silbe muss am Anfang deines Wortes stehen.");
             gameMode = GameMode.PREFIX;
-        } else if ((value > 0 && value < 60) || (value > 180 && value <= 240)) {
+        } else if ((degree > 0 && degree < 60) || (degree > 180 && degree <= 240)) {
             descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
-        }
-        {
+        } else{
             descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
         }
         gameData.setCurrentGameMode(gameMode);
         game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameMode);
         // TODO: testing only
-        gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
+  //      gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
 
 
     }
 
     //set up background color depending on received degrees value
-    private void setBackgroundColor(float value) {
-        if (value < 61) {
+    private void setBackgroundColor(float degree) {
+        if (degree < 61) {
             color.set(Color.valueOf("0070C0"));
-        } else if (value < 121) {
+        } else if (degree < 121) {
             color.set(Color.valueOf("FFC000"));
-        } else if (value < 181) {
+        } else if (degree < 181) {
             color.set(Color.valueOf("7030A0"));
-        } else if (value < 241) {
+        } else if (degree < 241) {
             color.set(Color.valueOf("F2CF00"));
-        } else if (value < 301) {
+        } else if (degree < 301) {
             color.set(Color.valueOf("FF0000"));
         } else {
             color.set(Color.valueOf("70AD47"));
         }
     }
 
-    public float getDegrees(float grade) {
-        float retVal = grade;
-        if (grade > 360) {
-            retVal = grade % 360;
+    public float setDegree(float degree) {
+        float retVal = degree;
+        if (degree > 360) {
+            retVal = degree % 360;
         }
         return retVal;
     }
