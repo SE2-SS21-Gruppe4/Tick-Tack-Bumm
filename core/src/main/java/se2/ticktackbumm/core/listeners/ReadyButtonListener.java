@@ -1,11 +1,11 @@
 package se2.ticktackbumm.core.listeners;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
@@ -15,12 +15,22 @@ public class ReadyButtonListener extends ClickListener {
 
     private final String LOG_TAG = "READY_BUTTON_LISTENER";
 
+    private final Texture avatarError;
+    private final Texture nameError;
+    private final Texture avatarAndNameError;
+    private final AssetManager assetManager;
+
     private final TickTackBummGame game;
     private final WaitingScreen waitingScreen;
 
     public ReadyButtonListener(WaitingScreen waitingScreen) {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.waitingScreen = waitingScreen;
+        assetManager = game.getManager();
+
+        avatarError = assetManager.get("waitingScreen/avatar.png", Texture.class);
+        nameError = assetManager.get("waitingScreen/name.png", Texture.class);
+        avatarAndNameError = assetManager.get("waitingScreen/avatarandname.png", Texture.class);
     }
 
     @SuppressWarnings("NewApi")
@@ -30,15 +40,25 @@ public class ReadyButtonListener extends ClickListener {
         String playerName = waitingScreen.getPlayerNameTextField().getText();
         Avatars playerAvatar = game.getLocalPlayer().getPlayerAvatar();
 
+        if (!isValidName(playerName)&&playerAvatar == null) {
+            Log.error(LOG_TAG, "User input for player name is invalid and User selected no avatar " + playerName);
+            waitingScreen.setBackground(avatarAndNameError);
+            return;
+        }
+
         if (!isValidName(playerName)) {
             Log.error(LOG_TAG, "User input for player name is invalid: " + playerName);
+            waitingScreen.setBackground(nameError);
             return;
         }
 
         if (playerAvatar == null) {
             Log.error(LOG_TAG, "User selected no avatar, aborting");
+            waitingScreen.setBackground(avatarError);
             return;
         }
+
+        waitingScreen.getOriginalBackground();
 
         game.getLocalPlayer().setPlayerName(playerName);
 
