@@ -2,6 +2,7 @@ package se2.ticktackbumm.server.data;
 
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.player.ScoreComparator;
@@ -77,8 +78,13 @@ public class ServerData {
         if (player == null) return;
         Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
 
-        gameData.getPlayers().remove(player.getPlayerId());
-        Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+        if (gameData.getPlayers().size() == 1) {
+            gameData.getPlayers().remove(0);
+            Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+        } else {
+            gameData.getPlayers().remove(player.getPlayerId());
+            Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+        }
 
         decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
