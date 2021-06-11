@@ -61,6 +61,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("menuScreen/background.png", Texture.class);
         assetManager.load("winnerScreen/background.png", Texture.class);
         assetManager.load("waitingScreen/background.png", Texture.class);
+        assetManager.load("waitingScreen/avatar.png", Texture.class);
+        assetManager.load("waitingScreen/name.png", Texture.class);
+        assetManager.load("waitingScreen/avatarandname.png", Texture.class);
         assetManager.load("explosion.atlas", TextureAtlas.class);
         assetManager.load("flameLoop.atlas", TextureAtlas.class);
         assetManager.load("lamb.atlas", TextureAtlas.class);

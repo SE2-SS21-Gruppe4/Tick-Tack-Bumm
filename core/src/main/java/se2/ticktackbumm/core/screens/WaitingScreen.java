@@ -55,7 +55,9 @@ public class WaitingScreen extends ScreenAdapter {
     private final Label[] playerNameLabelsList;
     private final Table playerNamesTable;
 
-    private final Sprite sprite;
+    private Sprite sprite;
+    private final Sprite sprite1;
+    private final Texture avatar;
 
     private final Label playerNameInputLabel;
     private final TextField playerNameTextField;
@@ -75,7 +77,7 @@ public class WaitingScreen extends ScreenAdapter {
     private final TextButton backButton;
     private final Table waitingButtonTable;
 
-    private final Texture background;
+    private Texture background;
 
     public WaitingScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -110,6 +112,7 @@ public class WaitingScreen extends ScreenAdapter {
         nameAndColorTable = new Table();
 
         background = assetManager.get("waitingScreen/background.png", Texture.class);
+        avatar = assetManager.get("waitingScreen/avatar.png", Texture.class);
 
         setupNameInput();
 
@@ -136,6 +139,9 @@ public class WaitingScreen extends ScreenAdapter {
         sprite = new Sprite(background);
         sprite.setRegionWidth(TickTackBummGame.WIDTH);
         sprite.setRegionHeight(TickTackBummGame.HEIGHT);
+
+        sprite1 = new Sprite(avatar);
+
 
         // add tables to stage
         stage.addActor(playerInLobbyLabel);
@@ -286,6 +292,16 @@ public class WaitingScreen extends ScreenAdapter {
         for (int i = 0; i < players.size(); i++) {
             playerNameLabelsList[i].setText(players.get(i).getPlayerName());
         }
+    }
+
+    public void setBackground(Texture texture){
+        background = texture;
+        sprite = new Sprite(background);
+    }
+
+    public void getOriginalBackground(){
+        background = assetManager.get("waitingScreen/background.png", Texture.class);;
+        sprite = new Sprite(background);
     }
 
     @Override
