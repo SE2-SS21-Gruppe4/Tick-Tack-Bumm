@@ -131,12 +131,12 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
-    public void spinWheelFinished(GameMode gameMode){
+    public void spinWheelFinished(){
 
         if (this.getScreen() instanceof MainGameScreen){
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
             //     gameScreen.hideBanner();
-            gameScreen.updateGameMode(gameMode);
+            gameScreen.updateGameMode(gameData.getCurrentGameMode());
         }
     }
 

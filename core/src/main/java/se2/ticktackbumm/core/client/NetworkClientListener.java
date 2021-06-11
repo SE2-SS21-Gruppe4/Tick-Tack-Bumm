@@ -73,7 +73,7 @@ public class NetworkClientListener extends Listener {
             clientMessageHandler.handleStartBomb((BombStart) object);
 
         } else if (object instanceof SpinWheelFinished){
-            clientMessageHandler.handleSpinWheelFinished((SpinWheelFinished) object);
+            clientMessageHandler.handleSpinWheelFinished();
 
         }
     }
