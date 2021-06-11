@@ -29,7 +29,7 @@ public class GameData {
     private Player[] placedPlayers;
 
     public GameData() {
-        maxGameScore = 2; // hardcoded for testing purposes
+        maxGameScore = 4; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
 
         placedPlayers = null;
