@@ -65,7 +65,7 @@ public class ServerMessageSender {
     }
 
 
-    public void sendBombStart(int timer) {
+    public void sendBombStart(float timer) {
         server.sendToAllTCP(new BombStart(timer));
     }
 

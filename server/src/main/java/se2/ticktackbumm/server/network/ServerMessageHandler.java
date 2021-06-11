@@ -85,7 +85,7 @@ public class ServerMessageHandler {
     }
 
     public void handleBombStart(){
-        int timer = new SecureRandom().nextInt(30)+1;
+        float timer =(float) new SecureRandom().nextInt(30)+1;
         serverMessageSender.sendBombStart(timer);
     }
 
