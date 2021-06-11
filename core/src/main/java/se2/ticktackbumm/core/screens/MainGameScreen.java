@@ -66,7 +66,7 @@ public class MainGameScreen extends ScreenAdapter {
     private Bomb bomb;
 
     private final BitmapFont textMaxScore;
-    private static final int MAX_SCORE = 10;
+    private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
     private final Label player1;
