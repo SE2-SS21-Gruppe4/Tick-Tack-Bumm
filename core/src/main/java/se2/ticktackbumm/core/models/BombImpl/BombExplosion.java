@@ -14,12 +14,10 @@ public class BombExplosion {
     private Animation<TextureRegion> explosionAnimation;
     private float explosionTime;
 
-    private Rectangle boundsOfExplosion;
 
     private Sound explosionSound;
 
     public BombExplosion(Texture texture, float animationTime){
-        this.boundsOfExplosion = boundsOfExplosion;
 
         //split png from MainScreen
         TextureRegion[][] textureRegions2D = TextureRegion.split(texture,62,62);
@@ -50,6 +48,8 @@ public class BombExplosion {
     }
 
     public boolean isFinished(){
+
         return explosionAnimation.isAnimationFinished(explosionTime);
+
     }
 }
