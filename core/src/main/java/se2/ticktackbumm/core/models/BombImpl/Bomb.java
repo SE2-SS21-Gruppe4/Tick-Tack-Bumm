@@ -83,12 +83,12 @@ public class Bomb {
         this.timerToExplode += Gdx.graphics.getDeltaTime();
         Log.info(String.valueOf(timerToExplode));
         if (timerToExplode >= explodeTime) {
-            bombExplosion.updateExplosion(deltaTime);
+            bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
             if (!bombExplosion.isFinished()) {
-                bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() + (float)380, 400, 400);
+                bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - (float)380, 400, 400);
             }
             this.bombState = BombState.EXPLODED;
-            restartBombSettings();
+
         }
 
     }
