@@ -253,7 +253,6 @@ public class MainGameScreen extends ScreenAdapter {
         if (!spinWheelScreen.getStart()){
             bomb.makeExplosion(spriteBatch);
             bomb.drawBomb(spriteBatch);
-            bomb.makeExplosion(delta,spriteBatch);
         }
     }
 
@@ -270,7 +269,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        this.handleBombDraw(delta,batch);
+        this.handleBombDraw(batch);
         stage.draw();
         card.draw();
 
