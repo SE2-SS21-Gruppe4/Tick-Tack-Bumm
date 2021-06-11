@@ -25,6 +25,7 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
+import se2.ticktackbumm.core.network.messages.client.BombStart;
 
 public class MainGameScreen extends ScreenAdapter {
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
@@ -36,6 +37,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
+
+    private SpinWheelScreen spinWheelScreen;
 
     private final GameData gameData;
 
@@ -94,6 +97,9 @@ public class MainGameScreen extends ScreenAdapter {
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
+
+        //initialize spinwheel screen
+        spinWheelScreen = new SpinWheelScreen();
 
         //bomb
         bomb = new Bomb();
@@ -243,6 +249,15 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
+    public void handleBombDraw(float delta, SpriteBatch spriteBatch){
+        if (spinWheelScreen.getStart()){
+            this.game.getNetworkClient().getClientMessageHandler().handleStartBomb(new BombStart());
+            Log.info("TIME TO EXPLODE",String.valueOf(bomb.getExplodeTime()));
+            bomb.drawBomb(spriteBatch);
+            bomb.makeExplosion(delta,spriteBatch);
+        }
+    }
+
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
         // TODO: show card backside again
@@ -256,7 +271,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        bomb.renderBomb(delta, batch);
+        this.handleBombDraw(delta,batch);
         stage.draw();
         card.draw();
 
