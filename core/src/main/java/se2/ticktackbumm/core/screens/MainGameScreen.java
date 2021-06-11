@@ -28,7 +28,7 @@ import se2.ticktackbumm.core.models.cards.Card;
 
 public class MainGameScreen extends ScreenAdapter {
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
-    private static final int MAX_SCORE = 10;
+    private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
     private static final String MODE_TAG = "Game Mode: ";
 

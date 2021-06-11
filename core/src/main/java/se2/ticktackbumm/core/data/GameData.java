@@ -30,7 +30,7 @@ public class GameData {
     private ArrayList<String> lockedWords;
 
     public GameData() {
-        maxGameScore = 2; // TODO: hardcoded for testing purposes
+        maxGameScore = 4; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
 
         placedPlayers = null;
