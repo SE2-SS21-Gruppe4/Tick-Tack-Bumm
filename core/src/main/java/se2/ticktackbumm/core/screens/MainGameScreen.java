@@ -249,10 +249,9 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
-    public void handleBombDraw(float delta, SpriteBatch spriteBatch){
-        if (spinWheelScreen.getStart()){
-            this.game.getNetworkClient().getClientMessageHandler().handleStartBomb(new BombStart());
-            Log.info("TIME TO EXPLODE",String.valueOf(bomb.getExplodeTime()));
+    public void handleBombDraw(SpriteBatch spriteBatch){
+        if (!spinWheelScreen.getStart()){
+            bomb.makeExplosion(spriteBatch);
             bomb.drawBomb(spriteBatch);
             bomb.makeExplosion(delta,spriteBatch);
         }
