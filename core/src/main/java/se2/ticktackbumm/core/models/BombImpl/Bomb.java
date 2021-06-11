@@ -9,11 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.minlog.Log;
 
-import java.security.SecureRandom;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
-import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class Bomb {
 
@@ -31,15 +28,14 @@ public class Bomb {
     private BombState bombState;
 
    // private SecureRandom radnomExplosion;
-    private int explodeTime;
-    private int timerToExplode;
+    private float explodeTime;
+    private float timerToExplode;
 
     private Texture explosionTexture;
     private BombExplosion bombExplosion;
 
     private Music bombTick;
 
-    private SpinWheelScreen spinWheelScreen;
 
 
 
@@ -60,7 +56,7 @@ public class Bomb {
 
        // radnomExplosion = new SecureRandom();
         //explode time is going to get random exploder via client message handler
-        explodeTime = 0;
+        explodeTime = 10;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
@@ -74,7 +70,6 @@ public class Bomb {
         bombTick.setLooping(true);
         bombTick.setVolume(0.2f);
 
-        spinWheelScreen = new SpinWheelScreen();
     }
 
     public enum BombState{
@@ -83,36 +78,32 @@ public class Bomb {
     }
 
     public void renderBomb(float delta, SpriteBatch spriteBatch){
-        if (spinWheelScreen.getStart()){
             makeExplosion(delta,spriteBatch);
             drawBomb(spriteBatch);
-        }
     }
 
     public void makeExplosion(float deltaTime, SpriteBatch spriteBatch) {
-
-            this.timerToExplode += deltaTime;
-            if (timerToExplode >= explodeTime) {
-                bombExplosion.updateExplosion(deltaTime);
-                if (!bombExplosion.isFinished()) {
-                    bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() + (float)380, 400, 400);
-                }
-                this.bombState = BombState.EXPLODED;
-                networkClient.getClientMessageSender().sendBombExploded();
-                restartBombSettings();
+        this.timerToExplode += Gdx.graphics.getDeltaTime();
+        Log.info(String.valueOf(timerToExplode));
+        if (timerToExplode >= explodeTime) {
+            bombExplosion.updateExplosion(deltaTime);
+            if (!bombExplosion.isFinished()) {
+                bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() + (float)380, 400, 400);
             }
+            this.bombState = BombState.EXPLODED;
+            restartBombSettings();
+        }
 
     }
 
     public void drawBomb(SpriteBatch spriteBatch){
         if (bombState.equals(BombState.NORMAL)){
             bombTick.play();
+            spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
         }
         else{
-            bombTick.pause();
+            bombTick.stop();
         }
-        spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
-
     }
 
     public void restartBombSettings(){
@@ -122,16 +113,16 @@ public class Bomb {
 
 
 
-    private float getExplodeTime(){
+    public float getExplodeTime(){
         return this.explodeTime;
     }
-    private int getTimerToExplode(){
+    public float getTimerToExplode(){
         return this.timerToExplode;
     }
-    public void setTimerToExplode(int timerToExplode){
+    public void setTimerToExplode(float timerToExplode){
         this.timerToExplode = timerToExplode;
     }
-    public void setExplodeTime(int explodeTime){
+    public void setExplodeTime(float explodeTime){
         this.explodeTime = explodeTime;
     }
 
