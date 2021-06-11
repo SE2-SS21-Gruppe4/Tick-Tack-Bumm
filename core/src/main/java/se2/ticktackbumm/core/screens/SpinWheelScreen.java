@@ -125,6 +125,8 @@ public class SpinWheelScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 spinButtonImage.clearListeners();
+                gameData.setCurrentGameMode(gameMode);
+                game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
                 // first time will always be false to check if we get needle on white point to repeat spinning
 
@@ -166,7 +168,9 @@ public class SpinWheelScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 isStart = true;
 
-                game.setScreen(new MainGameScreen());
+                MainGameScreen screen = new MainGameScreen();
+                screen.updateGameMode(gameData.getCurrentGameMode());
+                game.setScreen(screen);
 
                 game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());
                 game.startNextTurn();

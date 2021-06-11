@@ -21,6 +21,7 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
@@ -37,7 +38,10 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
+    //Game Mode
     private final GameData gameData;
+    private String gameModeString;
+    private final BitmapFont textGameMode;
 
     private final Score score;
 
@@ -66,7 +70,6 @@ public class MainGameScreen extends ScreenAdapter {
     private Bomb bomb;
 
     private final BitmapFont textMaxScore;
-    private final BitmapFont textGameMode;
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
 
@@ -97,6 +100,7 @@ public class MainGameScreen extends ScreenAdapter {
         textGameMode = new BitmapFont();
         textGameMode.setColor(Color.WHITE);
         textGameMode.getData().setScale(3);
+        gameModeString = "";
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -267,7 +271,7 @@ public class MainGameScreen extends ScreenAdapter {
         card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
-        textGameMode.draw(batch, "Game Mode: " + updateGameMode(), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
+        textGameMode.draw(batch, "Game Mode: " + gameModeString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
         batch.end();
     }
 
@@ -522,23 +526,24 @@ public class MainGameScreen extends ScreenAdapter {
         return this.bomb;
     }
 
-    public void hideBanner() {
-    }
-    public String updateGameMode() {
-        String gameMode = "";
 
-        switch (gameData.getCurrentGameMode().toString()){
-            case "PREFIX":
-                gameMode = gameData.getCurrentGameMode().toString();
+    public void updateGameMode(GameMode gameMode) {
+
+        switch (gameMode){
+            case PREFIX:
+                gameModeString = "TICK";
                 break;
-            case "INFIX":
-                gameMode = gameData.getCurrentGameMode().toString();
+            case INFIX:
+                gameModeString = "TICK...TACK";
                 break;
-            case "POSTFIX": {
-                gameMode = gameData.getCurrentGameMode().toString();
+            case POSTFIX:
+                gameModeString = "BOMBE";
                 break;
-            }
+            case NONE:
+                gameModeString = "";
+                break;
+                // 2 optionen entweder hier als cast NONE setzen, oder wieder das gleche mit Senden SpinWheelStarted
         }
-        return gameMode;
+        System.out.println("New Game Mode: " +  gameModeString);
     }
 }

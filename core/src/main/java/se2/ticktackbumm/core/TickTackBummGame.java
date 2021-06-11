@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
+import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 import se2.ticktackbumm.core.screens.MainGameScreen;
@@ -131,11 +132,13 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
-    public void spinWheelFinished(){
-        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+    public void spinWheelFinished(GameMode gameMode){
 
-        gameScreen.hideBanner();
-        gameScreen.updateGameMode();
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+            //     gameScreen.hideBanner();
+            gameScreen.updateGameMode(gameMode);
+        }
     }
 
     public void startBomb(){
@@ -158,15 +161,13 @@ public class TickTackBummGame extends Game {
         gameScreen.getBomb().setExplodeTime(timer);
     }
 
-    public void setSpinWheelFinished(GameMode gameMode) {
-        gameData.setCurrentGameMode(gameMode);
-    }
 
     @Override
     public void dispose() {
         manager.dispose();
         batch.dispose();
     }
+
 
 
 }
