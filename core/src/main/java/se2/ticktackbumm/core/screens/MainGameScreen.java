@@ -38,7 +38,6 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
-    private SpinWheelScreen spinWheelScreen;
 
     private final GameData gameData;
 
@@ -77,6 +76,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player3;
     private final Label player4;
 
+    private boolean fromSpinWheelScreen;
+
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         gameData = game.getGameData();
@@ -98,8 +99,6 @@ public class MainGameScreen extends ScreenAdapter {
         // initialize player scores
         playerScore = gameData.getPlayerScores();
 
-        //initialize spinwheel screen
-        spinWheelScreen = new SpinWheelScreen();
 
         //bomb
         bomb = new Bomb();
@@ -185,7 +184,10 @@ public class MainGameScreen extends ScreenAdapter {
         bombButton.setWidth(200);
         bombButton.setPosition(100, 200, Align.center);
         stage.addActor(bombButton);
+
+        fromSpinWheelScreen = false;
     }
+
 
     private Table setupTextfieldTable() {
         final Table textFieldTable;
@@ -250,7 +252,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void handleBombDraw(SpriteBatch spriteBatch){
-        if (!spinWheelScreen.getStart()){
+        if (this.fromSpinWheelScreen){
             bomb.makeExplosion(spriteBatch);
             bomb.drawBomb(spriteBatch);
         }
@@ -526,5 +528,13 @@ public class MainGameScreen extends ScreenAdapter {
 
     public Bomb getBomb() {
         return this.bomb;
+    }
+
+    public boolean isFromSpinWheelScreen(){
+        return this.fromSpinWheelScreen;
+    }
+
+    public void setFromSpinWheelScreen(boolean fromSpinWheelScreen){
+        this.fromSpinWheelScreen = fromSpinWheelScreen;
     }
 }
