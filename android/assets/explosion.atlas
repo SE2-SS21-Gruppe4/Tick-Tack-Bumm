@@ -241,14 +241,14 @@ explosion
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 36
+  index: 35
 explosion
   rotate: false
   xy: 331, 265
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 35
+  index: 36
 explosion
   rotate: false
   xy: 397, 331

@@ -45,9 +45,9 @@ public class ClientMessageSender {
         client.sendTCP(new SomeRequest(text));
     }
 
-    public void sendPlayerTaskCompleted() {
+    public void sendPlayerTaskCompleted(String userInput) {
         logSendingMessage("TaskCompleted");
-        client.sendTCP(new PlayerTaskCompleted());
+        client.sendTCP(new PlayerTaskCompleted(userInput));
     }
 
     public void sendBombExploded() {
