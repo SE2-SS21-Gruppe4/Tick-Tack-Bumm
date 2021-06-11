@@ -77,12 +77,9 @@ public class Bomb {
         EXPLODED
     }
 
-    public void renderBomb(float delta, SpriteBatch spriteBatch){
-            makeExplosion(delta,spriteBatch);
-            drawBomb(spriteBatch);
-    }
 
-    public void makeExplosion(float deltaTime, SpriteBatch spriteBatch) {
+
+    public void makeExplosion( SpriteBatch spriteBatch) {
         this.timerToExplode += Gdx.graphics.getDeltaTime();
         Log.info(String.valueOf(timerToExplode));
         if (timerToExplode >= explodeTime) {
