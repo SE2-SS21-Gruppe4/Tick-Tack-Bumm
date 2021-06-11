@@ -69,7 +69,8 @@ public class ServerMessageSender {
         server.sendToAllTCP(new BombStart(timer));
     }
 
-    public void sendSpinWheelFinished(){
-        server.sendToAllTCP(new SpinWheelFinished());
+    public void sendSpinWheelFinished(GameMode gameMode){
+        server.sendToAllTCP(new SpinWheelFinished(gameMode));
     }
+
 }

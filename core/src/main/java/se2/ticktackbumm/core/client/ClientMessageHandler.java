@@ -110,8 +110,8 @@ public class ClientMessageHandler {
         game.setBombToTick(bombStart.getBombTimer());
     }
 
-    public void handleSpinWheelFinished(){
-        Log.info(LOG_TAG, "Spin Wheel Finished - Current Game Mode: "  + gameData.getCurrentGameMode());
-        game.spinWheelFinished();
+    public void handleSpinWheelFinished(SpinWheelFinished spinWheelFinished){
+        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : "  + spinWheelFinished.getGameMode());
+        game.spinWheelFinished(spinWheelFinished.getGameMode());
     }
 }
