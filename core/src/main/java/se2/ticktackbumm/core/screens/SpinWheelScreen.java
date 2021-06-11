@@ -60,7 +60,6 @@ public class SpinWheelScreen extends ScreenAdapter {
     private float rotationAmount;
     private float spinSpeed;
     private float degree;
-    private boolean isStart;
 
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -102,7 +101,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = new Color(.18f, .21f, .32f, 1);
         timer = new Timer();
         randomNumb = new SecureRandom();
-        isStart = false;
 
         setupGameButton();
         setupSpinWheelTable();
@@ -164,9 +162,10 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                MainGameScreen mainGameScreen = new MainGameScreen();
+                mainGameScreen.setFromSpinWheelScreen(true);
                 game.startBomb();
-                isStart = true;
-                game.setScreen(new MainGameScreen());
+                game.setScreen(mainGameScreen);
                 game.startNextTurn();
             }
         });
@@ -261,11 +260,4 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public void setStart(boolean isStart) {
-        this.isStart = isStart;
-    }
-
-    public boolean getStart() {
-        return this.isStart;
-    }
 }
