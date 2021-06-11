@@ -132,7 +132,7 @@ public class CheckButtonListener extends ClickListener {
     }
 
     boolean isLockedWord(String userInput) {
-        return gameData.getLockedWords().contains(userInput);
+        return gameData.getLockedWords().contains(userInput.toLowerCase());
     }
 
     boolean isValidInput(String userInput) {

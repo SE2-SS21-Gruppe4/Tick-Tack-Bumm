@@ -49,7 +49,7 @@ public class ServerMessageHandler {
         Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
 
         serverData.getGameData().setNextPlayerTurn();
-        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord());
+        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord().toLowerCase());
 
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendNextTurn();
