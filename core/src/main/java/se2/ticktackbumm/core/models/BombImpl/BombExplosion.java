@@ -35,7 +35,7 @@ public class BombExplosion {
         explosionAnimation = new Animation<TextureRegion>(animationTime/16,textureRegions1D);
         explosionTime = 0;
 
-        explosionSound = Gdx.audio.newSound(Gdx.files.internal("bomb/bombexplosion.mp3"));
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal("bomb/bombexplosion1.mp3"));
     }
 
     public void updateExplosion(float delta){
@@ -44,7 +44,7 @@ public class BombExplosion {
 
     public void renderExplosion(SpriteBatch spriteBatch,float posX,float posY, float width, float height){
         spriteBatch.draw(explosionAnimation.getKeyFrame(explosionTime), posX,posY,width,height);
-        explosionSound.play(0.15f);
+        explosionSound.play(0.1f);
     }
 
     public boolean isFinished(){
