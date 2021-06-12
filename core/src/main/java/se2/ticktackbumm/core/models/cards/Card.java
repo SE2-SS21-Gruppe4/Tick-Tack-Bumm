@@ -1,7 +1,6 @@
 package se2.ticktackbumm.core.models.cards;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -79,44 +78,8 @@ public class Card {
         fontSprite = new Sprite(frontsideTexture);
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
 
-
     }
 
-    public void drawCard(SpriteBatch spriteBatch) {
-        handleInputProccesor();
-
-        if (isRevealed) {
-            drawFrontSide(spriteBatch);
-
-        } else {
-            drawBackSide(spriteBatch);
-        }
-    }
-
-    public void handleInputProccesor() {
-   /*     Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (fontSprite.getBoundingRectangle().contains(screenX, screenY) || backSprite.getBoundingRectangle().contains(screenX, screenY)) {
-                    if (isRevealed) {
-                        isRevealed = false;
-                    } else {
-                        isRevealed = true;
-                    }
-                }
-                return true;
-            }
-        });*/
-
-        if (Gdx.input.isTouched()){
-            if (isRevealed){
-                isRevealed = false;
-            }
-            else{
-                isRevealed = true;
-            }
-        }
-    }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
         backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
@@ -130,7 +93,7 @@ public class Card {
 
     public void setMessageToServer(){
         if (isRevealed){
-          //  this.game.getNetworkClient().getClientMessageSender().sendCardOpened();
+         //   this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
         }
     }
 
