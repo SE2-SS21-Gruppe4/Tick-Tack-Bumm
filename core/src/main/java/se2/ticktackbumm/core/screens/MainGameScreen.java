@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -26,7 +27,9 @@ import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
-public class MainGameScreen extends ScreenAdapter {
+import java.util.Vector;
+
+public class MainGameScreen extends ScreenAdapter{
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
 
     private final TickTackBummGame game;
@@ -73,6 +76,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
+
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -243,10 +247,42 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
+    public void handleCardTouch(SpriteBatch spriteBatch) {
+        Vector3 touchPoint = new Vector3();
+
+        if (Gdx.input.isTouched()) {
+            touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            camera.unproject(touchPoint);
+            if (touchPoint.x >= card.getBackSprite().getX() && touchPoint.x <= card.getBackSprite().getX() + card.getBackSprite().getWidth()) {
+                if (touchPoint.y > card.getBackSprite().getY() + 800.0f && touchPoint.y < card.getBackSprite().getY() + card.getBackSprite().getHeight()+800.0f) {
+                    Log.info("TOUCHED");
+                    Log.info(String.valueOf(card.getBackSprite().getY()));
+                    Log.info(String.valueOf(touchPoint.y));
+                    Log.info(String.valueOf(card.getBackSprite().getY()+ card.getBackSprite().getHeight()));
+                    if (card.isRevealed()) {
+                        card.setRevealed(false);
+                    } else {
+                        card.setRevealed(true);
+                    }
+                }
+            }
+        }
+        if (card.isRevealed()){
+            card.drawFrontSide(spriteBatch);
+        }
+        else{
+            card.drawBackSide(spriteBatch);
+        }
+    }
+
+
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
-        // TODO: show card backside again
-        // TODO: set new random syllable for card frontside
+
+        card.setRevealed(false);
+
+        String newRandomWord = card.getWordDependOnMode();
+        card.setRandomWord(newRandomWord);
     }
 
 
@@ -256,9 +292,10 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        bomb.renderBomb(delta, batch);
+     //   bomb.renderBomb(delta, batch);
         stage.draw();
-        card.draw();
+       // card.drawCard(batch);
+        handleCardTouch(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         batch.end();
