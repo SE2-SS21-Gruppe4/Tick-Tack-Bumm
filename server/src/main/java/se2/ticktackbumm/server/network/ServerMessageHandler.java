@@ -1,15 +1,14 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.minlog.Log;
-
-import java.security.SecureRandom;
-
 import se2.ticktackbumm.core.data.GameMode;
-import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.data.ServerData;
+
+import java.security.SecureRandom;
 
 /**
  * Handles all incoming client messages for the server.
@@ -46,10 +45,11 @@ public class ServerMessageHandler {
         serverMessageSender.sendSomeResponse("Hello from the server.");
     }
 
-    public void handlePlayerTaskCompleted() {
+    public void handlePlayerTaskCompleted(PlayerTaskCompleted playerTaskCompleted) {
         Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
 
         serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord());
 
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendNextTurn();
@@ -60,6 +60,7 @@ public class ServerMessageHandler {
 
         serverData.getGameData().setNextPlayerTurn();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
+        serverData.getGameData().resetLockedWords();
 
         serverMessageSender.sendGameUpdate();
 
@@ -84,8 +85,8 @@ public class ServerMessageHandler {
         }
     }
 
-    public void handleBombStart(){
-        int timer = new SecureRandom().nextInt(30)+1;
+    public void handleBombStart() {
+        int timer = new SecureRandom().nextInt(30) + 1;
         serverMessageSender.sendBombStart(timer);
     }
 

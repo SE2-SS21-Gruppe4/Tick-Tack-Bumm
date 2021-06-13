@@ -80,6 +80,7 @@ public class ClientMessageHandler {
         gameData.setCurrentPlayerTurnIndex(gameUpdate.getCurrentPlayerTurnIndex());
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
+        gameData.setLockedWords(gameUpdate.getLockedWords());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {

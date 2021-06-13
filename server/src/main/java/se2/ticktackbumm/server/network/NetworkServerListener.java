@@ -61,7 +61,7 @@ public class    NetworkServerListener extends Listener {
 
         } else if (object instanceof PlayerTaskCompleted) {
             Log.info(LOG_TAG, "Received message PlayerTaskCompleted from ID: " + connection.getID());
-            serverMessageHandler.handlePlayerTaskCompleted();
+            serverMessageHandler.handlePlayerTaskCompleted((PlayerTaskCompleted) object);
 
         } else if (object instanceof BombExploded) {
             Log.info(LOG_TAG, "Received message BombExploded from ID: " + connection.getID());

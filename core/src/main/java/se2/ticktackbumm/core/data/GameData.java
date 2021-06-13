@@ -1,15 +1,9 @@
 package se2.ticktackbumm.core.data;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
 import java.util.ArrayList;
@@ -26,14 +20,16 @@ public class GameData {
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
     private String currentGameModeText;
+    private ArrayList<String> lockedWords;
 
     public GameData() {
-        maxGameScore = 2; // hardcoded for testing purposes
+        maxGameScore = 2; // TODO: hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;
         currentGameMode = GameMode.NONE;
+        lockedWords = new ArrayList<>();
     }
 
     public int getMaxGameScore() {
@@ -70,6 +66,18 @@ public class GameData {
 
     public void setCurrentGameModeText(String currentGameModeText) {
         this.currentGameModeText = currentGameModeText;
+    }
+
+    public ArrayList<String> getLockedWords() {
+        return lockedWords;
+    }
+
+    public void setLockedWords(ArrayList<String> lockedWords) {
+        this.lockedWords = lockedWords;
+    }
+
+    public void resetLockedWords() {
+        this.lockedWords = new ArrayList<>();
     }
 
     public int[] getPlayerScores() {
