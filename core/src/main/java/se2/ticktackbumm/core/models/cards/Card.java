@@ -100,11 +100,17 @@ public class Card {
             if (touchPoint.x >= this.backSprite.getX() && touchPoint.x <= this.backSprite.getX() + this.backSprite.getWidth()) {
                 if (touchPoint.y > this.backSprite.getY() && touchPoint.y < this.backSprite.getY() + this.backSprite.getHeight()) {
                     if (!isRevealed){
-                        drawFrontSide(spriteBatch);
+                        isRevealed = true;
                     }
                 }
             }
         }
+
+        if (isRevealed){
+            drawFrontSide(spriteBatch);
+        }
+
+
     }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
@@ -116,7 +122,7 @@ public class Card {
     public void drawFrontSide(SpriteBatch spriteBatch) {
         fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
         fontSprite.draw(spriteBatch);
-        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 80, Gdx.graphics.getHeight() / 2.0f + 770);
+        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
     public void setMessageToServer(){
