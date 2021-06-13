@@ -87,7 +87,9 @@ public class Card {
     }
 
     public void drawCard(SpriteBatch spriteBatch){
-        drawBackSide(spriteBatch);
+        if (!isRevealed){
+            drawBackSide(spriteBatch);
+        }
         handleCardTouch(spriteBatch);
     }
 
@@ -125,9 +127,9 @@ public class Card {
         font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
-    public void setMessageToServer(){
+    public void sendMessageToServer(){
         if (isRevealed){
-         //   this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
+            this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
         }
     }
 
