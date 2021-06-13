@@ -131,6 +131,14 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
+    public void spinWheelStarted() {
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+           // hide gameMode and set new Banner
+            gameScreen.hideGameMode();
+        }
+    }
+
     public void spinWheelFinished(){
 
         if (this.getScreen() instanceof MainGameScreen){
@@ -166,7 +174,4 @@ public class TickTackBummGame extends Game {
         manager.dispose();
         batch.dispose();
     }
-
-
-
 }

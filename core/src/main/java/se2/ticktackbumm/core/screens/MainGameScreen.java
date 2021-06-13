@@ -29,6 +29,7 @@ import se2.ticktackbumm.core.models.cards.Card;
 
 public class MainGameScreen extends ScreenAdapter {
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
+    private static final String MODE_TAG = "Game Mode: ";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -38,10 +39,12 @@ public class MainGameScreen extends ScreenAdapter {
     private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
-    //Game Mode
+    //Game Mode & Banner
     private final GameData gameData;
     private String gameModeString;
     private final BitmapFont textGameMode;
+    private final BitmapFont textBanner;
+    private String bannerString;
 
     private final Score score;
 
@@ -96,11 +99,15 @@ public class MainGameScreen extends ScreenAdapter {
         // card
         card = new Card();
 
-        // gameMode
+        // gameMode & banner
         textGameMode = new BitmapFont();
         textGameMode.setColor(Color.WHITE);
         textGameMode.getData().setScale(3);
         gameModeString = "";
+        textBanner = new BitmapFont();
+        textBanner.setColor(Color.WHITE);
+        textBanner.getData().setScale(4);
+        bannerString = "";
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -271,7 +278,8 @@ public class MainGameScreen extends ScreenAdapter {
         card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
-        textGameMode.draw(batch, "Game Mode: " + gameModeString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
+        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
+        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-30f);
         batch.end();
     }
 
@@ -531,19 +539,25 @@ public class MainGameScreen extends ScreenAdapter {
 
         switch (gameMode){
             case PREFIX:
-                gameModeString = "TICK";
+                gameModeString ="TICK";
                 break;
+
             case INFIX:
-                gameModeString = "TICK...TACK";
+                gameModeString ="TICK...TACK";
                 break;
+
             case POSTFIX:
-                gameModeString = "BOMBE";
+                gameModeString ="BOMBE";
                 break;
-            case NONE:
-                gameModeString = "";
-                break;
-                // 2 optionen entweder hier als cast NONE setzen, oder wieder das gleche mit Senden SpinWheelStarted
+
         }
-        System.out.println("New Game Mode: " +  gameModeString);
+        bannerString = "";
+    }
+
+    //Hide game mode and set banner for other player's
+    public void hideGameMode(){
+        gameModeString = "";
+        bannerString = "Warte bis Drehrad fertig ist.";
+
     }
 }
