@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.screens.MenuScreen;
@@ -71,6 +72,10 @@ public class NetworkClientListener extends Listener {
         } else if (object instanceof BombStart){
             logReceivedMessage("BombStart");
             clientMessageHandler.handleStartBomb((BombStart) object);
+        }
+        else if (object instanceof CardOpened){
+            logReceivedMessage("BombStart");
+            clientMessageHandler.handleCardOpened((CardOpened) object);
         }
     }
 
