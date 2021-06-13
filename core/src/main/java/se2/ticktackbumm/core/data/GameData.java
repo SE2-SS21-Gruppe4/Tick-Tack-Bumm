@@ -22,6 +22,9 @@ public class GameData {
     private String currentGameModeText;
     private ArrayList<String> lockedWords;
 
+    private String wordFromCard;
+
+
     public GameData() {
         maxGameScore = 2; // TODO: hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
@@ -30,6 +33,7 @@ public class GameData {
         currentPlayerTurnIndex = 0;
         currentGameMode = GameMode.NONE;
         lockedWords = new ArrayList<>();
+        wordFromCard = "";
     }
 
     public int getMaxGameScore() {
@@ -78,6 +82,13 @@ public class GameData {
 
     public void resetLockedWords() {
         this.lockedWords = new ArrayList<>();
+    }
+
+    public String getWordFromCard(){
+        return this.wordFromCard;
+    }
+    public void setWordFromCard(String word){
+        this.wordFromCard = word;
     }
 
     public int[] getPlayerScores() {
