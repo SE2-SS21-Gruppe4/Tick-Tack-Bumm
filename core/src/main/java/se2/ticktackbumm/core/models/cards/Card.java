@@ -3,10 +3,12 @@ package se2.ticktackbumm.core.models.cards;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
@@ -37,6 +39,8 @@ public class Card {
 
     private Sprite fontSprite;
     private Sprite backSprite;
+
+    private OrthographicCamera camera;
 
 
     public Card() {
@@ -76,19 +80,43 @@ public class Card {
 
 
         fontSprite = new Sprite(frontsideTexture);
-        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
+
+        camera = TickTackBummGame.getGameCamera();
 
     }
 
+    public void drawCard(SpriteBatch spriteBatch){
+        drawBackSide(spriteBatch);
+        handleCardTouch(spriteBatch);
+    }
+
+    public void handleCardTouch(SpriteBatch spriteBatch) {
+        Vector3 touchPoint = new Vector3();
+
+        if (Gdx.input.isTouched()) {
+            touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            camera.unproject(touchPoint);
+            if (touchPoint.x >= this.backSprite.getX() && touchPoint.x <= this.backSprite.getX() + this.backSprite.getWidth()) {
+                if (touchPoint.y > this.backSprite.getY() && touchPoint.y < this.backSprite.getY() + this.backSprite.getHeight()) {
+                    if (!isRevealed){
+                        drawFrontSide(spriteBatch);
+                    }
+                }
+            }
+        }
+    }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 500, 300);
+
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f +550, 500, 300);
         backSprite.draw(spriteBatch);
     }
 
     public void drawFrontSide(SpriteBatch spriteBatch) {
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
         fontSprite.draw(spriteBatch);
-        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 28, Gdx.graphics.getHeight() / 2.0f + 203);
+        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 80, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
     public void setMessageToServer(){
