@@ -79,6 +79,9 @@ public class    NetworkServerListener extends Listener {
             Log.info(LOG_TAG,"Received message SpinWheelFinished from ID: " + connection.getID());
             serverMessageHandler.handleSpinWheelFinished(((SpinWheelFinished) object).getGameMode());
 
+        } else if (object instanceof SpinWheelStarted) {
+            Log.info(LOG_TAG,"Received message SpinWheelStarted from ID: " + connection.getID());
+            serverMessageHandler.handleSpinWheelStarted(((SpinWheelStarted) object).getGameMode());
         }
     }
 }

@@ -114,4 +114,9 @@ public class ClientMessageHandler {
         Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : "  + gameData.getCurrentGameMode());
         game.spinWheelFinished();
     }
+
+    public void handleSpinWheelStarted() {
+        Log.info(LOG_TAG, "<SpinWheelStarted> : "  + gameData.getCurrentGameMode());
+        game.spinWheelStarted();
+    }
 }
