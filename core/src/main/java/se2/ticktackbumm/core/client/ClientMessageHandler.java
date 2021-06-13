@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.network.messages.server.GameFinished;
@@ -109,5 +110,9 @@ public class ClientMessageHandler {
 
     public void handleStartBomb(BombStart bombStart) {
         game.setBombToTick(bombStart.getBombTimer());
+    }
+
+    public void handleCardOpened(CardOpened object) {
+        game.updateGameWithWord(object.getWord());
     }
 }
