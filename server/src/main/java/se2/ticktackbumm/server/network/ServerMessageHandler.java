@@ -95,4 +95,8 @@ public class ServerMessageHandler {
         serverData.getGameData().setCurrentGameMode(gameMode);
         serverMessageSender.sendGameUpdate();
     }
+
+    public void handleCardOpened(String word) {
+        serverMessageSender.sendCardOpened(word);
+    }
 }
