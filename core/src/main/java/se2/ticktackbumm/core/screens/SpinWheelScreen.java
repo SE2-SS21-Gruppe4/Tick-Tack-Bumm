@@ -55,6 +55,26 @@ public class SpinWheelScreen extends ScreenAdapter {
     private float degree;
     private boolean isStart;
 
+    public SpinWheelScreen(String str){
+        game = null;
+        camera = null;
+        gameData = null;
+        batch = null;
+        stage = null;
+        skin = null;
+        atlas = null;
+        spinWheelTable = null;
+        challengeLabel = null;
+        descriptionLabel = null;
+        gameButton = null;
+        wheelImage = null;
+        needleImage = null;
+        spinButtonImage = null;
+        randomNumb = null;
+        timer = null;
+        color = null;
+    }
+
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
@@ -195,7 +215,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameData.setCurrentGameMode(gameMode);
         game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameMode);
         // TODO: testing only
-  //      gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
+//        gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
 
 
     }
