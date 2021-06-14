@@ -19,8 +19,6 @@ public class BombExplosion {
     private Sound explosionSound;
 
     public BombExplosion(Texture texture, float animationTime) {
-        this.boundsOfExplosion = boundsOfExplosion;
-
         //split png from MainScreen
         TextureRegion[][] textureRegions2D = TextureRegion.split(texture, 62, 62);
 
