@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
@@ -145,12 +145,12 @@ public class ClientMessageHandler {
     }
 
     /**
-     * Handle incoming {@link BombStart} message from server to client.
+     * Handle incoming {@link StartBomb} message from server to client.
      * Set the bomb timer in game screen to the time value received from server.
      *
-     * @param bombStart the incoming message
+     * @param startBomb the incoming message
      */
-    public void handleStartBomb(BombStart bombStart) {
-        game.setBombToTick(bombStart.getBombTimer());
+    public void handleStartBomb(StartBomb startBomb) {
+        game.setBombToTick(startBomb.getBombTimer());
     }
 }
