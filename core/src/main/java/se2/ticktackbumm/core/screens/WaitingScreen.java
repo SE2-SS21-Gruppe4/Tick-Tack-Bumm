@@ -18,7 +18,6 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.listeners.ReadyButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
@@ -210,7 +209,14 @@ public class WaitingScreen extends ScreenAdapter {
 
         ImageButton avatarButton = new ImageButton(avatarStyle);
 
-        avatarButton.addListener(new AvatarButtonListener(this, avatar));
+        avatarButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.getLocalPlayer().setPlayerAvatar(avatar);
+                Log.info("Selected avatar set to: " +
+                        game.getLocalPlayer().getPlayerAvatar().toString());
+            }
+        });
 
         avatarButtonTable.add(avatarButton)
                 .padLeft(AVATAR_BUTTON_PADDING).padRight(AVATAR_BUTTON_PADDING)
