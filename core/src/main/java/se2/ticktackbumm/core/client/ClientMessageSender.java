@@ -73,7 +73,7 @@ public class ClientMessageSender {
     /**
      * Sends a {@link PlayerReady} message to the server with the chosen player name and avatar.
      *
-     * @param playerName the player's name to send to the server
+     * @param playerName   the player's name to send to the server
      * @param playerAvatar the player's avatar to send to the server
      */
     public void sendPlayerReady(String playerName, Avatars playerAvatar) {
@@ -102,6 +102,6 @@ public class ClientMessageSender {
 
     public void spinWheelStarted(GameMode currentGameMode) {
         logSendingMessage("SpinWheelStarted");
-        client.sendTCP(new SpinWheelStarted(currentGameMode));
+        kryoClient.sendTCP(new SpinWheelStarted(currentGameMode));
     }
 }
