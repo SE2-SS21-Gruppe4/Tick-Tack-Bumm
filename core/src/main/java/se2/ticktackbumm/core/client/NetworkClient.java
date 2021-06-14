@@ -36,7 +36,7 @@ public class NetworkClient {
         KryoRegisterer.registerMessages(this.kryoClient.getKryo());
 
         clientMessageSender = new ClientMessageSender(kryoClient);
-        clientMessageHandler = new ClientMessageHandler(kryoClient, clientMessageSender);
+        clientMessageHandler = new ClientMessageHandler(clientMessageSender);
 
         kryoClient.addListener(new NetworkClientListener(clientMessageHandler));
 
