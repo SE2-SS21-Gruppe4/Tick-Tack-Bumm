@@ -20,16 +20,16 @@ public class ClientMessageSender {
     /**
      * Client instance to handle sending for.
      */
-    private final Client client;
+    private final Client kryoClient;
 
     /**
      * Class constructor.
      * Creates a message sender, that handles the sending of client messages to the server.
      *
-     * @param client the client to handle message sending for
+     * @param kryoClient the client to handle message sending for
      */
-    public ClientMessageSender(Client client) {
-        this.client = client;
+    public ClientMessageSender(Client kryoClient) {
+        this.kryoClient = kryoClient;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ClientMessageSender {
      * @param text the outgoing message text
      */
     public void sendSomeRequest(String text) {
-        client.sendTCP(new SomeRequest(text));
+        kryoClient.sendTCP(new SomeRequest(text));
     }
 
     /**
@@ -59,7 +59,7 @@ public class ClientMessageSender {
      */
     public void sendPlayerTaskCompleted(String userInput) {
         logSendingMessage("TaskCompleted");
-        client.sendTCP(new PlayerTaskCompleted(userInput));
+        kryoClient.sendTCP(new PlayerTaskCompleted(userInput));
     }
 
     /**
@@ -67,7 +67,7 @@ public class ClientMessageSender {
      */
     public void sendBombExploded() {
         logSendingMessage("BombExploded");
-        client.sendTCP(new BombExploded());
+        kryoClient.sendTCP(new BombExploded());
     }
 
     /**
@@ -78,7 +78,7 @@ public class ClientMessageSender {
      */
     public void sendPlayerReady(String playerName, Avatars playerAvatar) {
         logSendingMessage("PlayerReady");
-        client.sendTCP(new PlayerReady(playerName, playerAvatar));
+        kryoClient.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
     /**
@@ -86,7 +86,7 @@ public class ClientMessageSender {
      */
     public void sendStartBomb() {
         logSendingMessage("BombStart");
-        client.sendTCP(new StartBomb());
+        kryoClient.sendTCP(new StartBomb());
     }
 
     /**
@@ -97,6 +97,6 @@ public class ClientMessageSender {
      */
     public void spinWheelFinished(GameMode gameMode) {
         logSendingMessage("SpinWheelFinished");
-        client.sendTCP(new SpinWheelFinished(gameMode));
+        kryoClient.sendTCP(new SpinWheelFinished(gameMode));
     }
 }
