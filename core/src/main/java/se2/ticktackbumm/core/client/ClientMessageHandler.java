@@ -46,7 +46,7 @@ public class ClientMessageHandler {
     public ClientMessageHandler(ClientMessageSender clientMessageSender) {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.gameData = game.getGameData();
-        this.clientMessageSender = game.getNetworkClient().getClientMessageSender();
+        this.clientMessageSender = clientMessageSender;
     }
 
     /**
