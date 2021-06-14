@@ -91,6 +91,7 @@ public class Card {
             drawBackSide(spriteBatch);
         }
         handleCardTouch(spriteBatch);
+
     }
 
     public void handleCardTouch(SpriteBatch spriteBatch) {
@@ -126,6 +127,8 @@ public class Card {
         fontSprite.draw(spriteBatch);
         font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
+
+    //TODO call when user click on textfield to type word - (tested on render and work fine both side (client and server)
 
     public void sendMessageToServer(){
         if (isRevealed){
