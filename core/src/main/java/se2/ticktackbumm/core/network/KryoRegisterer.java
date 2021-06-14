@@ -35,6 +35,7 @@ public class KryoRegisterer {
         kryo.register(NextRound.class);
         kryo.register(GameFinished.class);
         kryo.register(StartBomb.class);
+        kryo.register(SpinWheelStarted.class);
         kryo.register(SpinWheelFinished.class);
 
         // register owned classes to send in messages

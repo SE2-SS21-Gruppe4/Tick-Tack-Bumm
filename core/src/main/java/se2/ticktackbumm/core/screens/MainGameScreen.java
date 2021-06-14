@@ -20,6 +20,7 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
@@ -29,13 +30,22 @@ public class MainGameScreen extends ScreenAdapter {
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 10;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
+    private static final String MODE_TAG = "Game Mode: ";
+
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
     private final NetworkClient networkClient;
     private final BitmapFont font;
     private final SpriteBatch batch;
+
+    //Game Mode & Banner
     private final GameData gameData;
+    private String gameModeString;
+    private final BitmapFont textGameMode;
+    private final BitmapFont textBanner;
+    private String bannerString;
+
     private final Score score;
     // scene2d UI
     private final Stage stage;
@@ -82,6 +92,16 @@ public class MainGameScreen extends ScreenAdapter {
 
         // card
         card = new Card();
+
+        // gameMode & banner
+        textGameMode = new BitmapFont();
+        textGameMode.setColor(Color.WHITE);
+        textGameMode.getData().setScale(3);
+        gameModeString = "";
+        textBanner = new BitmapFont();
+        textBanner.setColor(Color.WHITE);
+        textBanner.getData().setScale(4);
+        bannerString = "";
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -252,6 +272,8 @@ public class MainGameScreen extends ScreenAdapter {
         card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
+        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
+        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-30f);
         batch.end();
     }
 
@@ -511,5 +533,32 @@ public class MainGameScreen extends ScreenAdapter {
 
     public Bomb getBomb() {
         return this.bomb;
+    }
+
+
+    public void updateGameMode(GameMode gameMode) {
+
+        switch (gameMode){
+            case PREFIX:
+                gameModeString ="TICK";
+                break;
+
+            case INFIX:
+                gameModeString ="TICK...TACK";
+                break;
+
+            case POSTFIX:
+                gameModeString ="BOMBE";
+                break;
+
+        }
+        bannerString = "";
+    }
+
+    //Hide game mode and set banner for other player's
+    public void hideGameMode(){
+        gameModeString = "";
+        bannerString = "Warte bis Drehrad fertig ist.";
+
     }
 }
