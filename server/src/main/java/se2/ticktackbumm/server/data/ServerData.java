@@ -12,11 +12,9 @@ import java.util.List;
 
 public class ServerData {
 
-    private final String LOG_TAG = "SERVER_DATA";
-
     private static final int MAX_PLAYERS = 4;
     private static final int MIN_PLAYERS = 2;
-
+    private final String LOG_TAG = "SERVER_DATA";
     private final Server kryoServer;
     private final GameData gameData;
     private final GameState gameState;

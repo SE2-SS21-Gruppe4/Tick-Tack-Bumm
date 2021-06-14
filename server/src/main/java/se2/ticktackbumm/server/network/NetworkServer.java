@@ -16,23 +16,13 @@ public class NetworkServer {
 
     // TODO: refactor classes to make use of singleton pattern
     private static NetworkServer networkServer;
-
-    public static NetworkServer getNetworkServer() {
-        if (networkServer == null) {
-            networkServer = new NetworkServer();
-        }
-        return networkServer;
-    }
-
     /**
      * Kryonet-Server instance.
      */
     private final Server kryoServer;
-
     private final ServerData serverData;
     private final ServerMessageHandler serverMessageHandler;
     private final ServerMessageSender serverMessageSender;
-
     /**
      * Class constructor.
      * Create the Kryonet-{@link Server}, register all Kryo message classes and adds a
@@ -53,6 +43,13 @@ public class NetworkServer {
         } catch (IOException e) {
             Log.error("Error starting game server instance: " + e.getMessage());
         }
+    }
+
+    public static NetworkServer getNetworkServer() {
+        if (networkServer == null) {
+            networkServer = new NetworkServer();
+        }
+        return networkServer;
     }
 
     /**

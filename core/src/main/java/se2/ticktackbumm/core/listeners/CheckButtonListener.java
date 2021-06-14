@@ -3,7 +3,6 @@ package se2.ticktackbumm.core.listeners;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -17,20 +16,37 @@ import se2.ticktackbumm.core.screens.MainGameScreen;
 import java.io.*;
 import java.util.ArrayList;
 
-
 public class CheckButtonListener extends ClickListener {
-    private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
-    private final String LOG_TAG = "USER_INPUT";
-    private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
 
-    private TickTackBummGame game;
+    /**
+     * Regex pattern to match german alphabetical characters.
+     */
+    private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
+
+    /**
+     * The log tag is used to provide unique logging for the class.
+     */
+    private final String LOG_TAG = "USER_INPUT";
+
+    /**
+     * The game data which is included in the singleton instance of the game class. Provides functionality
+     * read and alter the game's general data.
+     */
     private GameData gameData;
+    /**
+     * The game's message sender, later contained in the singleton instance of the game class. Provides
+     * functionality to send messages from client to server.
+     */
     private ClientMessageSender clientMessageSender;
 
+    /**
+     * Instance of the main game screen of the current game.
+     */
     private final MainGameScreen gameScreen;
+    /**
+     * The text field from the main game screen that contains the user's word guess.
+     */
     private final TextField textField;
-    private final TextButton checkButton;
-    private String userInput;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.
@@ -38,17 +54,20 @@ public class CheckButtonListener extends ClickListener {
     public CheckButtonListener() {
         this.gameScreen = null;
         this.textField = null;
-        this.checkButton = null;
     }
 
+    /**
+     * Constructs a listener for the text field on the main game screen. The listener can validate and process
+     * the user's input into the text field.
+     *
+     * @param mainGameScreen the instance of the main game screen of the current game
+     */
     public CheckButtonListener(MainGameScreen mainGameScreen) {
         this.gameScreen = mainGameScreen;
         this.textField = mainGameScreen.getTextField();
-        this.checkButton = mainGameScreen.getCheckButton();
 
-        this.game = TickTackBummGame.getTickTackBummGame();
-        this.gameData = game.getGameData();
-        this.clientMessageSender = game.getNetworkClient().getClientMessageSender();
+        this.gameData = TickTackBummGame.getTickTackBummGame().getGameData();
+        this.clientMessageSender = TickTackBummGame.getTickTackBummGame().getNetworkClient().getClientMessageSender();
     }
 
     @Override
@@ -58,7 +77,7 @@ public class CheckButtonListener extends ClickListener {
             return;
         }
 
-        userInput = textField.getText().trim();
+        String userInput = textField.getText().trim();
         Log.info(LOG_TAG, "Got user input: " + userInput);
 
         gameScreen.hideControls();
@@ -79,6 +98,13 @@ public class CheckButtonListener extends ClickListener {
         }, 1f));
     }
 
+    /**
+     * Validates the user input in regards to the German/Austrian language, the game mode and the current
+     * player task.
+     *
+     * @param userInput the user input to validate
+     * @return true if the user input is a valid word, false otherwise
+     */
     boolean isValidWord(String userInput) {
 
         if (!isValidInput(userInput)) {
@@ -131,28 +157,68 @@ public class CheckButtonListener extends ClickListener {
         return true;
     }
 
+    /**
+     * Returns true if the input was already used this round by an other player and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @return true if the word is locked, false otherwise
+     */
     boolean isLockedWord(String userInput) {
         return gameData.getLockedWords().contains(userInput);
     }
 
+    /**
+     * Returns true if the input has a valid German word syntax and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @return true if the input has valid German syntax, false otherwise
+     */
     boolean isValidInput(String userInput) {
         return ((userInput != null) && // input not null
                 (!userInput.equals("")) && // input not empty
                 (userInput.matches("^" + GERMAN_CHARACTER_REGEX + "*$"))); // input is a single alphabetical word
     }
 
+    /**
+     * Returns true if the input starts with the given prefix and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @param prefix    the prefix to validate against the input
+     * @return true if input has prefix, false otherwise
+     */
     boolean hasValidPrefix(String userInput, String prefix) {
         return userInput.toLowerCase().matches("^" + prefix.toLowerCase() + GERMAN_CHARACTER_REGEX + "+$");
     }
 
+    /**
+     * Returns true if the input contains the given infix and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @param infix     the infix to validate against the input
+     * @return true if input has infix, false otherwise
+     */
     boolean hasValidInfix(String userInput, String infix) {
         return userInput.toLowerCase().matches("^" + GERMAN_CHARACTER_REGEX + "+" + infix.toLowerCase() + GERMAN_CHARACTER_REGEX + "+$");
     }
 
+    /**
+     * Returns true if the input ends with the given postfix and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @param postfix   the postfix to validate against the input
+     * @return true if input has postfix, false otherwise
+     */
     boolean hasValidPostfix(String userInput, String postfix) {
         return userInput.toLowerCase().matches("^" + GERMAN_CHARACTER_REGEX + "+" + postfix.toLowerCase() + "$");
     }
 
+    /**
+     * Returns true if the input is contained in the scrambled word and false otherwise.
+     *
+     * @param userInput     the user input to validate
+     * @param scrambledWord the scrambled word to validate against the input
+     * @return true if input is contained in scrambled word
+     */
     boolean isInScrambledWord(String userInput, String scrambledWord) {
         if (userInput.length() < 4) { // word found has to be at least 4 characters long; game rule
             Log.error(LOG_TAG, "User input was too short (at least 4 character): " + userInput);
@@ -178,8 +244,16 @@ public class CheckButtonListener extends ClickListener {
         return scrambledWordChars.size() == (scrambledWord.length() - userInput.length());
     }
 
+    /**
+     * Returns true if the Austrian dictionary contains the given input word and false otherwise.
+     *
+     * @param userInput the user input to validate
+     * @return true if the Austrian dictionary contains the input
+     */
     boolean isInDictionary(String userInput) {
         Reader dictionaryFileReader = null;
+        String dictionaryInternalPath = "dictionaries/de_AT.txt";
+
         try {
             if (Gdx.app != null && Gdx.app.getType() == Application.ApplicationType.Android) { // on Android,
                 dictionaryFileReader = Gdx.files.internal(dictionaryInternalPath).reader("Cp1252");

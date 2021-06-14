@@ -1,18 +1,18 @@
 package se2.ticktackbumm.core.network.messages.client;
 
-public class BombStart {
+public class StartBomb {
 
-    private  int bombTimer;
+    private int bombTimer;
 
-    public BombStart(){
+    public StartBomb() {
 
     }
 
-    public BombStart(int bombTimer){
+    public StartBomb(int bombTimer) {
         this.bombTimer = bombTimer;
     }
 
-    public int getBombTimer(){
+    public int getBombTimer() {
         return this.bombTimer;
     }
 

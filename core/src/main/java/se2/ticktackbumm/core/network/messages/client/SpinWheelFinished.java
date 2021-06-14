@@ -6,11 +6,11 @@ public class SpinWheelFinished {
 
     private GameMode gameMode;
 
-    public SpinWheelFinished(){
+    public SpinWheelFinished() {
         //kryonet
     }
 
-    public SpinWheelFinished(GameMode gameMode){
+    public SpinWheelFinished(GameMode gameMode) {
         this.gameMode = gameMode;
     }
 

@@ -15,11 +15,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.listeners.ReadyButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
@@ -39,13 +37,9 @@ public class WaitingScreen extends ScreenAdapter {
     // TickTackBumm resources
     private final TickTackBummGame game;
     private final GameData gameData;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
-
     private final Label playerInLobbyLabel;
     private final Label playerNameLabel0;
     private final Label playerNameLabel1;
@@ -53,22 +47,21 @@ public class WaitingScreen extends ScreenAdapter {
     private final Label playerNameLabel3;
     private final Label[] playerNameLabelsList;
     private final Table playerNamesTable;
-
     private final Label playerNameInputLabel;
     private final TextField playerNameTextField;
     private final Label playerAvatarLabel;
     private final Table nameAndColorTable;
-
     private final ImageButton playerAvatarButton0;
     private final ImageButton playerAvatarButton1;
     private final ImageButton playerAvatarButton2;
     private final ImageButton playerAvatarButton3;
     private final ButtonGroup<ImageButton> avatarButtonGroup;
     private final Table avatarButtonTable;
-
     private final TextButton readyButton;
     private final TextButton backButton;
     private final Table waitingButtonTable;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
     public WaitingScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -213,10 +206,17 @@ public class WaitingScreen extends ScreenAdapter {
                 throw new IllegalStateException("Unexpected value: " + avatar);
         }
         avatarStyle.imageChecked = textureRegionDrawable;
-        
+
         ImageButton avatarButton = new ImageButton(avatarStyle);
 
-        avatarButton.addListener(new AvatarButtonListener(this, avatar));
+        avatarButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.getLocalPlayer().setPlayerAvatar(avatar);
+                Log.info("Selected avatar set to: " +
+                        game.getLocalPlayer().getPlayerAvatar().toString());
+            }
+        });
 
         avatarButtonTable.add(avatarButton)
                 .padLeft(AVATAR_BUTTON_PADDING).padRight(AVATAR_BUTTON_PADDING)
