@@ -22,14 +22,12 @@ public class CheckButtonListener extends ClickListener {
     private final String GERMAN_CHARACTER_REGEX = "[a-zA-ZäöüÄÖÜ]";
     private final String LOG_TAG = "USER_INPUT";
     private final String dictionaryInternalPath = "dictionaries/de_AT.txt";
-
-    private TickTackBummGame game;
-    private GameData gameData;
-    private ClientMessageSender clientMessageSender;
-
     private final MainGameScreen gameScreen;
     private final TextField textField;
     private final TextButton checkButton;
+    private TickTackBummGame game;
+    private GameData gameData;
+    private ClientMessageSender clientMessageSender;
     private String userInput;
 
     /**

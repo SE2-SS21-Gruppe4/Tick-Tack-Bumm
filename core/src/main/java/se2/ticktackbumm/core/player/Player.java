@@ -1,7 +1,6 @@
 package se2.ticktackbumm.core.player;
 
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.data.Avatars;
 
 public class Player {
@@ -56,12 +55,12 @@ public class Player {
         return gameScore;
     }
 
-    public boolean getHasCheated() {
-        return hasCheated;
-    }
-
     public void setGameScore(int gameScore) {
         this.gameScore = gameScore;
+    }
+
+    public boolean getHasCheated() {
+        return hasCheated;
     }
 
     public void setHasCheated(boolean hasCheated) {

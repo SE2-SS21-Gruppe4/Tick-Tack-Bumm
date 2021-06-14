@@ -4,7 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 
@@ -18,11 +17,11 @@ public class TestScreen implements Screen {
     private Image bombImage;
 
 
-    public TestScreen(){
-      bomb = new Bomb();
+    public TestScreen() {
+        bomb = new Bomb();
 
-      game = TickTackBummGame.getTickTackBummGame();
-      spriteBatch = game.getBatch();
+        game = TickTackBummGame.getTickTackBummGame();
+        spriteBatch = game.getBatch();
     }
 
     @Override
@@ -32,7 +31,7 @@ public class TestScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        bomb.renderBomb(delta,spriteBatch);
+        bomb.renderBomb(delta, spriteBatch);
     }
 
     @Override

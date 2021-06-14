@@ -13,10 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.data.Avatars;
+
 /**
  * LoadingScreen is for loading all the UI-components which are used for the game
- * @author  Daniel Fabian Frankl
+ *
+ * @author Daniel Fabian Frankl
  * @version 2.0
  */
 public class LoadingScreen extends ScreenAdapter implements Screen {
@@ -25,10 +26,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final OrthographicCamera camera;
     private final Texture image;
     private final Sprite sprite;
-
+    private final ShapeRenderer mShapeRenderer;
     private long progress = 0;
     private long startTime = 0;
-    private final ShapeRenderer mShapeRenderer;
 
     /**
      * Class constructor.
@@ -52,7 +52,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
      * load all assets
      * loads the assets from the asset folder
      */
-    private void loadAssets(){
+    private void loadAssets() {
         // load skins
         assetManager.load("ui/uiskin.json", Skin.class);
 
@@ -118,6 +118,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     public void hide() {
 
     }
+
     /**
      * dispose shapeRenderer
      */
@@ -139,7 +140,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             progress = progress + 10;
         }
 
-        float progressBarWidth = ((float)TickTackBummGame.WIDTH / 100f) * progress;
+        float progressBarWidth = ((float) TickTackBummGame.WIDTH / 100f) * progress;
 
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
@@ -156,6 +157,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
             moveToMenuScreen();
         }
     }
+
     /**
      * switch Screen
      * switch the Screen from loadingScreen to menuScreen and dispose ShapeRenderer

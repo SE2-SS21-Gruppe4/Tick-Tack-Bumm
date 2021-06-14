@@ -1,4 +1,4 @@
- package se2.ticktackbumm.core.screens;
+package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -29,13 +29,10 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final GameData gameData;
-    private GameMode gameMode;
-
     private final SpriteBatch batch;
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
-
     // scene 2d ui
     private final Table spinWheelTable;
     private final Label challengeLabel;
@@ -44,18 +41,17 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image wheelImage;
     private final Image needleImage;
     private final Image spinButtonImage;
-
-
     private final SecureRandom randomNumb;
     private final Timer timer;
-    private Timer.Task task;
     private final Color color;
+    private GameMode gameMode;
+    private Timer.Task task;
     private float rotationAmount;
     private float spinSpeed;
     private float degree;
     private boolean isStart;
 
-    public SpinWheelScreen(String str){
+    public SpinWheelScreen(String str) {
         game = null;
         camera = null;
         gameData = null;
@@ -208,7 +204,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         } else if ((degree > 0 && degree < 60) || (degree > 180 && degree <= 240)) {
             descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
-        } else{
+        } else {
             descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
         }
@@ -273,11 +269,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public void setStart(boolean isStart) {
-        this.isStart = isStart;
-    }
-
     public boolean getStart() {
         return this.isStart;
+    }
+
+    public void setStart(boolean isStart) {
+        this.isStart = isStart;
     }
 }

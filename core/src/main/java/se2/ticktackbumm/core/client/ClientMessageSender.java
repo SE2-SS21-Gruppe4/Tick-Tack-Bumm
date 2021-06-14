@@ -4,14 +4,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
-import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
-import se2.ticktackbumm.core.network.messages.client.BombExploded;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
-import se2.ticktackbumm.core.network.messages.client.PlayerReady;
-import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.client.SomeRequest;
-import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
+import se2.ticktackbumm.core.network.messages.client.*;
 
 /**
  * Handles the sending of messages from the client to the server.
@@ -60,7 +54,7 @@ public class ClientMessageSender {
         client.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
-    public void sendStartBomb(){
+    public void sendStartBomb() {
         logSendingMessage("BombStart");
         client.sendTCP(new BombStart());
     }

@@ -25,9 +25,6 @@ public class RulesScreen extends ScreenAdapter {
 
     // TickTackBumm resources
     private final TickTackBummGame game;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
@@ -37,6 +34,8 @@ public class RulesScreen extends ScreenAdapter {
     private final Image backgroundImage;
     private final Texture textrueImage;
     private final AssetManager assetManager;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
     public RulesScreen() {
         this.game = TickTackBummGame.getTickTackBummGame();
