@@ -170,6 +170,7 @@ public class SpinWheelScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
+                // set listener to unable next spin for same player
                 spinButtonImage.clearListeners();
 
                 gameData.setCurrentGameMode(GameMode.NONE);
@@ -177,8 +178,11 @@ public class SpinWheelScreen extends ScreenAdapter {
 
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
 
+                // setting random degree between 1 und 1800 degree.
                 rotationAmount = randomNumb.nextInt(1800);
+                // rotationAmount modulo with 360
                 degree = setDegree(rotationAmount);
+                // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
 
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
@@ -187,7 +191,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 task = new Timer.Task() {
                     @Override
                     public void run() {
+
                         setBackgroundColor(degree);
+
                         setGameMode(degree);
 
                         // show game button
@@ -253,14 +259,18 @@ public class SpinWheelScreen extends ScreenAdapter {
         if ((degree > 120 && degree <= 180) || (degree >= 300 && degree < 360)) {
             descriptionLabel.setText("Die Silbe muss am Anfang deines Wortes stehen.");
             gameMode = GameMode.PREFIX;
+
         } else if ((degree > 0 && degree < 60) || (degree > 180 && degree <= 240)) {
             descriptionLabel.setText("Die Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
+
         } else{
             descriptionLabel.setText("Die Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
+
         }
         gameData.setCurrentGameMode(gameMode);
+
     }
 
     /**
@@ -269,32 +279,43 @@ public class SpinWheelScreen extends ScreenAdapter {
     private void setBackgroundColor(float degree) {
         if (degree < 61) {
             color.set(Color.valueOf("0070C0"));
+
         } else if (degree < 121) {
             color.set(Color.valueOf("FFC000"));
+
         } else if (degree < 181) {
             color.set(Color.valueOf("7030A0"));
+
         } else if (degree < 241) {
             color.set(Color.valueOf("F2CF00"));
+
         } else if (degree < 301) {
             color.set(Color.valueOf("FF0000"));
+
         } else {
             color.set(Color.valueOf("70AD47"));
+
         }
     }
 
     public float setDegree(float degree) {
         float retVal = degree;
+
         if (degree > 360) {
             retVal = degree % 360;
+
         }
         return retVal;
+
     }
 
     public float getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
             return 1;
+
         } else {
             return rotationAmount / 360;
+
         }
     }
 
