@@ -11,11 +11,27 @@ import se2.ticktackbumm.core.screens.WaitingScreen;
 
 public class ReadyButtonListener extends ClickListener {
 
+    /**
+     * The log tag is used to provide unique logging for the class.
+     */
     private final String LOG_TAG = "READY_BUTTON_LISTENER";
 
+    /**
+     * The singleton instance of the game class. Provides functionality to read and alter the game's
+     * state and data.
+     */
     private final TickTackBummGame game;
+    /**
+     * Instance of the waiting screen of the current game.
+     */
     private final WaitingScreen waitingScreen;
 
+    /**
+     * Constructs a listener for the ready button in the waiting screen. The listener takes a reference to
+     * the instance of the waiting screen to modify the state of the screen when clicked.
+     *
+     * @param waitingScreen instance of the waiting screen of the current game
+     */
     public ReadyButtonListener(WaitingScreen waitingScreen) {
         this.game = TickTackBummGame.getTickTackBummGame();
         this.waitingScreen = waitingScreen;
@@ -24,7 +40,6 @@ public class ReadyButtonListener extends ClickListener {
     @SuppressWarnings("NewApi")
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        // TODO: get nickname and color, send in message, verify
         String playerName = waitingScreen.getPlayerNameTextField().getText();
         Avatars playerAvatar = game.getLocalPlayer().getPlayerAvatar();
 
@@ -54,6 +69,10 @@ public class ReadyButtonListener extends ClickListener {
         waitingScreen.getPlayerNameTextField().setDisabled(true);
     }
 
+    /**
+     * @param playerName the input player name to validate
+     * @return true if
+     */
     boolean isValidName(String playerName) {
         return playerName != null &&
                 playerName.matches("^[0-9a-zA-Z]{4,12}$");
