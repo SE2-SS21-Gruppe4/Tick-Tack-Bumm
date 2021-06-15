@@ -23,8 +23,17 @@ import java.security.SecureRandom;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * SpinWheelScreen is for getting challenge which will be used on cards in the game
+ * @author NikolaMaNa
+ */
+
 public class SpinWheelScreen extends ScreenAdapter {
+    /**
+     *  The challenge string is used to explain what to do
+     */
     private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";
+    private static final String SPIN_WHEEL_ATLAS_PATH = "ui/spin_wheel_ui.atlas";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -33,7 +42,10 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
-    // scene 2d ui
+
+    /**
+     * Scene 2D UI
+     */
     private final Table spinWheelTable;
     private final Label challengeLabel;
     private final Label descriptionLabel;
@@ -41,6 +53,10 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image wheelImage;
     private final Image needleImage;
     private final Image spinButtonImage;
+
+    /**
+     * Variables used for functionality
+     */
     private final SecureRandom randomNumb;
     private final Timer timer;
     private final Color color;
@@ -51,6 +67,11 @@ public class SpinWheelScreen extends ScreenAdapter {
     private float degree;
     private boolean isStart;
 
+    /**
+     * Test constructor
+     * Set all variables on null to enable testing
+     * @param str - will always be empty.
+     */
     public SpinWheelScreen(String str) {
         game = null;
         camera = null;
@@ -71,6 +92,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = null;
     }
 
+    /**
+     * Class constructor
+     * init variables, load skin, load images from assets
+     * set labels and table
+     * methods call
+     */
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
@@ -87,6 +114,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         challengeLabel = new Label(CHALLENGE_STRING, skin);
         descriptionLabel = new Label("", skin);
+
         gameButton = new TextButton("SPIELEN", skin);
 
         spinWheelTable = new Table();
@@ -94,8 +122,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         setupTextLabel(challengeLabel, 4);
         setupTextLabel(descriptionLabel, 3);
 
-        final String pathOfAtlas = "ui/spin_wheel_ui.atlas";
-        atlas = new TextureAtlas(pathOfAtlas);
+        atlas = new TextureAtlas(SPIN_WHEEL_ATLAS_PATH);
         wheelImage = setupSpinWheelImages("spin_wheel_image", TickTackBummGame.WIDTH / 4.9f, TickTackBummGame.HEIGHT / 2.5f);
         needleImage = setupSpinWheelImages("needle", (TickTackBummGame.WIDTH / 2.07f), (TickTackBummGame.HEIGHT / 1.53f));
         spinButtonImage = setupSpinWheelImages("spin", (TickTackBummGame.WIDTH / 2.31f), (TickTackBummGame.HEIGHT / 1.95f));
@@ -120,7 +147,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.addActor(spinWheelTable);
     }
 
-    // set up all parts of spinning wheel for UI
+    /**
+     * set up all parts of spinning wheel for UI
+     * @param path - path of atlas in assets
+     * @param xWidth - x position on UI/Screen
+     * @param yHeght - y position on UI/Screen
+     */
     private Image setupSpinWheelImages(String path, float xWidth, float yHeght) {
         Image image = new Image(atlas.findRegion(path));
         image.setPosition(xWidth, yHeght);
@@ -128,29 +160,36 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     }
 
-    // set listener for rotating on SPIN IMAGE in the center of wheel
+    /**
+     * Set listener for rotating on SPIN IMAGE in the center of wheel
+     * Timer for setting background color and game mode when spinning wheel stops
+     */
     public void btnSpinListener() {
         spinButtonImage.addListener(new ClickListener() {
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
                 spinButtonImage.clearListeners();
+
                 gameData.setCurrentGameMode(GameMode.NONE);
                 game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
+
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
-                // first time will always be false to check if we get needle on white point to repeat spinning
 
                 rotationAmount = randomNumb.nextInt(1800);
                 degree = setDegree(rotationAmount);
                 spinSpeed = getSpinSpeed(rotationAmount);
+
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
 
-                //set timer to get descrption label and background color when wheel stops
                 task = new Timer.Task() {
                     @Override
                     public void run() {
                         setBackgroundColor(degree);
                         setGameMode(degree);
+
                         // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
@@ -163,14 +202,20 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
 
-    // set up label
+    /**
+     * set up description label on UI
+     * @param label - text
+     * @param textScale - font size
+     */
     private void setupTextLabel(Label label, int textScale) {
         label.setAlignment(Align.center);
         label.setWrap(true);
         label.setFontScale(textScale);
     }
 
-    // set game button for going on next screen after getting challenge
+    /**
+     * set game button for going on next screen after getting challenge
+     */
     public void setupGameButton() {
         gameButton.addListener(new ClickListener() {
             @Override
@@ -201,7 +246,9 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.add(gameButton).width(300f);
     }
 
-    //set up descriptionLabel and current game mode, depending on received degrees value
+    /**
+     * set up descriptionLabel and current game mode, depending on received degrees value
+     */
     public void setGameMode(float degree) {
         if ((degree > 120 && degree <= 180) || (degree >= 300 && degree < 360)) {
             descriptionLabel.setText("Die Silbe muss am Anfang deines Wortes stehen.");
@@ -216,7 +263,9 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameData.setCurrentGameMode(gameMode);
     }
 
-    //set up background color depending on received degrees value
+    /**
+     * set up background color depending on received degrees value
+     */
     private void setBackgroundColor(float degree) {
         if (degree < 61) {
             color.set(Color.valueOf("0070C0"));
@@ -240,7 +289,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         }
         return retVal;
     }
-
 
     public float getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
