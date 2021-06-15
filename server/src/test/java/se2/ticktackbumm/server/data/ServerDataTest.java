@@ -25,14 +25,39 @@ class ServerDataTest {
         Assertions.assertNull(serverData.getGameData().getPlayerByConnectionId(0));
         Assertions.assertEquals(0, serverData.getGameData().getPlayers().size());
 
-        serverData.connectPlayer(0);
+        Assertions.assertNotNull(serverData.connectPlayer(0));
+
         Assertions.assertNotNull(serverData.getGameData().getPlayerByConnectionId(0));
+
         Assertions.assertEquals(1, serverData.getGameData().getPlayers().size());
     }
 
     @Test
-    void disconnectPlayer() {
+    void connectTooManyPlayers() {
+        Assertions.assertNull(serverData.getGameData().getPlayerByConnectionId(0));
+        Assertions.assertEquals(0, serverData.getGameData().getPlayers().size());
 
+        Assertions.assertNotNull(serverData.connectPlayer(0));
+        Assertions.assertNotNull(serverData.connectPlayer(1));
+        Assertions.assertNotNull(serverData.connectPlayer(2));
+        Assertions.assertNotNull(serverData.connectPlayer(3));
+        Assertions.assertNull(serverData.connectPlayer(4));
+        Assertions.assertNull(serverData.connectPlayer(5));
+
+        Assertions.assertNotNull(serverData.getGameData().getPlayerByConnectionId(0));
+        Assertions.assertNotNull(serverData.getGameData().getPlayerByConnectionId(1));
+        Assertions.assertNotNull(serverData.getGameData().getPlayerByConnectionId(2));
+        Assertions.assertNotNull(serverData.getGameData().getPlayerByConnectionId(3));
+        Assertions.assertNull(serverData.getGameData().getPlayerByConnectionId(4));
+        Assertions.assertNull(serverData.getGameData().getPlayerByConnectionId(5));
+
+        Assertions.assertEquals(4, serverData.getGameData().getPlayers().size());
+    }
+
+    @Test
+    void disconnectPlayer() {
+        connectTooManyPlayers();
+        serverData.disconnectPlayer(0);
     }
 
     @Test
