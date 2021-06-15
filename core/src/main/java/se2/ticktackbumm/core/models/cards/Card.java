@@ -21,7 +21,7 @@ public class Card {
     private final String[] infixArray = new String[]{"TER", "UT", "RDI", "LEN", "ULT", "TRA", "AHN", "KEL", "SON", "TEN"};
     private final String[] postfixArray = new String[]{"UNG", "SCH", "SER", "KEN", "CHE", "EIT", "ATZ", "NER", "ICH", "TUR"};
 
-    private final GameData gameData;
+    private GameData gameData;
     private GameMode gameMode;
 
     private final Texture backsideTexture;
@@ -44,6 +44,19 @@ public class Card {
     private OrthographicCamera camera;
 
     private boolean sendedToServer;
+
+    public Card(String str){
+        game = null;
+        gameData = null;
+        gameMode = null;
+        backSprite = null;
+        backsideTexture = null;
+        frontsideTexture = null;
+        font = null;
+        assetManager = null;
+        fontSprite = null;
+        camera = null;
+    }
 
 
     public Card() {
@@ -214,5 +227,11 @@ public class Card {
     }
     public void setGameMode(GameMode gameMode){
         this.gameMode = gameMode;
+    }
+    public GameData getGameData(){
+        return this.gameData;
+    }
+    public void setGameData(GameData gameData){
+        this.gameData = gameData;
     }
 }
