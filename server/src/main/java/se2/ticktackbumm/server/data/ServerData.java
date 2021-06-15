@@ -76,13 +76,8 @@ public class ServerData {
         if (player == null) return;
         Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
 
-        if (gameData.getPlayers().size() == 1) {
-            gameData.getPlayers().remove(0);
-            Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
-        } else {
-            gameData.getPlayers().remove(player.getPlayerId());
-            Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
-        }
+        gameData.getPlayers().remove(player.getPlayerId());
+        Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
 
         decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +

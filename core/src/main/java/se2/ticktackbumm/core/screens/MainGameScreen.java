@@ -363,6 +363,11 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void setWinnerScreen() {
         updatePlayerScores();
+        game.getNetworkClient().disconnectClient();
+        game.setLocalPlayer(null);
+
+        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+                "switching to MenuScreen");
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
