@@ -4,6 +4,7 @@ import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameUpdate {
@@ -12,20 +13,19 @@ public class GameUpdate {
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
     private String currentGameModeText;
+    private ArrayList<String> lockedWords;
 
     public GameUpdate() {
         // kryonet
     }
 
-//    public GameUpdate(List<Player> players) {
-//        this.players = players;
-//    }
-
     public GameUpdate(GameData gameData) {
         this.players = gameData.getPlayers();
         this.currentPlayerTurnIndex = gameData.getCurrentPlayerTurnIndex();
         this.currentGameMode = gameData.getCurrentGameMode();
-        this.currentGameModeText = gameData.getCurrentGameModeText();
+//        this.currentGameModeText = gameData.getCurrentGameModeText();
+        this.currentGameModeText = "UNG"; // TODO: testing only
+        this.lockedWords = gameData.getLockedWords();
     }
 
     public List<Player> getPlayers() {
@@ -42,5 +42,9 @@ public class GameUpdate {
 
     public String getCurrentGameModeText() {
         return currentGameModeText;
+    }
+
+    public ArrayList<String> getLockedWords() {
+        return lockedWords;
     }
 }

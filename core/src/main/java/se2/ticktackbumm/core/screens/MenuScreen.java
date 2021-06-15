@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class MenuScreen extends ScreenAdapter {
@@ -30,9 +29,6 @@ public class MenuScreen extends ScreenAdapter {
     // TickTackBumm resources
     private final TickTackBummGame game;
     private final Image backgroundImage;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
@@ -40,6 +36,8 @@ public class MenuScreen extends ScreenAdapter {
     private final TextButton rulesButton;
     private final TextButton exitButton;
     private final Table menuButtonTable;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
 
     public MenuScreen() {

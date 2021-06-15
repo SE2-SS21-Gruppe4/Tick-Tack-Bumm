@@ -11,6 +11,7 @@ import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
+import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class Bomb {
 
@@ -36,33 +37,33 @@ public class Bomb {
 
     private Music bombTick;
 
+    private SpinWheelScreen spinWheelScreen;
 
 
-
-    public Bomb(){
+    public Bomb() {
         tickTackBummGame = TickTackBummGame.getTickTackBummGame();
         assetManager = tickTackBummGame.getManager();
-        assetManager.load("bomb/bomb.png",Texture.class);
+        assetManager.load("bomb/bomb.png", Texture.class);
         assetManager.finishLoading();
 
         stage = new Stage();
 
         networkClient = tickTackBummGame.getNetworkClient();
 
-        bombTexture = assetManager.get("bomb/bomb.png",Texture.class);
+        bombTexture = assetManager.get("bomb/bomb.png", Texture.class);
         bombImage = new Image(bombTexture);
 
         bombState = BombState.NORMAL;
 
-       // radnomExplosion = new SecureRandom();
+        // radnomExplosion = new SecureRandom();
         //explode time is going to get random exploder via client message handler
         explodeTime = 10;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
-        assetManager.load("bombexplosion.png",Texture.class);
+        assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
-        explosionTexture = assetManager.get("bombexplosion.png",Texture.class);
+        explosionTexture = assetManager.get("bombexplosion.png", Texture.class);
 
         bombExplosion = new BombExplosion(explosionTexture,0.7f);
 
@@ -96,11 +97,12 @@ public class Bomb {
     public void drawBomb(SpriteBatch spriteBatch){
         if (bombState.equals(BombState.NORMAL)){
             bombTick.play();
-            spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
         }
         else{
-            bombTick.stop();
+            bombTick.pause();
         }
+        spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
+
     }
 
     public void restartBombSettings(){
@@ -110,16 +112,16 @@ public class Bomb {
 
 
 
-    public float getExplodeTime(){
+    private float getExplodeTime(){
         return this.explodeTime;
     }
-    public float getTimerToExplode(){
+    private int getTimerToExplode(){
         return this.timerToExplode;
     }
-    public void setTimerToExplode(float timerToExplode){
+    public void setTimerToExplode(int timerToExplode){
         this.timerToExplode = timerToExplode;
     }
-    public void setExplodeTime(float explodeTime){
+    public void setExplodeTime(int explodeTime){
         this.explodeTime = explodeTime;
     }
 

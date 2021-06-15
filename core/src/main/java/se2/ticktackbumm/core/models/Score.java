@@ -3,24 +3,21 @@ package se2.ticktackbumm.core.models;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-import java.util.ArrayList;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
+
+import java.util.ArrayList;
 
 public class Score {
     private final TickTackBummGame game;
     private final GameData gameData;
+    private final ArrayList<Label> playerScoreLabels;
     private Label player1;
     private Label player2;
     private Label player3;
     private Label player4;
     private Skin skin;
-
     private int[] playerScore;
-
-    private final ArrayList<Label> playerScoreLabels;
 
     public Score() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -63,36 +60,36 @@ public class Score {
         return player1;
     }
 
-    public Label getPlayer2() {
-        return player2;
-    }
-
-    public Label getPlayer3() {
-        return player3;
-    }
-
-    public Label getPlayer4() {
-        return player4;
-    }
-
-    public ArrayList<Label> getPlayerScoreLabels() {
-        return playerScoreLabels;
-    }
-
     public void setPlayer1(Label player1) {
         this.player1 = player1;
+    }
+
+    public Label getPlayer2() {
+        return player2;
     }
 
     public void setPlayer2(Label player2) {
         this.player2 = player2;
     }
 
+    public Label getPlayer3() {
+        return player3;
+    }
+
     public void setPlayer3(Label player3) {
         this.player3 = player3;
     }
 
+    public Label getPlayer4() {
+        return player4;
+    }
+
     public void setPlayer4(Label player4) {
         this.player4 = player4;
+    }
+
+    public ArrayList<Label> getPlayerScoreLabels() {
+        return playerScoreLabels;
     }
 
     @Override

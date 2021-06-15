@@ -9,26 +9,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import java.security.SecureRandom;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import java.security.SecureRandom;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class SpinWheelScreen extends ScreenAdapter {
     private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";
@@ -51,15 +44,35 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image wheelImage;
     private final Image needleImage;
     private final Image spinButtonImage;
-
-
     private final SecureRandom randomNumb;
     private final Timer timer;
-    private Timer.Task task;
     private final Color color;
+    private GameMode gameMode;
+    private Timer.Task task;
     private float rotationAmount;
     private float spinSpeed;
     private float degree;
+    private boolean isStart;
+
+    public SpinWheelScreen(String str) {
+        game = null;
+        camera = null;
+        gameData = null;
+        batch = null;
+        stage = null;
+        skin = null;
+        atlas = null;
+        spinWheelTable = null;
+        challengeLabel = null;
+        descriptionLabel = null;
+        gameButton = null;
+        wheelImage = null;
+        needleImage = null;
+        spinButtonImage = null;
+        randomNumb = null;
+        timer = null;
+        color = null;
+    }
 
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -123,6 +136,8 @@ public class SpinWheelScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 spinButtonImage.clearListeners();
+                gameData.setCurrentGameMode(GameMode.NONE);
+                game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
                 // first time will always be false to check if we get needle on white point to repeat spinning
 
@@ -190,21 +205,16 @@ public class SpinWheelScreen extends ScreenAdapter {
     //set up descriptionLabel and current game mode, depending on received degrees value
     public void setGameMode(float degree) {
         if ((degree > 120 && degree <= 180) || (degree >= 300 && degree < 360)) {
-            descriptionLabel.setText("Diese Silbe muss am Anfang deines Wortes stehen.");
+            descriptionLabel.setText("Die Silbe muss am Anfang deines Wortes stehen.");
             gameMode = GameMode.PREFIX;
         } else if ((degree > 0 && degree < 60) || (degree > 180 && degree <= 240)) {
-            descriptionLabel.setText("Diese Silbe muss in der Mitte deines Wortes zu finden sein.");
+            descriptionLabel.setText("Die Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
         } else{
-            descriptionLabel.setText("Diese Silbe muss am Ende deines Wortes stehen.");
+            descriptionLabel.setText("Die Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
         }
         gameData.setCurrentGameMode(gameMode);
-        game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameMode);
-        // TODO: testing only
-  //      gameData.setCurrentGameMode(GameMode.POSTFIX); // set game mode always to postfix
-
-
     }
 
     //set up background color depending on received degrees value
@@ -260,4 +270,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
+    public void setStart(boolean isStart) {
+        this.isStart = isStart;
+    }
+
+    public boolean getStart() {
+        return this.isStart;
+    }
 }

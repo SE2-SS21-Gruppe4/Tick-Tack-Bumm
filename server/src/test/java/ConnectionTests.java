@@ -2,16 +2,14 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import se2.ticktackbumm.core.network.NetworkConstants;
 import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 import se2.ticktackbumm.core.network.messages.server.SomeResponse;
 import se2.ticktackbumm.server.network.NetworkServer;
+
+import java.io.IOException;
 
 public class ConnectionTests {
     @Test
