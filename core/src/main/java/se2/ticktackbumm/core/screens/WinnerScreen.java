@@ -107,12 +107,6 @@ public class WinnerScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen()));
-
-                game.getNetworkClient().disconnectClient();
-                game.setLocalPlayer(null);
-
-                Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
-                        "switching to MenuScreen");
             }
         });
         sprite = new Sprite(background);

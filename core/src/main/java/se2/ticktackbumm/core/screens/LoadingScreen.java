@@ -139,9 +139,9 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
      */
     private void showLoadProgress() {
         long currentTimeStamp = TimeUtils.nanoTime();
-        if (currentTimeStamp - startTime > TimeUtils.millisToNanos(500)) {
+        if (currentTimeStamp - startTime > TimeUtils.millisToNanos(5)) {
             startTime = currentTimeStamp;
-            progress = progress + 10;
+            progress = progress + 1;
         }
 
         float progressBarWidth = ((float)TickTackBummGame.WIDTH / 100f) * progress;
