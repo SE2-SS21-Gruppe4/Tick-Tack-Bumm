@@ -42,6 +42,8 @@ public class Card {
 
     private OrthographicCamera camera;
 
+    private boolean sendedToServer;
+
 
     public Card() {
 
@@ -84,11 +86,14 @@ public class Card {
 
         camera = TickTackBummGame.getGameCamera();
 
+        sendedToServer = false;
+
     }
 
     public void drawCard(SpriteBatch spriteBatch){
         if (!isRevealed){
             drawBackSide(spriteBatch);
+            sendedToServer = false;
         }
         handleCardTouch(spriteBatch);
 
@@ -110,6 +115,10 @@ public class Card {
         }
 
         if (isRevealed){
+            if (!sendedToServer){
+                sendMessageToServer();
+                sendedToServer = true;
+            }
             drawFrontSide(spriteBatch);
         }
 
