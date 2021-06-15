@@ -71,6 +71,8 @@ public class ServerData {
     }
 
     public void disconnectPlayer(int connectionID) {
+        updatePlayerId(connectionID);
+
         Player player = gameData.getPlayerByConnectionId(connectionID);
         if (player == null) return;
         Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
@@ -78,11 +80,25 @@ public class ServerData {
         gameData.getPlayers().remove(player.getPlayerId());
         Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
 
+        updatePlayerId(connectionID);
+
         decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
                 ", " + playersReady + " players ready");
 
         NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
+    }
+
+    public void updatePlayerId(int connectionID) {
+        Player player = gameData.getPlayerByConnectionId(connectionID);
+        if (player == null) return;
+        List<Player> players = gameData.getPlayers();
+
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getConnectionId() == connectionID) {
+                player.setPlayerId(i);
+            }
+        }
     }
 
     public void incPlayersReady() {
