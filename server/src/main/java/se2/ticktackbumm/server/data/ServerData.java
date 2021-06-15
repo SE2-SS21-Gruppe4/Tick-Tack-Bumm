@@ -59,6 +59,10 @@ public class ServerData {
         this.winner = winner;
     }
 
+    public int getPlayersReady() {
+        return playersReady;
+    }
+
     public Player connectPlayer(int connectionId) {
         if (gameData.getPlayers().size() < MAX_PLAYERS) {
             Player newPlayer = new Player(connectionId, gameData.getPlayers().size());
