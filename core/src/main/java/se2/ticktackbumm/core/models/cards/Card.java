@@ -198,4 +198,21 @@ public class Card {
     public void setBackSprite(Sprite backSprite) {
         this.backSprite = backSprite;
     }
+
+    public String[] getPrefixArray(){
+        return this.prefixArray;
+    }
+    public String[] getInfixArray(){
+        return this.infixArray;
+    }
+    public String[] getPostfixArray(){
+        return this.postfixArray;
+    }
+
+    public GameMode getGameMode(){
+        return this.gameMode;
+    }
+    public void setGameMode(GameMode gameMode){
+        this.gameMode = gameMode;
+    }
 }
