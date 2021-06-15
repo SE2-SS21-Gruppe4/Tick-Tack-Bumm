@@ -31,18 +31,8 @@ public class TickTackBummGame extends Game {
 
     private BitmapFont font;
 
-    public static TickTackBummGame getTickTackBummGame() {
-        if (tickTackBummGame == null) {
-            tickTackBummGame = new TickTackBummGame();
-        }
-        return tickTackBummGame;
-    }
 
-    public static OrthographicCamera getGameCamera() {
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
-        return camera;
-    }
+
 
     @Override
     public void create() {
