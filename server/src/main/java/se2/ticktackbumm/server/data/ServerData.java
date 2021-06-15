@@ -2,7 +2,6 @@ package se2.ticktackbumm.server.data;
 
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.player.ScoreComparator;
@@ -13,11 +12,9 @@ import java.util.List;
 
 public class ServerData {
 
-    private final String LOG_TAG = "SERVER_DATA";
-
     private static final int MAX_PLAYERS = 4;
     private static final int MIN_PLAYERS = 2;
-
+    private final String LOG_TAG = "SERVER_DATA";
     private final Server kryoServer;
     private final GameData gameData;
     private final GameState gameState;
@@ -74,6 +71,8 @@ public class ServerData {
     }
 
     public void disconnectPlayer(int connectionID) {
+        updatePlayerId(connectionID);
+
         Player player = gameData.getPlayerByConnectionId(connectionID);
         if (player == null) return;
         Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
@@ -81,11 +80,25 @@ public class ServerData {
         gameData.getPlayers().remove(player.getPlayerId());
         Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
 
+        updatePlayerId(connectionID);
+
         decPlayersReady();
         Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
                 ", " + playersReady + " players ready");
 
         NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
+    }
+
+    public void updatePlayerId(int connectionID) {
+        Player player = gameData.getPlayerByConnectionId(connectionID);
+        if (player == null) return;
+        List<Player> players = gameData.getPlayers();
+
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getConnectionId() == connectionID) {
+                player.setPlayerId(i);
+            }
+        }
     }
 
     public void incPlayersReady() {

@@ -1,7 +1,6 @@
 package se2.ticktackbumm.core.player;
 
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.data.Avatars;
 
 public class Player {
@@ -50,6 +49,10 @@ public class Player {
 
     public int getPlayerId() {
         return playerId;
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public int getGameScore() {
