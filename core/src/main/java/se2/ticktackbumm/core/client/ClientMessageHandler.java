@@ -2,12 +2,13 @@ package se2.ticktackbumm.core.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.server.*;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
@@ -43,7 +44,7 @@ public class ClientMessageHandler {
      * The game's message sender, later contained in the singleton instance of the game class. Provides
      * functionality to send messages from client to server.
      */
-    private final Client client;
+    //private final Client client;
     private final ClientMessageSender clientMessageSender;
 
     /**
@@ -174,6 +175,6 @@ public class ClientMessageHandler {
     }
 
     public void handleCardOpened(CardOpened object) {
-        game.updateGameWithWord(object.getWord());
+        gameData.setCurrentGameModeText(object.getWord());
     }
 }
