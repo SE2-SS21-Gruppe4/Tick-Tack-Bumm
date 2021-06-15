@@ -44,20 +44,20 @@ public class GameData {
         return players;
     }
 
-    public int getCurrentPlayerTurnIndex() {
-        return currentPlayerTurnIndex;
-    }
-
-    public GameMode getCurrentGameMode() {
-        return currentGameMode;
-    }
-
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
+    public int getCurrentPlayerTurnIndex() {
+        return currentPlayerTurnIndex;
+    }
+
     public void setCurrentPlayerTurnIndex(int currentPlayerTurnIndex) {
         this.currentPlayerTurnIndex = currentPlayerTurnIndex;
+    }
+
+    public GameMode getCurrentGameMode() {
+        return currentGameMode;
     }
 
     public void setCurrentGameMode(GameMode currentGameMode) {

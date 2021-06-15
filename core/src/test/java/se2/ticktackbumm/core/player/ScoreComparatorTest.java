@@ -4,9 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se2.ticktackbumm.core.models.Score;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ScoreComparatorTest {
     Player player1;
@@ -30,20 +27,20 @@ class ScoreComparatorTest {
     void compareIfResultEquals() {
         player1.setGameScore(5);
         player2.setGameScore(5);
-        Assertions.assertEquals(0,scoreComparator.compare(player1,player2));
+        Assertions.assertEquals(0, scoreComparator.compare(player1, player2));
     }
 
     @Test
     void compareIfScoreOfPlayer1GreaterThanScoreOfPlayer2() {
         player1.setGameScore(3);
         player2.setGameScore(1);
-        Assertions.assertEquals(1,scoreComparator.compare(player1,player2));
+        Assertions.assertEquals(1, scoreComparator.compare(player1, player2));
     }
 
     @Test
     void compareIfScoreOfPlayer1LowerThanScoreOfPlayer2() {
         player1.setGameScore(3);
         player2.setGameScore(8);
-        Assertions.assertEquals(-1,scoreComparator.compare(player1,player2));
+        Assertions.assertEquals(-1, scoreComparator.compare(player1, player2));
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
  * Kryonet Helper Class.
  */
 public class KryoRegisterer {
+
     /**
-     * Register all our message classes on the given kryo instance.
+     * Register all message classes and classes contained in these messages on the given kryo instance.
      *
      * @param kryo the Kryo instance to register Messages on
      */
     public static void registerMessages(Kryo kryo) {
-
         // register messages
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
@@ -34,7 +34,8 @@ public class KryoRegisterer {
         kryo.register(NextTurn.class);
         kryo.register(NextRound.class);
         kryo.register(GameFinished.class);
-        kryo.register(BombStart.class);
+        kryo.register(StartBomb.class);
+        kryo.register(SpinWheelStarted.class);
         kryo.register(SpinWheelFinished.class);
         kryo.register(CardOpened.class);
 
@@ -44,7 +45,7 @@ public class KryoRegisterer {
         kryo.register(Avatars.class);
         kryo.register(GameMode.class);
 
-        // register java classes to sind in messages
+        // register java classes to send in messages
         kryo.register(List.class);
         kryo.register(ArrayList.class);
     }

@@ -31,6 +31,19 @@ public class TickTackBummGame extends Game {
 
     private BitmapFont font;
 
+    public static TickTackBummGame getTickTackBummGame() {
+        if (tickTackBummGame == null) {
+            tickTackBummGame = new TickTackBummGame();
+        }
+        return tickTackBummGame;
+    }
+
+    public static OrthographicCamera getGameCamera() {
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
+        return camera;
+    }
+
     @Override
     public void create() {
         gameData = new GameData();
@@ -125,12 +138,32 @@ public class TickTackBummGame extends Game {
         } else {
             gameScreen.hideControls();
             // hide waiting for spin wheel message
+
         }
 
         gameScreen.updateCurrentPlayerMarker();
     }
 
+
+    public void spinWheelStarted() {
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+           // hide gameMode and set new Banner
+            gameScreen.hideGameMode();
+        }
+    }
+
+    public void spinWheelFinished(){
+
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+            //     gameScreen.hideBanner();
+            gameScreen.updateGameMode(gameData.getCurrentGameMode());
+        }
+    }
+
     public void startBomb() {
+
         networkClient.getClientMessageSender().sendStartBomb();
     }
 

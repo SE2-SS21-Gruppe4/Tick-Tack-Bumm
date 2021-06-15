@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
-import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.network.messages.client.*;
 
@@ -13,56 +12,97 @@ import se2.ticktackbumm.core.network.messages.client.*;
  */
 public class ClientMessageSender {
 
+    /**
+     * The log tag is used to provide unique logging for the class.
+     */
     private final String LOG_TAG = "SERVER_CLIENT_SENDER";
 
     /**
      * Client instance to handle sending for.
      */
-    private final Client client;
+    private final Client kryoClient;
 
     /**
      * Class constructor.
      * Creates a message sender, that handles the sending of client messages to the server.
      *
-     * @param client the client to handle message sending for
+     * @param kryoClient the client to handle message sending for
      */
-    public ClientMessageSender(Client client) {
-        this.client = client;
+    public ClientMessageSender(Client kryoClient) {
+        this.kryoClient = kryoClient;
     }
 
+    /**
+     * Helper method to allow easy logging of messages to send.
+     *
+     * @param messageType message type to log
+     */
     private void logSendingMessage(String messageType) {
         Log.info(LOG_TAG, "Sending message " + messageType + " from player: " +
                 TickTackBummGame.getTickTackBummGame().getLocalPlayer().getPlayerName());
     }
 
-    // Test method
+    /**
+     * Method and message to test client server connection.
+     * Sends a simple message containing a text to the server.
+     *
+     * @param text the outgoing message text
+     */
     public void sendSomeRequest(String text) {
-        client.sendTCP(new SomeRequest(text));
+        kryoClient.sendTCP(new SomeRequest(text));
     }
 
+    /**
+     * Sends a {@link PlayerTaskCompleted} message to the server.
+     *
+     * @param userInput the user input to send to the server
+     */
     public void sendPlayerTaskCompleted(String userInput) {
         logSendingMessage("TaskCompleted");
-        client.sendTCP(new PlayerTaskCompleted(userInput));
+        kryoClient.sendTCP(new PlayerTaskCompleted(userInput));
     }
 
+    /**
+     * Sends a {@link BombExploded} message to the server.
+     */
     public void sendBombExploded() {
         logSendingMessage("BombExploded");
-        client.sendTCP(new BombExploded());
+        kryoClient.sendTCP(new BombExploded());
     }
 
+    /**
+     * Sends a {@link PlayerReady} message to the server with the chosen player name and avatar.
+     *
+     * @param playerName   the player's name to send to the server
+     * @param playerAvatar the player's avatar to send to the server
+     */
     public void sendPlayerReady(String playerName, Avatars playerAvatar) {
         logSendingMessage("PlayerReady");
-        client.sendTCP(new PlayerReady(playerName, playerAvatar));
+        kryoClient.sendTCP(new PlayerReady(playerName, playerAvatar));
     }
 
-    public void sendStartBomb(){
+    /**
+     * Sends a {@link StartBomb} message to the server.
+     */
+    public void sendStartBomb() {
         logSendingMessage("BombStart");
-        client.sendTCP(new BombStart());
+        kryoClient.sendTCP(new StartBomb());
     }
 
+    /**
+     * Sends a {@link SpinWheelFinished} message to the server with the randomly chose game mode
+     * from the spin wheel.
+     *
+     * @param gameMode the game mode randomly chosen in spin wheel
+     */
     public void spinWheelFinished(GameMode gameMode) {
         logSendingMessage("SpinWheelFinished");
-        client.sendTCP(new SpinWheelFinished(gameMode));
+        kryoClient.sendTCP(new SpinWheelFinished(gameMode));
+    }
+
+    public void spinWheelStarted(GameMode currentGameMode) {
+        logSendingMessage("SpinWheelStarted");
+        kryoClient.sendTCP(new SpinWheelStarted(currentGameMode));
     }
 
     public void sendCardOpened(String word){

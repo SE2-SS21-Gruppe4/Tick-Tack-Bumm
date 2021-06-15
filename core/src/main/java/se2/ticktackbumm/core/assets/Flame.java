@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class Flame {
@@ -26,6 +25,6 @@ public class Flame {
         animationTime += delta;
         TextureRegion currentFrame = lambAnimation.getKeyFrame(animationTime);
         spriteBatch.draw(currentFrame, 80, 650, 250, 900);
-        spriteBatch.draw(currentFrame, TickTackBummGame.WIDTH-190f, 650, 250, 900);
+        spriteBatch.draw(currentFrame, TickTackBummGame.WIDTH - 190f, 650, 250, 900);
     }
 }

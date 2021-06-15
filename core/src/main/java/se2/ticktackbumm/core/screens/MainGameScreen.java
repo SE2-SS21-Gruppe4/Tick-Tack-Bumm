@@ -19,10 +19,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
@@ -32,21 +32,25 @@ import java.util.Vector;
 
 public class MainGameScreen extends ScreenAdapter{
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
+    private static final int MAX_SCORE = 10;
+    private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
+    private static final String MODE_TAG = "Game Mode: ";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
     private final NetworkClient networkClient;
     private final BitmapFont font;
-    private BitmapFont ttfBitmapFont;
     private final SpriteBatch batch;
 
+    //Game Mode & Banner
     private final GameData gameData;
+    private String gameModeString;
+    private final BitmapFont textGameMode;
+    private final BitmapFont textBanner;
+    private String bannerString;
 
     private final Score score;
-
-    private int[] playerScore;
-
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
@@ -65,18 +69,15 @@ public class MainGameScreen extends ScreenAdapter{
     private final Table score4Table;
 
     private final Card card;
-
-    //Bomb and explosion
-    private Bomb bomb;
-
     private final BitmapFont textMaxScore;
-    private static final int MAX_SCORE = 10;
-    private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
-
     private final Label player1;
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private BitmapFont ttfBitmapFont;
+    private int[] playerScore;
+    //Bomb and explosion
+    private Bomb bomb;
 
 
     public MainGameScreen() {
@@ -96,6 +97,16 @@ public class MainGameScreen extends ScreenAdapter{
 
         // card
         card = new Card();
+
+        // gameMode & banner
+        textGameMode = new BitmapFont();
+        textGameMode.setColor(Color.WHITE);
+        textGameMode.getData().setScale(3);
+        gameModeString = "";
+        textBanner = new BitmapFont();
+        textBanner.setColor(Color.WHITE);
+        textBanner.getData().setScale(4);
+        bannerString = "";
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -270,10 +281,12 @@ public class MainGameScreen extends ScreenAdapter{
         card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
+        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
+        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-30f);
         batch.end();
     }
 
-    public void initTable1Unfocused(){
+    public void initTable1Unfocused() {
         score1Table.reset();
         score1Table.add(score.getPlayer1());
         score1Table.row();
@@ -282,7 +295,8 @@ public class MainGameScreen extends ScreenAdapter{
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
     }
-    public void initTable2Unfocused(){
+
+    public void initTable2Unfocused() {
         score2Table.reset();
         score2Table.add(score.getPlayer2());
         score2Table.row();
@@ -291,7 +305,8 @@ public class MainGameScreen extends ScreenAdapter{
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
     }
-    public void initTable3Unfocused(){
+
+    public void initTable3Unfocused() {
         score3Table.reset();
         score3Table.add(score.getPlayer3());
         score3Table.row();
@@ -300,7 +315,8 @@ public class MainGameScreen extends ScreenAdapter{
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
     }
-    public void initTable4Unfocused(){
+
+    public void initTable4Unfocused() {
         score4Table.reset();
         score4Table.add(score.getPlayer4());
         score4Table.row();
@@ -309,7 +325,8 @@ public class MainGameScreen extends ScreenAdapter{
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
     }
-    public void initTable1Focused(){
+
+    public void initTable1Focused() {
         score1Table.reset();
         score1Table.add(score.getPlayer1());
         score1Table.row();
@@ -318,7 +335,8 @@ public class MainGameScreen extends ScreenAdapter{
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
     }
-    public void initTable2Focused(){
+
+    public void initTable2Focused() {
         score2Table.reset();
         score2Table.add(score.getPlayer2());
         score2Table.row();
@@ -327,7 +345,8 @@ public class MainGameScreen extends ScreenAdapter{
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
     }
-    public void initTable3Focused(){
+
+    public void initTable3Focused() {
         score3Table.reset();
         score3Table.add(score.getPlayer3());
         score3Table.row();
@@ -336,7 +355,8 @@ public class MainGameScreen extends ScreenAdapter{
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
     }
-    public void initTable4Focused(){
+
+    public void initTable4Focused() {
         score4Table.reset();
         score4Table.add(score.getPlayer4());
         score4Table.row();
@@ -522,5 +542,32 @@ public class MainGameScreen extends ScreenAdapter{
 
     public Bomb getBomb() {
         return this.bomb;
+    }
+
+
+    public void updateGameMode(GameMode gameMode) {
+
+        switch (gameMode){
+            case PREFIX:
+                gameModeString ="TICK";
+                break;
+
+            case INFIX:
+                gameModeString ="TICK...TACK";
+                break;
+
+            case POSTFIX:
+                gameModeString ="BOMBE";
+                break;
+
+        }
+        bannerString = "";
+    }
+
+    //Hide game mode and set banner for other player's
+    public void hideGameMode(){
+        gameModeString = "";
+        bannerString = "Warte bis Drehrad fertig ist.";
+
     }
 }

@@ -11,7 +11,7 @@ import se2.ticktackbumm.core.player.Player;
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.
  */
-public class    NetworkServerListener extends Listener {
+public class NetworkServerListener extends Listener {
 
     private final String LOG_TAG = "NETWORK_SERVER_LISTENER";
 
@@ -71,13 +71,17 @@ public class    NetworkServerListener extends Listener {
             Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
             serverMessageHandler.handlePlayerReady((PlayerReady) object, connection.getID());
 
-        } else if (object instanceof BombStart) {
-            Log.info(LOG_TAG,"Received message BombStart from ID: " + connection.getID());
+        } else if (object instanceof StartBomb) {
+            Log.info(LOG_TAG, "Received message BombStart from ID: " + connection.getID());
             serverMessageHandler.handleBombStart();
 
-        } else if (object instanceof SpinWheelFinished){
-            Log.info(LOG_TAG,"Received message SpinWheelFinished from ID: " + connection.getID());
+        } else if (object instanceof SpinWheelFinished) {
+            Log.info(LOG_TAG, "Received message SpinWheelFinished from ID: " + connection.getID());
             serverMessageHandler.handleSpinWheelFinished(((SpinWheelFinished) object).getGameMode());
+
+        } else if (object instanceof SpinWheelStarted) {
+            Log.info(LOG_TAG,"Received message SpinWheelStarted from ID: " + connection.getID());
+            serverMessageHandler.handleSpinWheelStarted(((SpinWheelStarted) object).getGameMode());
         }
         else if (object instanceof CardOpened){
             Log.info(LOG_TAG,"Received message CardOpened from ID: " + connection.getID());
