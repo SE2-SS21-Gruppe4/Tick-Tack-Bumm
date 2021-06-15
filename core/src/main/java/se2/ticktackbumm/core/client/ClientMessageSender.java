@@ -107,6 +107,6 @@ public class ClientMessageSender {
 
     public void sendCardOpened(String word){
         logSendingMessage("Card opened");
-        client.sendTCP(new CardOpened(word));
+        kryoClient.sendTCP(new CardOpened(word));
     }
 }
