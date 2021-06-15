@@ -22,6 +22,7 @@ public class Card {
     private final String[] postfixArray = new String[]{"UNG", "SCH", "SER", "KEN", "CHE", "EIT", "ATZ", "NER", "ICH", "TUR"};
 
     private final GameData gameData;
+    private GameMode gameMode;
 
     private final Texture backsideTexture;
 
@@ -51,8 +52,7 @@ public class Card {
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
-        //Only for testing
-        gameData.setCurrentGameMode(GameMode.PREFIX);
+        gameMode = gameData.getCurrentGameMode();
 
 
         isRevealed = false;
@@ -77,8 +77,6 @@ public class Card {
         frontsideTexture = assetManager.get("card/frontside.png", Texture.class);
 
         randomWord = getWordDependOnMode();
-
-        gameData.setCurrentGameModeText(randomWord);
 
 
         fontSprite = new Sprite(frontsideTexture);
@@ -147,7 +145,7 @@ public class Card {
 
 
     public String getWordDependOnMode() {
-        switch (gameData.getCurrentGameMode()) {
+        switch (gameMode) {
             case PREFIX:
                 return getRandomWord(prefixArray);
 
