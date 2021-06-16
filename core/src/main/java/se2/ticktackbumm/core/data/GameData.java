@@ -22,7 +22,7 @@ public class GameData {
     private String currentGameModeText;
     private ArrayList<String> lockedWords;
 
-    private String wordFromCard;
+    private boolean revealedCard;
 
 
     public GameData() {
@@ -33,7 +33,10 @@ public class GameData {
         currentPlayerTurnIndex = 0;
         currentGameMode = GameMode.NONE;
         lockedWords = new ArrayList<>();
-        wordFromCard = "";
+
+        revealedCard = false;
+        currentGameModeText = "";
+
     }
 
     public int getMaxGameScore() {
@@ -84,11 +87,11 @@ public class GameData {
         this.lockedWords = new ArrayList<>();
     }
 
-    public String getWordFromCard(){
-        return this.wordFromCard;
+    public boolean isRevealedCard(){
+        return this.revealedCard;
     }
-    public void setWordFromCard(String word){
-        this.wordFromCard = word;
+    public void setRevealedCard(boolean revealedCard){
+        this.revealedCard = revealedCard;
     }
 
     public int[] getPlayerScores() {
