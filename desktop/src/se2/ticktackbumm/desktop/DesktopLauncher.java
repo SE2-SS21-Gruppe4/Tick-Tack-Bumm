@@ -6,14 +6,14 @@ import se2.ticktackbumm.core.TickTackBummGame;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
-        TexturePacker.Settings settings = new TexturePacker.Settings();
+        /*TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.maxHeight = 4096;
         settings.maxWidth = 4096;
         settings.edgePadding = true;
         settings.duplicatePadding = true;
         settings.silent = true;
         settings.filterMin = Texture.TextureFilter.Linear;
-        settings.filterMag = Texture.TextureFilter.Linear;
+        settings.filterMag = Texture.TextureFilter.Linear;*/
         //TexturePacker.process(settings, "android/assets/explosion", "android/assets", "explosion");
         //TexturePacker.process(settings, "android/assets/flameLoop", "android/assets", "flameLoop");
         //TexturePacker.process(settings, "android/assets/firework", "android/assets", "lamb");
