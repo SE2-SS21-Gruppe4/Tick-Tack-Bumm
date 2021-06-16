@@ -151,7 +151,7 @@ public class ClientMessageHandler {
     public void handleGameFinished(GameFinished gameFinished) {
         Log.info(LOG_TAG, "<GameFinished> Finishing game; displaying final scores");
         Log.info(LOG_TAG, "<GameFinished> " + Arrays.toString(gameFinished.getPlacedPlayers()));
-
+        gameData.setPlacedPlayers(gameFinished.getPlacedPlayers());
         game.finishGame();
     }
 
