@@ -77,8 +77,8 @@ public class ServerMessageSender {
 
     public void sendSpinWheelStarted() { server.sendToAllTCP((new SpinWheelStarted())); }
 
-    public void sendCardOpened(String word) {
+    public void sendCardOpened() {
         Log.info(LOG_TAG, "Sending message CardOpened");
-        server.sendToAllTCP(new CardOpened(word));
+        server.sendToAllTCP(new CardOpened());
     }
 }
