@@ -31,18 +31,8 @@ public class TickTackBummGame extends Game {
 
     private BitmapFont font;
 
-    public static TickTackBummGame getTickTackBummGame() {
-        if (tickTackBummGame == null) {
-            tickTackBummGame = new TickTackBummGame();
-        }
-        return tickTackBummGame;
-    }
 
-    public static OrthographicCamera getGameCamera() {
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
-        return camera;
-    }
+
 
     @Override
     public void create() {
@@ -56,6 +46,19 @@ public class TickTackBummGame extends Game {
 
         // display loading-screen on startup
         setScreen(new LoadingScreen());
+    }
+
+    public static TickTackBummGame getTickTackBummGame() {
+        if (tickTackBummGame == null) {
+            tickTackBummGame = new TickTackBummGame();
+        }
+        return tickTackBummGame;
+    }
+
+    public static OrthographicCamera getGameCamera() {
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(false, TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT);
+        return camera;
     }
 
     public AssetManager getManager() {
@@ -154,6 +157,16 @@ public class TickTackBummGame extends Game {
         networkClient.getClientMessageSender().sendStartBomb();
     }
 
+    public void openCard(){
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen)  this.getScreen();
+
+            gameScreen.updateCardOpen(true);
+            gameScreen.updateCardWord(gameData.getCurrentGameModeText());
+        }
+     }
+
+
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
@@ -170,10 +183,15 @@ public class TickTackBummGame extends Game {
         gameScreen.getBomb().setExplodeTime(timer);
     }
 
+    public void setSpinWheelFinished(GameMode gameMode) {
+        gameData.setCurrentGameMode(gameMode);
+    }
 
     @Override
     public void dispose() {
         manager.dispose();
         batch.dispose();
     }
+
+
 }

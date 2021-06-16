@@ -102,4 +102,12 @@ public class ServerMessageHandler {
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendSpinWheelStarted();
     }
+
+    public void handleCardOpened(String word) {
+        serverData.getGameData().setRevealedCard(true);
+        serverData.getGameData().setCurrentGameModeText(word);
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendCardOpened();
+
+    }
 }

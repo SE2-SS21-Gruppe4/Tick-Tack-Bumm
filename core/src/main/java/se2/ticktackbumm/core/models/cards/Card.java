@@ -3,102 +3,230 @@ package se2.ticktackbumm.core.models.cards;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
+import se2.ticktackbumm.core.data.GameMode;
 
 import java.security.SecureRandom;
 
 public class Card {
 
-    private final AssetManager assetManager;
+    private final String[] prefixArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
+    private final String[] infixArray = new String[]{"TER", "UT", "RDI", "LEN", "ULT", "TRA", "AHN", "KEL", "SON", "TEN"};
+    private final String[] postfixArray = new String[]{"UNG", "SCH", "SER", "KEN", "CHE", "EIT", "ATZ", "NER", "ICH", "TUR"};
 
-    private final String[] syllableArray = new String[]{"SPA", "VOR", "EIT", "ANG", "SAM", "FRE", "GER", "ACK", "EXP", "UNG"};
-
-    private final GameData gameData;
-    private final Stage stage;
+    private GameData gameData;
+    private GameMode gameMode;
 
     private final Texture backsideTexture;
-    private final Image backsideImage;
 
     private final Texture frontsideTexture;
-    private final Image frontsideImage;
-    private final Label cardWordLabel;
 
-    private final SecureRandom random;
-    private boolean isRevealed; // TODO: card flip also represented for other players; add to game data?
+    private boolean isRevealed;
+
+    private BitmapFont font;
+    private String randomWord;
+
+
+    private AssetManager assetManager;
+    private TickTackBummGame game;
+
+
+    private Sprite fontSprite;
+    private Sprite backSprite;
+
+    private OrthographicCamera camera;
+
+    private boolean sendedToServer;
+
+    public Card(String str){
+        game = null;
+        gameData = null;
+        gameMode = null;
+        backSprite = null;
+        backsideTexture = null;
+        frontsideTexture = null;
+        font = null;
+        assetManager = null;
+        fontSprite = null;
+        camera = null;
+    }
+
 
     public Card() {
-        assetManager = TickTackBummGame.getTickTackBummGame().getManager();
+
+        game = TickTackBummGame.getTickTackBummGame();
+        assetManager = game.getManager();
+
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
-        stage = new Stage();
-        random = new SecureRandom();
+        gameMode = gameData.getCurrentGameMode();
+
 
         isRevealed = false;
 
-        // TODO: load and get with AssetManager
+        font = new BitmapFont();
+        font.setColor(Color.CORAL);
+        font.getData().setScale(7);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+
+        assetManager.load("card/backside.png", Texture.class);
+        assetManager.finishLoading();
+
         backsideTexture = assetManager.get("card/backside.png", Texture.class);
-        backsideImage = new Image(backsideTexture);
 
-        // TODO: add switch over game modes?
-        gameData.setCurrentGameModeText(getRandomSyllable());
-        // TODO: testing only
-        gameData.setCurrentGameModeText("UNG"); // set syllable always to UNG for testing
 
-        // TODO: load and get with AssetManager
+        backSprite = new Sprite(backsideTexture);
+
+        assetManager.load("card/frontside.png", Texture.class);
+        assetManager.finishLoading();
+
         frontsideTexture = assetManager.get("card/frontside.png", Texture.class);
-        frontsideImage = new Image(frontsideTexture);
 
-        // TODO: use skin instead of LabelStyle
-        cardWordLabel = new Label(gameData.getCurrentGameModeText(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        randomWord = getWordDependOnMode();
 
-        setupBackSide();
+
+        fontSprite = new Sprite(frontsideTexture);
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
+
+        camera = TickTackBummGame.getGameCamera();
+
+        sendedToServer = false;
+
     }
 
-    public void draw() {
-        if (Gdx.input.isTouched()) {
-            setupFrontSide();
+    public void drawCard(SpriteBatch spriteBatch){
+        handleCardTouch(spriteBatch);
+        if (!isRevealed){
+            drawBackSide(spriteBatch);
+            sendedToServer = false;
+        }
+        else{
+            drawFrontSide(spriteBatch);
         }
 
-        stage.draw();
     }
 
-    // TODO: refactor draw methods/render methods
-    public void setupBackSide() {
-        setActorSettings(backsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        stage.addActor(backsideImage);
+    public void handleCardTouch(SpriteBatch spriteBatch) {
+        Vector3 touchPoint = new Vector3();
+
+        if (Gdx.input.isTouched()) {
+            touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            camera.unproject(touchPoint);
+            if (touchPoint.x >= this.backSprite.getX() && touchPoint.x <= this.backSprite.getX() + this.backSprite.getWidth()) {
+                if (touchPoint.y > this.backSprite.getY() && touchPoint.y < this.backSprite.getY() + this.backSprite.getHeight()) {
+                    if (!isRevealed){
+                        isRevealed = true;
+                        sendMessageToServer();
+                    }
+                }
+            }
+        }
+
     }
 
-    // TODO: refactor draw methods/render methods
-    public void setupFrontSide() {
-        cardWordLabel.setFontScale(4);
+    public void drawBackSide(SpriteBatch spriteBatch) {
 
-        setActorSettings(frontsideImage, Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f, 400, 200);
-        setActorSettings(cardWordLabel, Gdx.graphics.getWidth() / 2.0f - 50, Gdx.graphics.getHeight() / 2.0f + 110, cardWordLabel.getWidth(), cardWordLabel.getHeight());
-
-        stage.addActor(frontsideImage);
-        stage.addActor(cardWordLabel);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f +550, 500, 300);
+        backSprite.draw(spriteBatch);
     }
 
-    public String getRandomSyllable() {
-        return syllableArray[random.nextInt(syllableArray.length)];
+    public void drawFrontSide(SpriteBatch spriteBatch) {
+        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
+        fontSprite.draw(spriteBatch);
+        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
-    // TODO: refactor to have more logic, split image and label?
-    public void setActorSettings(Actor actor, float positionX, float positionY, float width, float height) {
-        actor.setBounds(positionX, positionY, width, height);
+
+    public void sendMessageToServer(){
+        if (!sendedToServer){
+            this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
+            sendedToServer = true;
+        }
     }
+
+
+    public String getWordDependOnMode() {
+        switch (gameMode) {
+            case PREFIX:
+                return getRandomWord(prefixArray);
+
+            case INFIX:
+                return getRandomWord(infixArray);
+
+
+            case POSTFIX:
+                return getRandomWord(postfixArray);
+
+            default:
+                //TODO check if in this case backside should be drawn
+                return null;
+        }
+    }
+
+    public String getRandomWord(String[] words) {
+        return words[new SecureRandom().nextInt(words.length)];
+    }
+
 
     public boolean isRevealed() {
         return isRevealed;
     }
 
-    public void setRevealed(boolean isRevealed) {
-        this.isRevealed = isRevealed;
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
+
+    public String getRandomWord() {
+        return this.randomWord;
+    }
+
+    public void setRandomWord(String randomWord) {
+        this.randomWord = randomWord;
+    }
+
+    public Sprite getFontSprite() {
+        return fontSprite;
+    }
+
+    public void setFontSprite(Sprite fontSprite) {
+        this.fontSprite = fontSprite;
+    }
+
+    public Sprite getBackSprite() {
+        return backSprite;
+    }
+
+    public void setBackSprite(Sprite backSprite) {
+        this.backSprite = backSprite;
+    }
+
+    public String[] getPrefixArray(){
+        return this.prefixArray;
+    }
+    public String[] getInfixArray(){
+        return this.infixArray;
+    }
+    public String[] getPostfixArray(){
+        return this.postfixArray;
+    }
+
+    public GameMode getGameMode(){
+        return this.gameMode;
+    }
+    public void setGameMode(GameMode gameMode){
+        this.gameMode = gameMode;
+    }
+    public GameData getGameData(){
+        return this.gameData;
+    }
+    public void setGameData(GameData gameData){
+        this.gameData = gameData;
     }
 }

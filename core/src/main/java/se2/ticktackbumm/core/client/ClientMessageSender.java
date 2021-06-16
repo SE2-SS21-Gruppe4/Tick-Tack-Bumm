@@ -104,4 +104,9 @@ public class ClientMessageSender {
         logSendingMessage("SpinWheelStarted");
         kryoClient.sendTCP(new SpinWheelStarted(currentGameMode));
     }
+
+    public void sendCardOpened(String word){
+        logSendingMessage("Card opened");
+        kryoClient.sendTCP(new CardOpened(word));
+    }
 }

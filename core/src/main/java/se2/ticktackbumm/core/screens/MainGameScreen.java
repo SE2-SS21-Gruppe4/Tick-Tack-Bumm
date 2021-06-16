@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -26,7 +28,9 @@ import se2.ticktackbumm.core.models.bomb.Bomb;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
-public class MainGameScreen extends ScreenAdapter {
+import java.util.Vector;
+
+public class MainGameScreen extends ScreenAdapter{
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
@@ -74,6 +78,7 @@ public class MainGameScreen extends ScreenAdapter {
     private int[] playerScore;
     //Bomb and explosion
     private Bomb bomb;
+
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -254,10 +259,14 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
+
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
-        // TODO: show card backside again
-        // TODO: set new random syllable for card frontside
+
+        card.setRevealed(false);
+
+        String newRandomWord = card.getWordDependOnMode();
+        card.setRandomWord(newRandomWord);
     }
 
 
@@ -267,9 +276,9 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        bomb.renderBomb(delta, batch);
+     //   bomb.renderBomb(delta, batch);
         stage.draw();
-        card.draw();
+        card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
@@ -388,6 +397,9 @@ public class MainGameScreen extends ScreenAdapter {
     public Bomb getBomb() {
         return this.bomb;
     }
+    public Card getCard(){
+        return this.card;
+    }
 
 
     public void updateGameMode(GameMode gameMode) {
@@ -407,6 +419,14 @@ public class MainGameScreen extends ScreenAdapter {
 
         }
         bannerString = "";
+    }
+
+    public void updateCardOpen(boolean isRevealed){
+        card.setRevealed(isRevealed);
+    }
+
+    public void updateCardWord(String cardWord){
+        card.setRandomWord(cardWord);
     }
 
     //Hide game mode and set banner for other player's

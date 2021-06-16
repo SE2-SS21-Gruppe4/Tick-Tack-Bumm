@@ -28,6 +28,9 @@ public class GameData {
     private Player[] placedPlayers;
     private ArrayList<String> lockedWords;
 
+    private boolean revealedCard;
+
+
     public GameData() {
         maxGameScore = 4; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
@@ -38,6 +41,10 @@ public class GameData {
         currentPlayerTurnIndex = 0;
         currentGameMode = GameMode.NONE;
         lockedWords = new ArrayList<>();
+
+        revealedCard = false;
+        currentGameModeText = "";
+
     }
 
     public int getMaxGameScore() {
@@ -86,6 +93,13 @@ public class GameData {
 
     public void resetLockedWords() {
         this.lockedWords = new ArrayList<>();
+    }
+
+    public boolean isRevealedCard(){
+        return this.revealedCard;
+    }
+    public void setRevealedCard(boolean revealedCard){
+        this.revealedCard = revealedCard;
     }
 
     public int[] getPlayerScores() {
