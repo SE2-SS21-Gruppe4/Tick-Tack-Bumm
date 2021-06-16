@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
 
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
 import java.util.ArrayList;

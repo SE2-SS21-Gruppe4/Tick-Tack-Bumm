@@ -20,7 +20,6 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.listeners.AvatarButtonListener;
 import se2.ticktackbumm.core.listeners.ReadyButtonListener;
 import se2.ticktackbumm.core.player.Player;
 
