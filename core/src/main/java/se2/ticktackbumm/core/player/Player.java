@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.player;
 
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.data.Avatars;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.screens.WaitingScreen;

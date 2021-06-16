@@ -114,7 +114,6 @@ public class WinnerScreen extends ScreenAdapter {
         sprite.setRegionHeight(TickTackBummGame.HEIGHT);
     }
 
-
     public void initTables(Table[] winnerTables) {
         Player player = new Player();
         player = placedPlayers [0];
