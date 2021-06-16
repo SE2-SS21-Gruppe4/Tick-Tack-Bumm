@@ -1,8 +1,13 @@
 package se2.ticktackbumm.core.data;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.player.Player;
 
@@ -20,11 +25,14 @@ public class GameData {
     private int currentPlayerTurnIndex;
     private GameMode currentGameMode;
     private String currentGameModeText;
+    private Player[] placedPlayers;
     private ArrayList<String> lockedWords;
 
     public GameData() {
-        maxGameScore = 2; // TODO: hardcoded for testing purposes
+        maxGameScore = 4; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
+
+        placedPlayers = null;
 
         players = new ArrayList<>();
         currentPlayerTurnIndex = 0;
@@ -145,5 +153,13 @@ public class GameData {
 
     public void setNextPlayerTurn() {
         currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
+    }
+
+    public void setPlacedPlayers(Player[] placedPlayers) {
+        this.placedPlayers = placedPlayers;
+    }
+
+    public Player[] getPlacedPlayers() {
+        return placedPlayers;
     }
 }

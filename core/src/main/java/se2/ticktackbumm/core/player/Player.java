@@ -89,6 +89,10 @@ public class Player {
         return playerId;
     }
 
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
     public int getGameScore() {
         return gameScore;
     }

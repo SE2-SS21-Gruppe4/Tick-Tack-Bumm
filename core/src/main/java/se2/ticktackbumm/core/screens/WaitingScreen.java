@@ -2,8 +2,10 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -32,14 +34,18 @@ public class WaitingScreen extends ScreenAdapter {
     private final float BUTTON_HEIGHT = 120f;
     private final float AVATAR_BUTTON_SIZE = 200f;
     private final float AVATAR_BUTTON_PADDING = 20f;
-    private final int AVATAR_TEXTURE_SIZE = 180;
+    private final int AVATAR_TEXTURE_SIZE = 200;
 
     // TickTackBumm resources
     private final TickTackBummGame game;
     private final GameData gameData;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
+
     private final Label playerInLobbyLabel;
     private final Label playerNameLabel0;
     private final Label playerNameLabel1;
@@ -47,29 +53,39 @@ public class WaitingScreen extends ScreenAdapter {
     private final Label playerNameLabel3;
     private final Label[] playerNameLabelsList;
     private final Table playerNamesTable;
+
+    private Sprite sprite;
+    private final Sprite sprite1;
+    private final Texture avatar;
+
     private final Label playerNameInputLabel;
     private final TextField playerNameTextField;
     private final Label playerAvatarLabel;
     private final Table nameAndColorTable;
+
     private final ImageButton playerAvatarButton0;
     private final ImageButton playerAvatarButton1;
     private final ImageButton playerAvatarButton2;
     private final ImageButton playerAvatarButton3;
     private final ButtonGroup<ImageButton> avatarButtonGroup;
     private final Table avatarButtonTable;
+
+    private final AssetManager assetManager;
+
     private final TextButton readyButton;
     private final TextButton backButton;
     private final Table waitingButtonTable;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+
+    private Texture background;
 
     public WaitingScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
         gameData = game.getGameData();
         batch = game.getBatch();
+        assetManager = game.getManager();
 
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH+145f, TickTackBummGame.HEIGHT+145f));
         skin = game.getManager().get("ui/uiskin.json", Skin.class);
         Gdx.input.setInputProcessor(stage);
 
@@ -80,10 +96,10 @@ public class WaitingScreen extends ScreenAdapter {
         playerInLobbyLabel = new Label("Spieler in Lobby", skin);
         playerNamesTable = new Table();
         // TODO: testing only; should be empty
-        playerNameLabel0 = new Label("foobar", skin);
-        playerNameLabel1 = new Label("newton", skin);
-        playerNameLabel2 = new Label("seal8", skin);
-        playerNameLabel3 = new Label("bar42", skin);
+        playerNameLabel0 = new Label("", skin);
+        playerNameLabel1 = new Label("", skin);
+        playerNameLabel2 = new Label("", skin);
+        playerNameLabel3 = new Label("", skin);
         playerNameLabelsList = new Label[]{playerNameLabel0, playerNameLabel1, playerNameLabel2, playerNameLabel3};
 
         setupLobbyNamesLabels();
@@ -93,6 +109,9 @@ public class WaitingScreen extends ScreenAdapter {
         playerNameTextField = new TextField("Spieler" + game.getLocalPlayer().getPlayerId(), skin);
         playerAvatarLabel = new Label("AVATAR", skin);
         nameAndColorTable = new Table();
+
+        background = assetManager.get("waitingScreen/background.png", Texture.class);
+        avatar = assetManager.get("waitingScreen/avatar.png", Texture.class);
 
         setupNameInput();
 
@@ -110,11 +129,18 @@ public class WaitingScreen extends ScreenAdapter {
                 new ButtonGroup<>(playerAvatarButton0, playerAvatarButton1, playerAvatarButton2, playerAvatarButton3);
 
         // bottom bar buttons
-        readyButton = new TextButton("BEREIT", skin);
-        backButton = new TextButton("ZURÜCK", skin);
+        readyButton = new TextButton("Bereit", skin);
+        backButton = new TextButton("Zurueck", skin);
         waitingButtonTable = new Table();
 
         setupBottomButtons();
+
+        sprite = new Sprite(background);
+        sprite.setRegionWidth(TickTackBummGame.WIDTH);
+        sprite.setRegionHeight(TickTackBummGame.HEIGHT);
+
+        sprite1 = new Sprite(avatar);
+
 
         // add tables to stage
         stage.addActor(playerInLobbyLabel);
@@ -267,11 +293,25 @@ public class WaitingScreen extends ScreenAdapter {
         }
     }
 
+    public void setBackground(Texture texture){
+        background = texture;
+        sprite = new Sprite(background);
+    }
+
+    public void getOriginalBackground(){
+        background = assetManager.get("waitingScreen/background.png", Texture.class);;
+        sprite = new Sprite(background);
+    }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
+
+        game.getBatch().begin();
+        sprite.draw(game.getBatch());
+        game.getBatch().end();
 
         batch.begin();
         stage.draw();
