@@ -543,6 +543,9 @@ public class MainGameScreen extends ScreenAdapter{
     public Bomb getBomb() {
         return this.bomb;
     }
+    public Card getCard(){
+        return this.card;
+    }
 
 
     public void updateGameMode(GameMode gameMode) {
@@ -562,6 +565,14 @@ public class MainGameScreen extends ScreenAdapter{
 
         }
         bannerString = "";
+    }
+
+    public void updateCardOpen(boolean isRevealed){
+        card.setRevealed(isRevealed);
+    }
+
+    public void updateCardWord(String cardWord){
+        card.setRandomWord(cardWord);
     }
 
     //Hide game mode and set banner for other player's
