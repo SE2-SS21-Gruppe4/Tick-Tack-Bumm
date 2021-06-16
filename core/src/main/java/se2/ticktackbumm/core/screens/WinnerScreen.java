@@ -116,11 +116,6 @@ public class WinnerScreen extends ScreenAdapter {
 
 
     public void initTables(Table[] winnerTables) {
-        Player player = new Player();
-        player = placedPlayers [0];
-        placedPlayers[0] = placedPlayers[1];
-        placedPlayers[1] = player;
-
         for (int i = 0; i < placedPlayers.length; i++) {
             winnerTables[i] = new Table();
             winnerTables[i].setWidth(200);
