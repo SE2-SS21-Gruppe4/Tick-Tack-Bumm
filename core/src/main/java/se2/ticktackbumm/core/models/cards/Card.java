@@ -102,11 +102,14 @@ public class Card {
     }
 
     public void drawCard(SpriteBatch spriteBatch){
+        handleCardTouch(spriteBatch);
         if (!isRevealed){
             drawBackSide(spriteBatch);
             sendedToServer = false;
         }
-        handleCardTouch(spriteBatch);
+        else{
+            drawFrontSide(spriteBatch);
+        }
 
     }
 
@@ -120,19 +123,11 @@ public class Card {
                 if (touchPoint.y > this.backSprite.getY() && touchPoint.y < this.backSprite.getY() + this.backSprite.getHeight()) {
                     if (!isRevealed){
                         isRevealed = true;
+                        sendMessageToServer();
                     }
                 }
             }
         }
-
-        if (isRevealed){
-            if (!sendedToServer){
-                sendMessageToServer();
-                sendedToServer = true;
-            }
-            drawFrontSide(spriteBatch);
-        }
-
 
     }
 
@@ -148,11 +143,11 @@ public class Card {
         font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
-    //TODO call when user click on textfield to type word - (tested on render and work fine both side (client and server)
 
     public void sendMessageToServer(){
-        if (isRevealed){
+        if (!sendedToServer){
             this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
+            sendedToServer = true;
         }
     }
 
