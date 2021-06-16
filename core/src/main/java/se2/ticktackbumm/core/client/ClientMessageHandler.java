@@ -116,6 +116,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
+        gameData.setRevealedCard(gameUpdate.isRevealedCard());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -174,7 +175,9 @@ public class ClientMessageHandler {
         game.spinWheelStarted();
     }
 
-    public void handleCardOpened(CardOpened object) {
-        gameData.setCurrentGameModeText(object.getWord());
+    public void handleCardOpened() {
+        Log.info(LOG_TAG, "<CardOpened> : "  + gameData.getCurrentGameModeText());
+        game.openCard();
+
     }
 }
