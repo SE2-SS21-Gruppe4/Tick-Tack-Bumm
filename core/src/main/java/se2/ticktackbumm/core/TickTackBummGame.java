@@ -157,6 +157,15 @@ public class TickTackBummGame extends Game {
         networkClient.getClientMessageSender().sendStartBomb();
     }
 
+    public void openCard(){
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen)  this.getScreen();
+
+            gameScreen.updateCardOpen(true);
+            gameScreen.updateCardWord(gameData.getCurrentGameModeText());
+        }
+     }
+
 
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
@@ -172,10 +181,6 @@ public class TickTackBummGame extends Game {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
         gameScreen.getBomb().setExplodeTime(timer);
-    }
-
-    public void updateGameWithWord(String word){
-       gameData.setWordFromCard(word);
     }
 
     public void setSpinWheelFinished(GameMode gameMode) {
