@@ -103,8 +103,9 @@ public class NetworkClientListener extends Listener {
 
         }
         else if (object instanceof CardOpened){
-            logReceivedMessage("BombStart");
-            clientMessageHandler.handleCardOpened((CardOpened) object);
+            logReceivedMessage("CardOpened");
+            clientMessageHandler.handleCardOpened();
+
         }
     }
 
