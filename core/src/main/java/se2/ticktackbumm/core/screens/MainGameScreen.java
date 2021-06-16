@@ -24,7 +24,7 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
-import se2.ticktackbumm.core.models.BombImpl.Bomb;
+import se2.ticktackbumm.core.models.bomb.Bomb;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
