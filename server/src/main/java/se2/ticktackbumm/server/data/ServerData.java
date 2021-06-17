@@ -12,12 +12,29 @@ import java.util.List;
 
 public class ServerData {
 
+    /**
+     * Maximal player count allowed in game.
+     */
     private static final int MAX_PLAYERS = 4;
+    /**
+     * Minimal player count to start a game. Made for easy testing and presenting.
+     */
     private static final int MIN_PLAYERS = 2;
+
+    /**
+     * The log tag is used to provide unique logging for the class.
+     */
     private final String LOG_TAG = "SERVER_DATA";
+
+    /**
+     * Kryonet-Server to receive client connections, send and receive messages from clients.
+     */
     private final Server kryoServer;
+    /**
+     * The game data which is included in the singleton instance of the game class. Provides functionality
+     * read and alter the game's general data.
+     */
     private final GameData gameData;
-    private final GameState gameState;
 
     private Player winner;
     private int playersReady;
@@ -26,7 +43,6 @@ public class ServerData {
         this.kryoServer = kryoServer;
 
         this.gameData = new GameData();
-        this.gameState = GameState.WAITING_FOR_PLAYERS; // which initial state?
 
         this.playersReady = 0;
     }
@@ -45,10 +61,6 @@ public class ServerData {
 
     public GameData getGameData() {
         return gameData;
-    }
-
-    public GameState getGameState() {
-        return gameState;
     }
 
     public Player getWinner() {

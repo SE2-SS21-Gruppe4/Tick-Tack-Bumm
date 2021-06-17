@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
+
     private final TickTackBummGame game;
 
     private final String LOG_TAG = "GAME_DATA";
