@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class MenuScreen extends ScreenAdapter {
@@ -31,9 +29,6 @@ public class MenuScreen extends ScreenAdapter {
     // TickTackBumm resources
     private final TickTackBummGame game;
     private final Texture backgroundImage;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     private final Sprite sprite;
 
     // Scene2D UI
@@ -43,7 +38,8 @@ public class MenuScreen extends ScreenAdapter {
     private final TextButton rulesButton;
     private final TextButton exitButton;
     private final Table menuButtonTable;
-
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
     public MenuScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -53,7 +49,7 @@ public class MenuScreen extends ScreenAdapter {
 
         backgroundImage = assetManager.get("menuScreen/background.png", Texture.class);
 
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH +145f, TickTackBummGame.HEIGHT+ 145f));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH + 145f, TickTackBummGame.HEIGHT + 145f));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
