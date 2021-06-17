@@ -49,5 +49,7 @@ public class GameUpdate {
         return lockedWords;
     }
 
-    public boolean isRevealedCard(){ return this.revealedCard;}
+    public boolean isRevealedCard() {
+        return this.revealedCard;
+    }
 }
