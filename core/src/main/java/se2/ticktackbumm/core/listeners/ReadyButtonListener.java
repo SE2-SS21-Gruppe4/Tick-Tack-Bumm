@@ -56,7 +56,7 @@ public class ReadyButtonListener extends ClickListener {
         String playerName = waitingScreen.getPlayerNameTextField().getText();
         Avatars playerAvatar = game.getLocalPlayer().getPlayerAvatar();
 
-        if (!isValidName(playerName)&&playerAvatar == null) {
+        if (!isValidName(playerName) && playerAvatar == null) {
             Log.error(LOG_TAG, "User input for player name is invalid and User selected no avatar " + playerName);
             waitingScreen.setBackground(avatarAndNameError);
             return;

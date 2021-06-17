@@ -1,13 +1,8 @@
 package se2.ticktackbumm.core.data;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.player.Player;
 
@@ -95,10 +90,11 @@ public class GameData {
         this.lockedWords = new ArrayList<>();
     }
 
-    public boolean isRevealedCard(){
+    public boolean isRevealedCard() {
         return this.revealedCard;
     }
-    public void setRevealedCard(boolean revealedCard){
+
+    public void setRevealedCard(boolean revealedCard) {
         this.revealedCard = revealedCard;
     }
 
@@ -169,11 +165,11 @@ public class GameData {
         currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
     }
 
-    public void setPlacedPlayers(Player[] placedPlayers) {
-        this.placedPlayers = placedPlayers;
-    }
-
     public Player[] getPlacedPlayers() {
         return placedPlayers;
+    }
+
+    public void setPlacedPlayers(Player[] placedPlayers) {
+        this.placedPlayers = placedPlayers;
     }
 }
