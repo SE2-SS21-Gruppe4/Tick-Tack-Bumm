@@ -2,19 +2,11 @@ package se2.ticktackbumm.core.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.server.*;
-import se2.ticktackbumm.core.network.messages.client.StartBomb;
-import se2.ticktackbumm.core.network.messages.client.CardOpened;
-import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
-import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.server.GameFinished;
-import se2.ticktackbumm.core.network.messages.server.GameUpdate;
-import se2.ticktackbumm.core.network.messages.server.SomeResponse;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
 import java.util.Arrays;
@@ -116,7 +108,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
-        gameData.setRevealedCard(gameUpdate.isRevealedCard());
+        gameData.setCardRevealed(gameUpdate.isRevealedCard());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -165,18 +157,18 @@ public class ClientMessageHandler {
         game.setBombToTick(startBomb.getBombTimer());
     }
 
-    public void handleSpinWheelFinished(){
-        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : "  + gameData.getCurrentGameMode());
+    public void handleSpinWheelFinished() {
+        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : " + gameData.getCurrentGameMode());
         game.spinWheelFinished();
     }
 
     public void handleSpinWheelStarted() {
-        Log.info(LOG_TAG, "<SpinWheelStarted> : "  + gameData.getCurrentGameMode());
+        Log.info(LOG_TAG, "<SpinWheelStarted> : " + gameData.getCurrentGameMode());
         game.spinWheelStarted();
     }
 
     public void handleCardOpened() {
-        Log.info(LOG_TAG, "<CardOpened> : "  + gameData.getCurrentGameModeText());
+        Log.info(LOG_TAG, "<CardOpened> : " + gameData.getCurrentGameModeText());
         game.openCard();
 
     }

@@ -8,17 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Explosion;
 import se2.ticktackbumm.core.assets.Flame;
@@ -28,6 +22,7 @@ import se2.ticktackbumm.core.player.Player;
 
 
 public class WinnerScreen extends ScreenAdapter {
+
     private static final String LOG_TAG = "WINNER_SCREEN";
     private final TickTackBummGame game;
     private final AssetManager assetManager;
@@ -53,7 +48,6 @@ public class WinnerScreen extends ScreenAdapter {
 
     private final Player[] placedPlayers;
     private final Table[] winnerTables;
-
 
     public WinnerScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -113,7 +107,6 @@ public class WinnerScreen extends ScreenAdapter {
         sprite.setRegionWidth(TickTackBummGame.WIDTH);
         sprite.setRegionHeight(TickTackBummGame.HEIGHT);
     }
-
 
     public void initTables(Table[] winnerTables) {
         for (int i = 0; i < placedPlayers.length; i++) {

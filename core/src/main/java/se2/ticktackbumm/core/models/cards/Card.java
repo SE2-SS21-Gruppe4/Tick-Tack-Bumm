@@ -25,7 +25,6 @@ public class Card {
     private GameMode gameMode;
 
     private final Texture backsideTexture;
-
     private final Texture frontsideTexture;
 
     private boolean isRevealed;
@@ -33,19 +32,17 @@ public class Card {
     private BitmapFont font;
     private String randomWord;
 
-
     private AssetManager assetManager;
     private TickTackBummGame game;
 
-
-    private Sprite fontSprite;
+    private Sprite frontSprite;
     private Sprite backSprite;
 
     private OrthographicCamera camera;
 
-    private boolean sendedToServer;
+    private boolean sentToServer;
 
-    public Card(String str){
+    public Card(String str) {
         game = null;
         gameData = null;
         gameMode = null;
@@ -54,19 +51,16 @@ public class Card {
         frontsideTexture = null;
         font = null;
         assetManager = null;
-        fontSprite = null;
+        frontSprite = null;
         camera = null;
     }
 
-
     public Card() {
-
         game = TickTackBummGame.getTickTackBummGame();
         assetManager = game.getManager();
 
         gameData = TickTackBummGame.getTickTackBummGame().getGameData();
         gameMode = gameData.getCurrentGameMode();
-
 
         isRevealed = false;
 
@@ -75,12 +69,10 @@ public class Card {
         font.getData().setScale(7);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-
         assetManager.load("card/backside.png", Texture.class);
         assetManager.finishLoading();
 
         backsideTexture = assetManager.get("card/backside.png", Texture.class);
-
 
         backSprite = new Sprite(backsideTexture);
 
@@ -91,66 +83,58 @@ public class Card {
 
         randomWord = getWordDependOnMode();
 
-
-        fontSprite = new Sprite(frontsideTexture);
-        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
+        frontSprite = new Sprite(frontsideTexture);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
 
         camera = TickTackBummGame.getGameCamera();
 
-        sendedToServer = false;
-
+        sentToServer = false;
     }
 
-    public void drawCard(SpriteBatch spriteBatch){
-        handleCardTouch(spriteBatch);
-        if (!isRevealed){
+    public void drawCard(SpriteBatch spriteBatch) {
+        handleCardTouch();
+        if (!isRevealed) {
             drawBackSide(spriteBatch);
-            sendedToServer = false;
-        }
-        else{
+            sentToServer = false;
+        } else {
             drawFrontSide(spriteBatch);
         }
-
     }
 
-    public void handleCardTouch(SpriteBatch spriteBatch) {
+    public void handleCardTouch() {
         Vector3 touchPoint = new Vector3();
 
         if (Gdx.input.isTouched()) {
-            touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPoint);
             if (touchPoint.x >= this.backSprite.getX() && touchPoint.x <= this.backSprite.getX() + this.backSprite.getWidth()) {
                 if (touchPoint.y > this.backSprite.getY() && touchPoint.y < this.backSprite.getY() + this.backSprite.getHeight()) {
-                    if (!isRevealed){
+                    if (!isRevealed) {
                         isRevealed = true;
                         sendMessageToServer();
                     }
                 }
             }
         }
-
     }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
-
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f +550, 500, 300);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
         backSprite.draw(spriteBatch);
     }
 
     public void drawFrontSide(SpriteBatch spriteBatch) {
-        fontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f+550, 500, 300);
-        fontSprite.draw(spriteBatch);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
+        frontSprite.draw(spriteBatch);
         font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
     }
 
-
-    public void sendMessageToServer(){
-        if (!sendedToServer){
+    public void sendMessageToServer() {
+        if (!sentToServer) {
             this.game.getNetworkClient().getClientMessageSender().sendCardOpened(randomWord);
-            sendedToServer = true;
+            sentToServer = true;
         }
     }
-
 
     public String getWordDependOnMode() {
         switch (gameMode) {
@@ -159,7 +143,6 @@ public class Card {
 
             case INFIX:
                 return getRandomWord(infixArray);
-
 
             case POSTFIX:
                 return getRandomWord(postfixArray);
@@ -173,7 +156,6 @@ public class Card {
     public String getRandomWord(String[] words) {
         return words[new SecureRandom().nextInt(words.length)];
     }
-
 
     public boolean isRevealed() {
         return isRevealed;
@@ -191,12 +173,12 @@ public class Card {
         this.randomWord = randomWord;
     }
 
-    public Sprite getFontSprite() {
-        return fontSprite;
+    public Sprite getFrontSprite() {
+        return frontSprite;
     }
 
-    public void setFontSprite(Sprite fontSprite) {
-        this.fontSprite = fontSprite;
+    public void setFrontSprite(Sprite frontSprite) {
+        this.frontSprite = frontSprite;
     }
 
     public Sprite getBackSprite() {
@@ -207,26 +189,31 @@ public class Card {
         this.backSprite = backSprite;
     }
 
-    public String[] getPrefixArray(){
+    public String[] getPrefixArray() {
         return this.prefixArray;
     }
-    public String[] getInfixArray(){
+
+    public String[] getInfixArray() {
         return this.infixArray;
     }
-    public String[] getPostfixArray(){
+
+    public String[] getPostfixArray() {
         return this.postfixArray;
     }
 
-    public GameMode getGameMode(){
+    public GameMode getGameMode() {
         return this.gameMode;
     }
-    public void setGameMode(GameMode gameMode){
+
+    public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
-    public GameData getGameData(){
+
+    public GameData getGameData() {
         return this.gameData;
     }
-    public void setGameData(GameData gameData){
+
+    public void setGameData(GameData gameData) {
         this.gameData = gameData;
     }
 }

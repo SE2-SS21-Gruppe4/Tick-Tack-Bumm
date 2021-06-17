@@ -39,13 +39,10 @@ public class WaitingScreen extends ScreenAdapter {
     // TickTackBumm resources
     private final TickTackBummGame game;
     private final GameData gameData;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
 
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
-
     private final Label playerInLobbyLabel;
     private final Label playerNameLabel0;
     private final Label playerNameLabel1;
@@ -53,29 +50,25 @@ public class WaitingScreen extends ScreenAdapter {
     private final Label playerNameLabel3;
     private final Label[] playerNameLabelsList;
     private final Table playerNamesTable;
-
-    private Sprite sprite;
     private final Sprite sprite1;
     private final Texture avatar;
-
     private final Label playerNameInputLabel;
     private final TextField playerNameTextField;
     private final Label playerAvatarLabel;
     private final Table nameAndColorTable;
-
     private final ImageButton playerAvatarButton0;
     private final ImageButton playerAvatarButton1;
     private final ImageButton playerAvatarButton2;
     private final ImageButton playerAvatarButton3;
     private final ButtonGroup<ImageButton> avatarButtonGroup;
     private final Table avatarButtonTable;
-
     private final AssetManager assetManager;
-
     private final TextButton readyButton;
     private final TextButton backButton;
     private final Table waitingButtonTable;
-
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private Sprite sprite;
     private Texture background;
 
     public WaitingScreen() {
@@ -85,7 +78,7 @@ public class WaitingScreen extends ScreenAdapter {
         batch = game.getBatch();
         assetManager = game.getManager();
 
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH+145f, TickTackBummGame.HEIGHT+145f));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH + 145f, TickTackBummGame.HEIGHT + 145f));
         skin = game.getManager().get("ui/uiskin.json", Skin.class);
         Gdx.input.setInputProcessor(stage);
 
@@ -293,13 +286,13 @@ public class WaitingScreen extends ScreenAdapter {
         }
     }
 
-    public void setBackground(Texture texture){
+    public void setBackground(Texture texture) {
         background = texture;
         sprite = new Sprite(background);
     }
 
-    public void getOriginalBackground(){
-        background = assetManager.get("waitingScreen/background.png", Texture.class);;
+    public void getOriginalBackground() {
+        background = assetManager.get("waitingScreen/background.png", Texture.class);
         sprite = new Sprite(background);
     }
 

@@ -29,6 +29,14 @@ public class CheckButtonListener extends ClickListener {
     private final String LOG_TAG = "USER_INPUT";
 
     /**
+     * Instance of the main game screen of the current game.
+     */
+    private final MainGameScreen gameScreen;
+    /**
+     * The text field from the main game screen that contains the user's word guess.
+     */
+    private final TextField textField;
+    /**
      * The game data which is included in the singleton instance of the game class. Provides functionality
      * read and alter the game's general data.
      */
@@ -38,15 +46,6 @@ public class CheckButtonListener extends ClickListener {
      * functionality to send messages from client to server.
      */
     private ClientMessageSender clientMessageSender;
-
-    /**
-     * Instance of the main game screen of the current game.
-     */
-    private final MainGameScreen gameScreen;
-    /**
-     * The text field from the main game screen that contains the user's word guess.
-     */
-    private final TextField textField;
 
     /**
      * Default class constructor used for testing. Sets textfield to null, because it is not needed in testing.

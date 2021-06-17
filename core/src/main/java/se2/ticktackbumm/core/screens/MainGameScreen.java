@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -24,13 +22,12 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
-import se2.ticktackbumm.core.models.bomb.Bomb;
 import se2.ticktackbumm.core.models.Score;
+import se2.ticktackbumm.core.models.bomb.Bomb;
 import se2.ticktackbumm.core.models.cards.Card;
 
-import java.util.Vector;
+public class MainGameScreen extends ScreenAdapter {
 
-public class MainGameScreen extends ScreenAdapter{
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
@@ -43,14 +40,12 @@ public class MainGameScreen extends ScreenAdapter{
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    //Game Mode & Banner
+    // game mode & banner
     private final GameData gameData;
-    private String gameModeString;
     private final BitmapFont textGameMode;
     private final BitmapFont textBanner;
-    private String bannerString;
-
     private final Score score;
+
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
@@ -62,23 +57,24 @@ public class MainGameScreen extends ScreenAdapter{
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
-    //tables for the playerscores and avatars
+    // tables for the player scores and avatars
     private final Table score1Table;
     private final Table score2Table;
     private final Table score3Table;
     private final Table score4Table;
-
     private final Card card;
     private final BitmapFont textMaxScore;
     private final Label player1;
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private String gameModeString;
+    private String bannerString;
     private BitmapFont ttfBitmapFont;
     private int[] playerScore;
-    //Bomb and explosion
-    private Bomb bomb;
 
+    // bomb and explosion
+    private Bomb bomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -276,13 +272,13 @@ public class MainGameScreen extends ScreenAdapter{
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-     //   bomb.renderBomb(delta, batch);
+        //   bomb.renderBomb(delta, batch);
         stage.draw();
         card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
-        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
-        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-30f);
+        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight() - 150f);
+        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight() - 30f);
         batch.end();
     }
 
@@ -397,42 +393,41 @@ public class MainGameScreen extends ScreenAdapter{
     public Bomb getBomb() {
         return this.bomb;
     }
-    public Card getCard(){
+
+    public Card getCard() {
         return this.card;
     }
 
-
     public void updateGameMode(GameMode gameMode) {
-
-        switch (gameMode){
+        switch (gameMode) {
             case PREFIX:
-                gameModeString ="TICK";
+                gameModeString = "TICK";
                 break;
 
             case INFIX:
-                gameModeString ="TICK...TACK";
+                gameModeString = "TICK...TACK";
                 break;
 
             case POSTFIX:
-                gameModeString ="BOMBE";
+                gameModeString = "BOMBE";
                 break;
 
         }
+
         bannerString = "";
     }
 
-    public void updateCardOpen(boolean isRevealed){
+    public void updateCardOpen(boolean isRevealed) {
         card.setRevealed(isRevealed);
     }
 
-    public void updateCardWord(String cardWord){
+    public void updateCardWord(String cardWord) {
         card.setRandomWord(cardWord);
     }
 
     //Hide game mode and set banner for other player's
-    public void hideGameMode(){
+    public void hideGameMode() {
         gameModeString = "";
         bannerString = "Warte bis Drehrad fertig ist.";
-
     }
 }
