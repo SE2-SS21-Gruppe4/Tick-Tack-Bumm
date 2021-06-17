@@ -36,9 +36,16 @@ public class ServerData {
      */
     private final GameData gameData;
 
-    private Player winner;
+    /**
+     * Counter for the amount of ready players in the waiting screen.
+     */
     private int playersReady;
 
+    /**
+     * Constructs a server data instance for the current game server.
+     *
+     * @param kryoServer the Kryonet-{@link Server} instance of the game server
+     */
     public ServerData(Server kryoServer) {
         this.kryoServer = kryoServer;
 
@@ -47,34 +54,13 @@ public class ServerData {
         this.playersReady = 0;
     }
 
-    public static int getMaxPlayers() {
-        return MAX_PLAYERS;
-    }
-
-    public static int getMinPlayers() {
-        return MIN_PLAYERS;
-    }
-
-    public Server getKryoServer() {
-        return kryoServer;
-    }
-
-    public GameData getGameData() {
-        return gameData;
-    }
-
-    public Player getWinner() {
-        return winner;
-    }
-
-    public void setWinner(Player winner) {
-        this.winner = winner;
-    }
-
-    public int getPlayersReady() {
-        return playersReady;
-    }
-
+    /**
+     * Creates a new {@link Player} for a new incoming connection to the kryo server, if the
+     * maximal number of players is not yet reached.
+     *
+     * @param connectionId the connection ID of the player to connect assigned by the game server
+     * @return the constructed {@link Player} object for the connected player
+     */
     public Player connectPlayer(int connectionId) {
         if (gameData.getPlayers().size() < MAX_PLAYERS) {
             Player newPlayer = new Player(connectionId, gameData.getPlayers().size());
@@ -86,6 +72,13 @@ public class ServerData {
         return null;
     }
 
+    /**
+     * Disconnects a player - identified by it's connection ID - from the game server,
+     * removes it from the player list, decrements the player ready count and updates
+     * all the other players with that information.
+     *
+     * @param connectionID the player's connection ID
+     */
     public void disconnectPlayer(int connectionID) {
         updatePlayerId(connectionID);
 
@@ -105,6 +98,12 @@ public class ServerData {
         NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
     }
 
+    /**
+     * Update a player's ID based on it's connection ID. Used to correct the player ID, when players
+     * disconnect from the game server.
+     *
+     * @param connectionID the player's connection ID
+     */
     public void updatePlayerId(int connectionID) {
         Player player = gameData.getPlayerByConnectionId(connectionID);
         if (player == null) return;
@@ -117,6 +116,9 @@ public class ServerData {
         }
     }
 
+    /**
+     * Increments the player ready counter, if it has not reached the max player amount yet.
+     */
     public void incPlayersReady() {
         if (playersReady < MAX_PLAYERS) {
             Log.info(LOG_TAG, "Incrementing players ready count");
@@ -126,14 +128,28 @@ public class ServerData {
         Log.info(LOG_TAG, "Players ready count: " + playersReady);
     }
 
+    /**
+     * Decrements the player ready counter, if it is greater than 0.
+     */
     public void decPlayersReady() {
         if (playersReady > 0) playersReady--;
     }
 
+    /**
+     * Returns true if there are enough players ready to start a game and false otherwise.
+     *
+     * @return true if the game can start, false otherwise.
+     */
     public boolean arePlayersReady() {
         return playersReady >= MIN_PLAYERS;
     }
 
+    /**
+     * Returns true if there is a player in the game that has reached the maximal game score
+     * and false otherwise.
+     *
+     * @return true if the game finished, false otherwise.
+     */
     public boolean hasGameFinished() {
         for (Player player : gameData.getPlayers()) {
             if (player.getGameScore() >= gameData.getMaxGameScore()) {
@@ -145,14 +161,36 @@ public class ServerData {
     }
 
     /**
-     * Get an array of all players sorted in descending order.
+     * Return an array of all players sorted by their game scores in ascending order.
      *
-     * @return {@link Player}[] sorted in descending order
+     * @return {@link Player}[] sorted in ascending order
      */
     public Player[] getPlacedPlayers() {
         List<Player> placedPlayers = new ArrayList<>(gameData.getPlayers());
         placedPlayers.sort(new ScoreComparator());
 
         return placedPlayers.toArray(new Player[0]);
+    }
+
+    // simple getters & setters
+
+    public static int getMaxPlayers() {
+        return MAX_PLAYERS;
+    }
+
+    public static int getMinPlayers() {
+        return MIN_PLAYERS;
+    }
+
+    public Server getKryoServer() {
+        return kryoServer;
+    }
+
+    public GameData getGameData() {
+        return gameData;
+    }
+
+    public int getPlayersReady() {
+        return playersReady;
     }
 }

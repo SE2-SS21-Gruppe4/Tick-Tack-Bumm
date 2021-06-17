@@ -26,7 +26,7 @@ public class GameUpdate {
         this.currentGameMode = gameData.getCurrentGameMode();
         this.currentGameModeText = gameData.getCurrentGameModeText();
         this.lockedWords = gameData.getLockedWords();
-        this.revealedCard = gameData.isRevealedCard();
+        this.revealedCard = gameData.isCardRevealed();
     }
 
     public List<Player> getPlayers() {

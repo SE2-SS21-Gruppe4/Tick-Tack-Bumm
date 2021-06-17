@@ -108,7 +108,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
-        gameData.setRevealedCard(gameUpdate.isRevealedCard());
+        gameData.setCardRevealed(gameUpdate.isRevealedCard());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
