@@ -150,10 +150,20 @@ public class TickTackBummGame extends Game {
         }
     }
 
-    public void startBomb() {
+    public void showBomb() {
+        if (this.getScreen() instanceof MainGameScreen){
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
-    public void startBomb(){
-        networkClient.getClientMessageSender().sendStartBomb();
+            gameScreen.updateShowBomb(true);
+            gameScreen.updateBombTime(this.gameData.getBombTimer());
+        }
+        if (this.getScreen() instanceof SpinWheelScreen){
+            SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
+
+            spinWheelScreen.getMainGameScreen().updateShowBomb(true);
+            spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
+
+        }
     }
 
     public void openCard() {
@@ -176,11 +186,6 @@ public class TickTackBummGame extends Game {
         // TODO: show game finished message, scoreboard screen, ...
     }
 
-    public void setBombToTick(int timer){
-        MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
-
-        gameScreen.getBomb().setExplodeTime(timer);
-    }
 
     public void setSpinWheelFinished(GameMode gameMode) {
         gameData.setCurrentGameMode(gameMode);
@@ -191,6 +196,5 @@ public class TickTackBummGame extends Game {
         manager.dispose();
         batch.dispose();
     }
-
 
 }
