@@ -63,6 +63,11 @@ public class GameData {
     private boolean isCardRevealed;
 
     /**
+     * Takes time to count down the bomb coming from the server
+     */
+    private float bombTimer;
+
+    /**
      * Constructs a new game data instance. This is used for each player and the data on the
      * game server side.
      */
@@ -79,6 +84,8 @@ public class GameData {
 
         isCardRevealed = false;
         currentGameModeText = "";
+
+        bombTimer = 0;
     }
 
     /**
@@ -229,4 +236,8 @@ public class GameData {
     public void setPlacedPlayers(Player[] placedPlayers) {
         this.placedPlayers = placedPlayers;
     }
+
+    public void setBombTimer(float timer) {this.bombTimer = timer;}
+
+    public float getBombTimer(){ return this.bombTimer;}
 }
