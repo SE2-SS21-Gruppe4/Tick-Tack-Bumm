@@ -2,8 +2,11 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,11 +42,13 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
+    private final AssetManager assetManager;
     private final GameData gameData;
     private final SpriteBatch batch;
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
+    private final Sprite sprite;
 
     /**
      * Scene 2D UI
@@ -55,6 +60,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image wheelImage;
     private final Image needleImage;
     private final Image spinButtonImage;
+    private final Texture background;
 
     /**
      * Variables used for functionality
@@ -78,9 +84,11 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen(String str) {
         game = null;
         camera = null;
+        assetManager = null;
         gameData = null;
         batch = null;
         stage = null;
+        sprite = null;
         skin = null;
         atlas = null;
         spinWheelTable = null;
@@ -93,6 +101,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
+        background = null;
     }
 
     /**
@@ -104,11 +113,13 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
+        this.assetManager = game.getManager();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
 
         batch = new SpriteBatch();
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH+145f, TickTackBummGame.HEIGHT+145f));
+
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -137,17 +148,22 @@ public class SpinWheelScreen extends ScreenAdapter {
         rotationAmount = 0;
         spinSpeed = 0;
         degree = 0;
-        color = new Color(.18f, .21f, .32f, 1);
+        color = new Color();
         timer = new Timer();
         randomNumb = new SecureRandom();
         isStart = false;
 
-        setupGameButton();
+        background = assetManager.get("spinWheelScreen/background.png",Texture.class);
+        sprite = new Sprite(background);
+
+
         setupSpinWheelTable();
         btnSpinListener();
+        setupGameButton();
 
         stage.addActor(spinWheelTable);
     }
+
 
     /**
      * set up all parts of spinning wheel for UI
@@ -175,9 +191,6 @@ public class SpinWheelScreen extends ScreenAdapter {
 
                 // set listener to unable next spin for same player
                 spinButtonImage.clearListeners();
-
-                gameData.setCurrentGameMode(GameMode.NONE);
-                game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
 
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
 
@@ -208,6 +221,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 timer.scheduleTask(task, spinSpeed);
             }
         });
+
+
+        game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
     }
 
 
@@ -249,7 +265,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.setHeight(stage.getHeight());
         spinWheelTable.align(Align.center);
 
-        spinWheelTable.add(challengeLabel).width(1000f).padBottom(1000f);
+        spinWheelTable.add(challengeLabel).width(800f).padBottom(1000f);
         spinWheelTable.row();
         spinWheelTable.add(descriptionLabel).width(800f).padBottom(300f);
         spinWheelTable.row();
@@ -324,13 +340,20 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(color.r, color.g, color.b, color.a);
+
+        if (!color.equals(Color.CLEAR)){
+            ScreenUtils.clear(color.r, color.g, color.b, color.a);
+        }else{
+            game.getBatch().begin();
+            sprite.draw(game.getBatch());
+            game.getBatch().end();
+        }
+
         batch.setProjectionMatrix(camera.combined);
         stage.act();
-
-        batch.begin();
+        game.getBatch().begin();
         stage.draw();
-        batch.end();
+        game.getBatch().end();
     }
 
     @Override
