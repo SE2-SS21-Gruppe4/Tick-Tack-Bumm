@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.network.messages.server.GameFinished;
 import se2.ticktackbumm.core.network.messages.server.GameUpdate;
@@ -153,7 +153,7 @@ public class ClientMessageHandler {
     }
 
     /**
-     * Handle incoming {@link BombStart} message from server to client.
+     * Handle incoming {@link StartBomb} message from server to client.
      * Set the bomb timer in game screen to the time value received from server.
      *
      */

@@ -2,7 +2,7 @@ package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
+import se2.ticktackbumm.core.network.messages.client.StartBomb;
 import se2.ticktackbumm.core.network.messages.client.CardOpened;
 import se2.ticktackbumm.core.network.messages.client.SpinWheelFinished;
 import se2.ticktackbumm.core.network.messages.client.SpinWheelStarted;
@@ -65,9 +65,9 @@ public class ServerMessageSender {
     }
 
 
-    public void sendBombStart() {
-        Log.info(LOG_TAG, "Sending message BombStart");
-        server.sendToAllTCP(new BombStart());
+    public void sendStartBomb() {
+        Log.info(LOG_TAG, "Sending message StartBomb");
+        server.sendToAllTCP(new StartBomb());
     }
 
     public void sendSpinWheelFinished() {
