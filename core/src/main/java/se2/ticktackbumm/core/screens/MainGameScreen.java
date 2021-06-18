@@ -40,13 +40,15 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    // game mode & banner
+    // Game Mode & Banner
     private final GameData gameData;
     private final Score score;
     private Label bannerLabel;
     private Label gameModeLabel;
     private Texture bannerBackground;
     private Image img;
+    private String gameModeString;
+    private String bannerString;
 
     // scene2d UI
     private final Stage stage;
@@ -64,18 +66,16 @@ public class MainGameScreen extends ScreenAdapter {
     private final Table score2Table;
     private final Table score3Table;
     private final Table score4Table;
+
     private final Card card;
     private final BitmapFont textMaxScore;
     private final Label player1;
     private final Label player2;
     private final Label player3;
     private final Label player4;
-    private String gameModeString;
-    private String bannerString;
     private BitmapFont ttfBitmapFont;
     private int[] playerScore;
-
-    // bomb and explosion
+    //Bomb and explosion
     private Bomb bomb;
 
     public MainGameScreen() {
@@ -95,8 +95,6 @@ public class MainGameScreen extends ScreenAdapter {
 
         // card
         card = new Card();
-
-
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -163,22 +161,22 @@ public class MainGameScreen extends ScreenAdapter {
 
         textFieldTable = setupTextfieldTable();
 
-        // gameMode & banner
-        bannerBackground = assetManager.get("bannerBackground.png",Texture.class);
-        img = new Image(bannerBackground);
-        img.setPosition(stage.getWidth()/stage.getWidth(),stage.getHeight()-250);
-
-
+        // Game Mode & Banner Init
         gameModeString = "";
         gameModeLabel = new Label(MODE_TAG + gameModeString, skin);
         gameModeLabel.setColor(Color.WHITE);
-        gameModeLabel.setPosition(stage.getWidth()/2,stage.getHeight()/2+150f);
+        gameModeLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
 
         bannerString = "Das Drehrad wird gestartet!";
         bannerLabel = new Label(bannerString, skin);
+        bannerLabel.setFontScale(4.5f,4f);
         bannerLabel.setColor(Color.BLACK);
-        bannerLabel.setScale(7,2);
-        bannerLabel.setPosition(stage.getWidth()/stage.getWidth(),stage.getHeight()-250);
+        bannerLabel.setSize(900f,90f);
+        bannerLabel.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
+
+        bannerBackground = assetManager.get("bannerBackground.png",Texture.class);
+        img = new Image(bannerBackground);
+        img.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
 
 
 
@@ -443,7 +441,9 @@ public class MainGameScreen extends ScreenAdapter {
 
     //Hide game mode and set banner for other player's
     public void hideGameMode() {
+        gameModeLabel.setText(MODE_TAG);
         bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
+        bannerLabel.setFontScale(6f,4f);
         img.setVisible(true);
         bannerLabel.setVisible(true);
 
