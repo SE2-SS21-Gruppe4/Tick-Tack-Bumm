@@ -165,7 +165,9 @@ public class MainGameScreen extends ScreenAdapter {
         gameModeString = "";
         gameModeLabel = new Label(MODE_TAG + gameModeString, skin);
         gameModeLabel.setColor(Color.WHITE);
-        gameModeLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
+        //gameModeLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
+        gameModeLabel.setPosition(stage.getWidth()/2, stage.getHeight()/2);
+        gameModeLabel.setFontScale(4f);
 
         bannerString = "Das Drehrad wird gestartet!";
         bannerLabel = new Label(bannerString, skin);
