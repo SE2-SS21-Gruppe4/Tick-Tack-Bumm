@@ -82,7 +82,6 @@ public class Bomb {
 
     public void makeExplosion( SpriteBatch spriteBatch) {
         this.timerToExplode += Gdx.graphics.getDeltaTime();
-        Log.info(String.valueOf(timerToExplode));
         if (timerToExplode >= explodeTime) {
             bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
             if (!bombExplosion.isFinished()) {
@@ -97,12 +96,11 @@ public class Bomb {
     public void drawBomb(SpriteBatch spriteBatch){
         if (bombState.equals(BombState.NORMAL)){
             bombTick.play();
+            spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
         }
         else{
             bombTick.pause();
         }
-        spriteBatch.draw(bombTexture,0,((Gdx.graphics.getHeight()))-(float)270,290,290);
-
     }
 
     public void restartBombSettings(){
@@ -115,13 +113,13 @@ public class Bomb {
     private float getExplodeTime(){
         return this.explodeTime;
     }
-    private int getTimerToExplode(){
+    private float getTimerToExplode(){
         return this.timerToExplode;
     }
-    public void setTimerToExplode(int timerToExplode){
+    public void setTimerToExplode(float timerToExplode){
         this.timerToExplode = timerToExplode;
     }
-    public void setExplodeTime(int explodeTime){
+    public void setExplodeTime(float explodeTime){
         this.explodeTime = explodeTime;
     }
 
