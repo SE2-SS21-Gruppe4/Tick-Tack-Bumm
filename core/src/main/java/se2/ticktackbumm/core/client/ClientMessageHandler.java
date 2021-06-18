@@ -156,9 +156,8 @@ public class ClientMessageHandler {
      * Handle incoming {@link BombStart} message from server to client.
      * Set the bomb timer in game screen to the time value received from server.
      *
-     * @param startBomb the incoming message
      */
-    public void handleStartBomb(BombStart startBomb) {
+    public void handleStartBomb() {
        game.showBomb();
     }
 
