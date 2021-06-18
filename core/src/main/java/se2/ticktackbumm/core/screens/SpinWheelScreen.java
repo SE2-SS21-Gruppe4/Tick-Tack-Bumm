@@ -3,6 +3,7 @@ package se2.ticktackbumm.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -77,6 +78,12 @@ public class SpinWheelScreen extends ScreenAdapter {
     private boolean isStart;
 
     /**
+     * Musik
+     */
+    private Music spinSound;
+
+
+    /**
      * Test constructor
      * Set all variables on null to enable testing
      *
@@ -103,6 +110,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = null;
         sprite = null;
         background = null;
+        spinSound = null;
     }
 
     /**
@@ -154,11 +162,37 @@ public class SpinWheelScreen extends ScreenAdapter {
         background = assetManager.get("spinWheelScreen/background.png",Texture.class);
         sprite = new Sprite(background);
 
+
+
         setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
 
         stage.addActor(spinWheelTable);
+    }
+
+    public void setSoundAndSoundSpeed(int spinSpeed){
+
+        switch (spinSpeed){
+            case 1:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-1sec.mp3"));
+
+            case 2:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-2sec.mp3"));
+
+            case 3:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-3sec.mp3"));
+                break;
+            case 4:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-4sec.mp3"));
+                break;
+            case 5:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-5sec.mp3"));
+                break;
+
+        }
+        spinSound.setVolume(0.2f);
+        spinSound.setLooping(true);
     }
 
     /**
@@ -196,6 +230,8 @@ public class SpinWheelScreen extends ScreenAdapter {
                 degree = setDegree(rotationAmount);
                 // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
+                setSoundAndSoundSpeed((int)spinSpeed);
+                spinSound.play();
 
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
@@ -212,6 +248,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                         // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
+                        spinSound.stop();
 
                     }
                 };
