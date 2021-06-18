@@ -15,6 +15,7 @@ public class GameUpdate {
     private String currentGameModeText;
     private ArrayList<String> lockedWords;
     private boolean revealedCard;
+    private float timerBomb;
 
     public GameUpdate() {
         // kryonet
@@ -27,6 +28,7 @@ public class GameUpdate {
         this.currentGameModeText = gameData.getCurrentGameModeText();
         this.lockedWords = gameData.getLockedWords();
         this.revealedCard = gameData.isCardRevealed();
+        this.timerBomb = gameData.getBombTimer();
     }
 
     public List<Player> getPlayers() {
@@ -51,5 +53,9 @@ public class GameUpdate {
 
     public boolean isRevealedCard() {
         return this.revealedCard;
+    }
+
+    public float getTimerBomb(){
+        return this.timerBomb;
     }
 }
