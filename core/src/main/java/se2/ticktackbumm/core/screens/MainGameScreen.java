@@ -22,11 +22,9 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
-import se2.ticktackbumm.core.models.BombImpl.Bomb;
-import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
+import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
-import se2.ticktackbumm.core.network.messages.client.BombStart;
 
 public class MainGameScreen extends ScreenAdapter {
 
@@ -79,6 +77,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     // bomb and explosion
     private Bomb bomb;
+    //bomb visibility
+    private boolean showBomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -115,6 +115,7 @@ public class MainGameScreen extends ScreenAdapter {
         bomb = new Bomb();
         assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
+        showBomb = false;
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -260,10 +261,9 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void handleBombDraw(SpriteBatch spriteBatch){
-        if (this.fromSpinWheelScreen){
+        if (showBomb){
             bomb.makeExplosion(spriteBatch);
-            bomb.drawBomb(spriteBatch);
-        }
+            bomb.drawBomb(spriteBatch);}
     }
 
     public void resetCard() {
@@ -284,7 +284,7 @@ public class MainGameScreen extends ScreenAdapter {
         batch.begin();
         this.handleBombDraw(batch);
         stage.draw();
-        card.draw();
+      //  card.draw();
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
         textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight()-150f);
@@ -433,9 +433,17 @@ public class MainGameScreen extends ScreenAdapter {
         card.setRandomWord(cardWord);
     }
 
+    public void updateShowBomb(boolean showBomb){
+        this.showBomb = showBomb;
+    }
+
     //Hide game mode and set banner for other player's
     public void hideGameMode() {
         gameModeString = "";
         bannerString = "Warte bis Drehrad fertig ist.";
+    }
+
+    public void updateBombTime(float bombTimer) {
+        bomb.setExplodeTime(bombTimer);
     }
 }
