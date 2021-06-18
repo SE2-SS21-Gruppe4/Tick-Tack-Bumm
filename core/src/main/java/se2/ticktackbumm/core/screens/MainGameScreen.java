@@ -45,6 +45,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final Score score;
     private Label bannerLabel;
     private Label gameModeLabel;
+    private Texture bannerBackground;
+    private Image img;
 
     // scene2d UI
     private final Stage stage;
@@ -162,16 +164,22 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable = setupTextfieldTable();
 
         // gameMode & banner
+        bannerBackground = assetManager.get("bannerBackground.png",Texture.class);
+        img = new Image(bannerBackground);
+        img.setPosition(stage.getWidth()/stage.getWidth(),stage.getHeight()-250);
+
+
         gameModeString = "";
         gameModeLabel = new Label(MODE_TAG + gameModeString, skin);
-        gameModeLabel.setColor(Color.BLACK);
-        gameModeLabel.setScale(5,3);
+        gameModeLabel.setColor(Color.WHITE);
         gameModeLabel.setPosition(stage.getWidth()/2,stage.getHeight()/2+150f);
 
-        bannerString = "";
+        bannerString = "Das Drehrad wird gestartet!";
         bannerLabel = new Label(bannerString, skin);
         bannerLabel.setColor(Color.BLACK);
-        bannerLabel.setPosition(stage.getWidth()/stage.getWidth()+10f,stage.getHeight()+100f);
+        bannerLabel.setScale(7,2);
+        bannerLabel.setPosition(stage.getWidth()/stage.getWidth(),stage.getHeight()-250);
+
 
 
         stage.addActor(imageTable);
@@ -181,6 +189,7 @@ public class MainGameScreen extends ScreenAdapter {
         //stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
+        stage.addActor(img);
         stage.addActor(gameModeLabel);
         stage.addActor(bannerLabel);
 
@@ -274,14 +283,16 @@ public class MainGameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
+
         batch.setProjectionMatrix(camera.combined);
+
 
         batch.begin();
         //   bomb.renderBomb(delta, batch);
         stage.draw();
         card.drawCard(batch);
-
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
+
         batch.end();
     }
 
@@ -402,6 +413,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateGameMode(GameMode gameMode) {
+        img.setVisible(false);
         bannerLabel.setVisible(false);
         switch (gameMode) {
             case PREFIX:
@@ -432,6 +444,7 @@ public class MainGameScreen extends ScreenAdapter {
     //Hide game mode and set banner for other player's
     public void hideGameMode() {
         bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
+        img.setVisible(true);
         bannerLabel.setVisible(true);
 
     }
