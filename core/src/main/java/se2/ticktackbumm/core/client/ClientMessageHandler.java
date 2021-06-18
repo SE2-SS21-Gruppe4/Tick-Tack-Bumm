@@ -6,6 +6,10 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.client.StartBomb;
+import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
+import se2.ticktackbumm.core.network.messages.server.GameFinished;
+import se2.ticktackbumm.core.network.messages.server.GameUpdate;
+import se2.ticktackbumm.core.network.messages.server.SomeResponse;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
@@ -109,6 +113,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
         gameData.setCardRevealed(gameUpdate.isRevealedCard());
+        gameData.setBombTimer(gameUpdate.getTimerBomb());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -151,10 +156,9 @@ public class ClientMessageHandler {
      * Handle incoming {@link StartBomb} message from server to client.
      * Set the bomb timer in game screen to the time value received from server.
      *
-     * @param startBomb the incoming message
      */
-    public void handleStartBomb(StartBomb startBomb) {
-        game.setBombToTick(startBomb.getBombTimer());
+    public void handleStartBomb() {
+       game.showBomb();
     }
 
     public void handleSpinWheelFinished() {

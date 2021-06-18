@@ -5,8 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -42,13 +40,12 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
-    private final AssetManager assetManager;
     private final GameData gameData;
     private final SpriteBatch batch;
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
-    private final Sprite sprite;
+    private MainGameScreen mainGameScreen;
 
     /**
      * Scene 2D UI
@@ -88,7 +85,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameData = null;
         batch = null;
         stage = null;
-        sprite = null;
         skin = null;
         atlas = null;
         spinWheelTable = null;
@@ -101,7 +97,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
-        background = null;
     }
 
     /**
@@ -113,13 +108,11 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
-        this.assetManager = game.getManager();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
 
         batch = new SpriteBatch();
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH+145f, TickTackBummGame.HEIGHT+145f));
-
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -159,11 +152,9 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         setupSpinWheelTable();
         btnSpinListener();
-        setupGameButton();
 
         stage.addActor(spinWheelTable);
     }
-
 
     /**
      * set up all parts of spinning wheel for UI
@@ -192,6 +183,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 // set listener to unable next spin for same player
                 spinButtonImage.clearListeners();
 
+                gameData.setCurrentGameMode(GameMode.NONE);
+                game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
+
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
 
                 // setting random degree between 1 und 1800 degree.
@@ -204,6 +198,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
 
+                //set timer to get descrption label and background color when wheel stops
                 task = new Timer.Task() {
                     @Override
                     public void run() {
@@ -265,7 +260,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         spinWheelTable.setHeight(stage.getHeight());
         spinWheelTable.align(Align.center);
 
-        spinWheelTable.add(challengeLabel).width(800f).padBottom(1000f);
+        spinWheelTable.add(challengeLabel).width(1000f).padBottom(1000f);
         spinWheelTable.row();
         spinWheelTable.add(descriptionLabel).width(800f).padBottom(300f);
         spinWheelTable.row();
@@ -351,9 +346,10 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         batch.setProjectionMatrix(camera.combined);
         stage.act();
-        game.getBatch().begin();
+
+        batch.begin();
         stage.draw();
-        game.getBatch().end();
+        batch.end();
     }
 
     @Override
@@ -363,11 +359,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public boolean getStart() {
-        return this.isStart;
-    }
-
-    public void setStart(boolean isStart) {
-        this.isStart = isStart;
+    public MainGameScreen getMainGameScreen(){
+        return this.mainGameScreen;
     }
 }

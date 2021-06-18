@@ -85,7 +85,7 @@ public class ClientMessageSender {
      * Sends a {@link StartBomb} message to the server.
      */
     public void sendStartBomb() {
-        logSendingMessage("BombStart");
+        logSendingMessage("StartBomb");
         kryoClient.sendTCP(new StartBomb());
     }
 

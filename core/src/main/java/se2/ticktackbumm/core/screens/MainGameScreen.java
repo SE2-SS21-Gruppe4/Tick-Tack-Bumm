@@ -40,8 +40,10 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    // Game Mode & Banner
+    // game mode & banner
     private final GameData gameData;
+    private final BitmapFont textGameMode;
+    private final BitmapFont textBanner;
     private final Score score;
     private Label bannerLabel;
     private Label gameModeLabel;
@@ -49,6 +51,9 @@ public class MainGameScreen extends ScreenAdapter {
     private Image img;
     private String gameModeString;
     private String bannerString;
+
+    private int[] playerScore;
+
 
     // scene2d UI
     private final Stage stage;
@@ -66,7 +71,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final Table score2Table;
     private final Table score3Table;
     private final Table score4Table;
-
     private final Card card;
     private final BitmapFont textMaxScore;
     private final Label player1;
@@ -74,8 +78,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player3;
     private final Label player4;
     private BitmapFont ttfBitmapFont;
-    private int[] playerScore;
-    //Bomb and explosion
+
+    // bomb and explosion
     private Bomb bomb;
 
     public MainGameScreen() {
@@ -96,6 +100,16 @@ public class MainGameScreen extends ScreenAdapter {
         // card
         card = new Card();
 
+        // gameMode & banner
+        textGameMode = new BitmapFont();
+        textGameMode.setColor(Color.WHITE);
+        textGameMode.getData().setScale(3);
+        gameModeString = "";
+        textBanner = new BitmapFont();
+        textBanner.setColor(Color.WHITE);
+        textBanner.getData().setScale(4);
+        bannerString = "";
+
         // initialize player scores
         playerScore = gameData.getPlayerScores();
 
@@ -103,6 +117,7 @@ public class MainGameScreen extends ScreenAdapter {
         bomb = new Bomb();
         assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
+        showBomb = false;
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -268,6 +283,11 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
+    public void handleBombDraw(SpriteBatch spriteBatch){
+        if (showBomb){
+            bomb.makeExplosion(spriteBatch);
+            bomb.drawBomb(spriteBatch);}
+    }
 
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
@@ -285,11 +305,12 @@ public class MainGameScreen extends ScreenAdapter {
 
         batch.setProjectionMatrix(camera.combined);
 
-
         batch.begin();
-        //   bomb.renderBomb(delta, batch);
+
+        handleBombDraw(batch);
         stage.draw();
         card.drawCard(batch);
+
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
 
         batch.end();
@@ -412,24 +433,23 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateGameMode(GameMode gameMode) {
-        img.setVisible(false);
-        bannerLabel.setVisible(false);
         switch (gameMode) {
             case PREFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK"));
+                gameModeString = "TICK";
                 break;
 
             case INFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK...TACK"));
+                gameModeString = "TICK...TACK";
                 break;
 
             case POSTFIX:
-                gameModeLabel.setText(MODE_TAG.concat("BOMBE"));
+                gameModeString = "BOMBE";
                 break;
 
         }
         gameModeLabel.setVisible(true);
 
+        bannerString = "";
     }
 
     public void updateCardOpen(boolean isRevealed) {
@@ -440,7 +460,11 @@ public class MainGameScreen extends ScreenAdapter {
         card.setRandomWord(cardWord);
     }
 
-    //Hide game mode and set banner for other player's
+    public void updateShowBomb(boolean showBomb){
+        this.showBomb = showBomb;
+    }
+
+    // Hide game mode and set banner for other player's
     public void hideGameMode() {
         gameModeLabel.setText(MODE_TAG);
         bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
@@ -448,5 +472,9 @@ public class MainGameScreen extends ScreenAdapter {
         img.setVisible(true);
         bannerLabel.setVisible(true);
 
+    }
+
+    public void updateBombTime(float bombTimer) {
+        bomb.setExplodeTime(bombTimer);
     }
 }
