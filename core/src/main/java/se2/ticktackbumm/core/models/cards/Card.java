@@ -84,7 +84,7 @@ public class Card {
         randomWord = getWordDependOnMode();
 
         frontSprite = new Sprite(frontsideTexture);
-        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
 
         camera = TickTackBummGame.getGameCamera();
 
@@ -119,14 +119,14 @@ public class Card {
     }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
         backSprite.draw(spriteBatch);
     }
 
     public void drawFrontSide(SpriteBatch spriteBatch) {
-        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 550, 500, 300);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
         frontSprite.draw(spriteBatch);
-        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 770);
+        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 300f);
     }
 
     public void sendMessageToServer() {

@@ -50,6 +50,4 @@ class PlayerTest {
         player.incPlayerScore();
         Assertions.assertEquals(10, player.getGameScore());
     }
-
-
 }

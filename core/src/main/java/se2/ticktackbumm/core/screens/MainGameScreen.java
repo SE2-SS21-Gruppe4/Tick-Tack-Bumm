@@ -31,7 +31,7 @@ public class MainGameScreen extends ScreenAdapter {
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
-    private static final String MODE_TAG = "Game Mode: ";
+    private static final String MODE_TAG = "Spielmodus: ";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -152,12 +152,10 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.setHeight(400);
         score2Table.align(Align.center);
 
-
         score3Table = new Table();
         score3Table.setWidth(200);
         score3Table.setHeight(400);
         score3Table.align(Align.center);
-
 
         score4Table = new Table();
         score4Table.setWidth(200);
@@ -171,9 +169,10 @@ public class MainGameScreen extends ScreenAdapter {
 
         textFieldTable = setupTextfieldTable();
 
+
+        stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
-        stage.addActor(imageTable);
         //stage.addActor(score3Table);
         //stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
@@ -276,9 +275,9 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         card.drawCard(batch);
 
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() - 55f);
-        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight() - 150f);
-        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() / 2.9f, Gdx.graphics.getHeight() - 30f);
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() +70f);
+        textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
+        textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
         batch.end();
     }
 
@@ -428,6 +427,6 @@ public class MainGameScreen extends ScreenAdapter {
     //Hide game mode and set banner for other player's
     public void hideGameMode() {
         gameModeString = "";
-        bannerString = "Warte bis Drehrad fertig ist.";
+        bannerString = "Warte bis das Drehrad fertig ist!";
     }
 }
