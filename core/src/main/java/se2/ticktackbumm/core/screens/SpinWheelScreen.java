@@ -34,7 +34,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     /**
      * The challenge string is used to explain what to do
      */
-    private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";
+    private static final String CHALLENGE_STRING = "Drueck SPIN, um das Drehrad zu starten!";
     private static final String SPIN_WHEEL_ATLAS_PATH = "ui/spin_wheel_ui.atlas";
 
     private final TickTackBummGame game;
