@@ -30,7 +30,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 4;
-    private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
+    private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
     private static final String MODE_TAG = "Spielmodus: ";
 
     private final TickTackBummGame game;
@@ -275,7 +275,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         card.drawCard(batch);
 
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 95f, Gdx.graphics.getHeight() +70f);
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
         textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
         textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
         batch.end();
