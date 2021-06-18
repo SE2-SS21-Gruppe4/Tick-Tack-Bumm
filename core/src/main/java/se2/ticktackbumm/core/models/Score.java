@@ -9,15 +9,19 @@ import se2.ticktackbumm.core.data.GameData;
 import java.util.ArrayList;
 
 public class Score {
-    private final TickTackBummGame game;
-    private final GameData gameData;
-    private final ArrayList<Label> playerScoreLabels;
+    private TickTackBummGame game;
+    private GameData gameData;
+    private ArrayList<Label> playerScoreLabels;
     private Label player1;
     private Label player2;
     private Label player3;
     private Label player4;
     private Skin skin;
     private int[] playerScore;
+
+    public Score(int[] playerScore){
+        this.playerScore = playerScore;
+    }
 
     public Score() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -31,6 +35,10 @@ public class Score {
         playerScoreLabels = new ArrayList<>();
         initScores();
         addScoresToList();
+    }
+
+    public int getPlayerScore(int position) {
+        return playerScore[position];
     }
 
     public void initScores() {
@@ -88,8 +96,8 @@ public class Score {
         this.player4 = player4;
     }
 
-    public ArrayList<Label> getPlayerScoreLabels() {
-        return playerScoreLabels;
+    public Label getPlayerScoreLabels(int position) {
+        return playerScoreLabels.get(position);
     }
 
     @Override
