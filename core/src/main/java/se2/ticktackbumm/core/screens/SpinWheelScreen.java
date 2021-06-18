@@ -44,6 +44,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
+    private MainGameScreen mainGameScreen;
 
     /**
      * Scene 2D UI
@@ -93,6 +94,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
+        mainGameScreen = null;
     }
 
     /**
@@ -106,6 +108,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         camera = TickTackBummGame.getGameCamera();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
+
+        mainGameScreen = new MainGameScreen();
 
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -140,7 +144,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = new Color(.18f, .21f, .32f, 1);
         timer = new Timer();
         randomNumb = new SecureRandom();
-        isStart = false;
 
         setupGameButton();
         setupSpinWheelTable();
@@ -191,6 +194,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
 
+                //set timer to get descrption label and background color when wheel stops
                 task = new Timer.Task() {
                     @Override
                     public void run() {
@@ -230,11 +234,9 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                isStart = true;
+                game.getNetworkClient().getClientMessageSender().sendStartBomb();
 
-                game.setScreen(new MainGameScreen());
-
-                game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());
+                game.setScreen(mainGameScreen);
                 game.startNextTurn();
             }
         });
@@ -297,17 +299,14 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         } else {
             color.set(Color.valueOf("70AD47"));
-
         }
     }
 
     public float setDegree(float degree) {
         float retVal = degree;
-
         if (degree > 360) {
             retVal = degree % 360;
         }
-
         return retVal;
     }
 
@@ -340,11 +339,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public boolean getStart() {
-        return this.isStart;
-    }
-
-    public void setStart(boolean isStart) {
-        this.isStart = isStart;
+    public MainGameScreen getMainGameScreen(){
+        return this.mainGameScreen;
     }
 }

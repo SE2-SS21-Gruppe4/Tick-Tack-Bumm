@@ -7,6 +7,8 @@ import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
+import se2.ticktackbumm.core.network.messages.client.StartBomb;
+
 
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.

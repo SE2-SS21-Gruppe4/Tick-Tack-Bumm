@@ -22,8 +22,8 @@ import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
-import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
+import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.cards.Card;
 
 public class MainGameScreen extends ScreenAdapter {
@@ -45,6 +45,9 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont textGameMode;
     private final BitmapFont textBanner;
     private final Score score;
+
+    private int[] playerScore;
+
 
     // scene2d UI
     private final Stage stage;
@@ -71,10 +74,11 @@ public class MainGameScreen extends ScreenAdapter {
     private String gameModeString;
     private String bannerString;
     private BitmapFont ttfBitmapFont;
-    private int[] playerScore;
 
     // bomb and explosion
     private Bomb bomb;
+    //bomb visibility
+    private boolean showBomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -111,6 +115,7 @@ public class MainGameScreen extends ScreenAdapter {
         bomb = new Bomb();
         assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
+        showBomb = false;
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -254,6 +259,11 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
+    public void handleBombDraw(SpriteBatch spriteBatch){
+        if (showBomb){
+            bomb.makeExplosion(spriteBatch);
+            bomb.drawBomb(spriteBatch);}
+    }
 
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
@@ -271,13 +281,14 @@ public class MainGameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        //   bomb.renderBomb(delta, batch);
+      
+        handleBombDraw(batch);
         stage.draw();
-        card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
         textGameMode.draw(batch, MODE_TAG.concat(gameModeString), Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
         textBanner.draw(batch, bannerString, Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
+      
         batch.end();
     }
 
@@ -393,14 +404,12 @@ public class MainGameScreen extends ScreenAdapter {
         return this.bomb;
     }
 
-    public Card getCard() {
-        return this.card;
-    }
 
     public void updateGameMode(GameMode gameMode) {
-        switch (gameMode) {
+
+        switch (gameMode){
             case PREFIX:
-                gameModeString = "TICK";
+                gameModeString ="TICK";
                 break;
 
             case INFIX:
@@ -424,9 +433,17 @@ public class MainGameScreen extends ScreenAdapter {
         card.setRandomWord(cardWord);
     }
 
-    //Hide game mode and set banner for other player's
+    public void updateShowBomb(boolean showBomb){
+        this.showBomb = showBomb;
+    }
+
+    // Hide game mode and set banner for other player's
     public void hideGameMode() {
         gameModeString = "";
         bannerString = "Warte bis das Drehrad fertig ist!";
+    }
+
+    public void updateBombTime(float bombTimer) {
+        bomb.setExplodeTime(bombTimer);
     }
 }

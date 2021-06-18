@@ -60,7 +60,6 @@ public class ServerMessageHandler {
 
         serverData.getGameData().setNextPlayerTurn();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
-        serverData.getGameData().resetLockedWords();
 
         serverMessageSender.sendGameUpdate();
 
@@ -85,9 +84,11 @@ public class ServerMessageHandler {
         }
     }
 
-    public void handleBombStart() {
-        int timer = new SecureRandom().nextInt(30) + 1;
-        serverMessageSender.sendBombStart(timer);
+    public void handleBombStart(){
+        float timer =(float) new SecureRandom().nextInt((40-20)+1) + 20;
+        serverData.getGameData().setBombTimer(timer);
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendStartBomb();
     }
 
 
