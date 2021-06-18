@@ -4,17 +4,19 @@ public class CardOpened {
 
     private String word;
 
-    public CardOpened(){}
+    public CardOpened() {
+        // kryonet
+    }
 
     public CardOpened(String word) {
         this.word = word;
     }
 
-    public String getWord(){
+    public String getWord() {
         return this.word;
     }
 
-    public void setWord(String word){
+    public void setWord(String word) {
         this.word = word;
     }
 }

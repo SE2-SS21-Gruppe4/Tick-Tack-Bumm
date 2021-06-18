@@ -80,12 +80,13 @@ public class NetworkServerListener extends Listener {
             serverMessageHandler.handleSpinWheelFinished(((SpinWheelFinished) object).getGameMode());
 
         } else if (object instanceof SpinWheelStarted) {
-            Log.info(LOG_TAG,"Received message SpinWheelStarted from ID: " + connection.getID());
+            Log.info(LOG_TAG, "Received message SpinWheelStarted from ID: " + connection.getID());
             serverMessageHandler.handleSpinWheelStarted(((SpinWheelStarted) object).getGameMode());
-        }
-        else if (object instanceof CardOpened){
-            Log.info(LOG_TAG,"Received message CardOpened from ID: " + connection.getID());
+
+        } else if (object instanceof CardOpened) {
+            Log.info(LOG_TAG, "Received message CardOpened from ID: " + connection.getID());
             serverMessageHandler.handleCardOpened(((CardOpened) object).getWord());
+
         }
     }
 }

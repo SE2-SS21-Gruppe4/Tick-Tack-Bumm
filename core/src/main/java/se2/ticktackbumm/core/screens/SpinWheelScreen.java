@@ -25,14 +25,16 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * SpinWheelScreen is for getting challenge which will be used on cards in the game
+ *
  * @author NikolaMaNa
  */
 
 public class SpinWheelScreen extends ScreenAdapter {
+
     /**
-     *  The challenge string is used to explain what to do
+     * The challenge string is used to explain what to do
      */
-    private static final String CHALLENGE_STRING = "Drueck SPIN!, um Drehrad zu starten ";
+    private static final String CHALLENGE_STRING = "Drueck SPIN, um das Drehrad zu starten!";
     private static final String SPIN_WHEEL_ATLAS_PATH = "ui/spin_wheel_ui.atlas";
 
     private final TickTackBummGame game;
@@ -70,6 +72,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     /**
      * Test constructor
      * Set all variables on null to enable testing
+     *
      * @param str - will always be empty.
      */
     public SpinWheelScreen(String str) {
@@ -107,7 +110,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         Gdx.input.setInputProcessor(stage);
-
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         skin.getFont("default-font").getData().setScale(3);
@@ -149,13 +151,14 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     /**
      * set up all parts of spinning wheel for UI
-     * @param path - path of atlas in assets
+     *
+     * @param path   - path of atlas in assets
      * @param xWidth - x position on UI/Screen
-     * @param yHeght - y position on UI/Screen
+     * @param yHeight - y position on UI/Screen
      */
-    private Image setupSpinWheelImages(String path, float xWidth, float yHeght) {
+    private Image setupSpinWheelImages(String path, float xWidth, float yHeight) {
         Image image = new Image(atlas.findRegion(path));
-        image.setPosition(xWidth, yHeght);
+        image.setPosition(xWidth, yHeight);
         return image;
 
     }
@@ -210,7 +213,8 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     /**
      * set up description label on UI
-     * @param label - text
+     *
+     * @param label     - text
      * @param textScale - font size
      */
     private void setupTextLabel(Label label, int textScale) {
@@ -264,13 +268,12 @@ public class SpinWheelScreen extends ScreenAdapter {
             descriptionLabel.setText("Die Silbe muss in der Mitte deines Wortes zu finden sein.");
             gameMode = GameMode.INFIX;
 
-        } else{
+        } else {
             descriptionLabel.setText("Die Silbe muss am Ende deines Wortes stehen.");
             gameMode = GameMode.POSTFIX;
 
         }
         gameData.setCurrentGameMode(gameMode);
-
     }
 
     /**
@@ -303,10 +306,9 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         if (degree > 360) {
             retVal = degree % 360;
-
         }
-        return retVal;
 
+        return retVal;
     }
 
     public float getSpinSpeed(float rotationAmount) {
