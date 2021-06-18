@@ -81,6 +81,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     // bomb and explosion
     private Bomb bomb;
+    //bomb visibility
+    private boolean showBomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -117,7 +119,6 @@ public class MainGameScreen extends ScreenAdapter {
         bomb = new Bomb();
         assetManager.load("bombexplosion.png", Texture.class);
         assetManager.finishLoading();
-        showBomb = false;
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));

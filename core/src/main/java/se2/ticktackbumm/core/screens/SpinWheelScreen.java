@@ -5,6 +5,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -40,6 +42,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
+    private final AssetManager assetManager;
     private final GameData gameData;
     private final SpriteBatch batch;
     private final Stage stage;
@@ -58,6 +61,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image needleImage;
     private final Image spinButtonImage;
     private final Texture background;
+    private final Sprite sprite;
 
     /**
      * Variables used for functionality
@@ -97,6 +101,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
+        sprite = null;
+        background = null;
     }
 
     /**
@@ -108,6 +114,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
+        assetManager = game.getManager();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
 
