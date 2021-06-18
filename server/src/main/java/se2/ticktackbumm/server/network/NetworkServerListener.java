@@ -7,6 +7,8 @@ import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
+import se2.ticktackbumm.core.network.messages.client.BombStart;
+
 
 /**
  * Listener for the TickTackBumm game server. Reacts to events on the server port.
@@ -71,7 +73,7 @@ public class NetworkServerListener extends Listener {
             Log.info(LOG_TAG, "Received message PlayerReady from ID: " + connection.getID());
             serverMessageHandler.handlePlayerReady((PlayerReady) object, connection.getID());
 
-        } else if (object instanceof StartBomb) {
+        } else if (object instanceof BombStart) {
             Log.info(LOG_TAG, "Received message BombStart from ID: " + connection.getID());
             serverMessageHandler.handleBombStart();
 
