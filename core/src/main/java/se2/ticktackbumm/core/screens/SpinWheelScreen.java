@@ -117,7 +117,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         assetManager = game.getManager();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
-
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         Gdx.input.setInputProcessor(stage);
@@ -151,12 +150,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = new Color();
         timer = new Timer();
         randomNumb = new SecureRandom();
-        isStart = false;
 
         background = assetManager.get("spinWheelScreen/background.png",Texture.class);
         sprite = new Sprite(background);
 
-
+        setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
 
@@ -189,9 +187,6 @@ public class SpinWheelScreen extends ScreenAdapter {
 
                 // set listener to unable next spin for same player
                 spinButtonImage.clearListeners();
-
-                gameData.setCurrentGameMode(GameMode.NONE);
-                game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
 
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
 
@@ -248,11 +243,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                isStart = true;
 
                 game.setScreen(new MainGameScreen());
 
                 game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());
+                game.getNetworkClient().getClientMessageSender().sendStartBomb();
                 game.startNextTurn();
             }
         });

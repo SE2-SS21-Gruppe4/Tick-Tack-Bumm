@@ -40,10 +40,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    // game mode & banner
+    // Game Mode & Banner
     private final GameData gameData;
-    private final BitmapFont textGameMode;
-    private final BitmapFont textBanner;
     private final Score score;
     private Label bannerLabel;
     private Label gameModeLabel;
@@ -101,16 +99,6 @@ public class MainGameScreen extends ScreenAdapter {
 
         // card
         card = new Card();
-
-        // gameMode & banner
-        textGameMode = new BitmapFont();
-        textGameMode.setColor(Color.WHITE);
-        textGameMode.getData().setScale(3);
-        gameModeString = "";
-        textBanner = new BitmapFont();
-        textBanner.setColor(Color.WHITE);
-        textBanner.getData().setScale(4);
-        bannerString = "";
 
         // initialize player scores
         playerScore = gameData.getPlayerScores();
@@ -434,23 +422,24 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateGameMode(GameMode gameMode) {
+        img.setVisible(false);
+        bannerLabel.setVisible(false);
         switch (gameMode) {
             case PREFIX:
-                gameModeString = "TICK";
+                gameModeLabel.setText(MODE_TAG.concat("TICK"));
                 break;
 
             case INFIX:
-                gameModeString = "TICK...TACK";
+                gameModeLabel.setText(MODE_TAG.concat("TICK...TACK"));
                 break;
 
             case POSTFIX:
-                gameModeString = "BOMBE";
+                gameModeLabel.setText(MODE_TAG.concat("BOMBE"));
                 break;
 
         }
         gameModeLabel.setVisible(true);
 
-        bannerString = "";
     }
 
     public void updateCardOpen(boolean isRevealed) {
