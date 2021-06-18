@@ -36,10 +36,12 @@ public class ClientMessageHandler {
      * read and alter the game's general data.
      */
     private final GameData gameData;
+
     /**
      * The game's message sender, later contained in the singleton instance of the game class. Provides
      * functionality to send messages from client to server.
      */
+    //private final Client client;
     private final ClientMessageSender clientMessageSender;
 
     /**
@@ -111,6 +113,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameMode(gameUpdate.getCurrentGameMode());
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
+        gameData.setCardRevealed(gameUpdate.isRevealedCard());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -145,7 +148,7 @@ public class ClientMessageHandler {
     public void handleGameFinished(GameFinished gameFinished) {
         Log.info(LOG_TAG, "<GameFinished> Finishing game; displaying final scores");
         Log.info(LOG_TAG, "<GameFinished> " + Arrays.toString(gameFinished.getPlacedPlayers()));
-
+        gameData.setPlacedPlayers(gameFinished.getPlacedPlayers());
         game.finishGame();
     }
 
@@ -159,13 +162,19 @@ public class ClientMessageHandler {
         game.setBombToTick(startBomb.getBombTimer());
     }
 
-    public void handleSpinWheelFinished(){
-        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : "  + gameData.getCurrentGameMode());
+    public void handleSpinWheelFinished() {
+        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : " + gameData.getCurrentGameMode());
         game.spinWheelFinished();
     }
 
     public void handleSpinWheelStarted() {
-        Log.info(LOG_TAG, "<SpinWheelStarted> : "  + gameData.getCurrentGameMode());
+        Log.info(LOG_TAG, "<SpinWheelStarted> : " + gameData.getCurrentGameMode());
         game.spinWheelStarted();
+    }
+
+    public void handleCardOpened() {
+        Log.info(LOG_TAG, "<CardOpened> : " + gameData.getCurrentGameModeText());
+        game.openCard();
+
     }
 }

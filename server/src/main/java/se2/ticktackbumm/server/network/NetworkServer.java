@@ -23,6 +23,7 @@ public class NetworkServer {
     private final ServerData serverData;
     private final ServerMessageHandler serverMessageHandler;
     private final ServerMessageSender serverMessageSender;
+
     /**
      * Class constructor.
      * Create the Kryonet-{@link Server}, register all Kryo message classes and adds a

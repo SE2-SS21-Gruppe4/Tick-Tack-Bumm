@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.models.BombImpl.Bomb;
+import se2.ticktackbumm.core.models.bomb.Bomb;
 
 public class TestScreen implements Screen {
     private TickTackBummGame game;

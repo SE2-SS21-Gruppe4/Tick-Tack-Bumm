@@ -5,10 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,9 +19,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class RulesScreen extends ScreenAdapter {
+
     // Button constants
-    private final float BUTTON_WIDTH = 500f;
-    private final float BUTTON_HEIGHT = 80f;
+    private final float BUTTON_WIDTH = 450f;
+    private final float BUTTON_HEIGHT = 120f;
 
     // TickTackBumm resources
     private final TickTackBummGame game;
@@ -29,10 +30,9 @@ public class RulesScreen extends ScreenAdapter {
     private final Stage stage;
     private final Skin skin;
     private final TextButton backToMenuButton;
-    private final TextButton quitButton;
     private final Table menuButtonTable;
-    private final Image backgroundImage;
-    private final Texture textrueImage;
+    private final Sprite sprite;
+    private final Texture backgroundTexture;
     private final AssetManager assetManager;
     private OrthographicCamera camera;
     private SpriteBatch batch;
@@ -43,17 +43,15 @@ public class RulesScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.assetManager = game.getManager();
 
-        //scene2d UI
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        // scene2d UI
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH + 145f, TickTackBummGame.HEIGHT + 145f));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-//MenuButtons
-        backToMenuButton = new TextButton("Back to Menu", skin);
-        quitButton = new TextButton("QUIT GAME", skin);
+        // menu buttons
+        backToMenuButton = new TextButton("Zurueck", skin);
 
         backToMenuButton.getLabel().setFontScale(4);
-        quitButton.getLabel().setFontScale(4);
 
         menuButtonTable = new Table();
         menuButtonTable.setWidth(stage.getWidth());
@@ -61,8 +59,7 @@ public class RulesScreen extends ScreenAdapter {
         menuButtonTable.align(Align.bottom);
 
 
-        textrueImage = assetManager.get("rulescreen.png", Texture.class);
-        backgroundImage = new Image(textrueImage);
+        backgroundTexture = assetManager.get("rulescreen.png", Texture.class);
 
         backToMenuButton.addListener(new ClickListener() {
             @Override
@@ -71,18 +68,12 @@ public class RulesScreen extends ScreenAdapter {
             }
         });
 
-        quitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
+        menuButtonTable.add(backToMenuButton).padBottom(75f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
-        menuButtonTable.add(backToMenuButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        menuButtonTable.row();
-        menuButtonTable.add(quitButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        sprite = new Sprite(backgroundTexture);
+        sprite.setRegionWidth(TickTackBummGame.WIDTH);
+        sprite.setRegionHeight(TickTackBummGame.HEIGHT);
 
-        stage.addActor(backgroundImage);
         stage.addActor(menuButtonTable);
     }
 
@@ -91,6 +82,9 @@ public class RulesScreen extends ScreenAdapter {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
+        game.getBatch().begin();
+        sprite.draw(game.getBatch());
+        game.getBatch().end();
         batch.begin();
         stage.draw();
 //        explosion.render(delta, batch); // better UI position/integration

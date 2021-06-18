@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
-
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
@@ -25,12 +24,14 @@ import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.BombImpl.Bomb;
 import se2.ticktackbumm.core.models.Score;
+import se2.ticktackbumm.core.models.bomb.Bomb;
 import se2.ticktackbumm.core.models.cards.Card;
 import se2.ticktackbumm.core.network.messages.client.BombStart;
 
 public class MainGameScreen extends ScreenAdapter {
+
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
-    private static final int MAX_SCORE = 10;
+    private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Max Score: " + MAX_SCORE;
     private static final String MODE_TAG = "Game Mode: ";
 
@@ -41,17 +42,14 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-
-    //Game Mode & Banner
+    // game mode & banner
     private final GameData gameData;
-    private String gameModeString;
     private final BitmapFont textGameMode;
     private final BitmapFont textBanner;
-    private String bannerString;
-
     private final Score score;
 
     private int[] playerScore;
+
 
     // scene2d UI
     private final Stage stage;
@@ -64,24 +62,23 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
 
-    //tables for the playerscores and avatars
+    // tables for the player scores and avatars
     private final Table score1Table;
     private final Table score2Table;
     private final Table score3Table;
     private final Table score4Table;
-
     private final Card card;
     private final BitmapFont textMaxScore;
     private final Label player1;
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private String gameModeString;
+    private String bannerString;
     private BitmapFont ttfBitmapFont;
-    private int[] playerScore;
-    //Bomb and explosion
-    private Bomb bomb;
 
-    private boolean fromSpinWheelScreen;
+    // bomb and explosion
+    private Bomb bomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -181,8 +178,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(score1Table);
         stage.addActor(score2Table);
         stage.addActor(imageTable);
-        stage.addActor(score3Table);
-        stage.addActor(score4Table);
+        //stage.addActor(score3Table);
+        //stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
 
@@ -198,8 +195,6 @@ public class MainGameScreen extends ScreenAdapter {
         bombButton.setWidth(200);
         bombButton.setPosition(100, 200, Align.center);
         stage.addActor(bombButton);
-
-        fromSpinWheelScreen = false;
     }
 
     private Table setupTextfieldTable() {
@@ -273,8 +268,11 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void resetCard() {
         Log.info(LOG_TAG, "Reset card, show backside, pick random task text");
-        // TODO: show card backside again
-        // TODO: set new random syllable for card frontside
+
+        card.setRevealed(false);
+
+        String newRandomWord = card.getWordDependOnMode();
+        card.setRandomWord(newRandomWord);
     }
 
 
@@ -384,154 +382,8 @@ public class MainGameScreen extends ScreenAdapter {
         game.setLocalPlayer(null);
 
         Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
-                "switching to WinnerScreen");
-        Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen(getBestScores())));
-    }
-
-    public Table[] getBestScores() {
-        initTable1Unfocused();
-        initTable2Unfocused();
-        initTable3Unfocused();
-        initTable4Unfocused();
-        Table[] tables = new Table[3];
-        //player 1 loses
-        if (gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] >= gameData.getPlayerScores()[3]) {
-            //player 2 is first
-            if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score2Table;
-                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score3Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score3Table;
-                    tables[1] = score4Table;
-                }
-                //player 3 is first
-            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score3Table;
-                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score2Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score2Table;
-                    tables[1] = score4Table;
-                }
-                //player 4 is first
-            } else {
-                tables[0] = score4Table;
-                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
-                    tables[1] = score2Table;
-                    tables[2] = score3Table;
-                } else {
-                    tables[2] = score2Table;
-                    tables[1] = score3Table;
-                }
-            }
-        }
-
-        //player 2 loses
-        if (gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[1] >= gameData.getPlayerScores()[3]) {
-            //player 1 is first
-            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score1Table;
-                if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score3Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score3Table;
-                    tables[1] = score4Table;
-                }
-                //player 3 is first
-            } else if (gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score3Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score1Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score4Table;
-                }
-                //player 4 is first
-            } else {
-                tables[0] = score4Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
-                    tables[1] = score1Table;
-                    tables[2] = score3Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score3Table;
-                }
-            }
-        }
-        //player 3 loses
-        if (gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[2] >= gameData.getPlayerScores()[3]) {
-            //player 1 is first
-            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score1Table;
-                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score2Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score2Table;
-                    tables[1] = score4Table;
-                }
-                //player 2 is first
-            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[3]) {
-                tables[0] = score2Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score1Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score4Table;
-                }
-                //player 4 is first
-            } else {
-                tables[0] = score4Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[3]) {
-                    tables[1] = score1Table;
-                    tables[2] = score4Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score4Table;
-                }
-            }
-        }
-        //player 4 loses
-        if (gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[3] >= gameData.getPlayerScores()[2]) {
-            //player 1 is first
-            if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1] && gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
-                tables[0] = score1Table;
-                if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
-                    tables[1] = score2Table;
-                    tables[2] = score3Table;
-                } else {
-                    tables[2] = score2Table;
-                    tables[1] = score3Table;
-                }
-                //player 2 is first
-            } else if (gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[0] && gameData.getPlayerScores()[1] <= gameData.getPlayerScores()[2]) {
-                tables[0] = score2Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[2]) {
-                    tables[1] = score1Table;
-                    tables[2] = score3Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score3Table;
-                }
-                //player 3 is first
-            } else {
-                tables[0] = score3Table;
-                if (gameData.getPlayerScores()[0] <= gameData.getPlayerScores()[1]) {
-                    tables[1] = score1Table;
-                    tables[2] = score2Table;
-                } else {
-                    tables[2] = score1Table;
-                    tables[1] = score2Table;
-                }
-            }
-        }
-        return tables;
+                "switching to MenuScreen");
+        Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
     @Override
@@ -552,14 +404,6 @@ public class MainGameScreen extends ScreenAdapter {
         return this.bomb;
     }
 
-    public boolean isFromSpinWheelScreen(){
-        return this.fromSpinWheelScreen;
-    }
-
-    public void setFromSpinWheelScreen(boolean fromSpinWheelScreen){
-        this.fromSpinWheelScreen = fromSpinWheelScreen;
-    }
-
 
     public void updateGameMode(GameMode gameMode) {
 
@@ -569,21 +413,29 @@ public class MainGameScreen extends ScreenAdapter {
                 break;
 
             case INFIX:
-                gameModeString ="TICK...TACK";
+                gameModeString = "TICK...TACK";
                 break;
 
             case POSTFIX:
-                gameModeString ="BOMBE";
+                gameModeString = "BOMBE";
                 break;
 
         }
+
         bannerString = "";
     }
 
+    public void updateCardOpen(boolean isRevealed) {
+        card.setRevealed(isRevealed);
+    }
+
+    public void updateCardWord(String cardWord) {
+        card.setRandomWord(cardWord);
+    }
+
     //Hide game mode and set banner for other player's
-    public void hideGameMode(){
+    public void hideGameMode() {
         gameModeString = "";
         bannerString = "Warte bis Drehrad fertig ist.";
-
     }
 }

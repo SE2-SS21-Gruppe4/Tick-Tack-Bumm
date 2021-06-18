@@ -5,10 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,7 +28,9 @@ public class MenuScreen extends ScreenAdapter {
 
     // TickTackBumm resources
     private final TickTackBummGame game;
-    private final Image backgroundImage;
+    private final Texture backgroundImage;
+    private final Sprite sprite;
+
     // Scene2D UI
     private final Stage stage;
     private final Skin skin;
@@ -39,22 +41,21 @@ public class MenuScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
-
     public MenuScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         assetManager = game.getManager();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
 
-        backgroundImage = new Image(assetManager.get("menuscreen.png", Texture.class));
+        backgroundImage = assetManager.get("menuScreen/background.png", Texture.class);
 
-        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
+        stage = new Stage(new FitViewport(TickTackBummGame.WIDTH + 145f, TickTackBummGame.HEIGHT + 145f));
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        playButton = new TextButton("PLAY", skin);
-        rulesButton = new TextButton("RULES", skin);
-        exitButton = new TextButton("EXIT", skin);
+        playButton = new TextButton("Spielen", skin);
+        rulesButton = new TextButton("Regeln", skin);
+        exitButton = new TextButton("Spiel verlassen", skin);
 
         playButton.getLabel().setFontScale(4);
         rulesButton.getLabel().setFontScale(4);
@@ -64,6 +65,7 @@ public class MenuScreen extends ScreenAdapter {
         menuButtonTable.setWidth(stage.getWidth());
         menuButtonTable.setHeight(stage.getHeight());
         menuButtonTable.align(Align.center);
+        menuButtonTable.setY(-225f);
 
         playButton.addListener(new ClickListener() {
             @Override
@@ -87,14 +89,17 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        menuButtonTable.add(playButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        menuButtonTable.add(playButton).padBottom(75f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         menuButtonTable.row();
-        menuButtonTable.add(rulesButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        menuButtonTable.add(rulesButton).padBottom(75f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         menuButtonTable.row();
-        menuButtonTable.add(exitButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        menuButtonTable.add(exitButton).padBottom(75f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
-        stage.addActor(backgroundImage);
         stage.addActor(menuButtonTable);
+
+        sprite = new Sprite(backgroundImage);
+        sprite.setRegionWidth(TickTackBummGame.WIDTH);
+        sprite.setRegionHeight(TickTackBummGame.HEIGHT);
     }
 
     @Override
@@ -102,7 +107,9 @@ public class MenuScreen extends ScreenAdapter {
         ScreenUtils.clear(.18f, .21f, .32f, 1);
 
         batch.setProjectionMatrix(camera.combined);
-
+        game.getBatch().begin();
+        sprite.draw(game.getBatch());
+        game.getBatch().end();
         batch.begin();
         stage.draw();
 //        explosion.render(delta, batch); // better UI position/integration

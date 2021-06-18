@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.models.BombImpl;
+package se2.ticktackbumm.core.models.bomb;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

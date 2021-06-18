@@ -14,6 +14,7 @@ public class GameUpdate {
     private GameMode currentGameMode;
     private String currentGameModeText;
     private ArrayList<String> lockedWords;
+    private boolean revealedCard;
 
     public GameUpdate() {
         // kryonet
@@ -23,9 +24,9 @@ public class GameUpdate {
         this.players = gameData.getPlayers();
         this.currentPlayerTurnIndex = gameData.getCurrentPlayerTurnIndex();
         this.currentGameMode = gameData.getCurrentGameMode();
-//        this.currentGameModeText = gameData.getCurrentGameModeText();
-        this.currentGameModeText = "UNG"; // TODO: testing only
+        this.currentGameModeText = gameData.getCurrentGameModeText();
         this.lockedWords = gameData.getLockedWords();
+        this.revealedCard = gameData.isCardRevealed();
     }
 
     public List<Player> getPlayers() {
@@ -46,5 +47,9 @@ public class GameUpdate {
 
     public ArrayList<String> getLockedWords() {
         return lockedWords;
+    }
+
+    public boolean isRevealedCard() {
+        return this.revealedCard;
     }
 }
