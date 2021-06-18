@@ -6,6 +6,7 @@ import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.player.Player;
+import se2.ticktackbumm.core.network.messages.client.BombStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class KryoRegisterer {
         kryo.register(NextTurn.class);
         kryo.register(NextRound.class);
         kryo.register(GameFinished.class);
-        kryo.register(StartBomb.class);
+        kryo.register(BombStart.class);
         kryo.register(SpinWheelStarted.class);
         kryo.register(SpinWheelFinished.class);
         kryo.register(CardOpened.class);
