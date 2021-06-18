@@ -80,6 +80,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("score/player3.png", Texture.class);
         assetManager.load("score/player4.png", Texture.class);
         assetManager.load("spinWheelScreen/background.png",Texture.class);
+        assetManager.load("bannerBackground.png",Texture.class);
 
         // load player avatars for WaitingScreen
         assetManager.load("avatars/blackhaired_guy.png", Texture.class);
