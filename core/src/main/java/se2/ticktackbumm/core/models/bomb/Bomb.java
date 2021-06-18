@@ -28,7 +28,7 @@ public class Bomb {
 
     private BombState bombState;
 
-   // private SecureRandom radnomExplosion;
+
     private float explodeTime;
     private float timerToExplode;
 
@@ -36,8 +36,6 @@ public class Bomb {
     private BombExplosion bombExplosion;
 
     private Music bombTick;
-
-    private SpinWheelScreen spinWheelScreen;
 
 
     public Bomb() {
@@ -55,7 +53,6 @@ public class Bomb {
 
         bombState = BombState.NORMAL;
 
-        // radnomExplosion = new SecureRandom();
         //explode time is going to get random exploder via client message handler
         explodeTime = 10;
         timerToExplode = 0;
