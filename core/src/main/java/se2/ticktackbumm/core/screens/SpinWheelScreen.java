@@ -81,6 +81,7 @@ public class SpinWheelScreen extends ScreenAdapter {
      * Musik
      */
     private Music spinSound;
+    private final TextButton checkButton;
 
 
     /**
@@ -111,6 +112,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         sprite = null;
         background = null;
         spinSound = null;
+        checkButton = null;
     }
 
     /**
@@ -163,6 +165,26 @@ public class SpinWheelScreen extends ScreenAdapter {
         sprite = new Sprite(background);
 
 
+        checkButton = new TextButton("Musik: Aus", skin);
+        checkButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (checkButton.getText().toString().equals("Musik: Aus")){
+                    checkButton.setText("Musik: Ein");
+                }else{
+                    checkButton.setText("Musik: Aus");
+                }
+
+            }
+        });
+        checkButton.setHeight(50);
+        checkButton.setWidth(300);
+        checkButton.setPosition(200,200);
+        stage.addActor(checkButton);
+
+
+
+
 
         setupGameButton();
         setupSpinWheelTable();
@@ -191,7 +213,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 break;
 
         }
-        spinSound.setVolume(0.2f);
+        spinSound.setVolume(0.5f);
         spinSound.setLooping(true);
     }
 
@@ -231,7 +253,15 @@ public class SpinWheelScreen extends ScreenAdapter {
                 // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
                 setSoundAndSoundSpeed((int)spinSpeed);
-                spinSound.play();
+
+                if (checkButton.getText().toString().equals("Musik: Aus")){
+                    System.out.println("Uso kod Pleya");
+                    spinSound.play();
+                }else{
+                    System.out.println("OOOP: " + checkButton.getText());
+                    System.out.println("Nije Uso kod Pleya");
+                    spinSound.stop();
+                }
 
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
