@@ -18,20 +18,26 @@ public class ReadyButtonListener extends ClickListener {
      */
     private final String LOG_TAG = "READY_BUTTON_LISTENER";
 
-    private final Texture avatarError;
-    private final Texture nameError;
-    private final Texture avatarAndNameError;
-    private final AssetManager assetManager;
+    private Texture avatarError;
+    private Texture nameError;
+    private Texture avatarAndNameError;
+    private AssetManager assetManager;
 
     /**
      * The singleton instance of the game class. Provides functionality to read and alter the game's
      * state and data.
      */
-    private final TickTackBummGame game;
+    private TickTackBummGame game;
     /**
      * Instance of the waiting screen of the current game.
      */
-    private final WaitingScreen waitingScreen;
+    private WaitingScreen waitingScreen;
+
+    /**
+     * default constructor for testing purposes
+     */
+    public ReadyButtonListener() {
+    }
 
     /**
      * Constructs a listener for the ready button in the waiting screen. The listener takes a reference to
