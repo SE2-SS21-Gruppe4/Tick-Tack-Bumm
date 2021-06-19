@@ -70,7 +70,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private GameMode gameMode;
     private Timer.Task task;
     private float rotationAmount;
-    private float spinSpeed;
+    private byte spinSpeed;
     private float degree;
 
     /**
@@ -206,7 +206,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         });
     }
 
-    public void setSoundAndSoundSpeed(int spinSpeed){
+    public void setSoundAndSoundSpeed(byte spinSpeed){
 
         switch (spinSpeed){
             case 1:
@@ -253,6 +253,13 @@ public class SpinWheelScreen extends ScreenAdapter {
                 degree = setDegree(rotationAmount);
                 // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
+                setSoundAndSoundSpeed(spinSpeed);
+
+                if (isMusicOn){
+                    spinSound.play();
+                }else{
+                    spinSound.stop();
+                }
 
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
@@ -268,6 +275,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                         // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
+                        spinSound.stop();
                     }
                 };
                 timer.scheduleTask(task, spinSpeed);
@@ -375,12 +383,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         return retVal;
     }
 
-    public float getSpinSpeed(float rotationAmount) {
+    public byte getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
             return 1;
 
         } else {
-            return rotationAmount / 360;
+            return (byte)(rotationAmount / 360);
 
         }
     }
