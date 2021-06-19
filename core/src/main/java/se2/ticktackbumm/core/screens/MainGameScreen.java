@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,7 +30,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final int MAX_SCORE = 4;
-    private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
+    //private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
     private static final String MODE_TAG = "Spielmodus: ";
     private String waitingForWheelText = "Warten auf neuen Spielmodus...";
 
@@ -52,8 +53,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture textureTable;
     private final Image imageTable;
-    private final Texture textureMaxScoreBoard;
-    private final Image imageMaxScoreBoard;
 
     // tables for the player scores and avatars
     private final Table score1Table;
@@ -73,7 +72,9 @@ public class MainGameScreen extends ScreenAdapter {
     // bomb and explosion
     private Bomb bomb;
 
-    // bomb visibility
+    private final Color color;
+
+    //bomb visibility
     private boolean showBomb;
 
     public MainGameScreen() {
@@ -90,6 +91,8 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.setColor(Color.DARK_GRAY);
         textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        color = new Color(Color.valueOf("121520"));
 
         // card
         card = new Card();
@@ -121,9 +124,9 @@ public class MainGameScreen extends ScreenAdapter {
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
-        textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
-        imageMaxScoreBoard = new Image(textureMaxScoreBoard);
-        imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
+        //textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
+        //imageMaxScoreBoard = new Image(textureMaxScoreBoard);
+        //imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
         score = new Score();
 
@@ -165,7 +168,7 @@ public class MainGameScreen extends ScreenAdapter {
         infoLabel.setWrap(true);
         infoLabel.setAlignment(Align.center);
         infoLabel.setColor(Color.WHITE);
-        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1400f);
+        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1700f);
         infoLabel.setFontScale(4f);
 
         stage.addActor(imageTable);
@@ -173,7 +176,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(score2Table);
         //stage.addActor(score3Table);
         //stage.addActor(score4Table);
-        stage.addActor(imageMaxScoreBoard);
+        //stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
         stage.addActor(infoLabel);
 
@@ -272,7 +275,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(.18f, .21f, .32f, 1);
+        ScreenUtils.clear(color.r, color.g, color.b, color.a);
 
         batch.setProjectionMatrix(camera.combined);
 
@@ -282,7 +285,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         card.drawCard(batch);
 
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
+        //textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
     }
@@ -300,7 +303,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
         score1Table.row();
         score1Table.add(player1);
-        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+        score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
 
     public void initTable2Unfocused() {
@@ -310,7 +313,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score2Table.row();
         score2Table.add(player2);
-        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable3Unfocused() {
@@ -320,7 +323,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score3Table.row();
         score3Table.add(player3);
-        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
 
     public void initTable4Unfocused() {
@@ -330,7 +333,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score4Table.row();
         score4Table.add(player4);
-        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+        score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
 
     public void initTable1Focused() {
@@ -340,7 +343,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score1Table.row();
         score1Table.add(player1);
-        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+        score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
 
     public void initTable2Focused() {
@@ -350,7 +353,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score2Table.row();
         score2Table.add(player2);
-        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable3Focused() {
@@ -360,7 +363,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score3Table.row();
         score3Table.add(player3);
-        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable4Focused() {
@@ -370,7 +373,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score4Table.row();
         score4Table.add(player4);
-        score4Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void updatePlayerScores() {

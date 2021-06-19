@@ -62,26 +62,20 @@ public class Card {
         isRevealed = false;
 
         font = new BitmapFont();
-        font.setColor(Color.CORAL);
-        font.getData().setScale(7);
+        font.setColor(Color.BLACK);
+        font.getData().setScale(5);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        assetManager.load("card/backside.png", Texture.class);
-        assetManager.finishLoading();
 
         backsideTexture = assetManager.get("card/backside.png", Texture.class);
 
         backSprite = new Sprite(backsideTexture);
-
-        assetManager.load("card/frontside.png", Texture.class);
-        assetManager.finishLoading();
 
         frontsideTexture = assetManager.get("card/frontside.png", Texture.class);
 
         randomWord = getWordDependOnMode();
 
         frontSprite = new Sprite(frontsideTexture);
-        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f + 75f, 400, 200);
 
         camera = TickTackBummGame.getGameCamera();
 
@@ -118,14 +112,14 @@ public class Card {
     }
 
     public void drawBackSide(SpriteBatch spriteBatch) {
-        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
+        backSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f + 75f, 400, 200);
         backSprite.draw(spriteBatch);
     }
 
     public void drawFrontSide(SpriteBatch spriteBatch) {
-        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 250, Gdx.graphics.getHeight() / 2.0f + 75f, 500, 300);
+        frontSprite.setBounds(Gdx.graphics.getWidth() / 2.0f - 200, Gdx.graphics.getHeight() / 2.0f + 75f, 400, 200);
         frontSprite.draw(spriteBatch);
-        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 95, Gdx.graphics.getHeight() / 2.0f + 300f);
+        font.draw(spriteBatch, randomWord, Gdx.graphics.getWidth() / 2.0f - 125, Gdx.graphics.getHeight() / 2.0f + 225f);
     }
 
     public void sendMessageToServer() {

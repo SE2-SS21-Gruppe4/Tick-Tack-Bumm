@@ -136,7 +136,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         rotationAmount = 0;
         spinSpeed = 0;
         degree = 0;
-        color = new Color(.18f, .21f, .32f, 1);
+        color = new Color(Color.valueOf("121520"));
         timer = new Timer();
         randomNumb = new SecureRandom();
 
