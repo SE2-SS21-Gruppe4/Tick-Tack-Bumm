@@ -55,7 +55,7 @@ public class GameUpdate {
         return this.revealedCard;
     }
 
-    public float getTimerBomb(){
+    public float getTimerBomb() {
         return this.timerBomb;
     }
 }

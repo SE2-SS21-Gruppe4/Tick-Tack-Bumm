@@ -48,8 +48,6 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Stage stage;
     private final Skin skin;
     private final TextureAtlas atlas;
-    private MainGameScreen mainGameScreen;
-
     /**
      * Scene 2D UI
      */
@@ -62,13 +60,13 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image spinButtonImage;
     private final Texture background;
     private final Sprite sprite;
-
     /**
      * Variables used for functionality
      */
     private final SecureRandom randomNumb;
     private final Timer timer;
     private final Color color;
+    private MainGameScreen mainGameScreen; // TODO: never assigned?!
     private GameMode gameMode;
     private Timer.Task task;
     private float rotationAmount;
@@ -151,7 +149,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         timer = new Timer();
         randomNumb = new SecureRandom();
 
-        background = assetManager.get("spinWheelScreen/background.png",Texture.class);
+        background = assetManager.get("spinWheelScreen/background.png", Texture.class);
         sprite = new Sprite(background);
 
         setupGameButton();
@@ -164,8 +162,8 @@ public class SpinWheelScreen extends ScreenAdapter {
     /**
      * set up all parts of spinning wheel for UI
      *
-     * @param path   - path of atlas in assets
-     * @param xWidth - x position on UI/Screen
+     * @param path    - path of atlas in assets
+     * @param xWidth  - x position on UI/Screen
      * @param yHeight - y position on UI/Screen
      */
     private Image setupSpinWheelImages(String path, float xWidth, float yHeight) {
@@ -338,9 +336,9 @@ public class SpinWheelScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
-        if (!color.equals(Color.CLEAR)){
+        if (!color.equals(Color.CLEAR)) {
             ScreenUtils.clear(color.r, color.g, color.b, color.a);
-        }else{
+        } else {
             game.getBatch().begin();
             sprite.draw(game.getBatch());
             game.getBatch().end();
@@ -361,7 +359,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public MainGameScreen getMainGameScreen(){
+    public MainGameScreen getMainGameScreen() {
         return this.mainGameScreen;
     }
 }

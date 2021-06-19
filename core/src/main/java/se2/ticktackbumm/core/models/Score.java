@@ -19,7 +19,7 @@ public class Score {
     private Skin skin;
     private int[] playerScore;
 
-    public Score(int[] playerScore){
+    public Score(int[] playerScore) {
         this.playerScore = playerScore;
     }
 

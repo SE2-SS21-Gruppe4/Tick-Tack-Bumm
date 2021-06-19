@@ -59,7 +59,6 @@ public class TickTackBummGame extends Game {
     }
 
 
-
     public AssetManager getManager() {
         return manager;
     }
@@ -151,13 +150,13 @@ public class TickTackBummGame extends Game {
     }
 
     public void showBomb() {
-        if (this.getScreen() instanceof MainGameScreen){
+        if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
             gameScreen.updateShowBomb(true);
             gameScreen.updateBombTime(this.gameData.getBombTimer());
         }
-        if (this.getScreen() instanceof SpinWheelScreen){
+        if (this.getScreen() instanceof SpinWheelScreen) {
             SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
 
             spinWheelScreen.getMainGameScreen().updateShowBomb(true);

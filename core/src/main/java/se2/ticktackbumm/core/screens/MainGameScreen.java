@@ -43,16 +43,6 @@ public class MainGameScreen extends ScreenAdapter {
     // Game Mode & Banner
     private final GameData gameData;
     private final Score score;
-    private Label bannerLabel;
-    private Label gameModeLabel;
-    private Texture bannerBackground;
-    private Image img;
-    private String gameModeString;
-    private String bannerString;
-
-    private int[] playerScore;
-
-
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
@@ -63,7 +53,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final Image imageTable;
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
-
     // tables for the player scores and avatars
     private final Table score1Table;
     private final Table score2Table;
@@ -75,6 +64,13 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private Label bannerLabel;
+    private Label gameModeLabel;
+    private Texture bannerBackground;
+    private Image img;
+    private String gameModeString;
+    private String bannerString;
+    private int[] playerScore;
     private BitmapFont ttfBitmapFont;
 
     // bomb and explosion
@@ -174,15 +170,14 @@ public class MainGameScreen extends ScreenAdapter {
 
         bannerString = "Das Drehrad wird gestartet!";
         bannerLabel = new Label(bannerString, skin);
-        bannerLabel.setFontScale(4.5f,4f);
+        bannerLabel.setFontScale(4.5f, 4f);
         bannerLabel.setColor(Color.BLACK);
-        bannerLabel.setSize(900f,90f);
-        bannerLabel.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
+        bannerLabel.setSize(900f, 90f);
+        bannerLabel.setPosition(Gdx.graphics.getWidth() / 2f - 400f, Gdx.graphics.getHeight() - 200f);
 
-        bannerBackground = assetManager.get("bannerBackground.png",Texture.class);
+        bannerBackground = assetManager.get("bannerBackground.png", Texture.class);
         img = new Image(bannerBackground);
-        img.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
-
+        img.setPosition(Gdx.graphics.getWidth() / 2f - 400f, Gdx.graphics.getHeight() - 200f);
 
 
         stage.addActor(imageTable);
@@ -272,10 +267,11 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
-    public void handleBombDraw(SpriteBatch spriteBatch){
-        if (showBomb){
+    public void handleBombDraw(SpriteBatch spriteBatch) {
+        if (showBomb) {
             bomb.makeExplosion(spriteBatch);
-            bomb.drawBomb(spriteBatch);}
+            bomb.drawBomb(spriteBatch);
+        }
     }
 
     public void resetCard() {
@@ -300,7 +296,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         card.drawCard(batch);
 
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
+        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
     }
@@ -450,7 +446,7 @@ public class MainGameScreen extends ScreenAdapter {
         card.setRandomWord(cardWord);
     }
 
-    public void updateShowBomb(boolean showBomb){
+    public void updateShowBomb(boolean showBomb) {
         this.showBomb = showBomb;
     }
 
@@ -458,7 +454,7 @@ public class MainGameScreen extends ScreenAdapter {
     public void hideGameMode() {
         gameModeLabel.setText(MODE_TAG);
         bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
-        bannerLabel.setFontScale(6f,4f);
+        bannerLabel.setFontScale(6f, 4f);
         img.setVisible(true);
         bannerLabel.setVisible(true);
 

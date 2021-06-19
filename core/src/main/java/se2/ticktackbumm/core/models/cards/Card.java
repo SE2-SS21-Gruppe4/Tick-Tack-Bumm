@@ -20,13 +20,10 @@ public class Card {
     private final String[] prefixArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
     private final String[] infixArray = new String[]{"TER", "UT", "RDI", "LEN", "ULT", "TRA", "AHN", "KEL", "SON", "TEN"};
     private final String[] postfixArray = new String[]{"UNG", "SCH", "SER", "KEN", "CHE", "EIT", "ATZ", "NER", "ICH", "TUR"};
-
-    private GameData gameData;
-    private GameMode gameMode;
-
     private final Texture backsideTexture;
     private final Texture frontsideTexture;
-
+    private GameData gameData;
+    private GameMode gameMode;
     private boolean isRevealed;
 
     private BitmapFont font;

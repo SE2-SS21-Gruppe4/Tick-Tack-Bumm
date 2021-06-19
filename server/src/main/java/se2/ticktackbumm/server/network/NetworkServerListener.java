@@ -7,7 +7,6 @@ import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
-import se2.ticktackbumm.core.network.messages.client.StartBomb;
 
 
 /**
