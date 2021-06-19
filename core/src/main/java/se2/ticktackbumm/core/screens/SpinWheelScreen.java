@@ -79,7 +79,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     private Music spinSound;
     private final Texture musicOn;
     private final Texture musicOff;
-    private Image musicIcon;
+    private final Image musicIcon;
     private boolean isIconOff;
     private boolean isMusicOn;
 
@@ -165,12 +165,15 @@ public class SpinWheelScreen extends ScreenAdapter {
         musicIcon.setHeight(100f);
         musicIcon.setWidth(100f);
         musicIcon.setPosition(200f,200f);
+
+        isIconOff = false;
+        isMusicOn = true;
         stage.addActor(musicIcon);
 
+        musicIconListener();
         setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
-        musicIconListener();
 
         stage.addActor(spinWheelTable);
     }
@@ -226,7 +229,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                 break;
 
         }
-        spinSound.setVolume(0.5f);
+        spinSound.setVolume(2.0f);
         spinSound.setLooping(true);
     }
 
