@@ -2,8 +2,10 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -70,6 +72,17 @@ public class SpinWheelScreen extends ScreenAdapter {
     private float degree;
 
     /**
+     * Music for spin wheel
+     */
+    private Music spinSound;
+    private final Texture musicOn;
+    private final Texture musicOff;
+    private Image musicIcon;
+    private boolean isIconOff;
+    private boolean isMusicOn;
+
+
+    /**
      * Test constructor
      * Set all variables on null to enable testing
      *
@@ -93,6 +106,10 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
+        spinSound = null;
+        musicOn = null;
+        musicOff = null;
+        musicIcon = null;
     }
 
     /**
@@ -139,6 +156,14 @@ public class SpinWheelScreen extends ScreenAdapter {
         color = new Color(Color.valueOf("121520"));
         timer = new Timer();
         randomNumb = new SecureRandom();
+
+        musicOn = new Texture(Gdx.files.internal("spinWheelScreen/music-on.png"));
+        musicOff = new Texture(Gdx.files.internal("spinWheelScreen/music-off.png"));
+        musicIcon = new Image(musicOn);
+        musicIcon.setHeight(100f);
+        musicIcon.setWidth(100f);
+        musicIcon.setPosition(200f,200f);
+        stage.addActor(musicIcon);
 
         setupGameButton();
         setupSpinWheelTable();
