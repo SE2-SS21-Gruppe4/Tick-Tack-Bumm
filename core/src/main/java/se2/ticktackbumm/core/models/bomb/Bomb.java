@@ -5,36 +5,21 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.client.NetworkClient;
 
 public class Bomb {
 
     private TickTackBummGame tickTackBummGame;
     private AssetManager assetManager;
 
-    private Stage stage;
-
-    private NetworkClient networkClient;
-
-
     private Texture bombTexture;
-    private Image bombImage;
-
     private BombState bombState;
-
-
-    private float explodeTime;
-    private float timerToExplode;
-
     private Texture explosionTexture;
     private BombExplosion bombExplosion;
-
     private Music bombTick;
-
+    private float explodeTime;
+    private float timerToExplode;
 
     public Bomb() {
         tickTackBummGame = TickTackBummGame.getTickTackBummGame();
@@ -42,16 +27,10 @@ public class Bomb {
         assetManager.load("bomb/bomb.png", Texture.class);
         assetManager.finishLoading();
 
-        stage = new Stage();
-
-        networkClient = tickTackBummGame.getNetworkClient();
-
         bombTexture = assetManager.get("bomb/bomb.png", Texture.class);
-        bombImage = new Image(bombTexture);
-
         bombState = BombState.NORMAL;
 
-        //explode time is going to get random exploder via client message handler
+        // explode time is going to get random exploder via client message handler
         explodeTime = 10;
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
