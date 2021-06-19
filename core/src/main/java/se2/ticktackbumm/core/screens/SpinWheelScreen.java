@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -168,6 +170,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
+        musicIconListener();
 
         stage.addActor(spinWheelTable);
     }
@@ -184,6 +187,23 @@ public class SpinWheelScreen extends ScreenAdapter {
         image.setPosition(xWidth, yHeight);
         return image;
 
+    }
+
+    public void musicIconListener(){
+        musicIcon.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isIconOff){
+                    musicIcon.setDrawable(new SpriteDrawable(new Sprite(musicOn)));
+                    isMusicOn = true;
+                    isIconOff = false;
+                }else{
+                    musicIcon.setDrawable(new SpriteDrawable(new Sprite(musicOff)));
+                    isMusicOn = false;
+                    isIconOff = true;
+                }
+            }
+        });
     }
 
     /**
