@@ -23,7 +23,7 @@ import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
-import se2.ticktackbumm.core.models.cards.Card;
+import se2.ticktackbumm.core.models.Card;
 
 public class MainGameScreen extends ScreenAdapter {
 

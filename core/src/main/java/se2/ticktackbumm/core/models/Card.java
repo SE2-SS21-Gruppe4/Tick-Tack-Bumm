@@ -1,4 +1,4 @@
-package se2.ticktackbumm.core.models.cards;
+package se2.ticktackbumm.core.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
