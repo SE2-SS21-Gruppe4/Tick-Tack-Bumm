@@ -159,8 +159,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         timer = new Timer();
         randomNumb = new SecureRandom();
 
-        musicOn = new Texture(Gdx.files.internal("spinWheelScreen/music-on.png"));
-        musicOff = new Texture(Gdx.files.internal("spinWheelScreen/music-off.png"));
+        musicOn = new Texture(Gdx.files.internal("spinWheelScreen/music-on-black.png"));
+        musicOff = new Texture(Gdx.files.internal("spinWheelScreen/music-off-black.png"));
         musicIcon = new Image(musicOn);
         musicIcon.setHeight(100f);
         musicIcon.setWidth(100f);
@@ -279,6 +279,7 @@ public class SpinWheelScreen extends ScreenAdapter {
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
                         spinSound.stop();
+                        musicIcon.setVisible(false);
                     }
                 };
                 timer.scheduleTask(task, spinSpeed);
