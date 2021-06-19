@@ -2,8 +2,11 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,6 +42,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
+    private final AssetManager assetManager;
     private final GameData gameData;
     private final SpriteBatch batch;
     private final Stage stage;
@@ -56,6 +60,8 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final Image wheelImage;
     private final Image needleImage;
     private final Image spinButtonImage;
+    private final Texture background;
+    private final Sprite sprite;
 
     /**
      * Variables used for functionality
@@ -79,6 +85,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen(String str) {
         game = null;
         camera = null;
+        assetManager = null;
         gameData = null;
         batch = null;
         stage = null;
@@ -94,7 +101,8 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
-        mainGameScreen = null;
+        sprite = null;
+        background = null;
     }
 
     /**
@@ -106,11 +114,9 @@ public class SpinWheelScreen extends ScreenAdapter {
     public SpinWheelScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         camera = TickTackBummGame.getGameCamera();
+        assetManager = game.getManager();
         gameData = game.getGameData();
         gameMode = GameMode.NONE;
-
-        mainGameScreen = new MainGameScreen();
-
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
         Gdx.input.setInputProcessor(stage);
@@ -141,9 +147,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         rotationAmount = 0;
         spinSpeed = 0;
         degree = 0;
-        color = new Color(.18f, .21f, .32f, 1);
+        color = new Color();
         timer = new Timer();
         randomNumb = new SecureRandom();
+
+        background = assetManager.get("spinWheelScreen/background.png",Texture.class);
+        sprite = new Sprite(background);
 
         setupGameButton();
         setupSpinWheelTable();
@@ -179,9 +188,6 @@ public class SpinWheelScreen extends ScreenAdapter {
                 // set listener to unable next spin for same player
                 spinButtonImage.clearListeners();
 
-                gameData.setCurrentGameMode(GameMode.NONE);
-                game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
-
                 gameButton.addAction(sequence(scaleTo(1.25F, 1.25F, 0.10F), scaleTo(1F, 1F, 0.10F)));
 
                 // setting random degree between 1 und 1800 degree.
@@ -212,6 +218,9 @@ public class SpinWheelScreen extends ScreenAdapter {
                 timer.scheduleTask(task, spinSpeed);
             }
         });
+
+
+        game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
     }
 
 
@@ -234,9 +243,11 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.getNetworkClient().getClientMessageSender().sendStartBomb();
 
-                game.setScreen(mainGameScreen);
+                game.setScreen(new MainGameScreen());
+
+                game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());
+                game.getNetworkClient().getClientMessageSender().sendStartBomb();
                 game.startNextTurn();
             }
         });
@@ -299,14 +310,17 @@ public class SpinWheelScreen extends ScreenAdapter {
 
         } else {
             color.set(Color.valueOf("70AD47"));
+
         }
     }
 
     public float setDegree(float degree) {
         float retVal = degree;
+
         if (degree > 360) {
             retVal = degree % 360;
         }
+
         return retVal;
     }
 
@@ -323,7 +337,15 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(color.r, color.g, color.b, color.a);
+
+        if (!color.equals(Color.CLEAR)){
+            ScreenUtils.clear(color.r, color.g, color.b, color.a);
+        }else{
+            game.getBatch().begin();
+            sprite.draw(game.getBatch());
+            game.getBatch().end();
+        }
+
         batch.setProjectionMatrix(camera.combined);
         stage.act();
 
