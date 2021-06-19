@@ -73,7 +73,7 @@ public class MainGameScreen extends ScreenAdapter {
     // bomb and explosion
     private Bomb bomb;
 
-    //bomb visibility
+    // bomb visibility
     private boolean showBomb;
 
     public MainGameScreen() {
@@ -278,13 +278,19 @@ public class MainGameScreen extends ScreenAdapter {
 
         batch.begin();
 
-        handleBombDraw(batch);
+//        handleBombDraw(batch);
         stage.draw();
         card.drawCard(batch);
 
         textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
     }
 
     public void initTable1Unfocused() {
@@ -381,43 +387,35 @@ public class MainGameScreen extends ScreenAdapter {
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-    }
-
     public void updateInfoLabel() {
         switch (gameData.getCurrentGameMode()) {
             case PREFIX:
-                infoLabel.setText(MODE_TAG.concat("TICK"));
+                infoLabel.setText(MODE_TAG + "TICK");
                 break;
 
             case INFIX:
-                infoLabel.setText(MODE_TAG.concat("TICK...TACK"));
+                infoLabel.setText(MODE_TAG + "TICK...TACK");
                 break;
 
             case POSTFIX:
-                infoLabel.setText(MODE_TAG.concat("BOMBE"));
+                infoLabel.setText(MODE_TAG + "BOMBE");
                 break;
         }
+    }
+
+    public void setInfoLabelToWaiting() {
+        infoLabel.setText(waitingForWheelText);
     }
 
     public void updateCardWord(String cardWord) {
         card.setRandomWord(cardWord);
     }
 
-    // Hide game mode and set banner for other player's
-
-    public void setInfoLabelToWaiting() {
-        infoLabel.setText(waitingForWheelText);
-    }
-
     public void updateBombTime(float bombTimer) {
         bomb.setExplodeTime(bombTimer);
     }
-    // basic getters & setters
 
+    // basic getters & setters
     public TextField getTextField() {
         return textField;
     }

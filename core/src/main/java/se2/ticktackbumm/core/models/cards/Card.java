@@ -89,7 +89,9 @@ public class Card {
     }
 
     public void drawCard(SpriteBatch spriteBatch) {
-        handleCardTouch();
+        if (game.isLocalPlayerTurn()) {
+            handleCardTouch();
+        }
         if (!isRevealed) {
             drawBackSide(spriteBatch);
             sentToServer = false;

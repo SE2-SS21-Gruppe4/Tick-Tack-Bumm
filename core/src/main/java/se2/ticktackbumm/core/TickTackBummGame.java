@@ -91,7 +91,7 @@ public class TickTackBummGame extends Game {
         this.gameData = gameData;
     }
 
-    boolean isLocalPlayerTurn() {
+    public boolean isLocalPlayerTurn() {
         return gameData.getCurrentPlayerTurnIndex() == localPlayer.getPlayerId();
     }
 
