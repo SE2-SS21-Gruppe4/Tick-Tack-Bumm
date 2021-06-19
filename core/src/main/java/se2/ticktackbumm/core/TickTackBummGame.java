@@ -112,6 +112,7 @@ public class TickTackBummGame extends Game {
         } else {
             gameScreen.updatePlayerScores();
             gameScreen.resetCard();
+            gameScreen.resetBomb();
             gameScreen.setInfoLabelToWaiting();
 
             startNextTurn();
@@ -143,16 +144,18 @@ public class TickTackBummGame extends Game {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
             gameScreen.setShowBomb(true);
-            gameScreen.updateBombTime(gameData.getBombTimer());
+            gameScreen.updateBombTimer(gameData.getBombTimer());
             gameScreen.getBomb().startTicking();
         }
+    }
 
-//        if (this.getScreen() instanceof SpinWheelScreen) {
-//            SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
-//
-//            spinWheelScreen.getMainGameScreen().setShowBomb(true);
-//            spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
-//        }
+    public void bombExploded() {
+        if (this.getScreen() instanceof MainGameScreen) {
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+            gameScreen.setBombShouldExplode(true);
+            gameScreen.getBomb().explodeBomb();
+        }
     }
 
     public void openCard() {

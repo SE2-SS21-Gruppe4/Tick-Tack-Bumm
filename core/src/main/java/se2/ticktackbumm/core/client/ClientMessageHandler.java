@@ -109,7 +109,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
         gameData.setCardRevealed(gameUpdate.isRevealedCard());
-        gameData.setBombTimer(gameUpdate.getTimerBomb());
+        gameData.setBombTimer(gameUpdate.getBombTimer());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -159,14 +159,20 @@ public class ClientMessageHandler {
     }
 
     public void handleSpinWheelFinished() {
-        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : " + gameData.getCurrentGameMode());
+        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode>: " + gameData.getCurrentGameMode());
 
         game.spinWheelFinished();
     }
 
     public void handleCardOpened() {
-        Log.info(LOG_TAG, "<CardOpened> : " + gameData.getCurrentGameModeText());
+        Log.info(LOG_TAG, "<CardOpened>: " + gameData.getCurrentGameModeText());
 
         game.openCard();
+    }
+
+    public void handleBombExploded() {
+        Log.info(LOG_TAG, "<BombExploded> Exploding bomb...");
+
+        game.bombExploded();
     }
 }

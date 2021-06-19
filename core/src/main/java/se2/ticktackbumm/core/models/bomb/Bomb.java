@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class Bomb {
@@ -45,13 +46,18 @@ public class Bomb {
         boolean bombShouldExplode = timeTicking >= explodeTime;
 
         if (bombShouldExplode && bombState == BombState.NORMAL) {
-            bombState = BombState.EXPLODED;
+            explodeBomb();
 
-            stopTicking();
-            bombExplosion.getExplosionSound().play(0.5f);
+            game.getNetworkClient().getClientMessageSender().sendBombExploded();
         }
 
         return bombShouldExplode;
+    }
+
+    public void explodeBomb() {
+        stopTicking();
+        bombExplosion.getExplosionSound().play(0.5f);
+        bombState = BombState.EXPLODED;
     }
 
     public void makeExplosion(SpriteBatch spriteBatch) {
@@ -70,16 +76,18 @@ public class Bomb {
 
     public void startTicking() {
         bombTick.play();
+        bombTick.setLooping(true);
     }
 
     public void stopTicking() {
+        Log.info("STOP TICKING: " + game.getLocalPlayer().getPlayerName());
+        bombTick.setLooping(false);
         bombTick.stop();
     }
 
     public void resetBomb() {
         bombState = BombState.NORMAL;
         timeTicking = 0;
-        stopTicking();
     }
 
     private float getExplodeTime() {

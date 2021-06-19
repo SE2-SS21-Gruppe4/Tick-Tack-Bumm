@@ -68,11 +68,11 @@ public class MainGameScreen extends ScreenAdapter {
 
     // bomb and explosion
     private Bomb bomb;
+    private boolean showBomb;
 
     private final Color color;
+    private boolean bombShouldExplode;
 
-    //bomb visibility
-    private boolean showBomb;
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -255,9 +255,10 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void handleBombDraw(SpriteBatch spriteBatch) {
         if (showBomb) {
-            if (bomb.checkExplosion()) {
+            if ((game.isLocalPlayerTurn() && bomb.checkExplosion()) || bombShouldExplode) {
                 bomb.makeExplosion(spriteBatch);
             }
+
             bomb.drawBomb(spriteBatch);
         }
     }
@@ -413,8 +414,14 @@ public class MainGameScreen extends ScreenAdapter {
         card.setRandomWord(cardWord);
     }
 
-    public void updateBombTime(float bombTimer) {
+    public void updateBombTimer(float bombTimer) {
         bomb.setExplodeTime(bombTimer);
+    }
+
+    public void resetBomb() {
+        showBomb = false;
+        bombShouldExplode = false;
+        bomb.resetBomb();
     }
 
     // basic getters & setters
@@ -436,5 +443,13 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void setShowBomb(boolean showBomb) {
         this.showBomb = showBomb;
+    }
+
+    public boolean isBombShouldExplode() {
+        return bombShouldExplode;
+    }
+
+    public void setBombShouldExplode(boolean bombShouldExplode) {
+        this.bombShouldExplode = bombShouldExplode;
     }
 }

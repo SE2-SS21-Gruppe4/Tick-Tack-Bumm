@@ -66,6 +66,7 @@ public class ServerMessageHandler {
         if (serverData.hasGameFinished()) {
             serverMessageSender.sendGameFinished(serverData.getPlacedPlayers());
         } else {
+            serverMessageSender.sendBombExploded(connectionId);
             serverMessageSender.sendNextRound();
         }
     }
@@ -85,7 +86,8 @@ public class ServerMessageHandler {
     }
 
     public void handleBombStart() {
-        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
+//        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
+        float timer = (float) new SecureRandom().nextInt(4) + 2;
         serverData.getGameData().setBombTimer(timer);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();
