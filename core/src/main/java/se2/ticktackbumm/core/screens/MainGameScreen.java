@@ -255,7 +255,9 @@ public class MainGameScreen extends ScreenAdapter {
 
     public void handleBombDraw(SpriteBatch spriteBatch) {
         if (showBomb) {
-            bomb.makeExplosion(spriteBatch);
+            if (bomb.checkExplosion()) {
+                bomb.makeExplosion(spriteBatch);
+            }
             bomb.drawBomb(spriteBatch);
         }
     }

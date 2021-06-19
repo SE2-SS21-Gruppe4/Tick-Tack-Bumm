@@ -18,7 +18,7 @@ public class Bomb {
     private BombExplosion bombExplosion;
     private Music bombTick;
     private float explodeTime;
-    private float timerToExplode;
+    private float timeTicking;
 
     public Bomb() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -29,7 +29,7 @@ public class Bomb {
 
         // explode time is going to get random explode time via client message handler
         explodeTime = 0;
-        timerToExplode = 0;
+        timeTicking = 0;
 
         explosionTexture = assetManager.get("bombexplosion.png", Texture.class);
 
@@ -40,17 +40,25 @@ public class Bomb {
         bombTick.setVolume(0.2f);
     }
 
+    public boolean checkExplosion() {
+        timeTicking += Gdx.graphics.getDeltaTime();
+        boolean bombShouldExplode = timeTicking >= explodeTime;
+
+        if (bombShouldExplode && bombState == BombState.NORMAL) {
+            bombState = BombState.EXPLODED;
+
+            stopTicking();
+            bombExplosion.getExplosionSound().play(0.5f);
+        }
+
+        return bombShouldExplode;
+    }
+
     public void makeExplosion(SpriteBatch spriteBatch) {
-        stopTicking();
-        timerToExplode += Gdx.graphics.getDeltaTime();
-        if (timerToExplode >= explodeTime) {
-            bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
+        bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
 
-            if (!bombExplosion.isFinished()) {
-                bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - (float) 380, 400, 400);
-            }
-
-            this.bombState = BombState.EXPLODED;
+        if (!bombExplosion.isFinished()) {
+            bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - (float) 380, 400, 400);
         }
     }
 
@@ -70,7 +78,7 @@ public class Bomb {
 
     public void resetBomb() {
         bombState = BombState.NORMAL;
-        timerToExplode = 0;
+        timeTicking = 0;
         stopTicking();
     }
 
@@ -82,12 +90,12 @@ public class Bomb {
         this.explodeTime = explodeTime;
     }
 
-    private float getTimerToExplode() {
-        return this.timerToExplode;
+    private float getTimeTicking() {
+        return this.timeTicking;
     }
 
-    public void setTimerToExplode(float timerToExplode) {
-        this.timerToExplode = timerToExplode;
+    public void setTimeTicking(float timeTicking) {
+        this.timeTicking = timeTicking;
     }
 
     public enum BombState {
