@@ -153,22 +153,20 @@ public class ClientMessageHandler {
      * Set the bomb timer in game screen to the time value received from server.
      */
     public void handleStartBomb() {
+        Log.info(LOG_TAG, "<StartBomb> Starting bomb timer");
+
         game.showBomb();
     }
 
     public void handleSpinWheelFinished() {
         Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : " + gameData.getCurrentGameMode());
-        game.spinWheelFinished();
-    }
 
-    public void handleSpinWheelStarted() {
-        Log.info(LOG_TAG, "<SpinWheelStarted> : " + gameData.getCurrentGameMode());
-        game.spinWheelStarted();
+        game.spinWheelFinished();
     }
 
     public void handleCardOpened() {
         Log.info(LOG_TAG, "<CardOpened> : " + gameData.getCurrentGameModeText());
-        game.openCard();
 
+        game.openCard();
     }
 }

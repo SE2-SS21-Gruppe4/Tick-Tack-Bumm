@@ -98,12 +98,6 @@ public class ServerMessageHandler {
         serverMessageSender.sendSpinWheelFinished();
     }
 
-    public void handleSpinWheelStarted(GameMode gameMode) {
-        serverData.getGameData().setCurrentGameMode(gameMode);
-        serverMessageSender.sendGameUpdate();
-        serverMessageSender.sendSpinWheelStarted();
-    }
-
     public void handleCardOpened(String word) {
         serverData.getGameData().setCardRevealed(true);
         serverData.getGameData().setCurrentGameModeText(word);

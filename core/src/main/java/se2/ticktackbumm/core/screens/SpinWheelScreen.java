@@ -204,8 +204,6 @@ public class SpinWheelScreen extends ScreenAdapter {
                 timer.scheduleTask(task, spinSpeed);
             }
         });
-
-        game.getNetworkClient().getClientMessageSender().spinWheelStarted(gameData.getCurrentGameMode());
     }
 
 
@@ -228,7 +226,6 @@ public class SpinWheelScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 game.setScreen(new MainGameScreen());
 
                 game.getNetworkClient().getClientMessageSender().spinWheelFinished(gameData.getCurrentGameMode());

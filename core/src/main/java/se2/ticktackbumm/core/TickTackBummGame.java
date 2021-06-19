@@ -108,11 +108,11 @@ public class TickTackBummGame extends Game {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
         if (isLocalPlayerTurn()) {
-            // TODO: fixme, why is this necessary?
             Gdx.app.postRunnable(() -> setScreen(new SpinWheelScreen()));
         } else {
             gameScreen.updatePlayerScores();
             gameScreen.resetCard();
+            gameScreen.setInfoLabelToWaiting();
 
             startNextTurn();
         }
@@ -125,27 +125,16 @@ public class TickTackBummGame extends Game {
             gameScreen.showControls();
         } else {
             gameScreen.hideControls();
-            // hide waiting for spin wheel message
         }
 
         gameScreen.updateCurrentPlayerMarker();
     }
 
-
-    public void spinWheelStarted() {
-        if (this.getScreen() instanceof MainGameScreen) {
-            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
-            // hide gameMode and set new Banner
-            gameScreen.hideGameMode();
-        }
-    }
-
     public void spinWheelFinished() {
-
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
-            //     gameScreen.hideBanner();
-            gameScreen.updateGameMode(gameData.getCurrentGameMode());
+
+            gameScreen.updateInfoLabel();
         }
     }
 
@@ -153,15 +142,15 @@ public class TickTackBummGame extends Game {
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
-            gameScreen.updateShowBomb(true);
+            gameScreen.setShowBomb(true);
             gameScreen.updateBombTime(this.gameData.getBombTimer());
         }
+
         if (this.getScreen() instanceof SpinWheelScreen) {
             SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
 
-            spinWheelScreen.getMainGameScreen().updateShowBomb(true);
+            spinWheelScreen.getMainGameScreen().setShowBomb(true);
             spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
-
         }
     }
 
@@ -169,7 +158,7 @@ public class TickTackBummGame extends Game {
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
-            gameScreen.updateCardOpen(true);
+            gameScreen.getCard().setRevealed(true);
             gameScreen.updateCardWord(gameData.getCurrentGameModeText());
         }
     }

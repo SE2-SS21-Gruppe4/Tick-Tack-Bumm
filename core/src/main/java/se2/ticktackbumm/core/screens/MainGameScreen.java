@@ -20,7 +20,6 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
@@ -32,6 +31,7 @@ public class MainGameScreen extends ScreenAdapter {
     private static final int MAX_SCORE = 4;
     private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
     private static final String MODE_TAG = "Spielmodus: ";
+    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -43,6 +43,7 @@ public class MainGameScreen extends ScreenAdapter {
     // Game Mode & Banner
     private final GameData gameData;
     private final Score score;
+
     // scene2d UI
     private final Stage stage;
     private final Skin skin;
@@ -53,6 +54,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final Image imageTable;
     private final Texture textureMaxScoreBoard;
     private final Image imageMaxScoreBoard;
+
     // tables for the player scores and avatars
     private final Table score1Table;
     private final Table score2Table;
@@ -64,17 +66,13 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
-    private Label bannerLabel;
-    private Label gameModeLabel;
-    private Texture bannerBackground;
-    private Image img;
-    private String gameModeString;
-    private String bannerString;
+    private Label infoLabel;
     private int[] playerScore;
     private BitmapFont ttfBitmapFont;
 
     // bomb and explosion
     private Bomb bomb;
+
     //bomb visibility
     private boolean showBomb;
 
@@ -128,7 +126,8 @@ public class MainGameScreen extends ScreenAdapter {
         imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
         score = new Score();
-        //init tables for scores
+
+        // init tables for scores
         score1Table = new Table();
         score1Table.setWidth(200);
         score1Table.setHeight(400);
@@ -162,23 +161,10 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable = setupTextfieldTable();
 
         // Game Mode & Banner Init
-        gameModeString = "";
-        gameModeLabel = new Label(MODE_TAG + gameModeString, skin);
-        gameModeLabel.setColor(Color.WHITE);
-        gameModeLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
-        gameModeLabel.setFontScale(4f);
-
-        bannerString = "Das Drehrad wird gestartet!";
-        bannerLabel = new Label(bannerString, skin);
-        bannerLabel.setFontScale(4.5f, 4f);
-        bannerLabel.setColor(Color.BLACK);
-        bannerLabel.setSize(900f, 90f);
-        bannerLabel.setPosition(Gdx.graphics.getWidth() / 2f - 400f, Gdx.graphics.getHeight() - 200f);
-
-        bannerBackground = assetManager.get("bannerBackground.png", Texture.class);
-        img = new Image(bannerBackground);
-        img.setPosition(Gdx.graphics.getWidth() / 2f - 400f, Gdx.graphics.getHeight() - 200f);
-
+        infoLabel = new Label(waitingForWheelText, skin);
+        infoLabel.setColor(Color.WHITE);
+        infoLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
+        infoLabel.setFontScale(4f);
 
         stage.addActor(imageTable);
         stage.addActor(score1Table);
@@ -187,9 +173,7 @@ public class MainGameScreen extends ScreenAdapter {
         //stage.addActor(score4Table);
         stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
-        stage.addActor(img);
-        stage.addActor(gameModeLabel);
-        stage.addActor(bannerLabel);
+        stage.addActor(infoLabel);
 
         // TODO: testing only, next round
         TextButton bombButton = new TextButton("BOMB", skin);
@@ -401,6 +385,37 @@ public class MainGameScreen extends ScreenAdapter {
         skin.dispose();
     }
 
+    public void updateInfoLabel() {
+        switch (gameData.getCurrentGameMode()) {
+            case PREFIX:
+                infoLabel.setText(MODE_TAG.concat("TICK"));
+                break;
+
+            case INFIX:
+                infoLabel.setText(MODE_TAG.concat("TICK...TACK"));
+                break;
+
+            case POSTFIX:
+                infoLabel.setText(MODE_TAG.concat("BOMBE"));
+                break;
+        }
+    }
+
+    public void updateCardWord(String cardWord) {
+        card.setRandomWord(cardWord);
+    }
+
+    // Hide game mode and set banner for other player's
+
+    public void setInfoLabelToWaiting() {
+        infoLabel.setText(waitingForWheelText);
+    }
+
+    public void updateBombTime(float bombTimer) {
+        bomb.setExplodeTime(bombTimer);
+    }
+    // basic getters & setters
+
     public TextField getTextField() {
         return textField;
     }
@@ -417,50 +432,7 @@ public class MainGameScreen extends ScreenAdapter {
         return this.card;
     }
 
-    public void updateGameMode(GameMode gameMode) {
-        img.setVisible(false);
-        bannerLabel.setVisible(false);
-        switch (gameMode) {
-            case PREFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK"));
-                break;
-
-            case INFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK...TACK"));
-                break;
-
-            case POSTFIX:
-                gameModeLabel.setText(MODE_TAG.concat("BOMBE"));
-                break;
-
-        }
-        gameModeLabel.setVisible(true);
-
-    }
-
-    public void updateCardOpen(boolean isRevealed) {
-        card.setRevealed(isRevealed);
-    }
-
-    public void updateCardWord(String cardWord) {
-        card.setRandomWord(cardWord);
-    }
-
-    public void updateShowBomb(boolean showBomb) {
+    public void setShowBomb(boolean showBomb) {
         this.showBomb = showBomb;
-    }
-
-    // Hide game mode and set banner for other player's
-    public void hideGameMode() {
-        gameModeLabel.setText(MODE_TAG);
-        bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
-        bannerLabel.setFontScale(6f, 4f);
-        img.setVisible(true);
-        bannerLabel.setVisible(true);
-
-    }
-
-    public void updateBombTime(float bombTimer) {
-        bomb.setExplodeTime(bombTimer);
     }
 }

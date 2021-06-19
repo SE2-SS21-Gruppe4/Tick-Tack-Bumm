@@ -98,10 +98,6 @@ public class NetworkClientListener extends Listener {
             logReceivedMessage("SpinWheelFinished");
             clientMessageHandler.handleSpinWheelFinished();
 
-        } else if (object instanceof SpinWheelStarted) {
-            logReceivedMessage("SpinWheelStarted");
-            clientMessageHandler.handleSpinWheelStarted();
-
         } else if (object instanceof CardOpened) {
             logReceivedMessage("CardOpened");
             clientMessageHandler.handleCardOpened();
