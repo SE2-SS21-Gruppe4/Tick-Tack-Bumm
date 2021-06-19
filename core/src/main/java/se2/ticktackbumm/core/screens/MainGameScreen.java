@@ -162,8 +162,10 @@ public class MainGameScreen extends ScreenAdapter {
 
         // Game Mode & Banner Init
         infoLabel = new Label(waitingForWheelText, skin);
+        infoLabel.setWrap(true);
+        infoLabel.setAlignment(Align.center);
         infoLabel.setColor(Color.WHITE);
-        infoLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
+        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1400f);
         infoLabel.setFontScale(4f);
 
         stage.addActor(imageTable);
