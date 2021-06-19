@@ -5,12 +5,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class Bomb {
 
-    private TickTackBummGame tickTackBummGame;
+    private TickTackBummGame game;
     private AssetManager assetManager;
 
     private Texture bombTexture;
@@ -22,16 +21,15 @@ public class Bomb {
     private float timerToExplode;
 
     public Bomb() {
-        tickTackBummGame = TickTackBummGame.getTickTackBummGame();
-        assetManager = tickTackBummGame.getManager();
+        game = TickTackBummGame.getTickTackBummGame();
+        assetManager = game.getManager();
 
         bombTexture = assetManager.get("bomb/bomb.png", Texture.class);
         bombState = BombState.NORMAL;
 
-        // explode time is going to get random exploder via client message handler
-        explodeTime = 10;
+        // explode time is going to get random explode time via client message handler
+        explodeTime = 0;
         timerToExplode = 0;
-        Log.info(String.valueOf(this.explodeTime));
 
         explosionTexture = assetManager.get("bombexplosion.png", Texture.class);
 
@@ -40,34 +38,40 @@ public class Bomb {
         bombTick = Gdx.audio.newMusic(Gdx.files.internal("bomb/bombtick.wav"));
         bombTick.setLooping(true);
         bombTick.setVolume(0.2f);
-
     }
 
     public void makeExplosion(SpriteBatch spriteBatch) {
-        this.timerToExplode += Gdx.graphics.getDeltaTime();
+        stopTicking();
+        timerToExplode += Gdx.graphics.getDeltaTime();
         if (timerToExplode >= explodeTime) {
             bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
+
             if (!bombExplosion.isFinished()) {
                 bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - (float) 380, 400, 400);
             }
+
             this.bombState = BombState.EXPLODED;
-
         }
-
     }
 
     public void drawBomb(SpriteBatch spriteBatch) {
-        if (bombState.equals(BombState.NORMAL)) {
-            bombTick.play();
-            spriteBatch.draw(bombTexture, 0, ((Gdx.graphics.getHeight())) - (float) 270, 290, 290);
-        } else {
-            bombTick.pause();
+        if (bombState == BombState.NORMAL) {
+            spriteBatch.draw(bombTexture, 0, Gdx.graphics.getHeight() - (float) 270, 290, 290);
         }
     }
 
-    public void restartBombSettings() {
-        this.bombState = BombState.NORMAL;
-        this.timerToExplode = 0;
+    public void startTicking() {
+        bombTick.play();
+    }
+
+    public void stopTicking() {
+        bombTick.stop();
+    }
+
+    public void resetBomb() {
+        bombState = BombState.NORMAL;
+        timerToExplode = 0;
+        stopTicking();
     }
 
     private float getExplodeTime() {
@@ -90,6 +94,5 @@ public class Bomb {
         NORMAL,
         EXPLODED
     }
-
 
 }

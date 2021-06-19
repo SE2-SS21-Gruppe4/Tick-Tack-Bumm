@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,15 +21,13 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
+import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
-import se2.ticktackbumm.core.models.Card;
 
 public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
-    private static final int MAX_SCORE = 4;
-    //private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
     private static final String MODE_TAG = "Spielmodus: ";
     private String waitingForWheelText = "Warten auf neuen Spielmodus...";
 
@@ -281,7 +278,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         batch.begin();
 
-//        handleBombDraw(batch);
+        handleBombDraw(batch);
         stage.draw();
         card.drawCard(batch);
 

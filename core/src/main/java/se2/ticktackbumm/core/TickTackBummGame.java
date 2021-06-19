@@ -143,15 +143,16 @@ public class TickTackBummGame extends Game {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
             gameScreen.setShowBomb(true);
-            gameScreen.updateBombTime(this.gameData.getBombTimer());
+            gameScreen.updateBombTime(gameData.getBombTimer());
+            gameScreen.getBomb().startTicking();
         }
 
-        if (this.getScreen() instanceof SpinWheelScreen) {
-            SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
-
-            spinWheelScreen.getMainGameScreen().setShowBomb(true);
-            spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
-        }
+//        if (this.getScreen() instanceof SpinWheelScreen) {
+//            SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
+//
+//            spinWheelScreen.getMainGameScreen().setShowBomb(true);
+//            spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
+//        }
     }
 
     public void openCard() {
