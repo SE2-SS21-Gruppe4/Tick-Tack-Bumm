@@ -206,6 +206,30 @@ public class SpinWheelScreen extends ScreenAdapter {
         });
     }
 
+    public void setSoundAndSoundSpeed(int spinSpeed){
+
+        switch (spinSpeed){
+            case 1:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-1sec.mp3"));
+
+            case 2:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-2sec.mp3"));
+
+            case 3:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-3sec.mp3"));
+                break;
+            case 4:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-4sec.mp3"));
+                break;
+            case 5:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-5sec.mp3"));
+                break;
+
+        }
+        spinSound.setVolume(0.5f);
+        spinSound.setLooping(true);
+    }
+
     /**
      * Set listener for rotating on SPIN IMAGE in the center of wheel
      * Timer for setting background color and game mode when spinning wheel stops
