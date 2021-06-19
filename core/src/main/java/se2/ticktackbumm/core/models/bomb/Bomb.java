@@ -39,8 +39,6 @@ public class Bomb {
     public Bomb() {
         tickTackBummGame = TickTackBummGame.getTickTackBummGame();
         assetManager = tickTackBummGame.getManager();
-        assetManager.load("bomb/bomb.png", Texture.class);
-        assetManager.finishLoading();
 
         stage = new Stage();
 
@@ -56,8 +54,6 @@ public class Bomb {
         timerToExplode = 0;
         Log.info(String.valueOf(this.explodeTime));
 
-        assetManager.load("bombexplosion.png", Texture.class);
-        assetManager.finishLoading();
         explosionTexture = assetManager.get("bombexplosion.png", Texture.class);
 
         bombExplosion = new BombExplosion(explosionTexture, 0.7f);
