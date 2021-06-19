@@ -4,16 +4,18 @@ public class StartBomb {
 
     private float tickTimer;
 
-    public StartBomb(){}
+    public StartBomb() {
+    }
 
-    public StartBomb(float tickTimer){
+    public StartBomb(float tickTimer) {
         this.tickTimer = tickTimer;
     }
 
-    public void setTickTimer(float tickTimer){
-        this.tickTimer = tickTimer;
-    }
-    public float getTickTimer(){
+    public float getTickTimer() {
         return this.tickTimer;
+    }
+
+    public void setTickTimer(float tickTimer) {
+        this.tickTimer = tickTimer;
     }
 }

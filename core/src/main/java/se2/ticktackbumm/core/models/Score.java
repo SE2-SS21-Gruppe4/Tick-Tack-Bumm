@@ -19,7 +19,7 @@ public class Score {
     private Skin skin;
     private int[] playerScore;
 
-    public Score(int[] playerScore){
+    public Score(int[] playerScore) {
         this.playerScore = playerScore;
     }
 
@@ -42,8 +42,8 @@ public class Score {
     }
 
     public void initScores() {
-        player1 = new Label(String.valueOf(playerScore[0]), skin);
-        player2 = new Label(String.valueOf(playerScore[1]), skin);
+        player1 = new Label(String.valueOf(playerScore[0]) + "/4", skin);
+        player2 = new Label(String.valueOf(playerScore[1]) + "/4", skin);
         //player3 = new Label(String.valueOf(playerScore[2]), skin);
         //player4 = new Label(String.valueOf(playerScore[3]), skin);
         player1.setColor(Color.WHITE);

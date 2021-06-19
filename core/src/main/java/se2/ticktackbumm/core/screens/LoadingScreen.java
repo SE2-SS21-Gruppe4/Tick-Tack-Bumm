@@ -61,6 +61,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("menuScreen/background.png", Texture.class);
         assetManager.load("winnerScreen/background.png", Texture.class);
         assetManager.load("waitingScreen/background.png", Texture.class);
+        assetManager.load("mainGameScreen/background.png", Texture.class);
         assetManager.load("waitingScreen/avatar.png", Texture.class);
         assetManager.load("waitingScreen/name.png", Texture.class);
         assetManager.load("waitingScreen/avatarandname.png", Texture.class);
@@ -79,8 +80,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("score/player2.png", Texture.class);
         assetManager.load("score/player3.png", Texture.class);
         assetManager.load("score/player4.png", Texture.class);
-        assetManager.load("spinWheelScreen/background.png",Texture.class);
-        assetManager.load("bannerBackground.png",Texture.class);
+        assetManager.load("spinWheelScreen/background.png", Texture.class);
+        assetManager.load("bannerBackground.png", Texture.class);
+        assetManager.load("bomb/bomb.png", Texture.class);
+        assetManager.load("bombexplosion.png", Texture.class);
 
         // load player avatars for WaitingScreen
         assetManager.load("avatars/blackhaired_guy.png", Texture.class);

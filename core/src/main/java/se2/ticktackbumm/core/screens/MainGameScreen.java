@@ -20,18 +20,16 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
+import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
-import se2.ticktackbumm.core.models.cards.Card;
 
 public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
-    private static final int MAX_SCORE = 4;
-    private static final String MAX_SCORE_TEXT = "Maximalpunkte: " + MAX_SCORE;
     private static final String MODE_TAG = "Spielmodus: ";
+    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
 
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
@@ -43,15 +41,6 @@ public class MainGameScreen extends ScreenAdapter {
     // Game Mode & Banner
     private final GameData gameData;
     private final Score score;
-    private Label bannerLabel;
-    private Label gameModeLabel;
-    private Texture bannerBackground;
-    private Image img;
-    private String gameModeString;
-    private String bannerString;
-
-    private int[] playerScore;
-
 
     // scene2d UI
     private final Stage stage;
@@ -61,8 +50,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture textureTable;
     private final Image imageTable;
-    private final Texture textureMaxScoreBoard;
-    private final Image imageMaxScoreBoard;
 
     // tables for the player scores and avatars
     private final Table score1Table;
@@ -75,12 +62,17 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private Label infoLabel;
+    private int[] playerScore;
     private BitmapFont ttfBitmapFont;
 
     // bomb and explosion
     private Bomb bomb;
-    //bomb visibility
     private boolean showBomb;
+
+    private final Color color;
+    private boolean bombShouldExplode;
+
 
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
@@ -96,6 +88,8 @@ public class MainGameScreen extends ScreenAdapter {
         textMaxScore.setColor(Color.DARK_GRAY);
         textMaxScore.getData().setScale(4);
         textMaxScore.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        color = new Color(Color.valueOf("121520"));
 
         // card
         card = new Card();
@@ -127,12 +121,13 @@ public class MainGameScreen extends ScreenAdapter {
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
-        textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
-        imageMaxScoreBoard = new Image(textureMaxScoreBoard);
-        imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
+        //textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
+        //imageMaxScoreBoard = new Image(textureMaxScoreBoard);
+        //imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
 
         score = new Score();
-        //init tables for scores
+
+        // init tables for scores
         score1Table = new Table();
         score1Table.setWidth(200);
         score1Table.setHeight(400);
@@ -166,35 +161,21 @@ public class MainGameScreen extends ScreenAdapter {
         textFieldTable = setupTextfieldTable();
 
         // Game Mode & Banner Init
-        gameModeString = "";
-        gameModeLabel = new Label(MODE_TAG + gameModeString, skin);
-        gameModeLabel.setColor(Color.WHITE);
-        gameModeLabel.setPosition(Gdx.graphics.getWidth() / 3.3f, Gdx.graphics.getHeight() - 1300f);
-        gameModeLabel.setFontScale(4f);
-
-        bannerString = "Das Drehrad wird gestartet!";
-        bannerLabel = new Label(bannerString, skin);
-        bannerLabel.setFontScale(4.5f,4f);
-        bannerLabel.setColor(Color.BLACK);
-        bannerLabel.setSize(900f,90f);
-        bannerLabel.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
-
-        bannerBackground = assetManager.get("bannerBackground.png",Texture.class);
-        img = new Image(bannerBackground);
-        img.setPosition(Gdx.graphics.getWidth() /2f-400f, Gdx.graphics.getHeight() - 200f);
-
-
+        infoLabel = new Label(waitingForWheelText, skin);
+        infoLabel.setWrap(true);
+        infoLabel.setAlignment(Align.center);
+        infoLabel.setColor(Color.WHITE);
+        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1700f);
+        infoLabel.setFontScale(4f);
 
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
         //stage.addActor(score3Table);
         //stage.addActor(score4Table);
-        stage.addActor(imageMaxScoreBoard);
+        //stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
-        stage.addActor(img);
-        stage.addActor(gameModeLabel);
-        stage.addActor(bannerLabel);
+        stage.addActor(infoLabel);
 
         // TODO: testing only, next round
         TextButton bombButton = new TextButton("BOMB", skin);
@@ -272,10 +253,14 @@ public class MainGameScreen extends ScreenAdapter {
         }
     }
 
-    public void handleBombDraw(SpriteBatch spriteBatch){
-        if (showBomb){
-            bomb.makeExplosion(spriteBatch);
-            bomb.drawBomb(spriteBatch);}
+    public void handleBombDraw(SpriteBatch spriteBatch) {
+        if (showBomb) {
+            if ((game.isLocalPlayerTurn() && bomb.checkExplosion()) || bombShouldExplode) {
+                bomb.makeExplosion(spriteBatch);
+            }
+
+            bomb.drawBomb(spriteBatch);
+        }
     }
 
     public void resetCard() {
@@ -290,7 +275,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(.18f, .21f, .32f, 1);
+        ScreenUtils.clear(color.r, color.g, color.b, color.a);
 
         batch.setProjectionMatrix(camera.combined);
 
@@ -300,9 +285,15 @@ public class MainGameScreen extends ScreenAdapter {
         stage.draw();
         card.drawCard(batch);
 
-        textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() +70f);
+        //textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
     }
 
     public void initTable1Unfocused() {
@@ -312,7 +303,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(0)));
         score1Table.row();
         score1Table.add(player1);
-        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+        score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
 
     public void initTable2Unfocused() {
@@ -322,7 +313,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score2Table.row();
         score2Table.add(player2);
-        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable3Unfocused() {
@@ -332,7 +323,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score3Table.row();
         score3Table.add(player3);
-        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 - 350);
+        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
 
     public void initTable4Unfocused() {
@@ -342,7 +333,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(gameData.getUnfocusedAvatarImage(gameData.getPlayers().get(1)));
         score4Table.row();
         score4Table.add(player4);
-        score4Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 - 350);
+        score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
 
     public void initTable1Focused() {
@@ -352,7 +343,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score1Table.row();
         score1Table.add(player1);
-        score1Table.setPosition(stage.getWidth() / 2 - 400, stage.getHeight() / 2 + 300);
+        score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
 
     public void initTable2Focused() {
@@ -362,7 +353,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score2Table.row();
         score2Table.add(player2);
-        score2Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable3Focused() {
@@ -372,7 +363,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score3Table.row();
         score3Table.add(player3);
-        score3Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void initTable4Focused() {
@@ -382,7 +373,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score4Table.row();
         score4Table.add(player4);
-        score4Table.setPosition(stage.getWidth() / 2 + 200, stage.getHeight() / 2 + 300);
+        score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
 
     public void updatePlayerScores() {
@@ -399,12 +390,41 @@ public class MainGameScreen extends ScreenAdapter {
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
+    public void updateInfoLabel() {
+        switch (gameData.getCurrentGameMode()) {
+            case PREFIX:
+                infoLabel.setText(MODE_TAG + "TICK");
+                break;
+
+            case INFIX:
+                infoLabel.setText(MODE_TAG + "TICK...TACK");
+                break;
+
+            case POSTFIX:
+                infoLabel.setText(MODE_TAG + "BOMBE");
+                break;
+        }
     }
 
+    public void setInfoLabelToWaiting() {
+        infoLabel.setText(waitingForWheelText);
+    }
+
+    public void updateCardWord(String cardWord) {
+        card.setRandomWord(cardWord);
+    }
+
+    public void updateBombTimer(float bombTimer) {
+        bomb.setExplodeTime(bombTimer);
+    }
+
+    public void resetBomb() {
+        showBomb = false;
+        bombShouldExplode = false;
+        bomb.resetBomb();
+    }
+
+    // basic getters & setters
     public TextField getTextField() {
         return textField;
     }
@@ -421,50 +441,15 @@ public class MainGameScreen extends ScreenAdapter {
         return this.card;
     }
 
-    public void updateGameMode(GameMode gameMode) {
-        img.setVisible(false);
-        bannerLabel.setVisible(false);
-        switch (gameMode) {
-            case PREFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK"));
-                break;
-
-            case INFIX:
-                gameModeLabel.setText(MODE_TAG.concat("TICK...TACK"));
-                break;
-
-            case POSTFIX:
-                gameModeLabel.setText(MODE_TAG.concat("BOMBE"));
-                break;
-
-        }
-        gameModeLabel.setVisible(true);
-
-    }
-
-    public void updateCardOpen(boolean isRevealed) {
-        card.setRevealed(isRevealed);
-    }
-
-    public void updateCardWord(String cardWord) {
-        card.setRandomWord(cardWord);
-    }
-
-    public void updateShowBomb(boolean showBomb){
+    public void setShowBomb(boolean showBomb) {
         this.showBomb = showBomb;
     }
 
-    // Hide game mode and set banner for other player's
-    public void hideGameMode() {
-        gameModeLabel.setText(MODE_TAG);
-        bannerLabel.setText(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerName() + " ist am Zug.");
-        bannerLabel.setFontScale(6f,4f);
-        img.setVisible(true);
-        bannerLabel.setVisible(true);
-
+    public boolean isBombShouldExplode() {
+        return bombShouldExplode;
     }
 
-    public void updateBombTime(float bombTimer) {
-        bomb.setExplodeTime(bombTimer);
+    public void setBombShouldExplode(boolean bombShouldExplode) {
+        this.bombShouldExplode = bombShouldExplode;
     }
 }

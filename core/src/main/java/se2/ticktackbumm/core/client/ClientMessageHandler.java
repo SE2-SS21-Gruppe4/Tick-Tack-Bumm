@@ -6,10 +6,6 @@ import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.network.messages.client.StartBomb;
-import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
-import se2.ticktackbumm.core.network.messages.server.GameFinished;
-import se2.ticktackbumm.core.network.messages.server.GameUpdate;
-import se2.ticktackbumm.core.network.messages.server.SomeResponse;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.screens.WaitingScreen;
 
@@ -113,7 +109,7 @@ public class ClientMessageHandler {
         gameData.setCurrentGameModeText(gameUpdate.getCurrentGameModeText());
         gameData.setLockedWords(gameUpdate.getLockedWords());
         gameData.setCardRevealed(gameUpdate.isRevealedCard());
-        gameData.setBombTimer(gameUpdate.getTimerBomb());
+        gameData.setBombTimer(gameUpdate.getBombTimer());
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {
@@ -155,25 +151,28 @@ public class ClientMessageHandler {
     /**
      * Handle incoming {@link StartBomb} message from server to client.
      * Set the bomb timer in game screen to the time value received from server.
-     *
      */
     public void handleStartBomb() {
-       game.showBomb();
+        Log.info(LOG_TAG, "<StartBomb> Starting bomb timer");
+
+        game.showBomb();
     }
 
     public void handleSpinWheelFinished() {
-        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode> : " + gameData.getCurrentGameMode());
+        Log.info(LOG_TAG, "<SpinWheelFinished-CurrentGameMode>: " + gameData.getCurrentGameMode());
+
         game.spinWheelFinished();
     }
 
-    public void handleSpinWheelStarted() {
-        Log.info(LOG_TAG, "<SpinWheelStarted> : " + gameData.getCurrentGameMode());
-        game.spinWheelStarted();
+    public void handleCardOpened() {
+        Log.info(LOG_TAG, "<CardOpened>: " + gameData.getCurrentGameModeText());
+
+        game.openCard();
     }
 
-    public void handleCardOpened() {
-        Log.info(LOG_TAG, "<CardOpened> : " + gameData.getCurrentGameModeText());
-        game.openCard();
+    public void handleBombExploded() {
+        Log.info(LOG_TAG, "<BombExploded> Exploding bomb...");
 
+        game.bombExploded();
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class ReadyButtonListenerTest {
     ReadyButtonListener readyButtonListener;
+
     @BeforeEach
     void setUp() {
         readyButtonListener = new ReadyButtonListener();

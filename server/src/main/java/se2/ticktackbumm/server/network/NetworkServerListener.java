@@ -7,7 +7,6 @@ import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.ConnectionRejected;
 import se2.ticktackbumm.core.network.messages.server.ConnectionSuccessful;
 import se2.ticktackbumm.core.player.Player;
-import se2.ticktackbumm.core.network.messages.client.StartBomb;
 
 
 /**
@@ -80,10 +79,6 @@ public class NetworkServerListener extends Listener {
         } else if (object instanceof SpinWheelFinished) {
             Log.info(LOG_TAG, "Received message SpinWheelFinished from ID: " + connection.getID());
             serverMessageHandler.handleSpinWheelFinished(((SpinWheelFinished) object).getGameMode());
-
-        } else if (object instanceof SpinWheelStarted) {
-            Log.info(LOG_TAG, "Received message SpinWheelStarted from ID: " + connection.getID());
-            serverMessageHandler.handleSpinWheelStarted(((SpinWheelStarted) object).getGameMode());
 
         } else if (object instanceof CardOpened) {
             Log.info(LOG_TAG, "Received message CardOpened from ID: " + connection.getID());

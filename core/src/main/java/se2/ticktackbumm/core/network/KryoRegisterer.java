@@ -6,7 +6,6 @@ import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.network.messages.client.*;
 import se2.ticktackbumm.core.network.messages.server.*;
 import se2.ticktackbumm.core.player.Player;
-import se2.ticktackbumm.core.network.messages.client.StartBomb;
 
 import java.util.ArrayList;
 import java.util.List;

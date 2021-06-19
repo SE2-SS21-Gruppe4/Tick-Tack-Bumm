@@ -49,7 +49,7 @@ public class ServerMessageHandler {
         Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
 
         serverData.getGameData().setNextPlayerTurn();
-        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord());
+        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord().toLowerCase());
 
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendNextTurn();
@@ -66,6 +66,7 @@ public class ServerMessageHandler {
         if (serverData.hasGameFinished()) {
             serverMessageSender.sendGameFinished(serverData.getPlacedPlayers());
         } else {
+            serverMessageSender.sendBombExploded(connectionId);
             serverMessageSender.sendNextRound();
         }
     }
@@ -84,8 +85,9 @@ public class ServerMessageHandler {
         }
     }
 
-    public void handleBombStart(){
-        float timer =(float) new SecureRandom().nextInt((40-20)+1) + 20;
+    public void handleBombStart() {
+//        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
+        float timer = (float) new SecureRandom().nextInt(4) + 2;
         serverData.getGameData().setBombTimer(timer);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();
@@ -96,12 +98,6 @@ public class ServerMessageHandler {
         serverData.getGameData().setCurrentGameMode(gameMode);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendSpinWheelFinished();
-    }
-
-    public void handleSpinWheelStarted(GameMode gameMode) {
-        serverData.getGameData().setCurrentGameMode(gameMode);
-        serverMessageSender.sendGameUpdate();
-        serverMessageSender.sendSpinWheelStarted();
     }
 
     public void handleCardOpened(String word) {

@@ -237,7 +237,11 @@ public class GameData {
         this.placedPlayers = placedPlayers;
     }
 
-    public void setBombTimer(float timer) {this.bombTimer = timer;}
+    public float getBombTimer() {
+        return this.bombTimer;
+    }
 
-    public float getBombTimer(){ return this.bombTimer;}
+    public void setBombTimer(float timer) {
+        this.bombTimer = timer;
+    }
 }

@@ -54,6 +54,14 @@ public class ServerData {
         this.playersReady = 0;
     }
 
+    public static int getMaxPlayers() {
+        return MAX_PLAYERS;
+    }
+
+    public static int getMinPlayers() {
+        return MIN_PLAYERS;
+    }
+
     /**
      * Creates a new {@link Player} for a new incoming connection to the kryo server, if the
      * maximal number of players is not yet reached.
@@ -144,6 +152,8 @@ public class ServerData {
         return playersReady >= MIN_PLAYERS;
     }
 
+    // simple getters & setters
+
     /**
      * Returns true if there is a player in the game that has reached the maximal game score
      * and false otherwise.
@@ -170,16 +180,6 @@ public class ServerData {
         placedPlayers.sort(new ScoreComparator());
 
         return placedPlayers.toArray(new Player[0]);
-    }
-
-    // simple getters & setters
-
-    public static int getMaxPlayers() {
-        return MAX_PLAYERS;
-    }
-
-    public static int getMinPlayers() {
-        return MIN_PLAYERS;
     }
 
     public Server getKryoServer() {
