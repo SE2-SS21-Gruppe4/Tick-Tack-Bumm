@@ -331,6 +331,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         if (currentAccel > SHAKE_THRESHOLD) {
             Log.info("Device shake registered, cheat function activated");
+            setWordCheckInfoLabel("Cheatfunktion aktiviert!", Color.YELLOW);
             game.getNetworkClient().getClientMessageSender().sendPlayerCheated();
         }
     }
@@ -504,6 +505,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateBombTimer(float bombTimer) {
+        bomb.setTimeTicking(0);
         bomb.setExplodeTime(bombTimer);
     }
 
