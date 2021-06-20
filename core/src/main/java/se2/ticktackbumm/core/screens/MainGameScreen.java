@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
@@ -73,7 +74,8 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player4;
     private final Color color;
     private String waitingForWheelText = "Warten auf neuen Spielmodus...";
-    private Label infoLabel;
+    private Label gameModeInfoLabel;
+    private Label wordCheckInfoLabel;
     private int[] playerScore;
     private BitmapFont ttfBitmapFont;
     /**
@@ -174,13 +176,25 @@ public class MainGameScreen extends ScreenAdapter {
 
         textFieldTable = setupTextfieldTable();
 
-        // Game Mode & Banner Init
-        infoLabel = new Label(waitingForWheelText, skin);
-        infoLabel.setWrap(true);
-        infoLabel.setAlignment(Align.center);
-        infoLabel.setColor(Color.WHITE);
-        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1700f);
-        infoLabel.setFontScale(4f);
+        // game mode info label
+        gameModeInfoLabel = new Label(waitingForWheelText, skin);
+        gameModeInfoLabel.setWrap(true);
+        gameModeInfoLabel.setAlignment(Align.center);
+        gameModeInfoLabel.setColor(Color.WHITE);
+        gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1400f);
+        gameModeInfoLabel.setFontScale(4f);
+
+        // word check info label
+        wordCheckInfoLabel = new Label("", skin);
+        wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());
+        wordCheckInfoLabel.setVisible(false);
+        wordCheckInfoLabel.setWrap(true);
+        wordCheckInfoLabel.setAlignment(Align.center);
+        wordCheckInfoLabel.setColor(Color.WHITE);
+        wordCheckInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - wordCheckInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1700f);
+        wordCheckInfoLabel.setFontScale(4f);
 
         stage.addActor(imageTable);
         stage.addActor(score1Table);
@@ -189,7 +203,8 @@ public class MainGameScreen extends ScreenAdapter {
         //stage.addActor(score4Table);
         //stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
-        stage.addActor(infoLabel);
+        stage.addActor(gameModeInfoLabel);
+        stage.addActor(wordCheckInfoLabel);
 
         // TODO: testing only, next round
         TextButton bombButton = new TextButton("BOMB", skin);
@@ -432,7 +447,7 @@ public class MainGameScreen extends ScreenAdapter {
         game.getNetworkClient().disconnectClient();
         game.setLocalPlayer(null);
 
-        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game, " +
                 "switching to MenuScreen");
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
@@ -440,21 +455,35 @@ public class MainGameScreen extends ScreenAdapter {
     public void updateInfoLabel() {
         switch (gameData.getCurrentGameMode()) {
             case PREFIX:
-                infoLabel.setText(MODE_TAG + "TICK");
+                gameModeInfoLabel.setText(MODE_TAG + "TICK");
                 break;
 
             case INFIX:
-                infoLabel.setText(MODE_TAG + "TICK...TACK");
+                gameModeInfoLabel.setText(MODE_TAG + "TICK...TACK");
                 break;
 
             case POSTFIX:
-                infoLabel.setText(MODE_TAG + "BOMBE");
+                gameModeInfoLabel.setText(MODE_TAG + "BOMBE");
                 break;
         }
     }
 
     public void setInfoLabelToWaiting() {
-        infoLabel.setText(waitingForWheelText);
+        gameModeInfoLabel.setText(waitingForWheelText);
+    }
+
+    public void setWordCheckInfoLabel(String text, Color color) {
+        wordCheckInfoLabel.setVisible(true);
+        wordCheckInfoLabel.setText(text);
+        wordCheckInfoLabel.setColor(color);
+
+        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                wordCheckInfoLabel.setVisible(false);
+                wordCheckInfoLabel.setText("");
+            }
+        }, 4f));
     }
 
     public void updateCardWord(String cardWord) {
@@ -474,6 +503,10 @@ public class MainGameScreen extends ScreenAdapter {
     // basic getters & setters
     public TextField getTextField() {
         return textField;
+    }
+
+    public Label getWordCheckInfoLabel() {
+        return wordCheckInfoLabel;
     }
 
     public TextButton getCheckButton() {
