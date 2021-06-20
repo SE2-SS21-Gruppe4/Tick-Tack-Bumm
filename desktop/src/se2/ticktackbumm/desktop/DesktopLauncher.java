@@ -5,6 +5,10 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import se2.ticktackbumm.core.TickTackBummGame;
 
 public class DesktopLauncher {
+    /**
+     * load the atlas files into our file structure to create animations
+     * load TickTackBummGame
+     */
     public static void main(String[] arg) {
         /*TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.maxHeight = 4096;
