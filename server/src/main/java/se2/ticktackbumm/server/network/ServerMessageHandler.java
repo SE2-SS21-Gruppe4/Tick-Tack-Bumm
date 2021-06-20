@@ -79,7 +79,7 @@ public class ServerMessageHandler {
         currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
         serverMessageSender.sendGameUpdate();
 
-        serverData.incPlayersReady();
+        serverData.addReadyPlayer(currentPlayer);
         if (serverData.arePlayersReady()) {
             serverMessageSender.sendStartGame();
         }
@@ -87,7 +87,7 @@ public class ServerMessageHandler {
 
     public void handleBombStart() {
 //        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
-        float timer = (float) new SecureRandom().nextInt(4) + 2;
+        float timer = (float) new SecureRandom().nextInt(21) + 20;
         serverData.getGameData().setBombTimer(timer);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();
