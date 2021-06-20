@@ -37,9 +37,9 @@ public class ServerData {
     private final GameData gameData;
 
     /**
-     * Counter for the amount of ready players in the waiting screen.
+     * List of ready players waiting for game start in the WaitingScreen.
      */
-    private int playersReady;
+    private final List<Player> playersReady;
 
     /**
      * Constructs a server data instance for the current game server.
@@ -51,7 +51,7 @@ public class ServerData {
 
         this.gameData = new GameData();
 
-        this.playersReady = 0;
+        this.playersReady = new ArrayList<>();
     }
 
     public static int getMaxPlayers() {
@@ -88,59 +88,56 @@ public class ServerData {
      * @param connectionID the player's connection ID
      */
     public void disconnectPlayer(int connectionID) {
-        updatePlayerId(connectionID);
-
         Player player = gameData.getPlayerByConnectionId(connectionID);
         if (player == null) return;
-        Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
+        Log.info(LOG_TAG, "Player disconnected from server, connection ID: " + player.getConnectionId());
 
-        gameData.getPlayers().remove(player.getPlayerId());
-        Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+        if (gameData.getPlayers().remove(player.getPlayerId()) != null) {
+            Log.info(LOG_TAG, "Player removed from server data, connection ID: " + player.getConnectionId());
+            updatePlayerIds();
+        }
 
-        updatePlayerId(connectionID);
-
-        decPlayersReady();
-        Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerId() +
-                ", " + playersReady + " players ready");
+        if (removeReadyPlayer(player)) {
+            Log.info(LOG_TAG, "Player removed from ready, connection ID: " + player.getConnectionId() +
+                    ", " + playersReady.size() + " players ready");
+        }
 
         NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
     }
 
     /**
-     * Update a player's ID based on it's connection ID. Used to correct the player ID, when players
-     * disconnect from the game server.
-     *
-     * @param connectionID the player's connection ID
+     * Update a all player IDs based on their position in the players list. Used to correct the player ID, when
+     * players disconnect from the game server and get deleted from the players list.
      */
-    public void updatePlayerId(int connectionID) {
-        Player player = gameData.getPlayerByConnectionId(connectionID);
-        if (player == null) return;
+    public void updatePlayerIds() {
         List<Player> players = gameData.getPlayers();
 
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getConnectionId() == connectionID) {
-                player.setPlayerId(i);
-            }
+            players.get(i).setPlayerId(i);
         }
     }
 
     /**
-     * Increments the player ready counter, if it has not reached the max player amount yet.
+     * Adds a player to the players ready list, if the maximal player count is not reached.
+     *
+     * @param player player to add to ready players
      */
-    public void incPlayersReady() {
-        if (playersReady < MAX_PLAYERS) {
-            Log.info(LOG_TAG, "Incrementing players ready count");
-            playersReady++;
+    public void addReadyPlayer(Player player) {
+        if (playersReady.size() < MAX_PLAYERS) {
+            Log.info(LOG_TAG, "Adding player to players ready list: " + player.getPlayerName());
+            playersReady.add(player);
         }
 
-        Log.info(LOG_TAG, "Players ready count: " + playersReady);
+        Log.info(LOG_TAG, "Players ready count: " + playersReady.size());
     }
 
     /**
-     * Decrements the player ready counter, if it is greater than 0.
+     * Removes a player from the players ready list.
+     *
+     * @param player player to remove from ready players
      */
-    public void decPlayersReady() {
-        if (playersReady > 0) playersReady--;
+    public boolean removeReadyPlayer(Player player) {
+        return playersReady.remove(player);
     }
 
     /**
@@ -149,7 +146,7 @@ public class ServerData {
      * @return true if the game can start, false otherwise.
      */
     public boolean arePlayersReady() {
-        return playersReady >= MIN_PLAYERS;
+        return playersReady.size() >= MIN_PLAYERS;
     }
 
     // simple getters & setters
@@ -190,7 +187,8 @@ public class ServerData {
         return gameData;
     }
 
-    public int getPlayersReady() {
-        return playersReady;
+    public int getPlayersReadyCount() {
+        return playersReady.size();
     }
+
 }

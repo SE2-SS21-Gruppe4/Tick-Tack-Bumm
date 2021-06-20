@@ -8,8 +8,6 @@ import se2.ticktackbumm.core.network.messages.client.SomeRequest;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.data.ServerData;
 
-import java.security.SecureRandom;
-
 /**
  * Handles all incoming client messages for the server.
  */
@@ -58,7 +56,6 @@ public class ServerMessageHandler {
     public void handleBombExploded(int connectionId) {
         Log.info(LOG_TAG, "<BombExploded> Handling message BombExploded");
 
-        serverData.getGameData().setNextPlayerTurn();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
 
         serverMessageSender.sendGameUpdate();
@@ -79,16 +76,14 @@ public class ServerMessageHandler {
         currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
         serverMessageSender.sendGameUpdate();
 
-        serverData.incPlayersReady();
+        serverData.addReadyPlayer(currentPlayer);
         if (serverData.arePlayersReady()) {
             serverMessageSender.sendStartGame();
         }
     }
 
     public void handleBombStart() {
-//        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
-        float timer = (float) new SecureRandom().nextInt(4) + 2;
-        serverData.getGameData().setBombTimer(timer);
+        serverData.getGameData().setRandomBombTimer(20, 20);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();
     }
@@ -105,6 +100,17 @@ public class ServerMessageHandler {
         serverData.getGameData().setCurrentGameModeText(word);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendCardOpened();
+    }
 
+    public void handlePlayerCheated(int connectionID) {
+        Log.info(LOG_TAG, "<PlayerCheated> Handling message PlayerCheated");
+
+        Player cheatingPlayer = serverData.getGameData().getPlayerByConnectionId(connectionID);
+        cheatingPlayer.setCanCheat(false);
+
+        serverData.getGameData().setRandomBombTimer(5, 3);
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendStartBomb();
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import se2.ticktackbumm.core.TickTackBummGame;
+
 /**
  * Flame is for creating the explosion animation
  *
@@ -23,6 +24,7 @@ public class Flame {
      */
     private Animation<TextureRegion> lambAnimation;
     private float animationTime = 0.0f;
+
     /**
      * init game constants and get the atlas file from the assetmanager
      * create the animation

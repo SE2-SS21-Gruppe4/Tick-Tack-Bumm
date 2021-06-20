@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -9,21 +10,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
+
 /**
  * MainGameScreen is the screen on which the main part of the game is displayed
  *
@@ -33,15 +33,15 @@ public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final String MODE_TAG = "Spielmodus: ";
-    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
+    private static final float SHAKE_THRESHOLD = 2f;
+    private static final int UPDATE_RATE = 500;
+
     /**
      * game constants
      */
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
-    private final NetworkClient networkClient;
-    private final BitmapFont font;
     private final SpriteBatch batch;
 
     /**
@@ -74,8 +74,10 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
-    private Label infoLabel;
-    private int[] playerScore;
+    private final Color color;
+    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
+    private Label gameModeInfoLabel;
+    private Label wordCheckInfoLabel;
     private BitmapFont ttfBitmapFont;
 
     /**
@@ -83,9 +85,10 @@ public class MainGameScreen extends ScreenAdapter {
      */
     private Bomb bomb;
     private boolean showBomb;
-
-    private final Color color;
     private boolean bombShouldExplode;
+
+    // acceleration
+    private long lastUpdate;
 
     /**
      * Class constructor.
@@ -97,9 +100,7 @@ public class MainGameScreen extends ScreenAdapter {
         gameData = game.getGameData();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
-        font = game.getFont();
         assetManager = game.getManager();
-        networkClient = game.getNetworkClient();
 
         // maxScore
         textMaxScore = new BitmapFont();
@@ -112,13 +113,8 @@ public class MainGameScreen extends ScreenAdapter {
         // card
         card = new Card();
 
-        // initialize player scores
-        playerScore = gameData.getPlayerScores();
-
-        //bomb
+        // bomb
         bomb = new Bomb();
-        assetManager.load("bombexplosion.png", Texture.class);
-        assetManager.finishLoading();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -178,13 +174,11 @@ public class MainGameScreen extends ScreenAdapter {
 
         textFieldTable = setupTextfieldTable();
 
-        // Game Mode & Banner Init
-        infoLabel = new Label(waitingForWheelText, skin);
-        infoLabel.setWrap(true);
-        infoLabel.setAlignment(Align.center);
-        infoLabel.setColor(Color.WHITE);
-        infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1700f);
-        infoLabel.setFontScale(4f);
+        // info labels
+        gameModeInfoLabel = new Label(waitingForWheelText, skin);
+        wordCheckInfoLabel = new Label("", skin);
+        setupInfoLabels();
+
 
         //TODO NACHRICHT AN SPIELER DER GECHEATET HAT , INFO LABEL AENDERN AN "CHEAT FUNKTION AKTIVIERT" ANSTATT WAITING FOR WHEEL
 
@@ -195,20 +189,26 @@ public class MainGameScreen extends ScreenAdapter {
         //stage.addActor(score4Table);
         //stage.addActor(imageMaxScoreBoard);
         stage.addActor(textFieldTable);
-        stage.addActor(infoLabel);
+        stage.addActor(gameModeInfoLabel);
+        stage.addActor(wordCheckInfoLabel);
+    }
 
-        // TODO: testing only, next round
-        TextButton bombButton = new TextButton("BOMB", skin);
-        bombButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                networkClient.getClientMessageSender().sendBombExploded();
-            }
-        });
-        bombButton.setHeight(125);
-        bombButton.setWidth(200);
-        bombButton.setPosition(100, 200, Align.center);
-        stage.addActor(bombButton);
+    private void setupInfoLabels() {
+        gameModeInfoLabel.setWrap(true);
+        gameModeInfoLabel.setAlignment(Align.center);
+        gameModeInfoLabel.setColor(Color.WHITE);
+        gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1400f);
+        gameModeInfoLabel.setFontScale(4f);
+
+        wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());
+        wordCheckInfoLabel.setVisible(false);
+        wordCheckInfoLabel.setWrap(true);
+        wordCheckInfoLabel.setAlignment(Align.center);
+        wordCheckInfoLabel.setColor(Color.WHITE);
+        wordCheckInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - wordCheckInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1700f);
+        wordCheckInfoLabel.setFontScale(4f);
     }
 
     private Table setupTextfieldTable() {
@@ -249,6 +249,7 @@ public class MainGameScreen extends ScreenAdapter {
         checkButton.setVisible(true);
         checkButton.setDisabled(false);
     }
+
     /**
      * update the avatar of the players whos turn it is and remove the old marker from the previous player
      */
@@ -310,6 +311,31 @@ public class MainGameScreen extends ScreenAdapter {
         //textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
+
+        if (game.isLocalPlayerTurn() && game.canLocalPlayerCheat()) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastUpdate) > UPDATE_RATE) {
+                lastUpdate = currentTime;
+                checkForDeviceShake();
+            }
+        }
+    }
+
+    private void checkForDeviceShake() {
+        if (!Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) return;
+
+        double currentAccel = Math.sqrt(Math.pow(Gdx.input.getAccelerometerX(), 2) +
+                (Math.pow(Gdx.input.getAccelerometerY() - 9.81, 2)) +
+                Math.pow(Gdx.input.getAccelerometerZ(), 2)
+        );
+
+        Log.info(String.valueOf(currentAccel));
+
+        if (currentAccel > SHAKE_THRESHOLD) {
+            Log.info("Device shake registered, cheat function activated");
+            setWordCheckInfoLabel("Cheatfunktion aktiviert!", Color.YELLOW);
+            game.getNetworkClient().getClientMessageSender().sendPlayerCheated();
+        }
     }
 
     @Override
@@ -317,6 +343,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
     }
+
     /**
      * init the Table for player 1 with the picture when he is not on the turn
      */
@@ -329,6 +356,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 2 with the picture when he is not on the turn
      */
@@ -341,6 +369,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 3 with the picture when he is not on the turn
      */
@@ -353,6 +382,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
+
     /**
      * init the Table for player 4 with the picture when he is not on the turn
      */
@@ -365,6 +395,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
+
     /**
      * init the Table for player 1 with the picture when he is on the turn
      */
@@ -377,6 +408,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 2 with the picture when he is on the turn
      */
@@ -389,6 +421,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 3 with the picture when he is on the turn
      */
@@ -401,6 +434,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 4 with the picture when he is on the turn
      */
@@ -413,6 +447,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * update all the playerScores to display them correctly during the game
      */
@@ -428,7 +463,7 @@ public class MainGameScreen extends ScreenAdapter {
         game.getNetworkClient().disconnectClient();
         game.setLocalPlayer(null);
 
-        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game; " +
+        Log.info(LOG_TAG, "Disconnected player from server and deleted local player from game, " +
                 "switching to MenuScreen");
         Gdx.app.postRunnable(() -> game.setScreen(new WinnerScreen()));
     }
@@ -436,21 +471,35 @@ public class MainGameScreen extends ScreenAdapter {
     public void updateInfoLabel() {
         switch (gameData.getCurrentGameMode()) {
             case PREFIX:
-                infoLabel.setText(MODE_TAG + "TICK");
+                gameModeInfoLabel.setText(MODE_TAG + "TICK");
                 break;
 
             case INFIX:
-                infoLabel.setText(MODE_TAG + "TICK...TACK");
+                gameModeInfoLabel.setText(MODE_TAG + "TICK...TACK");
                 break;
 
             case POSTFIX:
-                infoLabel.setText(MODE_TAG + "BOMBE");
+                gameModeInfoLabel.setText(MODE_TAG + "BOMBE");
                 break;
         }
     }
 
     public void setInfoLabelToWaiting() {
-        infoLabel.setText(waitingForWheelText);
+        gameModeInfoLabel.setText(waitingForWheelText);
+    }
+
+    public void setWordCheckInfoLabel(String text, Color color) {
+        wordCheckInfoLabel.setVisible(true);
+        wordCheckInfoLabel.setText(text);
+        wordCheckInfoLabel.setColor(color);
+
+        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                wordCheckInfoLabel.setVisible(false);
+                wordCheckInfoLabel.setText("");
+            }
+        }, 4f));
     }
 
     public void updateCardWord(String cardWord) {
@@ -458,6 +507,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     public void updateBombTimer(float bombTimer) {
+        bomb.setTimeTicking(0);
         bomb.setExplodeTime(bombTimer);
     }
 
@@ -470,6 +520,10 @@ public class MainGameScreen extends ScreenAdapter {
     // basic getters & setters
     public TextField getTextField() {
         return textField;
+    }
+
+    public Label getWordCheckInfoLabel() {
+        return wordCheckInfoLabel;
     }
 
     public TextButton getCheckButton() {

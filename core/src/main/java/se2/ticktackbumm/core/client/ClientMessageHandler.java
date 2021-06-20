@@ -110,6 +110,7 @@ public class ClientMessageHandler {
         gameData.setLockedWords(gameUpdate.getLockedWords());
         gameData.setCardRevealed(gameUpdate.isRevealedCard());
         gameData.setBombTimer(gameUpdate.getBombTimer());
+        game.updateLocalPlayer();
 
         // if waiting for other players, update player names in WaitingScreen
         if (game.getScreen() instanceof WaitingScreen) {

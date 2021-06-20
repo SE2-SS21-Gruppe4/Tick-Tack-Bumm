@@ -2,11 +2,11 @@ package se2.ticktackbumm.core.listeners;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.client.ClientMessageSender;
@@ -36,6 +36,7 @@ public class CheckButtonListener extends ClickListener {
      * The text field from the main game screen that contains the user's word guess.
      */
     private final TextField textField;
+
     /**
      * The game data which is included in the singleton instance of the game class. Provides functionality
      * read and alter the game's general data.
@@ -82,19 +83,13 @@ public class CheckButtonListener extends ClickListener {
         gameScreen.hideControls();
 
         if (isValidWord(userInput)) {
-            textField.setText("KORREKT");
+            gameScreen.setWordCheckInfoLabel("KORREKT!", Color.GREEN);
             clientMessageSender.sendPlayerTaskCompleted(userInput);
         } else {
-            textField.setText("FALSCH");
             gameScreen.showControls();
         }
 
-        Gdx.app.postRunnable(() -> Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                textField.setText("");
-            }
-        }, 1f));
+        textField.setText("");
     }
 
     /**
@@ -108,11 +103,15 @@ public class CheckButtonListener extends ClickListener {
 
         if (!isValidInput(userInput)) {
             Log.error(LOG_TAG, "User input was invalid: " + userInput);
+            gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') ist keine " +
+                    "gueltige Eingabe!", Color.RED);
             return false;
         }
 
         if (isLockedWord(userInput)) {
             Log.error(LOG_TAG, "User input was used previously: " + userInput);
+            gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') wurde bereits " +
+                    "verwendet!", Color.RED);
             return false;
         }
 
@@ -124,25 +123,35 @@ public class CheckButtonListener extends ClickListener {
                 break;
             case PREFIX:
                 if (!hasValidPrefix(userInput, gameData.getCurrentGameModeText())) {
-                    Log.error(LOG_TAG, "User input does not match the required prefix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    Log.error(LOG_TAG, "User input does not match the required prefix '"
+                            + gameData.getCurrentGameModeText() + "': " + userInput);
+                    gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') beginnt nicht mit " +
+                            "'" + gameData.getCurrentGameModeText() + "'", Color.RED);
                     return false;
                 }
                 break;
             case INFIX:
                 if (!hasValidInfix(userInput, gameData.getCurrentGameModeText())) {
-                    Log.error(LOG_TAG, "User input does not match the required infix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    Log.error(LOG_TAG, "User input does not match the required infix '"
+                            + gameData.getCurrentGameModeText() + "': " + userInput);
+                    gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') enthaelt nicht " +
+                            "'" + gameData.getCurrentGameModeText() + "'", Color.RED);
                     return false;
                 }
                 break;
             case POSTFIX:
                 if (!hasValidPostfix(userInput, gameData.getCurrentGameModeText())) {
-                    Log.error(LOG_TAG, "User input does not match the required postfix '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    Log.error(LOG_TAG, "User input does not match the required postfix '"
+                            + gameData.getCurrentGameModeText() + "': " + userInput);
+                    gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') endet nicht mit " +
+                            "'" + gameData.getCurrentGameModeText() + "'", Color.RED);
                     return false;
                 }
                 break;
             case SCRAMBLED_WORD:
                 if (!isInScrambledWord(userInput, gameData.getCurrentGameModeText())) {
-                    Log.error(LOG_TAG, "User input is not in the scrambled word '" + gameData.getCurrentGameModeText() + "': " + userInput);
+                    Log.error(LOG_TAG, "User input is not in the scrambled word '"
+                            + gameData.getCurrentGameModeText() + "': " + userInput);
                     return false;
                 }
                 break;
@@ -150,6 +159,8 @@ public class CheckButtonListener extends ClickListener {
 
         if (!isInDictionary(userInput)) {
             Log.error(LOG_TAG, "User input is not in Austrian dictionary: " + userInput);
+            gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') ist nicht im " +
+                    "Woerterbuch enthalten!", Color.RED);
             return false;
         }
 

@@ -7,6 +7,7 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.WinnerScreen;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +102,7 @@ public class GameData {
         }
         return playerScores;
     }
+
     /**
      * Returns the image of players avatar for the players who are not on the turn
      *
@@ -126,6 +128,7 @@ public class GameData {
         }
         return avatar;
     }
+
     /**
      * Returns the image of players avatar for the players who are on the turn
      *
@@ -177,6 +180,10 @@ public class GameData {
      */
     public void setNextPlayerTurn() {
         currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
+    }
+
+    public void setRandomBombTimer(int upperBoundInclusive, int offset) {
+        bombTimer = (float) (new SecureRandom().nextInt(upperBoundInclusive + 1) + offset);
     }
 
     // simple getters & setters
@@ -252,4 +259,5 @@ public class GameData {
     public void setBombTimer(float timer) {
         this.bombTimer = timer;
     }
+
 }
