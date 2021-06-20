@@ -101,7 +101,11 @@ public class GameData {
         }
         return playerScores;
     }
-
+    /**
+     * Returns the image of players avatar for the players who are not on the turn
+     *
+     * @return Image of the players avatar
+     */
     public Image getUnfocusedAvatarImage(Player player) {
         Image avatar;
         switch (player.getPlayerAvatar()) {
@@ -122,7 +126,11 @@ public class GameData {
         }
         return avatar;
     }
-
+    /**
+     * Returns the image of players avatar for the players who are on the turn
+     *
+     * @return Image of the players avatar
+     */
     public Image getFocusedAvatarImage(Player player) {
         Image avatar;
         switch (player.getPlayerAvatar()) {
@@ -237,7 +245,11 @@ public class GameData {
         this.placedPlayers = placedPlayers;
     }
 
-    public void setBombTimer(float timer) {this.bombTimer = timer;}
+    public float getBombTimer() {
+        return this.bombTimer;
+    }
 
-    public float getBombTimer(){ return this.bombTimer;}
+    public void setBombTimer(float timer) {
+        this.bombTimer = timer;
+    }
 }

@@ -19,13 +19,13 @@ class PlayerTest {
     }
 
     @Test
-    void incPlayerScore(){
+    void incPlayerScore() {
         player.incPlayerScore();
         Assertions.assertEquals(1, player.getGameScore());
     }
 
     @Test
-    void incPlayerScoreMultipleTimes(){
+    void incPlayerScoreMultipleTimes() {
         player.incPlayerScore();
         player.incPlayerScore();
         player.incPlayerScore();
@@ -34,7 +34,7 @@ class PlayerTest {
     }
 
     @Test
-    void incPlayerScoreOverTen(){
+    void incPlayerScoreOverTen() {
         player.incPlayerScore();
         player.incPlayerScore();
         player.incPlayerScore();

@@ -17,27 +17,44 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
-
+/**
+ * RuleScreen displays the rules of the game
+ *
+ * @author Daniel Frankl
+ */
 public class RulesScreen extends ScreenAdapter {
+    private final AssetManager assetManager;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
-    // Button constants
+    /**
+     *  Button constants
+     */
     private final float BUTTON_WIDTH = 450f;
     private final float BUTTON_HEIGHT = 120f;
 
-    // TickTackBumm resources
+    /**
+     *  TickTackBumm resources
+     */
     private final TickTackBummGame game;
-    // Scene2D UI
+
+    /**
+     *  Scene 2D UI
+     */
     private final Stage stage;
     private final Skin skin;
     private final TextButton backToMenuButton;
     private final Table menuButtonTable;
     private final Sprite sprite;
     private final Texture backgroundTexture;
-    private final AssetManager assetManager;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
 
+    /**
+     * Class constructor
+     * init variables, load skin, load images from assetmanager
+     * methods call
+     */
     public RulesScreen() {
+        //init game constants
         this.game = TickTackBummGame.getTickTackBummGame();
         this.camera = TickTackBummGame.getGameCamera();
         this.batch = game.getBatch();
@@ -48,9 +65,8 @@ public class RulesScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        // menu buttons
+        // init menuButton
         backToMenuButton = new TextButton("Zurueck", skin);
-
         backToMenuButton.getLabel().setFontScale(4);
 
         menuButtonTable = new Table();
@@ -58,9 +74,10 @@ public class RulesScreen extends ScreenAdapter {
         menuButtonTable.setHeight(stage.getHeight());
         menuButtonTable.align(Align.bottom);
 
-
+        //get background from the assetmanager
         backgroundTexture = assetManager.get("rulescreen.png", Texture.class);
 
+        //add Buttonlistener to get back to MenuScreen
         backToMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,10 +87,12 @@ public class RulesScreen extends ScreenAdapter {
 
         menuButtonTable.add(backToMenuButton).padBottom(75f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
+        //init sprite and add the image
         sprite = new Sprite(backgroundTexture);
         sprite.setRegionWidth(TickTackBummGame.WIDTH);
         sprite.setRegionHeight(TickTackBummGame.HEIGHT);
 
+        //add the table for the Button on the stage
         stage.addActor(menuButtonTable);
     }
 
@@ -87,7 +106,6 @@ public class RulesScreen extends ScreenAdapter {
         game.getBatch().end();
         batch.begin();
         stage.draw();
-//        explosion.render(delta, batch); // better UI position/integration
         batch.end();
     }
 

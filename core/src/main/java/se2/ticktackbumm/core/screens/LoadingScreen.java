@@ -21,11 +21,20 @@ import se2.ticktackbumm.core.TickTackBummGame;
  * @version 2.0
  */
 public class LoadingScreen extends ScreenAdapter implements Screen {
+    /**
+     * game constants
+     */
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private final OrthographicCamera camera;
+    /**
+     * scene 2D UI
+     */
     private final Texture image;
     private final Sprite sprite;
+    /**
+     * variables for the loadingsprogress
+     */
     private final ShapeRenderer mShapeRenderer;
     private long progress = 0;
     private long startTime = 0;
@@ -61,6 +70,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("menuScreen/background.png", Texture.class);
         assetManager.load("winnerScreen/background.png", Texture.class);
         assetManager.load("waitingScreen/background.png", Texture.class);
+        assetManager.load("mainGameScreen/background.png", Texture.class);
         assetManager.load("waitingScreen/avatar.png", Texture.class);
         assetManager.load("waitingScreen/name.png", Texture.class);
         assetManager.load("waitingScreen/avatarandname.png", Texture.class);
@@ -79,8 +89,10 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         assetManager.load("score/player2.png", Texture.class);
         assetManager.load("score/player3.png", Texture.class);
         assetManager.load("score/player4.png", Texture.class);
-        assetManager.load("spinWheelScreen/background.png",Texture.class);
-        assetManager.load("bannerBackground.png",Texture.class);
+        assetManager.load("spinWheelScreen/background.png", Texture.class);
+        assetManager.load("bannerBackground.png", Texture.class);
+        assetManager.load("bomb/bomb.png", Texture.class);
+        assetManager.load("bombexplosion.png", Texture.class);
 
         // load player avatars for WaitingScreen
         assetManager.load("avatars/blackhaired_guy.png", Texture.class);

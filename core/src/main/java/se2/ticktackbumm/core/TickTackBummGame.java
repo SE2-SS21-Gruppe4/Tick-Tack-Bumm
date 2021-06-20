@@ -59,7 +59,6 @@ public class TickTackBummGame extends Game {
     }
 
 
-
     public AssetManager getManager() {
         return manager;
     }
@@ -92,7 +91,7 @@ public class TickTackBummGame extends Game {
         this.gameData = gameData;
     }
 
-    boolean isLocalPlayerTurn() {
+    public boolean isLocalPlayerTurn() {
         return gameData.getCurrentPlayerTurnIndex() == localPlayer.getPlayerId();
     }
 
@@ -109,11 +108,12 @@ public class TickTackBummGame extends Game {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
         if (isLocalPlayerTurn()) {
-            // TODO: fixme, why is this necessary?
             Gdx.app.postRunnable(() -> setScreen(new SpinWheelScreen()));
         } else {
             gameScreen.updatePlayerScores();
             gameScreen.resetCard();
+            gameScreen.resetBomb();
+            gameScreen.setInfoLabelToWaiting();
 
             startNextTurn();
         }
@@ -126,43 +126,35 @@ public class TickTackBummGame extends Game {
             gameScreen.showControls();
         } else {
             gameScreen.hideControls();
-            // hide waiting for spin wheel message
         }
 
         gameScreen.updateCurrentPlayerMarker();
     }
 
-
-    public void spinWheelStarted() {
-        if (this.getScreen() instanceof MainGameScreen) {
-            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
-            // hide gameMode and set new Banner
-            gameScreen.hideGameMode();
-        }
-    }
-
     public void spinWheelFinished() {
-
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
-            //     gameScreen.hideBanner();
-            gameScreen.updateGameMode(gameData.getCurrentGameMode());
+
+            gameScreen.updateInfoLabel();
         }
     }
 
     public void showBomb() {
-        if (this.getScreen() instanceof MainGameScreen){
+        if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
-            gameScreen.updateShowBomb(true);
-            gameScreen.updateBombTime(this.gameData.getBombTimer());
+            gameScreen.setShowBomb(true);
+            gameScreen.updateBombTimer(gameData.getBombTimer());
+            gameScreen.getBomb().startTicking();
         }
-        if (this.getScreen() instanceof SpinWheelScreen){
-            SpinWheelScreen spinWheelScreen = (SpinWheelScreen) this.getScreen();
+    }
 
-            spinWheelScreen.getMainGameScreen().updateShowBomb(true);
-            spinWheelScreen.getMainGameScreen().updateBombTime(this.gameData.getBombTimer());
+    public void bombExploded() {
+        if (this.getScreen() instanceof MainGameScreen) {
+            MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
+            gameScreen.setBombShouldExplode(true);
+            gameScreen.getBomb().explodeBomb();
         }
     }
 
@@ -170,12 +162,14 @@ public class TickTackBummGame extends Game {
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
-            gameScreen.updateCardOpen(true);
+            gameScreen.getCard().setRevealed(true);
             gameScreen.updateCardWord(gameData.getCurrentGameModeText());
         }
     }
 
-
+    /**
+     *   after the maxScore is reached the game is finished and switches to WinnerScreen
+     */
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
