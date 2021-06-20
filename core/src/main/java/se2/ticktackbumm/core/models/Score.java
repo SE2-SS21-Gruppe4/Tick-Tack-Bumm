@@ -7,32 +7,59 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 
 import java.util.ArrayList;
-
+/**
+ * Score is to display the playerScores and communicate with the server to update the Score each round
+ *
+ * @author Daniel Fabian Frankl
+ * @version 1.0
+ */
 public class Score {
+    /**
+     * game constants
+     */
     private TickTackBummGame game;
     private GameData gameData;
-    private ArrayList<Label> playerScoreLabels;
+    /**
+     * Scene 2D UI
+     */
     private Label player1;
     private Label player2;
     private Label player3;
     private Label player4;
     private Skin skin;
+    /**
+     * List and array for the labels and the scores
+     */
+    private ArrayList<Label> playerScoreLabels;
     private int[] playerScore;
-
+    /**
+     * Class constructor.
+     * for the testclass
+     */
     public Score(int[] playerScore) {
         this.playerScore = playerScore;
     }
-
+    /**
+     * Class constructor.
+     * init variables, init list and array
+     * methodcalls
+     */
     public Score() {
+        //init game constants
         game = TickTackBummGame.getTickTackBummGame();
         gameData = game.getGameData();
 
+        //load playerscores in the array from gameData
         playerScore = gameData.getPlayerScores();
 
+        //init skin
         skin = game.getManager().get("ui/uiskin.json", Skin.class);
         skin.getFont("default-font").getData().setScale(3f);
 
+        //init the List
         playerScoreLabels = new ArrayList<>();
+
+        //methodcalls
         initScores();
         addScoresToList();
     }
@@ -41,6 +68,9 @@ public class Score {
         return playerScore[position];
     }
 
+    /**
+     * load the score of each player from the playerScore array into Player
+     */
     public void initScores() {
         player1 = new Label(String.valueOf(playerScore[0]) + "/4", skin);
         player2 = new Label(String.valueOf(playerScore[1]) + "/4", skin);
@@ -52,11 +82,17 @@ public class Score {
         //player4.setColor(Color.WHITE);
     }
 
+    /**
+     * set the playerScore array and update the Scores for the MainGameScreen
+     */
     public void setPlayerScore(int[] playerScore) {
         this.playerScore = playerScore;
         initScores();
     }
 
+    /**
+     * add alle the initialized players to the labels list
+     */
     public void addScoresToList() {
         playerScoreLabels.add(player1);
         playerScoreLabels.add(player2);

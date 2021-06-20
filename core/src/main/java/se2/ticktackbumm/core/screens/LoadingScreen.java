@@ -21,11 +21,20 @@ import se2.ticktackbumm.core.TickTackBummGame;
  * @version 2.0
  */
 public class LoadingScreen extends ScreenAdapter implements Screen {
+    /**
+     * game constants
+     */
     private final TickTackBummGame game;
     private final AssetManager assetManager;
     private final OrthographicCamera camera;
+    /**
+     * scene 2D UI
+     */
     private final Texture image;
     private final Sprite sprite;
+    /**
+     * variables for the loadingsprogress
+     */
     private final ShapeRenderer mShapeRenderer;
     private long progress = 0;
     private long startTime = 0;

@@ -24,13 +24,19 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
-
+/**
+ * MainGameScreen is the screen on which the main part of the game is displayed
+ *
+ * @version 1.0
+ */
 public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final String MODE_TAG = "Spielmodus: ";
     private String waitingForWheelText = "Warten auf neuen Spielmodus...";
-
+    /**
+     * game constants
+     */
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
@@ -38,11 +44,15 @@ public class MainGameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    // Game Mode & Banner
+    /**
+     * Game Mode & Banner
+     */
     private final GameData gameData;
     private final Score score;
 
-    // scene2d UI
+    /**
+     * Scene 2D UI
+     */
     private final Stage stage;
     private final Skin skin;
     private final Table textFieldTable;
@@ -51,7 +61,9 @@ public class MainGameScreen extends ScreenAdapter {
     private final Texture textureTable;
     private final Image imageTable;
 
-    // tables for the player scores and avatars
+    /**
+     * tables for the player scores and avatars
+     */
     private final Table score1Table;
     private final Table score2Table;
     private final Table score3Table;
@@ -66,14 +78,20 @@ public class MainGameScreen extends ScreenAdapter {
     private int[] playerScore;
     private BitmapFont ttfBitmapFont;
 
-    // bomb and explosion
+    /**
+     * bomb and explosion
+     */
     private Bomb bomb;
     private boolean showBomb;
 
     private final Color color;
     private boolean bombShouldExplode;
 
-
+    /**
+     * Class constructor.
+     * init variables, load assets, add img to sprite, init tables
+     * call methods
+     */
     public MainGameScreen() {
         game = TickTackBummGame.getTickTackBummGame();
         gameData = game.getGameData();
@@ -229,7 +247,9 @@ public class MainGameScreen extends ScreenAdapter {
         checkButton.setVisible(true);
         checkButton.setDisabled(false);
     }
-
+    /**
+     * update the avatar of the players whos turn it is and remove the old marker from the previous player
+     */
     public void updateCurrentPlayerMarker() {
         switch (gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()) {
             case 0:
@@ -295,7 +315,9 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
     }
-
+    /**
+     * init the Table for player 1 with the picture when he is not on the turn
+     */
     public void initTable1Unfocused() {
         score1Table.reset();
         score1Table.add(score.getPlayer1());
@@ -305,7 +327,9 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * init the Table for player 2 with the picture when he is not on the turn
+     */
     public void initTable2Unfocused() {
         score2Table.reset();
         score2Table.add(score.getPlayer2());
@@ -315,7 +339,9 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * init the Table for player 3 with the picture when he is not on the turn
+     */
     public void initTable3Unfocused() {
         score3Table.reset();
         score3Table.add(score.getPlayer3());
@@ -325,7 +351,9 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
-
+    /**
+     * init the Table for player 4 with the picture when he is not on the turn
+     */
     public void initTable4Unfocused() {
         score4Table.reset();
         score4Table.add(score.getPlayer4());
@@ -335,7 +363,9 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
-
+    /**
+     * init the Table for player 1 with the picture when he is on the turn
+     */
     public void initTable1Focused() {
         score1Table.reset();
         score1Table.add(score.getPlayer1());
@@ -345,7 +375,9 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * init the Table for player 2 with the picture when he is on the turn
+     */
     public void initTable2Focused() {
         score2Table.reset();
         score2Table.add(score.getPlayer2());
@@ -355,7 +387,9 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * init the Table for player 3 with the picture when he is on the turn
+     */
     public void initTable3Focused() {
         score3Table.reset();
         score3Table.add(score.getPlayer3());
@@ -365,7 +399,9 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * init the Table for player 4 with the picture when he is on the turn
+     */
     public void initTable4Focused() {
         score4Table.reset();
         score4Table.add(score.getPlayer4());
@@ -375,11 +411,16 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
-
+    /**
+     * update all the playerScores to display them correctly during the game
+     */
     public void updatePlayerScores() {
         score.setPlayerScore(gameData.getPlayerScores());
     }
 
+    /**
+     * disconnect all clients and switch to WinnerScreen
+     */
     public void setWinnerScreen() {
         updatePlayerScores();
         game.getNetworkClient().disconnectClient();
