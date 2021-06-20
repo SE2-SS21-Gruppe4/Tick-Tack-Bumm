@@ -459,6 +459,7 @@ public class MainGameScreen extends ScreenAdapter {
      * disconnect all clients and switch to WinnerScreen
      */
     public void setWinnerScreen() {
+        bomb.stopTicking();
         updatePlayerScores();
         game.getNetworkClient().disconnectClient();
         game.setLocalPlayer(null);
