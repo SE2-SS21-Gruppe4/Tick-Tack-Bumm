@@ -186,6 +186,8 @@ public class MainGameScreen extends ScreenAdapter {
         infoLabel.setPosition(Gdx.graphics.getWidth() / 2f - infoLabel.getWidth() / 2f, Gdx.graphics.getHeight() - 1700f);
         infoLabel.setFontScale(4f);
 
+        //TODO NACHRICHT AN SPIELER DER GECHEATET HAT , INFO LABEL AENDERN AN "CHEAT FUNKTION AKTIVIERT" ANSTATT WAITING FOR WHEEL
+
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
