@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.network.NetworkServer;
 
 class ServerDataTest {
@@ -119,61 +120,101 @@ class ServerDataTest {
     }
 
     @Test
-    void incPlayersReadyOnce() {
-        serverData.incPlayersReady();
+    void addReadyPlayerOnce() {
+        Player player = new Player();
 
-        Assertions.assertEquals(1, serverData.getPlayersReady());
+        serverData.addReadyPlayer(player);
+
+        Assertions.assertEquals(1, serverData.getPlayersReadyCount());
         Assertions.assertFalse(serverData.arePlayersReady());
     }
 
     @Test
-    void incPlayersReadyFourTimes() {
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
+    void addReadyPlayerFourTimes() {
+        Player player = new Player();
 
-        Assertions.assertEquals(4, serverData.getPlayersReady());
+        for (int i = 0; i < 4; i++) {
+            serverData.addReadyPlayer(player);
+        }
+
+        Assertions.assertEquals(4, serverData.getPlayersReadyCount());
         Assertions.assertTrue(serverData.arePlayersReady());
     }
 
     @Test
-    void incPlayersReadyTooManyTimes() {
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
-        serverData.incPlayersReady();
+    void addReadyPlayerTooManyTimes() {
+        Player player = new Player();
 
-        Assertions.assertEquals(4, serverData.getPlayersReady());
+        for (int i = 0; i < 6; i++) {
+            serverData.addReadyPlayer(player);
+        }
+
+        Assertions.assertEquals(4, serverData.getPlayersReadyCount());
         Assertions.assertTrue(serverData.arePlayersReady());
     }
 
     @Test
-    void decPlayersReadyOnce() {
-        Assertions.assertEquals(0, serverData.getPlayersReady());
+    void removeReadyPlayerOnce() {
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
 
-        serverData.decPlayersReady();
+        Player player = new Player();
+        serverData.removeReadyPlayer(player);
 
-        Assertions.assertEquals(0, serverData.getPlayersReady());
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
         Assertions.assertFalse(serverData.arePlayersReady());
     }
 
     @Test
-    void decIncPlayersReadyOnce() {
-        Assertions.assertEquals(0, serverData.getPlayersReady());
+    void addAndRemoveReadyPlayerOnce() {
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
 
-        serverData.incPlayersReady();
-        serverData.decPlayersReady();
+        Player player = new Player();
+        serverData.addReadyPlayer(player);
+        serverData.removeReadyPlayer(player);
 
-        Assertions.assertEquals(0, serverData.getPlayersReady());
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
+        Assertions.assertFalse(serverData.arePlayersReady());
+    }
+
+    @Test
+    void addAndRemoveReadyPlayerFourTimes() {
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
+
+        Player player = new Player();
+
+        for (int i = 0; i < 4; i++) {
+            serverData.addReadyPlayer(player);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            serverData.removeReadyPlayer(player);
+        }
+
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
+        Assertions.assertFalse(serverData.arePlayersReady());
+    }
+
+    @Test
+    void addAndRemoveReadyPlayerTooManyTimes() {
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
+
+        Player player = new Player();
+
+        for (int i = 0; i < 6; i++) {
+            serverData.addReadyPlayer(player);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            serverData.removeReadyPlayer(player);
+        }
+
+        Assertions.assertEquals(0, serverData.getPlayersReadyCount());
         Assertions.assertFalse(serverData.arePlayersReady());
     }
 
     @Test
     void arePlayersReady() {
-        incPlayersReadyFourTimes();
+        addReadyPlayerFourTimes();
         Assertions.assertTrue(serverData.arePlayersReady());
     }
 

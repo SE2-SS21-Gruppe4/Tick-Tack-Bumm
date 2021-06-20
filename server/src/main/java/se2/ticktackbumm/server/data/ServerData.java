@@ -37,10 +37,9 @@ public class ServerData {
     private final GameData gameData;
 
     /**
-     * Counter for the amount of ready players in the waiting screen.
+     * List of ready players waiting for game start in the WaitingScreen.
      */
-    private int playersReadyOld;
-    private List<Player> playersReady;
+    private final List<Player> playersReady;
 
     /**
      * Constructs a server data instance for the current game server.
@@ -52,7 +51,6 @@ public class ServerData {
 
         this.gameData = new GameData();
 
-        this.playersReadyOld = 0;
         this.playersReady = new ArrayList<>();
     }
 
@@ -196,8 +194,8 @@ public class ServerData {
         return gameData;
     }
 
-    public int getPlayersReadyOld() {
-        return playersReadyOld;
+    public int getPlayersReadyCount() {
+        return playersReady.size();
     }
 
 }
