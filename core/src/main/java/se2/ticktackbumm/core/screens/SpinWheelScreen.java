@@ -2,8 +2,11 @@ package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -62,12 +66,22 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final SecureRandom randomNumb;
     private final Timer timer;
     private final Color color;
-    private MainGameScreen mainGameScreen; // TODO: never assigned?!
     private GameMode gameMode;
     private Timer.Task task;
     private float rotationAmount;
-    private float spinSpeed;
+    private int spinSpeed;
     private float degree;
+
+    /**
+     * Music for spin wheel
+     */
+    private Music spinSound;
+    private final Texture musicOn;
+    private final Texture musicOff;
+    private final Image musicIcon;
+    private boolean isIconOff;
+    private boolean isMusicOn;
+
 
     /**
      * Test constructor
@@ -93,6 +107,10 @@ public class SpinWheelScreen extends ScreenAdapter {
         randomNumb = null;
         timer = null;
         color = null;
+        spinSound = null;
+        musicOn = null;
+        musicOff = null;
+        musicIcon = null;
     }
 
     /**
@@ -140,6 +158,18 @@ public class SpinWheelScreen extends ScreenAdapter {
         timer = new Timer();
         randomNumb = new SecureRandom();
 
+        musicOn = new Texture(Gdx.files.internal("spinWheelScreen/music-on-black.png"));
+        musicOff = new Texture(Gdx.files.internal("spinWheelScreen/music-off-black.png"));
+        musicIcon = new Image(musicOn);
+        musicIcon.setHeight(100f);
+        musicIcon.setWidth(100f);
+        musicIcon.setPosition(200f,200f);
+
+        isIconOff = false;
+        isMusicOn = true;
+        stage.addActor(musicIcon);
+
+        musicIconListener();
         setupGameButton();
         setupSpinWheelTable();
         btnSpinListener();
@@ -159,6 +189,47 @@ public class SpinWheelScreen extends ScreenAdapter {
         image.setPosition(xWidth, yHeight);
         return image;
 
+    }
+
+    public void musicIconListener(){
+        musicIcon.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isIconOff){
+                    musicIcon.setDrawable(new SpriteDrawable(new Sprite(musicOn)));
+                    isMusicOn = true;
+                    isIconOff = false;
+                }else{
+                    musicIcon.setDrawable(new SpriteDrawable(new Sprite(musicOff)));
+                    isMusicOn = false;
+                    isIconOff = true;
+                }
+            }
+        });
+    }
+
+    public void setSoundAndSoundSpeed(int spinSpeed){
+
+        switch (spinSpeed){
+            case 1:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-1sec.mp3"));
+
+            case 2:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-2sec.mp3"));
+
+            case 3:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-3sec.mp3"));
+                break;
+            case 4:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-4sec.mp3"));
+                break;
+            case 5:
+                spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-5sec.mp3"));
+                break;
+
+        }
+        spinSound.setVolume(2.0f);
+        spinSound.setLooping(true);
     }
 
     /**
@@ -184,6 +255,12 @@ public class SpinWheelScreen extends ScreenAdapter {
                 degree = setDegree(rotationAmount);
                 // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
+                setSoundAndSoundSpeed(spinSpeed);
+                if (isMusicOn){
+                    spinSound.play();
+                }else{
+                    spinSound.stop();
+                }
 
                 wheelImage.addAction(Actions.parallel(rotateBy(rotationAmount, spinSpeed)));
                 wheelImage.setOrigin(Align.center);
@@ -199,6 +276,8 @@ public class SpinWheelScreen extends ScreenAdapter {
                         // show game button
                         gameButton.setDisabled(false);
                         gameButton.setVisible(true);
+                        spinSound.stop();
+                        musicIcon.setVisible(false);
                     }
                 };
                 timer.scheduleTask(task, spinSpeed);
@@ -306,12 +385,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         return retVal;
     }
 
-    public float getSpinSpeed(float rotationAmount) {
+    public int getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
             return 1;
 
         } else {
-            return rotationAmount / 360;
+            return (int)rotationAmount / 360;
 
         }
     }
@@ -334,9 +413,5 @@ public class SpinWheelScreen extends ScreenAdapter {
         batch.dispose();
         skin.dispose();
         stage.dispose();
-    }
-
-    public MainGameScreen getMainGameScreen() {
-        return this.mainGameScreen;
     }
 }

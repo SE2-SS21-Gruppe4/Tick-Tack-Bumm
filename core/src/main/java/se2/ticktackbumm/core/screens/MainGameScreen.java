@@ -180,6 +180,8 @@ public class MainGameScreen extends ScreenAdapter {
         setupInfoLabels();
 
 
+        //TODO NACHRICHT AN SPIELER DER GECHEATET HAT , INFO LABEL AENDERN AN "CHEAT FUNKTION AKTIVIERT" ANSTATT WAITING FOR WHEEL
+
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
