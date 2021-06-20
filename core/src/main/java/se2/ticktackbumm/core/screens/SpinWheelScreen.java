@@ -66,11 +66,10 @@ public class SpinWheelScreen extends ScreenAdapter {
     private final SecureRandom randomNumb;
     private final Timer timer;
     private final Color color;
-    private MainGameScreen mainGameScreen; // TODO: never assigned?!
     private GameMode gameMode;
     private Timer.Task task;
     private float rotationAmount;
-    private byte spinSpeed;
+    private int spinSpeed;
     private float degree;
 
     /**
@@ -209,7 +208,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         });
     }
 
-    public void setSoundAndSoundSpeed(byte spinSpeed){
+    public void setSoundAndSoundSpeed(int spinSpeed){
 
         switch (spinSpeed){
             case 1:
@@ -257,7 +256,6 @@ public class SpinWheelScreen extends ScreenAdapter {
                 // setting the constant speed
                 spinSpeed = getSpinSpeed(rotationAmount);
                 setSoundAndSoundSpeed(spinSpeed);
-
                 if (isMusicOn){
                     spinSound.play();
                 }else{
@@ -387,12 +385,12 @@ public class SpinWheelScreen extends ScreenAdapter {
         return retVal;
     }
 
-    public byte getSpinSpeed(float rotationAmount) {
+    public int getSpinSpeed(float rotationAmount) {
         if (rotationAmount < 360) {
             return 1;
 
         } else {
-            return (byte)(rotationAmount / 360);
+            return (int)rotationAmount / 360;
 
         }
     }
@@ -415,9 +413,5 @@ public class SpinWheelScreen extends ScreenAdapter {
         batch.dispose();
         skin.dispose();
         stage.dispose();
-    }
-
-    public MainGameScreen getMainGameScreen() {
-        return this.mainGameScreen;
     }
 }
