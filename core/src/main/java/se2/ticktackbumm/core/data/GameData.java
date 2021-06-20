@@ -7,6 +7,7 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.WinnerScreen;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,6 +182,10 @@ public class GameData {
         currentPlayerTurnIndex = (currentPlayerTurnIndex + 1) % players.size();
     }
 
+    public void setRandomBombTimer(int upperBoundInclusive, int offset) {
+        bombTimer = new SecureRandom().nextInt(upperBoundInclusive + 1) + offset;
+    }
+
     // simple getters & setters
 
     public int getMaxGameScore() {
@@ -254,4 +259,5 @@ public class GameData {
     public void setBombTimer(float timer) {
         this.bombTimer = timer;
     }
+
 }

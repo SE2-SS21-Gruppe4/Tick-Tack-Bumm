@@ -1,6 +1,7 @@
 package se2.ticktackbumm.core.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -9,17 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.minlog.Log;
 import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
 import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
@@ -35,6 +33,9 @@ public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final String MODE_TAG = "Spielmodus: ";
+    private static final float SHAKE_THRESHOLD = 2f;
+    private static final int UPDATE_RATE = 500;
+
     /**
      * game constants
      */
@@ -42,11 +43,13 @@ public class MainGameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
     private final SpriteBatch batch;
+
     /**
      * Game Mode & Banner
      */
     private final GameData gameData;
     private final Score score;
+
     /**
      * Scene 2D UI
      */
@@ -57,6 +60,7 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture textureTable;
     private final Image imageTable;
+
     /**
      * tables for the player scores and avatars
      */
@@ -75,12 +79,16 @@ public class MainGameScreen extends ScreenAdapter {
     private Label gameModeInfoLabel;
     private Label wordCheckInfoLabel;
     private BitmapFont ttfBitmapFont;
+
     /**
      * bomb and explosion
      */
     private Bomb bomb;
     private boolean showBomb;
     private boolean bombShouldExplode;
+
+    // acceleration
+    private long lastUpdate;
 
     /**
      * Class constructor.
@@ -301,6 +309,30 @@ public class MainGameScreen extends ScreenAdapter {
         //textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
+
+        if (game.isLocalPlayerTurn() && game.canLocalPlayerCheat()) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastUpdate) > UPDATE_RATE) {
+                lastUpdate = currentTime;
+                checkForDeviceShake();
+            }
+        }
+    }
+
+    private void checkForDeviceShake() {
+        if (!Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) return;
+
+        double currentAccel = Math.sqrt(Math.pow(Gdx.input.getAccelerometerX(), 2) +
+                (Math.pow(Gdx.input.getAccelerometerY() - 9.81, 2)) +
+                Math.pow(Gdx.input.getAccelerometerZ(), 2)
+        );
+
+        Log.info(String.valueOf(currentAccel));
+
+        if (currentAccel > SHAKE_THRESHOLD) {
+            Log.info("Device shake registered, cheat function activated");
+            game.getNetworkClient().getClientMessageSender().sendPlayerCheated();
+        }
     }
 
     @Override

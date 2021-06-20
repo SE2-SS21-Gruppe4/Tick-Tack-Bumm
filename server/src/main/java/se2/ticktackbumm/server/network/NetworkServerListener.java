@@ -84,6 +84,10 @@ public class NetworkServerListener extends Listener {
             Log.info(LOG_TAG, "Received message CardOpened from ID: " + connection.getID());
             serverMessageHandler.handleCardOpened(((CardOpened) object).getWord());
 
+        } else if (object instanceof PlayerCheated) {
+            Log.info(LOG_TAG, "Received message PlayerCheated from ID: " + connection.getID());
+            serverMessageHandler.handlePlayerCheated(connection.getID());
+
         }
     }
 }

@@ -95,6 +95,10 @@ public class TickTackBummGame extends Game {
         return gameData.getCurrentPlayerTurnIndex() == localPlayer.getPlayerId();
     }
 
+    public boolean canLocalPlayerCheat() {
+        return localPlayer.getCanCheat();
+    }
+
     public void startNewGame() {
         if (isLocalPlayerTurn()) {
             setScreen(new SpinWheelScreen());
@@ -183,6 +187,14 @@ public class TickTackBummGame extends Game {
 
     public void setSpinWheelFinished(GameMode gameMode) {
         gameData.setCurrentGameMode(gameMode);
+    }
+
+    public void updateLocalPlayer() {
+        for (Player player : gameData.getPlayers()) {
+            if (localPlayer.getConnectionId() == player.getConnectionId()) {
+                localPlayer = player;
+            }
+        }
     }
 
     @Override

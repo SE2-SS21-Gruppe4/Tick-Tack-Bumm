@@ -38,7 +38,7 @@ public class Player {
      * Indicates whether the player has cheated in the game before. If he has already cheated he can not
      * cheat again this game.
      */
-    private boolean hasCheated;
+    private boolean canCheat;
 
     /**
      * The name the player chose for themself in the {@link WaitingScreen}.
@@ -65,7 +65,7 @@ public class Player {
         this.connectionId = connectionId;
         this.playerId = playerId;
         this.gameScore = 0;
-        this.hasCheated = false;
+        this.canCheat = true;
     }
 
     /**
@@ -101,12 +101,12 @@ public class Player {
         this.gameScore = gameScore;
     }
 
-    public boolean getHasCheated() {
-        return hasCheated;
+    public boolean getCanCheat() {
+        return canCheat;
     }
 
-    public void setHasCheated(boolean hasCheated) {
-        this.hasCheated = hasCheated;
+    public void setCanCheat(boolean canCheat) {
+        this.canCheat = canCheat;
     }
 
     public String getPlayerName() {

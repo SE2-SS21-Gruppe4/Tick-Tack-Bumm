@@ -104,4 +104,9 @@ public class ClientMessageSender {
         logSendingMessage("Card opened");
         kryoClient.sendTCP(new CardOpened(word));
     }
+
+    public void sendPlayerCheated() {
+        logSendingMessage("PlayerCheated");
+        kryoClient.sendTCP(new PlayerCheated());
+    }
 }

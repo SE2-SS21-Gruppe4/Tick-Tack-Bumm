@@ -134,7 +134,7 @@ public class CheckButtonListener extends ClickListener {
                 if (!hasValidInfix(userInput, gameData.getCurrentGameModeText())) {
                     Log.error(LOG_TAG, "User input does not match the required infix '"
                             + gameData.getCurrentGameModeText() + "': " + userInput);
-                    gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') enthält nicht " +
+                    gameScreen.setWordCheckInfoLabel("FALSCH, das Wort ('" + userInput + "') enthaelt nicht " +
                             "'" + gameData.getCurrentGameModeText() + "'", Color.RED);
                     return false;
                 }
