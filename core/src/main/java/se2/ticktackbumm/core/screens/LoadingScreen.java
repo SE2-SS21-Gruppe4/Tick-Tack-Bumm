@@ -33,7 +33,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
     private final Texture image;
     private final Sprite sprite;
     /**
-     * variables for the loadingsprogress
+     * variables for the loading progress
      */
     private final ShapeRenderer mShapeRenderer;
     private long progress = 0;
@@ -65,6 +65,7 @@ public class LoadingScreen extends ScreenAdapter implements Screen {
         // load skins
         assetManager.load("ui/uiskin.json", Skin.class);
 
+        // load textures
         assetManager.load("bombeStart.png", Texture.class);
         assetManager.load("winnerScreen/podium.png", Texture.class);
         assetManager.load("menuScreen/background.png", Texture.class);

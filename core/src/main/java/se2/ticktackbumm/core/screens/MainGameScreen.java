@@ -41,8 +41,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final AssetManager assetManager;
-    private final NetworkClient networkClient;
-    private final BitmapFont font;
     private final SpriteBatch batch;
     /**
      * Game Mode & Banner
@@ -76,7 +74,6 @@ public class MainGameScreen extends ScreenAdapter {
     private String waitingForWheelText = "Warten auf neuen Spielmodus...";
     private Label gameModeInfoLabel;
     private Label wordCheckInfoLabel;
-    private int[] playerScore;
     private BitmapFont ttfBitmapFont;
     /**
      * bomb and explosion
@@ -95,9 +92,7 @@ public class MainGameScreen extends ScreenAdapter {
         gameData = game.getGameData();
         camera = TickTackBummGame.getGameCamera();
         batch = game.getBatch();
-        font = game.getFont();
         assetManager = game.getManager();
-        networkClient = game.getNetworkClient();
 
         // maxScore
         textMaxScore = new BitmapFont();
@@ -110,13 +105,8 @@ public class MainGameScreen extends ScreenAdapter {
         // card
         card = new Card();
 
-        // initialize player scores
-        playerScore = gameData.getPlayerScores();
-
-        //bomb
+        // bomb
         bomb = new Bomb();
-        assetManager.load("bombexplosion.png", Texture.class);
-        assetManager.finishLoading();
 
         // scene2d UI
         stage = new Stage(new FitViewport(TickTackBummGame.WIDTH, TickTackBummGame.HEIGHT));
@@ -176,25 +166,11 @@ public class MainGameScreen extends ScreenAdapter {
 
         textFieldTable = setupTextfieldTable();
 
-        // game mode info label
+        // info labels
         gameModeInfoLabel = new Label(waitingForWheelText, skin);
-        gameModeInfoLabel.setWrap(true);
-        gameModeInfoLabel.setAlignment(Align.center);
-        gameModeInfoLabel.setColor(Color.WHITE);
-        gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
-                Gdx.graphics.getHeight() - 1400f);
-        gameModeInfoLabel.setFontScale(4f);
-
-        // word check info label
         wordCheckInfoLabel = new Label("", skin);
-        wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());
-        wordCheckInfoLabel.setVisible(false);
-        wordCheckInfoLabel.setWrap(true);
-        wordCheckInfoLabel.setAlignment(Align.center);
-        wordCheckInfoLabel.setColor(Color.WHITE);
-        wordCheckInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - wordCheckInfoLabel.getWidth() / 2f,
-                Gdx.graphics.getHeight() - 1700f);
-        wordCheckInfoLabel.setFontScale(4f);
+        setupInfoLabels();
+
 
         stage.addActor(imageTable);
         stage.addActor(score1Table);
@@ -205,19 +181,24 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(textFieldTable);
         stage.addActor(gameModeInfoLabel);
         stage.addActor(wordCheckInfoLabel);
+    }
 
-        // TODO: testing only, next round
-        TextButton bombButton = new TextButton("BOMB", skin);
-        bombButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                networkClient.getClientMessageSender().sendBombExploded();
-            }
-        });
-        bombButton.setHeight(125);
-        bombButton.setWidth(200);
-        bombButton.setPosition(100, 200, Align.center);
-        stage.addActor(bombButton);
+    private void setupInfoLabels() {
+        gameModeInfoLabel.setWrap(true);
+        gameModeInfoLabel.setAlignment(Align.center);
+        gameModeInfoLabel.setColor(Color.WHITE);
+        gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1400f);
+        gameModeInfoLabel.setFontScale(4f);
+
+        wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());
+        wordCheckInfoLabel.setVisible(false);
+        wordCheckInfoLabel.setWrap(true);
+        wordCheckInfoLabel.setAlignment(Align.center);
+        wordCheckInfoLabel.setColor(Color.WHITE);
+        wordCheckInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - wordCheckInfoLabel.getWidth() / 2f,
+                Gdx.graphics.getHeight() - 1700f);
+        wordCheckInfoLabel.setFontScale(4f);
     }
 
     private Table setupTextfieldTable() {
