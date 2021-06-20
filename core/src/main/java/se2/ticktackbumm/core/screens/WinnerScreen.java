@@ -26,7 +26,7 @@ import se2.ticktackbumm.core.player.Player;
  */
 public class WinnerScreen extends ScreenAdapter {
     /**
-     *  TickTackBumm constants
+     * TickTackBumm constants
      */
     private final TickTackBummGame game;
     private final AssetManager assetManager;
@@ -34,7 +34,7 @@ public class WinnerScreen extends ScreenAdapter {
     private final Stage stage;
     private final GameData gameData;
     /**
-     *  Scene 2D UI
+     * Scene 2D UI
      */
     private final Skin skin;
     private final Texture podium;
@@ -57,6 +57,7 @@ public class WinnerScreen extends ScreenAdapter {
      */
     private final Player[] placedPlayers;
     private final Table[] winnerTables;
+
     /**
      * Class constructor
      * init variables, load skin, load images from assetmanager, load animations

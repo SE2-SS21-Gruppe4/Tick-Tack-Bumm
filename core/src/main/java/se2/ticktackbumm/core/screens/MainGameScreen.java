@@ -24,6 +24,7 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
+
 /**
  * MainGameScreen is the screen on which the main part of the game is displayed
  *
@@ -33,7 +34,6 @@ public class MainGameScreen extends ScreenAdapter {
 
     private static final String LOG_TAG = "MAIN_GAME_SCREEN";
     private static final String MODE_TAG = "Spielmodus: ";
-    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
     /**
      * game constants
      */
@@ -43,13 +43,11 @@ public class MainGameScreen extends ScreenAdapter {
     private final NetworkClient networkClient;
     private final BitmapFont font;
     private final SpriteBatch batch;
-
     /**
      * Game Mode & Banner
      */
     private final GameData gameData;
     private final Score score;
-
     /**
      * Scene 2D UI
      */
@@ -60,7 +58,6 @@ public class MainGameScreen extends ScreenAdapter {
     private final TextButton checkButton;
     private final Texture textureTable;
     private final Image imageTable;
-
     /**
      * tables for the player scores and avatars
      */
@@ -74,17 +71,16 @@ public class MainGameScreen extends ScreenAdapter {
     private final Label player2;
     private final Label player3;
     private final Label player4;
+    private final Color color;
+    private String waitingForWheelText = "Warten auf neuen Spielmodus...";
     private Label infoLabel;
     private int[] playerScore;
     private BitmapFont ttfBitmapFont;
-
     /**
      * bomb and explosion
      */
     private Bomb bomb;
     private boolean showBomb;
-
-    private final Color color;
     private boolean bombShouldExplode;
 
     /**
@@ -247,6 +243,7 @@ public class MainGameScreen extends ScreenAdapter {
         checkButton.setVisible(true);
         checkButton.setDisabled(false);
     }
+
     /**
      * update the avatar of the players whos turn it is and remove the old marker from the previous player
      */
@@ -315,6 +312,7 @@ public class MainGameScreen extends ScreenAdapter {
         stage.dispose();
         skin.dispose();
     }
+
     /**
      * init the Table for player 1 with the picture when he is not on the turn
      */
@@ -327,6 +325,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 2 with the picture when he is not on the turn
      */
@@ -339,6 +338,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 3 with the picture when he is not on the turn
      */
@@ -351,6 +351,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
+
     /**
      * init the Table for player 4 with the picture when he is not on the turn
      */
@@ -363,6 +364,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
+
     /**
      * init the Table for player 1 with the picture when he is on the turn
      */
@@ -375,6 +377,7 @@ public class MainGameScreen extends ScreenAdapter {
         score1Table.add(player1);
         score1Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 2 with the picture when he is on the turn
      */
@@ -387,6 +390,7 @@ public class MainGameScreen extends ScreenAdapter {
         score2Table.add(player2);
         score2Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 3 with the picture when he is on the turn
      */
@@ -399,6 +403,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(player3);
         score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * init the Table for player 4 with the picture when he is on the turn
      */
@@ -411,6 +416,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(player4);
         score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
     }
+
     /**
      * update all the playerScores to display them correctly during the game
      */

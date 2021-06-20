@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se2.ticktackbumm.core.TickTackBummGame;
+
 /**
  * RuleScreen displays the rules of the game
  *
@@ -24,22 +25,17 @@ import se2.ticktackbumm.core.TickTackBummGame;
  */
 public class RulesScreen extends ScreenAdapter {
     private final AssetManager assetManager;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-
     /**
-     *  Button constants
+     * Button constants
      */
     private final float BUTTON_WIDTH = 450f;
     private final float BUTTON_HEIGHT = 120f;
-
     /**
-     *  TickTackBumm resources
+     * TickTackBumm resources
      */
     private final TickTackBummGame game;
-
     /**
-     *  Scene 2D UI
+     * Scene 2D UI
      */
     private final Stage stage;
     private final Skin skin;
@@ -47,6 +43,8 @@ public class RulesScreen extends ScreenAdapter {
     private final Table menuButtonTable;
     private final Sprite sprite;
     private final Texture backgroundTexture;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
     /**
      * Class constructor

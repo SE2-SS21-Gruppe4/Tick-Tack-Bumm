@@ -77,8 +77,7 @@ class ServerDataTest {
     void updatePlayerId() {
         connectFourPlayers();
 
-        serverData.updatePlayerId(1);
-        serverData.updatePlayerId(2);
+        serverData.updatePlayerIds();
 
         Assertions.assertEquals(1,
                 serverData.getGameData().getPlayers().get(1).getConnectionId());

@@ -168,7 +168,7 @@ public class TickTackBummGame extends Game {
     }
 
     /**
-     *   after the maxScore is reached the game is finished and switches to WinnerScreen
+     * after the maxScore is reached the game is finished and switches to WinnerScreen
      */
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();

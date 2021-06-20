@@ -30,11 +30,11 @@ public class NetworkServerListener extends Listener {
 
         Player connectedPlayer;
         if ((connectedPlayer = networkServer.getServerData().connectPlayer(connection.getID())) != null) {
-            Log.info(LOG_TAG, "Player successfully connected: " + connection);
+            Log.info(LOG_TAG, "Player successfully connected, connection ID: " + connection.getID());
 
             connection.sendTCP(new ConnectionSuccessful(connectedPlayer));
         } else {
-            Log.error(LOG_TAG, "Player connection failed: " + connection);
+            Log.error(LOG_TAG, "Player connection failed, connection ID: " + connection.getID());
 
             connection.sendTCP(new ConnectionRejected());
             connection.close();

@@ -24,6 +24,7 @@ public class Lamp {
      */
     private Animation<TextureRegion> lampAnimation;
     private float animationTime = 0.0f;
+
     /**
      * init game constants and get the atlas file from the assetmanager
      * create the animation

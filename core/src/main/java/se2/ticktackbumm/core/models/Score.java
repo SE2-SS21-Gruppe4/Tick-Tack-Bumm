@@ -7,6 +7,7 @@ import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.data.GameData;
 
 import java.util.ArrayList;
+
 /**
  * Score is to display the playerScores and communicate with the server to update the Score each round
  *
@@ -32,6 +33,7 @@ public class Score {
      */
     private ArrayList<Label> playerScoreLabels;
     private int[] playerScore;
+
     /**
      * Class constructor.
      * for the testclass
@@ -39,6 +41,7 @@ public class Score {
     public Score(int[] playerScore) {
         this.playerScore = playerScore;
     }
+
     /**
      * Class constructor.
      * init variables, init list and array

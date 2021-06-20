@@ -101,6 +101,7 @@ public class GameData {
         }
         return playerScores;
     }
+
     /**
      * Returns the image of players avatar for the players who are not on the turn
      *
@@ -126,6 +127,7 @@ public class GameData {
         }
         return avatar;
     }
+
     /**
      * Returns the image of players avatar for the players who are on the turn
      *

@@ -86,8 +86,7 @@ public class ServerMessageHandler {
     }
 
     public void handleBombStart() {
-//        float timer = (float) new SecureRandom().nextInt((40 - 20) + 1) + 20;
-        float timer = (float) new SecureRandom().nextInt(21) + 20;
+        float timer = (float) new SecureRandom().nextInt(10) + 10;
         serverData.getGameData().setBombTimer(timer);
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();

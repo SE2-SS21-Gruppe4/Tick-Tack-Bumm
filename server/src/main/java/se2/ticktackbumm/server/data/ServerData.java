@@ -88,39 +88,32 @@ public class ServerData {
      * @param connectionID the player's connection ID
      */
     public void disconnectPlayer(int connectionID) {
-        updatePlayerId(connectionID);
-
         Player player = gameData.getPlayerByConnectionId(connectionID);
         if (player == null) return;
-        Log.info(LOG_TAG, "Player disconnected from server: " + player.getPlayerId());
+        Log.info(LOG_TAG, "Player disconnected from server, connection ID: " + player.getConnectionId());
 
-        gameData.getPlayers().remove(player.getPlayerId());
-        Log.info(LOG_TAG, "Player removed from server data: " + player.getPlayerId());
+        if (gameData.getPlayers().remove(player.getPlayerId()) != null) {
+            Log.info(LOG_TAG, "Player removed from server data, connection ID: " + player.getConnectionId());
+            updatePlayerIds();
+        }
 
-        updatePlayerId(connectionID);
-
-        removeReadyPlayer(player);
-        Log.info(LOG_TAG, "Player removed from ready: " + player.getPlayerName() +
-                ", " + playersReady.size() + " players ready");
+        if (removeReadyPlayer(player)) {
+            Log.info(LOG_TAG, "Player removed from ready, connection ID: " + player.getConnectionId() +
+                    ", " + playersReady.size() + " players ready");
+        }
 
         NetworkServer.getNetworkServer().getServerMessageSender().sendGameUpdate();
     }
 
     /**
-     * Update a player's ID based on it's connection ID. Used to correct the player ID, when players
-     * disconnect from the game server.
-     *
-     * @param connectionID the player's connection ID
+     * Update a all player IDs based on their position in the players list. Used to correct the player ID, when
+     * players disconnect from the game server and get deleted from the players list.
      */
-    public void updatePlayerId(int connectionID) {
-        Player player = gameData.getPlayerByConnectionId(connectionID);
-        if (player == null) return;
+    public void updatePlayerIds() {
         List<Player> players = gameData.getPlayers();
 
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getConnectionId() == connectionID) {
-                player.setPlayerId(i);
-            }
+            players.get(i).setPlayerId(i);
         }
     }
 
@@ -143,8 +136,8 @@ public class ServerData {
      *
      * @param player player to remove from ready players
      */
-    public void removeReadyPlayer(Player player) {
-        playersReady.remove(player);
+    public boolean removeReadyPlayer(Player player) {
+        return playersReady.remove(player);
     }
 
     /**

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import se2.ticktackbumm.core.TickTackBummGame;
+
 /**
  * Explosion is for creating the explosion animation
  *
