@@ -183,7 +183,7 @@ public class GameData {
     }
 
     public void setRandomBombTimer(int upperBoundInclusive, int offset) {
-        bombTimer = new SecureRandom().nextInt(upperBoundInclusive + 1) + offset;
+        bombTimer = (float) (new SecureRandom().nextInt(upperBoundInclusive + 1) + offset);
     }
 
     // simple getters & setters
