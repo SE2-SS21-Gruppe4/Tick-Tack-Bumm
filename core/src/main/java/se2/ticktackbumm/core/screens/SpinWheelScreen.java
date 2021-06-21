@@ -41,17 +41,20 @@ public class SpinWheelScreen extends ScreenAdapter {
     private static final String CHALLENGE_STRING = "Drueck SPIN, um das Drehrad zu starten!";
     private static final String SPIN_WHEEL_ATLAS_PATH = "ui/spin_wheel_ui.atlas";
 
+    /**
+     * Game constants
+     */
     private final TickTackBummGame game;
     private final OrthographicCamera camera;
     private final GameData gameData;
-    private final SpriteBatch batch;
-    private final Stage stage;
-    private final Skin skin;
-    private final TextureAtlas atlas;
 
     /**
      * Scene 2D UI
      */
+    private final SpriteBatch batch;
+    private final Stage stage;
+    private final Skin skin;
+    private final TextureAtlas atlas;
     private final Table spinWheelTable;
     private final Label challengeLabel;
     private final Label descriptionLabel;
@@ -178,7 +181,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     /**
-     * set up all parts of spinning wheel for UI
+     * Set up all parts of spinning wheel for UI
      *
      * @param path    - path of atlas in assets
      * @param xWidth  - x position on UI/Screen
@@ -191,6 +194,9 @@ public class SpinWheelScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Set listener on image to change icons from music-on to music-off icon and inverted
+     */
     public void musicIconListener(){
         musicIcon.addListener(new ClickListener() {
             @Override
@@ -208,21 +214,29 @@ public class SpinWheelScreen extends ScreenAdapter {
         });
     }
 
+    /**
+     * Set the music based on the speed of the spin wheel
+     * @param spinSpeed - speed of spin wheel ( in sec's 1 to 5 )
+     */
     public void setSoundAndSoundSpeed(int spinSpeed){
 
         switch (spinSpeed){
             case 1:
                 spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-1sec.mp3"));
+                break;
 
             case 2:
                 spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-2sec.mp3"));
+                break;
 
             case 3:
                 spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-3sec.mp3"));
                 break;
+
             case 4:
                 spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-4sec.mp3"));
                 break;
+
             case 5:
                 spinSound = Gdx.audio.newMusic(Gdx.files.internal("spinWheelScreen/spinSound-5sec.mp3"));
                 break;
@@ -287,7 +301,7 @@ public class SpinWheelScreen extends ScreenAdapter {
 
 
     /**
-     * set up description label on UI
+     * Set up description label on UI
      *
      * @param label     - text
      * @param textScale - font size
@@ -299,7 +313,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     /**
-     * set game button for going on next screen after getting challenge
+     * Set game button for going on next screen after getting challenge
      */
     public void setupGameButton() {
         gameButton.addListener(new ClickListener() {
@@ -331,7 +345,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     /**
-     * set up descriptionLabel and current game mode, depending on received degrees value
+     * Set up descriptionLabel and current game mode, depending on received degrees value
      */
     public void setGameMode(float degree) {
         if ((degree > 120 && degree <= 180) || (degree >= 300 && degree < 360)) {
@@ -351,7 +365,7 @@ public class SpinWheelScreen extends ScreenAdapter {
     }
 
     /**
-     * set up background color depending on received degrees value
+     * Set up background color depending on received degrees value
      */
     private void setBackgroundColor(float degree) {
         if (degree < 61) {
@@ -414,4 +428,9 @@ public class SpinWheelScreen extends ScreenAdapter {
         skin.dispose();
         stage.dispose();
     }
+
+    public Color getColor() {
+        return color;
+    }
+
 }

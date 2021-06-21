@@ -16,19 +16,45 @@ import se2.ticktackbumm.core.screens.SpinWheelScreen;
 
 public class TickTackBummGame extends Game {
 
+    /**
+     * Game Screen constants
+     */
     public static final int HEIGHT = 2220;
     public static final int WIDTH = 1080;
 
+    /**
+     * Provides functionality to read and modify the game and data of the game.
+     */
     private static TickTackBummGame tickTackBummGame;
 
+    /**
+     *  Player that is on turn.
+     */
     private Player localPlayer;
 
+    /**
+     * class containing info/data about player
+     */
     private GameData gameData;
 
+    /**
+     * Assert initializer to access asset elements.
+     */
     private AssetManager manager;
+
+    /**
+     * Class for connecting client with server
+     */
     private NetworkClient networkClient;
+
+    /**
+     * Draws batched quads using indices.
+     */
     private SpriteBatch batch;
 
+    /**
+     * Renders bitmap fonts. The font consists of 2 files.
+     */
     private BitmapFont font;
 
     public static TickTackBummGame getTickTackBummGame() {
@@ -108,6 +134,9 @@ public class TickTackBummGame extends Game {
         }
     }
 
+    /**
+     * When player is done reset all fields and start next round.
+     */
     public void startNextRound() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
@@ -123,6 +152,9 @@ public class TickTackBummGame extends Game {
         }
     }
 
+    /**
+     * Enable input field for current player and disable for others.
+     */
     public void startNextTurn() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
 
@@ -135,6 +167,9 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
     }
 
+    /**
+     * Taking value from spin wheel screen.
+     */
     public void spinWheelFinished() {
         if (this.getScreen() instanceof MainGameScreen) {
             MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
@@ -142,6 +177,7 @@ public class TickTackBummGame extends Game {
             gameScreen.updateInfoLabel();
         }
     }
+
 
     public void showBomb() {
         if (this.getScreen() instanceof MainGameScreen) {
@@ -172,7 +208,7 @@ public class TickTackBummGame extends Game {
     }
 
     /**
-     * after the maxScore is reached the game is finished and switches to WinnerScreen
+     * After the maxScore is reached the game is finished and switches to WinnerScreen
      */
     public void finishGame() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
@@ -182,11 +218,6 @@ public class TickTackBummGame extends Game {
         gameScreen.updateCurrentPlayerMarker();
         gameScreen.setWinnerScreen();
         // TODO: show game finished message, scoreboard screen, ...
-    }
-
-
-    public void setSpinWheelFinished(GameMode gameMode) {
-        gameData.setCurrentGameMode(gameMode);
     }
 
     public void updateLocalPlayer() {
