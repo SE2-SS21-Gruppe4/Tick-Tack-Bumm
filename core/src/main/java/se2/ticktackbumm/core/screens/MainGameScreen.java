@@ -23,7 +23,6 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
-import se2.ticktackbumm.core.player.Player;
 
 /**
  * MainGameScreen is the screen on which the main part of the game is displayed
@@ -180,9 +179,6 @@ public class MainGameScreen extends ScreenAdapter {
         wordCheckInfoLabel = new Label("", skin);
         setupInfoLabels();
 
-
-        //TODO NACHRICHT AN SPIELER DER GECHEATET HAT , INFO LABEL AENDERN AN "CHEAT FUNKTION AKTIVIERT" ANSTATT WAITING FOR WHEEL
-
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
@@ -252,7 +248,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     /**
-     * update the avatar of the players whos turn it is and remove the old marker from the previous player
+     * update the avatar of the players who's turn it is and remove the old marker from the previous player
      */
     public void updateCurrentPlayerMarker() {
         switch (gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()) {
@@ -334,7 +330,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         if (currentAccel > SHAKE_THRESHOLD) {
             Log.info("Device shake registered, cheat function activated");
-            setWordCheckInfoLabel("Cheatfunktion aktiviert!", Color.YELLOW);
+            setWordCheckInfoLabel("Cheatfunktion aktiviert und fuer dieses Spiel aufgebraucht!", Color.YELLOW);
             game.getNetworkClient().getClientMessageSender().sendPlayerCheated();
         }
     }
