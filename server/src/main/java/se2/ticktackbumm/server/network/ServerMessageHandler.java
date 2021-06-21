@@ -56,6 +56,8 @@ public class ServerMessageHandler {
     public void handleBombExploded(int connectionId) {
         Log.info(LOG_TAG, "<BombExploded> Handling message BombExploded");
 
+        serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().resetLockedWords();
         serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
 
         serverMessageSender.sendGameUpdate();

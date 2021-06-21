@@ -179,9 +179,6 @@ public class MainGameScreen extends ScreenAdapter {
         wordCheckInfoLabel = new Label("", skin);
         setupInfoLabels();
 
-
-        //TODO NACHRICHT AN SPIELER DER GECHEATET HAT , INFO LABEL AENDERN AN "CHEAT FUNKTION AKTIVIERT" ANSTATT WAITING FOR WHEEL
-
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
@@ -198,7 +195,7 @@ public class MainGameScreen extends ScreenAdapter {
         gameModeInfoLabel.setAlignment(Align.center);
         gameModeInfoLabel.setColor(Color.WHITE);
         gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
-                Gdx.graphics.getHeight() - 1400f);
+                Gdx.graphics.getHeight() - 150f);
         gameModeInfoLabel.setFontScale(4f);
 
         wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());
@@ -251,7 +248,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     /**
-     * update the avatar of the players whos turn it is and remove the old marker from the previous player
+     * update the avatar of the players who's turn it is and remove the old marker from the previous player
      */
     public void updateCurrentPlayerMarker() {
         switch (gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex()).getPlayerId()) {
@@ -333,7 +330,7 @@ public class MainGameScreen extends ScreenAdapter {
 
         if (currentAccel > SHAKE_THRESHOLD) {
             Log.info("Device shake registered, cheat function activated");
-            setWordCheckInfoLabel("Cheatfunktion aktiviert!", Color.YELLOW);
+            setWordCheckInfoLabel("Cheatfunktion aktiviert und fuer dieses Spiel aufgebraucht!", Color.YELLOW);
             game.getNetworkClient().getClientMessageSender().sendPlayerCheated();
         }
     }
@@ -459,6 +456,7 @@ public class MainGameScreen extends ScreenAdapter {
      * disconnect all clients and switch to WinnerScreen
      */
     public void setWinnerScreen() {
+        bomb.stopTicking();
         updatePlayerScores();
         game.getNetworkClient().disconnectClient();
         game.setLocalPlayer(null);

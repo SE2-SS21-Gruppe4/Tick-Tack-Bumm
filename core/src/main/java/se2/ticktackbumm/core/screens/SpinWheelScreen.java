@@ -166,7 +166,7 @@ public class SpinWheelScreen extends ScreenAdapter {
         musicIcon = new Image(musicOn);
         musicIcon.setHeight(100f);
         musicIcon.setWidth(100f);
-        musicIcon.setPosition(200f,200f);
+        musicIcon.setPosition(TickTackBummGame.WIDTH-musicIcon.getImageWidth()-145f,TickTackBummGame.HEIGHT-musicIcon.getImageHeight()-145f);
 
         isIconOff = false;
         isMusicOn = true;

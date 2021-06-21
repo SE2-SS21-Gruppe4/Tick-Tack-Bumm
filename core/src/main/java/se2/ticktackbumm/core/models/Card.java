@@ -16,10 +16,9 @@ import se2.ticktackbumm.core.data.GameMode;
 import java.security.SecureRandom;
 
 public class Card {
-
-    private final String[] prefixArray = new String[]{"SCH", "GE", "ANG", "VOR", "SEH", "FRE", "GER", "ACK", "EXP", "ORG"};
-    private final String[] infixArray = new String[]{"TER", "UT", "RDI", "LEN", "ULT", "TRA", "AHN", "KEL", "SON", "TEN"};
-    private final String[] postfixArray = new String[]{"UNG", "SCH", "SER", "KEN", "CHE", "EIT", "ATZ", "NER", "ICH", "TUR"};
+    private final String[] prefixArray = new String[]{"GE", "SCH", "ANG", "FR", "VOR", "SE"};
+    private final String[] infixArray = new String[]{"UT","LEN", "TRA", "WEI", "AC", "AU"};
+    private final String[] postfixArray = new String[]{"SCH", "UNG", "ER", "ICH", "CHE", "EIT"};
     private final Texture backsideTexture;
     private final Texture frontsideTexture;
     private GameData gameData;
