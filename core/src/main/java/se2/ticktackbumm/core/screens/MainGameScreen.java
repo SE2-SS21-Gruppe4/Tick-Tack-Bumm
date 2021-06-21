@@ -23,6 +23,7 @@ import se2.ticktackbumm.core.listeners.CheckButtonListener;
 import se2.ticktackbumm.core.models.Card;
 import se2.ticktackbumm.core.models.Score;
 import se2.ticktackbumm.core.models.bomb.Bomb;
+import se2.ticktackbumm.core.player.Player;
 
 /**
  * MainGameScreen is the screen on which the main part of the game is displayed
@@ -198,7 +199,7 @@ public class MainGameScreen extends ScreenAdapter {
         gameModeInfoLabel.setAlignment(Align.center);
         gameModeInfoLabel.setColor(Color.WHITE);
         gameModeInfoLabel.setPosition(Gdx.graphics.getWidth() / 2f - gameModeInfoLabel.getWidth() / 2f,
-                Gdx.graphics.getHeight() - 1400f);
+                Gdx.graphics.getHeight() - 150f);
         gameModeInfoLabel.setFontScale(4f);
 
         wordCheckInfoLabel.setWidth(Gdx.graphics.getWidth());

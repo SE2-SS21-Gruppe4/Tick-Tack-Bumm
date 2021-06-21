@@ -64,13 +64,13 @@ public class Bomb {
         bombExplosion.updateExplosion(Gdx.graphics.getDeltaTime());
 
         if (!bombExplosion.isFinished()) {
-            bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - (float) 380, 400, 400);
+            bombExplosion.renderExplosion(spriteBatch, 0, Gdx.graphics.getHeight() - 2200f, 400, 400);
         }
     }
 
     public void drawBomb(SpriteBatch spriteBatch) {
         if (bombState == BombState.NORMAL) {
-            spriteBatch.draw(bombTexture, 0, Gdx.graphics.getHeight() - (float) 270, 290, 290);
+            spriteBatch.draw(bombTexture, 0, Gdx.graphics.getHeight() - 2090f, 290, 290);
         }
     }
 
