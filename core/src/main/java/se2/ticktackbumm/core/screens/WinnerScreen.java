@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import se2.ticktackbumm.core.TickTackBummGame;
 import se2.ticktackbumm.core.assets.Flame;
 import se2.ticktackbumm.core.assets.Lamp;
@@ -139,7 +140,7 @@ public class WinnerScreen extends ScreenAdapter {
      * @param winnerTables is for the tables for the best 3 players
      */
     public void initTables(Table[] winnerTables) {
-        for (int i = 0; i < placedPlayers.length; i++) {
+        for (int i = 0; i < placedPlayers.length - 1; i++) {
             winnerTables[i] = new Table();
             winnerTables[i].setWidth(200);
             winnerTables[i].setHeight(400);
