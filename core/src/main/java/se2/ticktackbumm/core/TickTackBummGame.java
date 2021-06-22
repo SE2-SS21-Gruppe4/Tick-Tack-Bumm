@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.ticktackbumm.core.client.NetworkClient;
 import se2.ticktackbumm.core.data.GameData;
-import se2.ticktackbumm.core.data.GameMode;
 import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.core.screens.LoadingScreen;
 import se2.ticktackbumm.core.screens.MainGameScreen;
@@ -28,7 +27,7 @@ public class TickTackBummGame extends Game {
     private static TickTackBummGame tickTackBummGame;
 
     /**
-     *  Player that is on turn.
+     * Player that is on turn.
      */
     private Player localPlayer;
 
@@ -157,6 +156,8 @@ public class TickTackBummGame extends Game {
      */
     public void startNextTurn() {
         MainGameScreen gameScreen = (MainGameScreen) this.getScreen();
+
+        gameScreen.getTextField().setText("");
 
         if (isLocalPlayerTurn()) {
             gameScreen.showControls();

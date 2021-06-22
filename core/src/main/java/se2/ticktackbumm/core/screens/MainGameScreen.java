@@ -326,8 +326,6 @@ public class MainGameScreen extends ScreenAdapter {
                 Math.pow(Gdx.input.getAccelerometerZ(), 2)
         );
 
-        Log.info(String.valueOf(currentAccel));
-
         if (currentAccel > SHAKE_THRESHOLD) {
             Log.info("Device shake registered, cheat function activated");
             setWordCheckInfoLabel("Cheatfunktion aktiviert und fuer dieses Spiel aufgebraucht!", Color.YELLOW);
