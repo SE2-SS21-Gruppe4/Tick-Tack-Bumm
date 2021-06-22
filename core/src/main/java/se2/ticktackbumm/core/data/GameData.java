@@ -73,7 +73,7 @@ public class GameData {
      * game server side.
      */
     public GameData() {
-        maxGameScore = 2; // hardcoded for testing purposes
+        maxGameScore = 1; // hardcoded for testing purposes
         game = TickTackBummGame.getTickTackBummGame();
 
         placedPlayers = null;
