@@ -19,7 +19,7 @@ public class ServerData {
     /**
      * Minimal player count to start a game. Made for easy testing and presenting.
      */
-    private static final int MIN_PLAYERS = 2;
+    private static final int MIN_PLAYERS = 4;
 
     /**
      * The log tag is used to provide unique logging for the class.

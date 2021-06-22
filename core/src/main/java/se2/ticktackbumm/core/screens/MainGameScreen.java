@@ -135,10 +135,6 @@ public class MainGameScreen extends ScreenAdapter {
         imageTable = new Image(textureTable);
         imageTable.setPosition(stage.getWidth() / 2 - 313, stage.getHeight() / 2 - 200);
 
-        //textureMaxScoreBoard = assetManager.get("maxScoreBoard.png", Texture.class);
-        //imageMaxScoreBoard = new Image(textureMaxScoreBoard);
-        //imageMaxScoreBoard.setPosition(Gdx.graphics.getWidth() / 2.0f + 25f, Gdx.graphics.getHeight() - 30f);
-
         score = new Score();
 
         // init tables for scores
@@ -149,8 +145,8 @@ public class MainGameScreen extends ScreenAdapter {
 
         player1 = new Label(gameData.getPlayers().get(0).getPlayerName(), skin);
         player2 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
-        player3 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
-        player4 = new Label(gameData.getPlayers().get(1).getPlayerName(), skin);
+        player3 = new Label(gameData.getPlayers().get(2).getPlayerName(), skin);
+        player4 = new Label(gameData.getPlayers().get(3).getPlayerName(), skin);
 
         score2Table = new Table();
         score2Table.setWidth(200);
@@ -182,9 +178,8 @@ public class MainGameScreen extends ScreenAdapter {
         stage.addActor(imageTable);
         stage.addActor(score1Table);
         stage.addActor(score2Table);
-        //stage.addActor(score3Table);
-        //stage.addActor(score4Table);
-        //stage.addActor(imageMaxScoreBoard);
+        stage.addActor(score3Table);
+        stage.addActor(score4Table);
         stage.addActor(textFieldTable);
         stage.addActor(gameModeInfoLabel);
         stage.addActor(wordCheckInfoLabel);
@@ -304,8 +299,6 @@ public class MainGameScreen extends ScreenAdapter {
         handleBombDraw(batch);
         stage.draw();
         card.drawCard(batch);
-
-        //textMaxScore.draw(batch, MAX_SCORE_TEXT, Gdx.graphics.getWidth() / 2.0f + 57f, Gdx.graphics.getHeight() + 70f);
 
         batch.end();
 
