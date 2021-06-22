@@ -1,92 +1,152 @@
 package se2.ticktackbumm.core.models;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import se2.ticktackbumm.core.TickTackBummGame;
+import se2.ticktackbumm.core.data.GameData;
 
 import java.util.ArrayList;
 
-import se2.ticktackbumm.core.TickTackBummGame;
-import se2.ticktackbumm.core.models.attributes.Position;
+/**
+ * Score is to display the playerScores and communicate with the server to update the Score each round
+ *
+ * @author Daniel Fabian Frankl
+ * @version 1.0
+ */
+public class Score {
+    /**
+     * game constants
+     */
+    private TickTackBummGame game;
+    private GameData gameData;
+    /**
+     * Scene 2D UI
+     */
+    private Label player1;
+    private Label player2;
+    private Label player3;
+    private Label player4;
+    private Skin skin;
+    /**
+     * List and array for the labels and the scores
+     */
+    private ArrayList<Label> playerScoreLabels;
+    private int[] playerScore;
 
-public class Score{
-    private final Image score1;
-    private final Image score2;
-    private final Image score3;
-    private final Image score4;
-    private final BitmapFont player1Score;
-    private final BitmapFont player2Score;
-    private final BitmapFont player3Score;
-    private final BitmapFont player4Score;
-    private final ArrayList<Image> player;
-    private final ArrayList<BitmapFont> bitmapFonts;
+    /**
+     * Class constructor.
+     * for the testclass
+     */
+    public Score(int[] playerScore) {
+        this.playerScore = playerScore;
+    }
 
+    /**
+     * Class constructor.
+     * init variables, init list and array
+     * methodcalls
+     */
     public Score() {
-        player1Score = new BitmapFont();
-        player2Score = new BitmapFont();
-        player3Score = new BitmapFont();
-        player4Score = new BitmapFont();
-        Texture player1 = new Texture("score/player1.png");
-        Texture player2 = new Texture("score/player2.png");
-        Texture player3 = new Texture("score/player3.png");
-        Texture player4 = new Texture("score/player4.png");
-        score1 = new Image(player1);
-        score2 = new Image(player2);
-        score3 = new Image(player3);
-        score4 = new Image(player4);
-        player = new ArrayList<>();
-        bitmapFonts = new ArrayList<>();
-        addPlayer();
-        addBitmaps();
+        //init game constants
+        game = TickTackBummGame.getTickTackBummGame();
+        gameData = game.getGameData();
+
+        //load playerscores in the array from gameData
+        playerScore = gameData.getPlayerScores();
+
+        //init skin
+        skin = game.getManager().get("ui/uiskin.json", Skin.class);
+        skin.getFont("default-font").getData().setScale(3f);
+
+        //init the List
+        playerScoreLabels = new ArrayList<>();
+
+        //methodcalls
+        initScores();
+        addScoresToList();
     }
 
-
-    public void addPlayer(){
-        player1Score.setColor(Color.BLACK);
-        player1Score.getData().setScale(3);
-        player1Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player2Score.setColor(Color.BLACK);
-        player2Score.getData().setScale(3);
-        player2Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player3Score.setColor(Color.BLACK);
-        player3Score.getData().setScale(3);
-        player3Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player4Score.setColor(Color.BLACK);
-        player4Score.getData().setScale(3);
-        player4Score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        player.add(score1);
-        player.add(score2);
-        player.add(score3);
-        player.add(score4);
+    public int getPlayerScore(int position) {
+        return playerScore[position];
     }
 
-    public void addBitmaps(){
-        bitmapFonts.add(player1Score);
-        bitmapFonts.add(player2Score);
-        bitmapFonts.add(player3Score);
-        bitmapFonts.add(player4Score);
+    /**
+     * load the score of each player from the playerScore array into Player
+     */
+    public void initScores() {
+        player1 = new Label(String.valueOf(playerScore[0]) + "/4", skin);
+        player2 = new Label(String.valueOf(playerScore[1]) + "/4", skin);
+        player3 = new Label(String.valueOf(playerScore[2]) + "/4", skin);
+        player4 = new Label(String.valueOf(playerScore[3]) + "/4", skin);
+        player1.setColor(Color.WHITE);
+        player2.setColor(Color.WHITE);
+        player3.setColor(Color.WHITE);
+        player4.setColor(Color.WHITE);
     }
 
-    public void placePlayer(){
-        player.get(0).setPosition((float)TickTackBummGame.WIDTH/2-200, (float)TickTackBummGame.HEIGHT/2-200);
-        score1.setPosition(100f,10f);
-        score1.setPosition(10f,100f);
-        score1.setPosition(100f,100f);
+    /**
+     * set the playerScore array and update the Scores for the MainGameScreen
+     */
+    public void setPlayerScore(int[] playerScore) {
+        this.playerScore = playerScore;
+        initScores();
     }
 
-    public ArrayList<BitmapFont> getBitmaps() {
-        return bitmapFonts;
+    /**
+     * add alle the initialized players to the labels list
+     */
+    public void addScoresToList() {
+        playerScoreLabels.add(player1);
+        playerScoreLabels.add(player2);
+        playerScoreLabels.add(player3);
+        playerScoreLabels.add(player4);
     }
 
-    public ArrayList<Image> getPlayer() {
-        return player;
+    public Label getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Label player1) {
+        this.player1 = player1;
+    }
+
+    public Label getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Label player2) {
+        this.player2 = player2;
+    }
+
+    public Label getPlayer3() {
+        return player3;
+    }
+
+    public void setPlayer3(Label player3) {
+        this.player3 = player3;
+    }
+
+    public Label getPlayer4() {
+        return player4;
+    }
+
+    public void setPlayer4(Label player4) {
+        this.player4 = player4;
+    }
+
+    public Label getPlayerScoreLabels(int position) {
+        return playerScoreLabels.get(position);
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "player1=" + player1 +
+                ", player2=" + player2 +
+                ", player3=" + player3 +
+                ", player4=" + player4 +
+                '}';
     }
 }
 

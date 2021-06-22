@@ -12,18 +12,23 @@ import java.io.IOException;
  */
 public class NetworkClient {
 
+    /**
+     * The log tag is used to provide unique logging for the class.
+     */
     private final String LOG_TAG = "NETWORK_CLIENT";
+
     /**
      * Kryonet-Client to connect to server, send and receive messages.
      */
-    private final Client client;
+    private final Client kryoClient;
     /**
-     * MessageHandler to handle all received messages.
+     * The game's message sender, later contained in the singleton instance of the game class. Provides
+     * functionality to send messages from client to server.
      */
     private final ClientMessageHandler clientMessageHandler;
-
     /**
-     * MessageSender to handle all message sending.
+     * The game's message sender, later contained in the singleton instance of the game class. Provides
+     * functionality to send messages from client to server.
      */
     private final ClientMessageSender clientMessageSender;
 
@@ -32,37 +37,37 @@ public class NetworkClient {
      * Create the Kryonet-Client, register all message classes and start the Kryonet-Client.
      */
     public NetworkClient() {
-        client = new Client();
-        KryoRegisterer.registerMessages(this.client.getKryo());
+        kryoClient = new Client();
+        KryoRegisterer.registerMessages(this.kryoClient.getKryo());
 
-        clientMessageSender = new ClientMessageSender(client);
-        clientMessageHandler = new ClientMessageHandler(client, clientMessageSender);
+        clientMessageSender = new ClientMessageSender(kryoClient);
+        clientMessageHandler = new ClientMessageHandler(clientMessageSender);
 
-        client.addListener(new NetworkClientListener(clientMessageHandler));
+        kryoClient.addListener(new NetworkClientListener(clientMessageHandler));
 
-        client.start();
+        kryoClient.start();
     }
 
     /**
-     * Try to connect client to server with the parameters specified in
-     * {@link NetworkConstants}.
+     * Try to connect client to server with the parameters specified in {@link NetworkConstants}.
      */
     public void tryConnectClient() {
         try {
-            client.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            kryoClient.connect(NetworkConstants.TIMEOUT, NetworkConstants.HOST_IP, NetworkConstants.TCP_PORT);
+            Log.info(LOG_TAG, "Connected client to server with IP " + NetworkConstants.HOST_IP + " on port " +
+                    NetworkConstants.TCP_PORT);
         } catch (IOException e) {
             Log.error(LOG_TAG, "Failed to connect client: " + e, e);
         }
     }
 
     /**
-     * Gets the MessageHandler from the NetworkClient. Use this reference to globally handle
-     * incoming messages to client.
-     *
-     * @return reference to the NetworkClients instance of MessageHandler
+     * Disconnect the client from the server.
      */
-    public ClientMessageHandler getClientMessageHandler() {
-        return clientMessageHandler;
+    public void disconnectClient() {
+        kryoClient.close();
+        Log.info(LOG_TAG, "Disconnected client from server with IP " + NetworkConstants.HOST_IP + " on port " +
+                NetworkConstants.TCP_PORT);
     }
 
     /**

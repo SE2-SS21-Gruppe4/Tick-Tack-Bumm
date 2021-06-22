@@ -2,21 +2,19 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import se2.ticktackbumm.core.network.NetworkConstants;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.network.messages.server.SomeResponse;
+import se2.ticktackbumm.server.network.NetworkServer;
 
 import java.io.IOException;
-
-import se2.ticktackbumm.core.network.NetworkConstants;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
-import se2.ticktackbumm.server.network.NetworkServer;
 
 public class ConnectionTests {
     @Test
     public void testClientServerConnection() throws IOException {
-        NetworkServer server = new NetworkServer();
+        NetworkServer server = NetworkServer.getNetworkServer();
 
         Client client = new Client();
 

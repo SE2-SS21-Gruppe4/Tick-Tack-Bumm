@@ -1,9 +1,11 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.minlog.Log;
-import se2.ticktackbumm.core.network.messages.BombExploded;
-import se2.ticktackbumm.core.network.messages.PlayerTaskCompleted;
-import se2.ticktackbumm.core.network.messages.SomeRequest;
+import se2.ticktackbumm.core.data.GameMode;
+import se2.ticktackbumm.core.network.messages.client.PlayerReady;
+import se2.ticktackbumm.core.network.messages.client.PlayerTaskCompleted;
+import se2.ticktackbumm.core.network.messages.client.SomeRequest;
+import se2.ticktackbumm.core.player.Player;
 import se2.ticktackbumm.server.data.ServerData;
 
 /**
@@ -42,20 +44,75 @@ public class ServerMessageHandler {
     }
 
     public void handlePlayerTaskCompleted(PlayerTaskCompleted playerTaskCompleted) {
-        Log.info(LOG_TAG,
-                "Server got message (" + playerTaskCompleted.getClass() +
-                        ") from player 0");
+        Log.info(LOG_TAG, "<PlayerTaskCompleted> Handling message PlayerTaskCompleted");
 
-        // TODO: update client state
-        serverMessageSender.sendPlayerUpdate();
+        serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().getLockedWords().add(playerTaskCompleted.getUsedWord().toLowerCase());
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendNextTurn();
     }
 
-    public void handleBombExploded(BombExploded bombExploded, int connectionId) {
-        Log.info(LOG_TAG,
-                "Server got message (" + bombExploded.getClass() +
-                        ") from player 0");
+    public void handleBombExploded(int connectionId) {
+        Log.info(LOG_TAG, "<BombExploded> Handling message BombExploded");
 
-        // TODO: setup player data on game start
-        serverData.incPlayerScoreByConnectionId(connectionId);
+        serverData.getGameData().setNextPlayerTurn();
+        serverData.getGameData().resetLockedWords();
+        serverData.getGameData().getPlayerByConnectionId(connectionId).incPlayerScore();
+
+        serverMessageSender.sendGameUpdate();
+
+        if (serverData.hasGameFinished()) {
+            serverMessageSender.sendGameFinished(serverData.getPlacedPlayers());
+        } else {
+            serverMessageSender.sendBombExploded(connectionId);
+            serverMessageSender.sendNextRound();
+        }
+    }
+
+    public void handlePlayerReady(PlayerReady playerReady, int connectionId) {
+        Log.info(LOG_TAG, "<PlayerReady> Handling message PlayerReady");
+
+        Player currentPlayer = serverData.getGameData().getPlayerByConnectionId(connectionId);
+        currentPlayer.setPlayerName(playerReady.getPlayerName());
+        currentPlayer.setPlayerAvatar(playerReady.getPlayerAvatar());
+        serverMessageSender.sendGameUpdate();
+
+        serverData.addReadyPlayer(currentPlayer);
+        if (serverData.arePlayersReady()) {
+            serverMessageSender.sendStartGame();
+        }
+    }
+
+    public void handleBombStart() {
+        serverData.getGameData().setRandomBombTimer(20, 20);
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendStartBomb();
+    }
+
+
+    public void handleSpinWheelFinished(GameMode gameMode) {
+        serverData.getGameData().setCurrentGameMode(gameMode);
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendSpinWheelFinished();
+    }
+
+    public void handleCardOpened(String word) {
+        serverData.getGameData().setCardRevealed(true);
+        serverData.getGameData().setCurrentGameModeText(word);
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendCardOpened();
+    }
+
+    public void handlePlayerCheated(int connectionID) {
+        Log.info(LOG_TAG, "<PlayerCheated> Handling message PlayerCheated");
+
+        Player cheatingPlayer = serverData.getGameData().getPlayerByConnectionId(connectionID);
+        cheatingPlayer.setCanCheat(false);
+
+        serverData.getGameData().setRandomBombTimer(5, 3);
+
+        serverMessageSender.sendGameUpdate();
+        serverMessageSender.sendStartBomb();
     }
 }

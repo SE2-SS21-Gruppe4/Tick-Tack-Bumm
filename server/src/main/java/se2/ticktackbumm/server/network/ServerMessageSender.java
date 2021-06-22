@@ -1,7 +1,10 @@
 package se2.ticktackbumm.server.network;
 
 import com.esotericsoftware.kryonet.Server;
-import se2.ticktackbumm.core.network.messages.SomeResponse;
+import com.esotericsoftware.minlog.Log;
+import se2.ticktackbumm.core.network.messages.client.*;
+import se2.ticktackbumm.core.network.messages.server.*;
+import se2.ticktackbumm.core.player.Player;
 
 /**
  * Handles the sending of messages from the server to the clients.
@@ -30,7 +33,54 @@ public class ServerMessageSender {
         server.sendToAllTCP(new SomeResponse(text));
     }
 
-    public void sendPlayerUpdate() {
-        // TODO: update all clients with the new player turn and new player score
+    public void sendGameUpdate() {
+        Log.info(LOG_TAG, "Sending message GameUpdate to all clients");
+        server.sendToAllTCP(
+                new GameUpdate(NetworkServer.getNetworkServer().getServerData().getGameData())
+        );
+    }
+
+    public void sendStartGame() {
+        Log.info(LOG_TAG, "Sending message StartGame to all clients");
+        // TODO: collect data for game start; create useful message class
+        server.sendToAllTCP(new StartGame());
+    }
+
+    public void sendNextTurn() {
+        Log.info(LOG_TAG, "Sending message NextTurn to all clients");
+        server.sendToAllTCP(new NextTurn());
+    }
+
+    public void sendNextRound() {
+        Log.info(LOG_TAG, "Sending message NextRound to all clients");
+        server.sendToAllTCP(new NextRound());
+    }
+
+    public void sendGameFinished(Player[] placedPlayers) {
+        Log.info(LOG_TAG, "Sending message GameFinished to all clients");
+        server.sendToAllTCP(new GameFinished(placedPlayers));
+    }
+
+
+    public void sendStartBomb() {
+        Log.info(LOG_TAG, "Sending message StartBomb");
+        server.sendToAllTCP(new StartBomb());
+    }
+
+    public void sendSpinWheelFinished() {
+        server.sendToAllTCP(new SpinWheelFinished());
+    }
+
+    public void sendSpinWheelStarted() {
+        server.sendToAllTCP((new SpinWheelStarted()));
+    }
+
+    public void sendCardOpened() {
+        Log.info(LOG_TAG, "Sending message CardOpened");
+        server.sendToAllTCP(new CardOpened());
+    }
+
+    public void sendBombExploded(int connectionId) {
+        server.sendToAllExceptTCP(connectionId, new BombExploded());
     }
 }
