@@ -420,7 +420,7 @@ public class MainGameScreen extends ScreenAdapter {
         score3Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score3Table.row();
         score3Table.add(player3);
-        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
+        score3Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 - 400);
     }
 
     /**
@@ -433,7 +433,7 @@ public class MainGameScreen extends ScreenAdapter {
         score4Table.add(gameData.getFocusedAvatarImage(gameData.getPlayers().get(gameData.getCurrentPlayerTurnIndex())));
         score4Table.row();
         score4Table.add(player4);
-        score4Table.setPosition(stage.getWidth() / 2 + 250, stage.getHeight() / 2 + 350);
+        score4Table.setPosition(stage.getWidth() / 2 - 450, stage.getHeight() / 2 - 400);
     }
 
     /**
