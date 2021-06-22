@@ -106,16 +106,16 @@ public class WinnerScreen extends ScreenAdapter {
         //position the tables
         winnerTables[0].setPosition(TickTackBummGame.WIDTH / 2f - 25f, TickTackBummGame.HEIGHT / 2f);
         winnerTables[1].setPosition(TickTackBummGame.WIDTH / 2f - 275f, TickTackBummGame.HEIGHT / 2f - 200f);
-        //winnerTables[2].setPosition(TickTackBummGame.WIDTH / 2f + 225f, TickTackBummGame.HEIGHT / 2f - 200f);
+        winnerTables[2].setPosition(TickTackBummGame.WIDTH / 2f + 225f, TickTackBummGame.HEIGHT / 2f - 200f);
 
         menuButtonTable.add(menuButton).padBottom(50f).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
 
         //add all actors to the stage
-        //stage.addActor(winnerTables[2]);
         stage.addActor(podiumImage);
         stage.addActor(menuButtonTable);
         stage.addActor(winnerTables[0]);
         stage.addActor(winnerTables[1]);
+        stage.addActor(winnerTables[2]);
 
         //get the background from the assetmanager
         background = assetManager.get("winnerScreen/background.png", Texture.class);
