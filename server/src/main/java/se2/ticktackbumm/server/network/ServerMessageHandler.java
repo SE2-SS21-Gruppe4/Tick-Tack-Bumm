@@ -90,7 +90,6 @@ public class ServerMessageHandler {
         serverMessageSender.sendStartBomb();
     }
 
-
     public void handleSpinWheelFinished(GameMode gameMode) {
         serverData.getGameData().setCurrentGameMode(gameMode);
         serverMessageSender.sendGameUpdate();
@@ -110,7 +109,7 @@ public class ServerMessageHandler {
         Player cheatingPlayer = serverData.getGameData().getPlayerByConnectionId(connectionID);
         cheatingPlayer.setCanCheat(false);
 
-        serverData.getGameData().setRandomBombTimer(5, 3);
+        serverData.getGameData().setRandomBombTimer(3, 2);
 
         serverMessageSender.sendGameUpdate();
         serverMessageSender.sendStartBomb();

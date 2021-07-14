@@ -36,7 +36,7 @@ public class Score {
 
     /**
      * Class constructor.
-     * for the testclass
+     * for the test class
      */
     public Score(int[] playerScore) {
         this.playerScore = playerScore;
@@ -45,24 +45,24 @@ public class Score {
     /**
      * Class constructor.
      * init variables, init list and array
-     * methodcalls
+     * method calls
      */
     public Score() {
-        //init game constants
+        // init game constants
         game = TickTackBummGame.getTickTackBummGame();
         gameData = game.getGameData();
 
-        //load playerscores in the array from gameData
+        // load player scores in the array from gameData
         playerScore = gameData.getPlayerScores();
 
-        //init skin
+        // init skin
         skin = game.getManager().get("ui/uiskin.json", Skin.class);
         skin.getFont("default-font").getData().setScale(3f);
 
-        //init the List
+        // init the List
         playerScoreLabels = new ArrayList<>();
 
-        //methodcalls
+        // method calls
         initScores();
         addScoresToList();
     }
@@ -75,10 +75,10 @@ public class Score {
      * load the score of each player from the playerScore array into Player
      */
     public void initScores() {
-        player1 = new Label(String.valueOf(playerScore[0]) + "/4", skin);
-        player2 = new Label(String.valueOf(playerScore[1]) + "/4", skin);
-        player3 = new Label(String.valueOf(playerScore[2]) + "/4", skin);
-        player4 = new Label(String.valueOf(playerScore[3]) + "/4", skin);
+        player1 = new Label(playerScore[0] + "/" + gameData.getMaxGameScore(), skin);
+        player2 = new Label(playerScore[1] + "/" + gameData.getMaxGameScore(), skin);
+        player3 = new Label(playerScore[2] + "/" + gameData.getMaxGameScore(), skin);
+        player4 = new Label(playerScore[3] + "/" + gameData.getMaxGameScore(), skin);
         player1.setColor(Color.WHITE);
         player2.setColor(Color.WHITE);
         player3.setColor(Color.WHITE);
